@@ -1,0 +1,27 @@
+/* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
+#page-local-psgrading-tasks {
+	#fitem_id_evidencejson {
+    	display: none;
+    	&>div{
+		    display: none;
+		}
+		&.has-danger {
+		    display: block;
+		    height: 22px;
+		    overflow: hidden;
+		    &:before {
+			    content: "You must add evidence.";
+			    color: red;
+			    width: 100%;
+			    height: 22px;
+			    margin-left: 15px;
+			}
+		}
+    }
+}
+
+/* Component styling */
+.path-local-psgrading {
+	.evidence-selector {
+	}
+}

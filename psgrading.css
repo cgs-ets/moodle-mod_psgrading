@@ -1,0 +1,232 @@
+/* Helpers */
+.path-local-psgrading .spinner {
+  display: none;
+  padding: 0;
+  width: 30px;
+  overflow: hidden;
+}
+.path-local-psgrading .spinner .circle {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: #000;
+  border-left-color: #000;
+  text-indent: -9999px;
+  margin: 0 auto;
+}
+.path-local-psgrading .spin {
+  -webkit-animation: lgsspin 0.4s linear 0s infinite;
+  -moz-animation: lgsspin 0.4s linear 0s infinite;
+  -o-animation: lgsspin 0.4s linear 0s infinite;
+  animation: lgsspin 0.4s linear 0s infinite;
+}
+@-webkit-keyframes lgsspin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes lgsspin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@keyframes lgsspin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
+#page-local-psgrading-tasks #fitem_id_rubricjson {
+  display: none;
+}
+#page-local-psgrading-tasks #fitem_id_rubricjson > div {
+  display: none;
+}
+#page-local-psgrading-tasks #fitem_id_rubricjson.has-danger {
+  display: block;
+  height: 22px;
+  overflow: hidden;
+}
+#page-local-psgrading-tasks #fitem_id_rubricjson.has-danger:before {
+  content: "You must add evidence.";
+  color: red;
+  width: 100%;
+  height: 22px;
+  margin-left: 15px;
+}
+/* Component styling */
+form[data-form="psgrading-task"] .rubric-selector {
+  background-color: #f0f4f8;
+  padding: 25px 20px 25px 30px;
+}
+form[data-form="psgrading-task"] .rubric-selector .headings,
+form[data-form="psgrading-task"] .rubric-selector .criterions {
+  display: table;
+  width: 100%;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-th,
+form[data-form="psgrading-task"] .rubric-selector .tbl-tr {
+  display: table-row;
+  padding: 0;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-th {
+  font-weight: 600;
+  font-size: 110%;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col {
+  display: table-cell;
+  width: 20%;
+  padding: 0 10px 10px 0;
+  vertical-align: top;
+  position: relative;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col .label {
+  display: none;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col textarea:focus,
+form[data-form="psgrading-task"] .rubric-selector .tbl-col input:focus,
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select:focus,
+form[data-form="psgrading-task"] .rubric-selector .tbl-col a:focus {
+  outline: none;
+  box-shadow: none;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col textarea {
+  width: 100%;
+  height: 140px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 10px;
+  font-size: 90%;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col input,
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
+  margin-bottom: 3px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 90%;
+  height: calc(1.5em + 0.75rem + 4px);
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col.tbl-col-last {
+  padding-right: 55px;
+}
+form[data-form="psgrading-task"] .rubric-selector a.btn-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+@media only screen and (max-width: 1160px) {
+  form[data-form="psgrading-task"] .rubric-selector {
+    padding: 0px 0px 25px 0px;
+    background-color: #fff;
+  }
+  form[data-form="psgrading-task"] .rubric-selector .headings {
+    display: none;
+  }
+  form[data-form="psgrading-task"] .rubric-selector .tbl-tr {
+    display: block;
+    background-color: #f0f4f8;
+    padding: 20px 10px 20px 20px;
+    border-radius: 4px;
+  }
+  form[data-form="psgrading-task"] .rubric-selector .tbl-col {
+    display: block;
+    width: 100%;
+  }
+  form[data-form="psgrading-task"] .rubric-selector .tbl-col .label {
+    display: block;
+    position: absolute;
+    right: 10px;
+    text-align: right;
+  }
+}
+/* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
+#page-local-psgrading-tasks #fitem_id_evidencejson {
+  display: none;
+}
+#page-local-psgrading-tasks #fitem_id_evidencejson > div {
+  display: none;
+}
+#page-local-psgrading-tasks #fitem_id_evidencejson.has-danger {
+  display: block;
+  height: 22px;
+  overflow: hidden;
+}
+#page-local-psgrading-tasks #fitem_id_evidencejson.has-danger:before {
+  content: "You must add evidence.";
+  color: red;
+  width: 100%;
+  height: 22px;
+  margin-left: 15px;
+}
+/* Component styling */
+form[data-form="psgrading-task"] {
+  position: relative;
+}
+form[data-form="psgrading-task"] header #page-header .card-body {
+  padding: 10px 15px 0;
+}
+form[data-form="psgrading-task"] header #page-header .page-context-header {
+  margin-right: 185px;
+}
+form[data-form="psgrading-task"] .mform .col-md-3 {
+  max-width: 170px;
+  margin-right: 0;
+  padding-right: 0;
+}
+form[data-form="psgrading-task"] .mform div#fgroup_id_buttonar .col-md-9 {
+  padding-left: 0;
+}
+form[data-form="psgrading-task"] #savestatus .badge {
+  position: absolute;
+  top: 33px;
+  left: 249px;
+  display: none;
+  border-radius: 17px;
+  padding: 4px 7px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+form[data-form="psgrading-task"] #savestatus .badge .spinner,
+form[data-form="psgrading-task"] #savestatus .badge i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  margin-right: 3px;
+}
+#page-local-psgrading-index #page {
+  padding: 0;
+  background-color: #fcfcfe;
+}
+#page-local-psgrading-index #page-header {
+  display: none;
+}
+#page-local-psgrading-index #page-content {
+  margin: 0;
+}
+#page-local-psgrading-index #region-main-box {
+  padding: 0;
+}
+#page-local-psgrading-index #region-main {
+  border: 0;
+  padding: 0;
+  margin-top: -1px;
+}
+#page-local-psgrading-index #region-main .alert {
+  margin-bottom: 0px;
+  margin-top: 2px;
+}

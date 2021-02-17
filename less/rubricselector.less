@@ -1,0 +1,105 @@
+/* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
+#page-local-psgrading-tasks {
+	#fitem_id_rubricjson {
+    	display: none;
+    	&>div{
+		    display: none;
+		}
+		&.has-danger {
+		    display: block;
+		    height: 22px;
+		    overflow: hidden;
+		    &:before {
+			    content: "You must add evidence.";
+			    color: red;
+			    width: 100%;
+			    height: 22px;
+			    margin-left: 15px;
+			}
+		}
+    }
+}
+
+/* Component styling */
+form[data-form="psgrading-task"] {
+	.rubric-selector {
+    	background-color: #f0f4f8;
+    	padding: 25px 20px 25px 30px;
+		.headings, .criterions {
+			display: table;
+	    	width: 100%;
+		}
+		.tbl-th, .tbl-tr {
+			display: table-row;
+			padding: 0;
+		} 
+		.tbl-th {
+			font-weight: 600;
+    		font-size: 110%;
+		}
+		.tbl-col {
+			display: table-cell;
+			width: 20%;
+			padding: 0 10px 10px 0;
+			vertical-align: top;
+			position: relative;
+			.label {
+				display: none;
+			}
+			textarea, input, select, a {
+				&:focus {
+				    outline: none;
+				    box-shadow: none;
+				}
+			}
+			textarea {
+				width: 100%;
+				height: 140px;
+			    border: 1px solid #ddd;
+			    border-radius: 2px;
+			    padding: 10px;
+			    font-size: 90%;
+			}
+			input, select {
+			    margin-bottom: 3px;
+			    width: 100%;
+			    border: 1px solid #ddd;
+			    border-radius: 2px;
+			    padding: 8px 10px;
+			    font-size: 90%;
+			    height: calc(1.5em + .75rem + 4px);
+			}
+			&.tbl-col-last {
+				padding-right: 55px;
+			}
+		}
+		a.btn-delete {
+			position: absolute;
+		    top: 0;
+		    right: 0;
+		}
+		@media only screen and (max-width: 1160px)  {
+			padding: 0px 0px 25px 0px;
+			background-color: #fff;
+			.headings {
+				display: none;
+			}
+			.tbl-tr {
+			    display: block;
+			    background-color: #f0f4f8;
+			    padding: 20px 10px 20px 20px;
+			    border-radius: 4px;
+			}
+			.tbl-col {
+			    display: block;
+			    width: 100%;
+				.label {
+					display: block;
+					position: absolute;
+				    right: 10px;
+				    text-align: right;
+				}
+			}
+		}
+	}
+}
