@@ -62,11 +62,10 @@ echo "display list for course. Check out the database activity for a nice view p
 
 
 $taskcreateurl = new moodle_url('/mod/psgrading/tasks.php', array(
-    'id' => $cm->id,
+    'cmid' => $cm->id,
     'create' => 1,
 ));
 echo '<a href="' . $taskcreateurl . '">Add a task</a>';
-
 
 
 echo $OUTPUT->footer();

@@ -43,8 +43,8 @@ class form_task extends \moodleform {
         // Page title.
         $mform->addElement('header', 'general', '');
 
-        // Autosave status.
-        $mform->addElement('html', '<div id="savestatus"></div>');
+        // Autosave.
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_autosave', []));
 
         /*----------------------
          *   Name.

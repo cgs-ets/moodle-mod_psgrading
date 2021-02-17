@@ -32,14 +32,14 @@ use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
-$id = optional_param('id', 0, PARAM_INT);
+$cmid = optional_param('cmid', 0, PARAM_INT);
 $p  = optional_param('p', 0, PARAM_INT);
 
 $create = optional_param('create', 0, PARAM_INT);
 $edit = optional_param('edit', 0, PARAM_INT);
 
-if ($id) {
-    $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
+if ($cmid) {
+    $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
     $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
 } else if ($p) {
@@ -54,11 +54,11 @@ require_login($course, true, $cm);
 
 $modulecontext = context_module::instance($cm->id);
 
-$viewurl = new moodle_url('/mod/psgrading/tasks.php', array(
+$viewurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
 ));
 $taskediturl = new moodle_url('/mod/psgrading/tasks.php', array(
-    'id' => $cm->id,
+    'cmid' => $cm->id,
     'edit' => $edit,
 ));
 
@@ -74,16 +74,13 @@ if ($create) {
     // Create a new empty task.
     $data = new \stdClass();
     $data->creatorusername = $USER->username;
-    $data->courseid = $courseid;
+    $data->cmid = $cm->id;
     $task = new task(0, $data);
     $task->save();
 
     // Redirect to edit.
-    $editurl = new moodle_url('/mod/psgrading/tasks.php', array(
-        'courseid' => $task->get('courseid'),
-        'edit' => $task->get('id'),
-    ));
-    redirect($editurl->out());
+    $taskediturl->param('edit', $task->get('id'));
+    redirect($taskediturl->out());
     exit;
 
 } elseif ($edit) {
@@ -115,7 +112,7 @@ if ($create) {
     //$evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', $evidencedata); 
    
     // Load the form.
-    $formtask = new form_task($editurl->out(), 
+    $formtask = new form_task($taskediturl->out(), 
         array(
             'rubrichtml' => $rubrichtml,
             'evidencehtml' => $evidencehtml,
@@ -125,7 +122,7 @@ if ($create) {
 
     // Redirect if cancel was clicked.
     if ($formtask->is_cancelled()) {
-        redirect($tasksurl->out());
+        redirect($viewurl->out());
     }
 
     // This is what actually sets the data in the form.
@@ -153,7 +150,7 @@ if ($create) {
                 $notice = get_string("taskform:editsuccess", "mod_psgrading");
             }
             redirect(
-                $tasksurl->out(),
+                $viewurl->out(),
                 '<p>'.$notice.'</p>',
                 null,
                 \core\output\notification::NOTIFY_SUCCESS
@@ -161,7 +158,7 @@ if ($create) {
         } else {
             $notice = get_string("taskform:createfail", "mod_psgrading");
             redirect(
-                $tasksurl->out(),
+                $viewurl->out(),
                 '<p>'.$notice.'</p>',
                 null,
                 \core\output\notification::NOTIFY_ERROR

@@ -45,7 +45,7 @@ class task extends persistent {
      */
     protected static function define_properties() {
         return [
-            "courseid" => [
+            "cmid" => [
                 'type' => PARAM_INT,
                 'default' => 0,
             ],

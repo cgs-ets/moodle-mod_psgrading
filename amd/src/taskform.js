@@ -56,6 +56,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
         var self = this;
         self.rootel = rootel;
         self.formjson = self.getFormJSON();
+        self.autosaveenabled = false;
         self.autosaving = false;
         self.savestatus = self.rootel.find('#savestatus');
 
@@ -70,8 +71,27 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
    TaskForm.prototype.main = function () {
         var self = this;
 
+        // Handle autosave toggle.
+        self.rootel.on('change', '#autosave-switch', function() {
+            if (this.checked) {
+                // Force an autosave.
+                self.autosaveenabled = true;
+                self.formjson = '';
+                $(this).closest('.autosave-control').addClass('active');
+                self.regeneraterubricjson();
+                self.autoSave(); 
+            } else {
+                self.autosaveenabled = false;
+                $(this).closest('.autosave-control').removeClass('active');
+                // Add the before unload alert back in. The text returned is ignored by browsers but there as a fallback.
+                window.onbeforeunload = function() {
+                    return "Are you sure?";
+                };
+            }
+        });
+
         // Handle auto-save when leaving a field.
-        self.rootel.on('blur', 'input.form-control, select.form-control, textarea.form-control', function(e) {
+        self.rootel.on('blur', 'input, select, textarea', function(e) {
             var input = $(this);
             var isCriterionInput = !!input.closest('.criterions').length;
             if (isCriterionInput) {
@@ -103,7 +123,9 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
         self.rootel.on('click', '#id_cancel', function(e) {
             e.preventDefault();
             self.regeneraterubricjson();
-            self.autosaving = false; // Force an autosave.
+            // Force an autosave.
+            self.autosaveenabled = true;
+            self.autosaving = false;
             self.autoSave(false);
             $(this).submit();
         });
@@ -145,7 +167,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
             evidencejson: evidencejson,
         };
 
-        // Check if form data has changed.
         var formjson = JSON.stringify(formdata);
 
         return formjson;
@@ -158,6 +179,11 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
      */
     TaskForm.prototype.autoSave = function (async) {
         var self = this;
+
+        // Check if autosave is enabled.
+        if (!self.autosaveenabled) {
+            return;
+        }
 
         // Check if saving already in-progress.
         if (self.autosaving) {
