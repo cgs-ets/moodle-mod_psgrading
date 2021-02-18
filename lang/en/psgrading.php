@@ -54,3 +54,8 @@ $string['taskform:savedraft'] = 'Save draft';
 $string['taskform:discardchanges'] = 'Discard changes';
 
 $string['pypuoi:htww'] = 'How the World Works';
+
+$string['view:notasks'] = 'There are no tasks yet.';
+$string['createtask'] = 'Create a new task';
+
+

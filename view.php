@@ -25,6 +25,9 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
+use \mod_psgrading\persistents\task;
+use \mod_psgrading\external\task_exporter;
+
 // Course_module ID, or
 $id = optional_param('id', 0, PARAM_INT);
 
@@ -43,29 +46,42 @@ if ($id) {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
 
-require_login($course, true, $cm);
-
+$coursecontext = context_course::instance($course->id);
 $modulecontext = context_module::instance($cm->id);
+
+require_login($course, true, $cm);
+require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
 
 $PAGE->set_url('/mod/psgrading/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
-echo $OUTPUT->header();
-
-
-$coursecontext = context_course::instance($course->id);
-
-
-echo "display list for course. Check out the database activity for a nice view page. <br>";
-
-
 $taskcreateurl = new moodle_url('/mod/psgrading/tasks.php', array(
     'cmid' => $cm->id,
     'create' => 1,
 ));
-echo '<a href="' . $taskcreateurl . '">Add a task</a>';
 
+$corerenderer = $PAGE->get_renderer('core');
+$taskdata = task::get_for_coursemodule($cm->id);
+$tasks = array();
+foreach ($taskdata as $task) {
+	$taskexporter = new task_exporter($task);
+	$tasks[] = $taskexporter->export($corerenderer);
+}
+//echo "<pre>"; var_export($tasks); exit;
 
-echo $OUTPUT->footer();
+$data = array(
+	'tasks' => $tasks,
+	'taskcreateurl' => $taskcreateurl,
+);
+
+$output = $OUTPUT->header();
+
+// Render the announcement list.
+$output .= $OUTPUT->render_from_template('mod_psgrading/view', $data);
+
+// Final outputs.
+$output .= $OUTPUT->footer();
+echo $output;
+

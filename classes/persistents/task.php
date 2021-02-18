@@ -99,7 +99,6 @@ class task extends persistent {
     }
 
     public static function save_draft($formjson) {
-        
         // Some validation.
         $formdata = json_decode($formjson);
         if (empty($formdata->id)) {
@@ -109,7 +108,26 @@ class task extends persistent {
         $task = new static($formdata->id);
         $task->set('draftjson', $formjson);
         $task->save();
+    }
 
+
+    public static function get_for_coursemodule($cmid) {
+        global $DB;
+        
+        $sql = "SELECT *
+                  FROM {" . static::TABLE . "}
+                 WHERE deleted = 0
+                   AND cmid = ?
+              ORDER BY published DESC, timemodified DESC";
+        $params = array($cmid);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $tasks = array();
+        foreach ($records as $record) {
+            $tasks[] = new static($record->id, $record);
+        }
+
+        return $tasks;
     }
 
 
