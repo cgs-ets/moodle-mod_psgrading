@@ -69,7 +69,7 @@ foreach ($taskdata as $task) {
 	$taskexporter = new task_exporter($task);
 	$tasks[] = $taskexporter->export($corerenderer);
 }
-//echo "<pre>"; var_export($tasks); exit;
+echo "<pre>"; var_export($tasks); exit;
 
 $data = array(
 	'tasks' => $tasks,
