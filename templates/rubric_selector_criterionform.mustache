@@ -44,7 +44,20 @@
             <div>
                 <select name="subject" class="form-control">
                     {{#subject.options}}
-                        <option value="{{val}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                        <option value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                    {{/subject.options}}
+                    {{^subject.options}}
+                        {{! Default options }}
+                        <option value="">Select</option>
+                        <option value="English">English</option>
+                        <option value="HAAS">HAAS</option>
+                        <option value="Science">Science</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Maths">Maths</option>
+                        <option value="H&PE">H&amp;PE</option>
+                        <option value="VisArts">VisArts</option>
+                        <option value="Language">Language</option>
+                        <option value="Music">Music</option>
                     {{/subject.options}}
                 </select>
             </div>

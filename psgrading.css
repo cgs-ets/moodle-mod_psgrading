@@ -60,7 +60,7 @@
   overflow: hidden;
 }
 #page-mod-psgrading-tasks #fitem_id_rubricjson.has-danger:before {
-  content: "You must add evidence.";
+  content: "You must complete the rubric. All fields are mandatory.";
   color: red;
   width: 100%;
   height: 22px;
@@ -175,6 +175,84 @@ form[data-form="psgrading-task"] .rubric-selector a.btn-delete {
 /* Component styling */
 form[data-form="psgrading-task"] {
   position: relative;
+  /*
+	// Autosave switch.
+	.autosave-control {
+		position: absolute;
+	    top: 33px;
+		left: 249px;
+	    top: 0;
+		left: 0;
+		display: flex;
+		input[type=checkbox]{
+			height: 0;
+			width: 0;
+			visibility: hidden;
+			position: absolute;
+    		left: -1000px;
+		}
+		label {
+			cursor: pointer;
+			text-indent: -9999px;
+			width: 32px;
+			height: 19px;
+			background: grey;
+			display: inline-block;
+			border-radius: 100px;
+			position: relative;
+			margin-right: 3px;
+		}
+		label:after {
+			content: '';
+			position: absolute;
+			top: 3px;
+		    left: 3px;
+		    width: 13px;
+		    height: 13px;
+			background: #fff;
+			border-radius: 90px;
+			transition: 0.3s;
+		}
+		input:checked + label {
+			background: #005b94;
+		}
+		input:checked + label:after {
+			left: calc(100% - 5px);
+			transform: translateX(-100%);
+		}
+		label:active:after {
+			width: 20px;
+		}
+		span.switch-label {
+		    font-size: 89%;
+		    margin-left: 4px;
+		    line-height: 19px;
+		}
+		#savestatus {
+			display: none;
+			.badge {
+			    border-radius: 17px;
+			    padding: 4px 7px;
+			    justify-content: center;
+			    align-items: center;
+				display: flex;
+				.spinner, i {
+			        display: block;
+				    width: 11px;
+				    height: 11px;
+				    margin-right: 3px;
+			    }
+			}
+		}
+		&.active {
+			span.switch-label {
+				display: none;
+			}
+			#savestatus {
+				display: inline-block;
+			}
+		}
+	}*/
 }
 form[data-form="psgrading-task"] header #page-header .card-body {
   padding: 10px 15px 0;
@@ -190,80 +268,26 @@ form[data-form="psgrading-task"] .mform .col-md-3 {
 form[data-form="psgrading-task"] .mform div#fgroup_id_buttonar .col-md-9 {
   padding-left: 0;
 }
-form[data-form="psgrading-task"] .autosave-control {
-  position: absolute;
-  top: 33px;
-  left: 249px;
-  top: 0;
-  left: 0;
-  display: flex;
-}
-form[data-form="psgrading-task"] .autosave-control input[type=checkbox] {
-  height: 0;
-  width: 0;
-  visibility: hidden;
-  position: absolute;
-  left: -1000px;
-}
-form[data-form="psgrading-task"] .autosave-control label {
-  cursor: pointer;
-  text-indent: -9999px;
-  width: 32px;
-  height: 19px;
-  background: grey;
-  display: inline-block;
-  border-radius: 100px;
-  position: relative;
-  margin-right: 3px;
-}
-form[data-form="psgrading-task"] .autosave-control label:after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 13px;
-  height: 13px;
-  background: #fff;
-  border-radius: 90px;
-  transition: 0.3s;
-}
-form[data-form="psgrading-task"] .autosave-control input:checked + label {
-  background: #005b94;
-}
-form[data-form="psgrading-task"] .autosave-control input:checked + label:after {
-  left: calc(100% - 5px);
-  transform: translateX(-100%);
-}
-form[data-form="psgrading-task"] .autosave-control label:active:after {
-  width: 20px;
-}
-form[data-form="psgrading-task"] .autosave-control span.switch-label {
-  font-size: 89%;
-  margin-left: 4px;
-  line-height: 19px;
-}
-form[data-form="psgrading-task"] .autosave-control #savestatus {
+form[data-form="psgrading-task"] #id_actions .ftoggler {
   display: none;
 }
-form[data-form="psgrading-task"] .autosave-control #savestatus .badge {
+form[data-form="psgrading-task"] #savestatus .badge {
+  position: absolute;
+  top: 32px;
+  left: 240px;
+  display: none;
   border-radius: 17px;
   padding: 4px 7px;
   justify-content: center;
   align-items: center;
   display: flex;
 }
-form[data-form="psgrading-task"] .autosave-control #savestatus .badge .spinner,
-form[data-form="psgrading-task"] .autosave-control #savestatus .badge i {
+form[data-form="psgrading-task"] #savestatus .badge .spinner,
+form[data-form="psgrading-task"] #savestatus .badge i {
   display: block;
   width: 11px;
   height: 11px;
   margin-right: 3px;
-}
-form[data-form="psgrading-task"] .autosave-control.active span.switch-label {
-  display: none;
-}
-form[data-form="psgrading-task"] .autosave-control.active #savestatus {
-  display: inline-block;
 }
 #page-mod-psgrading-index #page {
   padding: 0;

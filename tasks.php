@@ -80,7 +80,7 @@ if ($create) {
 
     // Redirect to edit.
     $taskediturl->param('edit', $task->get('id'));
-    redirect($taskediturl->out());
+    redirect($taskediturl->out(false));
     exit;
 
 } elseif ($edit) {
@@ -92,77 +92,109 @@ if ($create) {
     $exists = task::record_exists($edit);
     if ($exists) {
         $task = new task($edit);
-    } else {
-        redirect($tasksurl->out());
     }
 
-    // Render the rubric from json.
-    $rubricdata = json_decode($task->get('rubricjson'));
-    //var_export($rubricdata); exit;
-    if (empty($rubricdata)) {
-        // Add a default empty criterion.
-        $rubricdata = [utils::get_stub_criterion()];
+    if (!$exists || $task->get('deleted')) {
+        redirect($viewurl->out(false));
+        exit;
     }
-    $rubricdata = utils::decorate_subjectdata($rubricdata);
-    $rubrichtml = $OUTPUT->render_from_template('mod_psgrading/rubric_selector', array('criterions' => $rubricdata));
 
-    // Render the evidence from json.
-    $evidencehtml = '';
-    //$evidencedata = $task->get('evidencejson');
-    //$evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', $evidencedata); 
-   
-    // Load the form.
-    $formtask = new form_task($taskediturl->out(), 
+    $taskname = $task->get('taskname');
+    $pypuoi = $task->get('pypuoi');
+    $outcomes = $task->get('outcomes');
+    $rubricjson = $task->get('rubricjson');
+    $evidencejson = $task->get('evidencejson');
+    $published = $task->get('published');
+
+    // Use draft values if they are present.
+    if ($draft = $task->get('draftjson')) {
+        $draft = json_decode($draft);
+        $taskname = $draft->taskname ? $draft->taskname : $taskname;
+        $pypuoi = $draft->pypuoi ? $draft->pypuoi : $pypuoi;
+        $outcomes = $draft->outcomes ? $draft->outcomes : $outcomes;
+        $rubricjson = $draft->rubricjson ? $draft->rubricjson : $rubricjson;
+        $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
+    }
+
+    // Instantiate the form.
+    $formtask = new form_task($taskediturl->out(false), 
         array(
-            'rubrichtml' => $rubrichtml,
-            'evidencehtml' => $evidencehtml,
+            'rubricjson' => $rubricjson,
+            'evidencejson' => $evidencejson,
+            'published' => $published,
         ), 
         'post', '', array('data-form' => 'psgrading-task')
     );
 
-    // Redirect if cancel was clicked.
-    if ($formtask->is_cancelled()) {
-        redirect($viewurl->out());
-    }
+    $formdata = $formtask->get_data();
 
-    // This is what actually sets the data in the form.
-    $formtask->set_data(
-        array(
-            'general' => get_string('taskform:create', 'mod_psgrading'),
-            'edit' => $edit,
-            'taskname' => $task->get('taskname'),
-            'pypuoi' => $task->get('pypuoi'),
-            'outcomes' => $task->get('outcomes'),
-            'rubricjson' => $task->get('rubricjson'),
-            'evidencejson' => $task->get('evidencejson'),
-        )
-    );
+    if (empty($formdata)) {
+        // Set up the form with values.
+        $formtask->set_data(
+            array(
+                'general' => get_string('taskform:create', 'mod_psgrading'),
+                'edit' => $edit,
+                'taskname' => $taskname,
+                'pypuoi' => $pypuoi,
+                'outcomes' => $outcomes,
+                'rubricjson' => $rubricjson,
+                'evidencejson' => $evidencejson,
+            )
+        );
+    } else {
+        // The form was submitted.
+        if ($formdata->action == 'savedraft') {
+            redirect($viewurl->out());
+            exit;
+        }
 
-    // Form submitted.
-    if ($formdata = $formtask->get_data()) {
-
-        // If edit is 0, this will create a new post.
-        $result = task::save_from_formdata($edit, $formdata);
-
-        if ($result) {
-            $notice = get_string("taskform:createsuccess", "mod_psgrading");
-            if ($edit) {
-                $notice = get_string("taskform:editsuccess", "mod_psgrading");
+        if ($formdata->action == 'discardchanges') {
+            // If already published, remove draftjson.
+            if ($task->get('published')) {
+                $task->set('draftjson', '');
+                $task->save();
+            } else {
+                $task->set('deleted', 1);
+                $task->save();
             }
-            redirect(
-                $viewurl->out(),
-                '<p>'.$notice.'</p>',
-                null,
-                \core\output\notification::NOTIFY_SUCCESS
-            );
-        } else {
-            $notice = get_string("taskform:createfail", "mod_psgrading");
-            redirect(
-                $viewurl->out(),
-                '<p>'.$notice.'</p>',
-                null,
-                \core\output\notification::NOTIFY_ERROR
-            );
+
+            // If not yet publised, delete the task.
+            redirect($viewurl->out());
+            exit;
+        }
+
+        if ($formdata->action == 'publish') {
+
+            $data = new \stdClass();
+            $data->id = $edit;
+            $data->published = 1;
+            $data->draftjson = '';
+            $data->taskname = $formdata->taskname;
+            $data->pypuoi = $formdata->pypuoi;
+            $data->outcomes = $formdata->outcomes;
+            $data->rubricjson = $formdata->rubricjson;
+
+            $result = task::save_from_data($data);
+            if ($result) {
+                $notice = get_string("taskform:createsuccess", "mod_psgrading");
+                if ($edit) {
+                    $notice = get_string("taskform:editsuccess", "mod_psgrading");
+                }
+                redirect(
+                    $viewurl->out(),
+                    '<p>'.$notice.'</p>',
+                    null,
+                    \core\output\notification::NOTIFY_SUCCESS
+                );
+            } else {
+                $notice = get_string("taskform:createfail", "mod_psgrading");
+                redirect(
+                    $viewurl->out(),
+                    '<p>'.$notice.'</p>',
+                    null,
+                    \core\output\notification::NOTIFY_ERROR
+                );
+            }
         }
         
     }
@@ -180,7 +212,6 @@ if ($create) {
     echo $OUTPUT->footer();
 
 }
-
 exit;
 
 

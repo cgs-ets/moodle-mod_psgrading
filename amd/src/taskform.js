@@ -25,8 +25,8 @@
 /**
  * @module mod_psgrading/taskform
  */
-define(['jquery', 'core/log', 'core/templates', 'core/ajax'], 
-    function($, Log, Templates, Ajax) {    
+define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'], 
+    function($, Log, Templates, Ajax, Str) {    
     'use strict';
 
     /**
@@ -56,12 +56,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
         var self = this;
         self.rootel = rootel;
         self.formjson = self.getFormJSON();
-        self.autosaveenabled = false;
         self.autosaving = false;
         self.savestatus = self.rootel.find('#savestatus');
-
-        // Rename the 'Cancel' button to 'Save and exit'.
-        self.rootel.find('#id_cancel').val('Save and exit');
     }
 
     /**
@@ -70,25 +66,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
      */
    TaskForm.prototype.main = function () {
         var self = this;
-
-        // Handle autosave toggle.
-        self.rootel.on('change', '#autosave-switch', function() {
-            if (this.checked) {
-                // Force an autosave.
-                self.autosaveenabled = true;
-                self.formjson = '';
-                $(this).closest('.autosave-control').addClass('active');
-                self.regeneraterubricjson();
-                self.autoSave(); 
-            } else {
-                self.autosaveenabled = false;
-                $(this).closest('.autosave-control').removeClass('active');
-                // Add the before unload alert back in. The text returned is ignored by browsers but there as a fallback.
-                window.onbeforeunload = function() {
-                    return "Are you sure?";
-                };
-            }
-        });
 
         // Handle auto-save when leaving a field.
         self.rootel.on('blur', 'input, select, textarea', function(e) {
@@ -119,15 +96,32 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
             self.toggleCriterion(toggle);
         });
 
-        // Save and exit clicked.
-        self.rootel.on('click', '#id_cancel', function(e) {
+        // Save draft clicked.
+        self.rootel.on('click', '#btn-savedraft', function(e) {
             e.preventDefault();
+            window.onbeforeunload = null;
             self.regeneraterubricjson();
             // Force an autosave.
-            self.autosaveenabled = true;
             self.autosaving = false;
             self.autoSave(false);
-            $(this).submit();
+            self.rootel.find('[name="action"]').val('savedraft');
+            self.rootel.submit();
+        });
+
+        // Discard chages clicked.
+        self.rootel.on('click', '#btn-discardchanges', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('discardchanges');
+            self.rootel.submit();
+        });
+
+        // Publish clicked.
+        self.rootel.on('click', '#btn-publish', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('publish');
+            self.rootel.submit();
         });
 
         // Preload the modals and templates.
@@ -179,11 +173,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
      */
     TaskForm.prototype.autoSave = function (async) {
         var self = this;
-
-        // Check if autosave is enabled.
-        if (!self.autosaveenabled) {
-            return;
-        }
 
         // Check if saving already in-progress.
         if (self.autosaving) {
@@ -319,7 +308,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
     TaskForm.prototype.statusSaved = function () {
         var self = this;
         self.autosaving = false;
-        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-check" aria-hidden="true"></i> Progress saved</div>');
+        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-check" aria-hidden="true"></i> Draft saved</div>');
 
         window.onbeforeunload = null;
     }    
@@ -331,7 +320,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax'],
     TaskForm.prototype.statusSaveFailed = function () {
         var self = this;
         self.autosaving = false;
-        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-cross" aria-hidden="true"></i> Unsaved</div>');
+        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-cross" aria-hidden="true"></i> Changes unsaved</div>');
         // Add the before unload alert back in. The text returned is ignored by browsers but there as a fallback.
         window.onbeforeunload = function() {
             return "Are you sure?";

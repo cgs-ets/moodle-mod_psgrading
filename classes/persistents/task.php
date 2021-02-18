@@ -80,17 +80,34 @@ class task extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
+            "draftjson" => [
+                'type' => PARAM_RAW,
+                'default' => '',
+            ],
         ];
     }
 
-    public static function save_from_formdata($formdata) {
-
+    public static function save_from_data($data) {
         // Some validation.
+        if (empty($data->id)) {
+            return;
+        }
+        $task = new static($data->id, $data);
+        $task->save();
+
+        return $data->id;
+    }
+
+    public static function save_draft($formjson) {
+        
+        // Some validation.
+        $formdata = json_decode($formjson);
         if (empty($formdata->id)) {
             return;
         }
 
-        $task = new static($formdata->id, $formdata);
+        $task = new static($formdata->id);
+        $task->set('draftjson', $formjson);
         $task->save();
 
     }

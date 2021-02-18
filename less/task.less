@@ -26,7 +26,35 @@ form[data-form="psgrading-task"] {
 		    padding-left: 0;
 		}
 	}
+
+	#id_actions {
+		.ftoggler {
+		    display: none;
+		}
+	}
+
+	#savestatus {
+		.badge {
+			position: absolute;
+		    top: 32px;
+    		left: 240px;
+		    display: none;
+		    border-radius: 17px;
+		    padding: 4px 7px;
+		    justify-content: center;
+		    align-items: center;
+			display: flex;
+			.spinner, i {
+		        display: block;
+			    width: 11px;
+			    height: 11px;
+			    margin-right: 3px;
+		    }
+		}
+	}
 	
+	/*
+	// Autosave switch.
 	.autosave-control {
 		position: absolute;
 	    top: 33px;
@@ -102,7 +130,8 @@ form[data-form="psgrading-task"] {
 				display: inline-block;
 			}
 		}
-	}
+	}*/
+
 	
 }
 

@@ -63,8 +63,7 @@ trait autosave {
         self::validate_parameters(self::autosave_parameters(), compact('formjson'));
        
         // Save.
-        $formdata = json_decode($formjson);
-        return task::save_from_formdata($formdata);
+        return task::save_draft($formjson);
 
     }
 
