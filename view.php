@@ -25,8 +25,8 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\external\task_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\external\view_exporter;
 
 // Course_module ID, or
 $id = optional_param('id', 0, PARAM_INT);
@@ -57,26 +57,15 @@ $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
-$taskcreateurl = new moodle_url('/mod/psgrading/tasks.php', array(
-    'cmid' => $cm->id,
-    'create' => 1,
-));
-
-$corerenderer = $PAGE->get_renderer('core');
-$taskdata = task::get_for_coursemodule($cm->id);
-$tasks = array();
-foreach ($taskdata as $task) {
-	$taskexporter = new task_exporter($task);
-	$tasks[] = $taskexporter->export($corerenderer);
-}
-echo "<pre>"; var_export($tasks); exit;
-
-$data = array(
-	'tasks' => $tasks,
-	'taskcreateurl' => $taskcreateurl,
-);
-
 $output = $OUTPUT->header();
+
+$taskdata = task::get_for_coursemodule($cm->id);
+$relateds = array(
+    'cmid' => $cm->id,
+	'tasks' => $taskdata,
+);
+$viewexporter = new view_exporter(null, $relateds);
+$data = $viewexporter->export($OUTPUT);
 
 // Render the announcement list.
 $output .= $OUTPUT->render_from_template('mod_psgrading/view', $data);

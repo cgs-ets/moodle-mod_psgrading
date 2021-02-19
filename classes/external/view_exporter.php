@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Provides {@link mod_psgrading\external\task_exporter} class.
+ * Provides {@link mod_psgrading\external\view_exporter} class.
  *
  * @package   mod_psgrading
  * @copyright 2021 Michael Vangelovski
@@ -25,23 +25,13 @@ namespace mod_psgrading\external;
 
 defined('MOODLE_INTERNAL') || die();
 
-use core\external\persistent_exporter;
 use renderer_base;
-use mod_psgrading\persistents\task;
+use core\external\exporter;
 
 /**
  * Exporter of a single task
  */
-class task_exporter extends persistent_exporter {
-
-    /**
-    * Returns the specific class the persistent should be an instance of.
-    *
-    * @return string
-    */
-    protected static function define_class() {
-        return task::class; 
-    }
+class view_exporter extends exporter {
 
     /**
     * Return the list of additional properties.
@@ -52,16 +42,30 @@ class task_exporter extends persistent_exporter {
     */
     protected static function define_other_properties() {
         return [
-            'editurl' => [
+            'tasks' => [
+                'type' => task_exporter::read_properties_definition(),
+                'multiple' => true,
+                'optional' => false,
+            ],
+            'taskcreateurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
             ],
-            'readabletime' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],
+        ];
+    }
+
+    /**
+    * Returns a list of objects that are related.
+    *
+    * Data needed to generate "other" properties.
+    *
+    * @return array
+    */
+    protected static function define_related() {
+        return [
+            'cmid' => 'string',
+            'tasks' => 'mod_psgrading\persistents\task[]',
         ];
     }
 
@@ -72,17 +76,22 @@ class task_exporter extends persistent_exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
-    	$editurl = new \moodle_url('/mod/psgrading/tasks.php', array(
-		    'cmid' => $this->data->cmid,
-		    'edit' => $this->data->id,
+
+        $tasks = array();
+		foreach ($this->related['tasks'] as $task) {
+			$taskexporter = new task_exporter($task);
+			$tasks[] = $taskexporter->export($output);
+		}
+
+		$taskcreateurl = new \moodle_url('/mod/psgrading/tasks.php', array(
+		    'cmid' => $this->related['cmid'],
+		    'create' => 1,
 		));
 
-        $readabletime = date('j M Y, g:ia', $this->data->timemodified);
-
-    	return [
-	        'editurl' => $editurl->out(false),
-	        'readabletime' => $readabletime,
-	    ];
+        return array(
+            'tasks' => $tasks,
+            'taskcreateurl' => $taskcreateurl->out(false),
+        );
     }
 
 }

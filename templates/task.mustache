@@ -23,4 +23,11 @@
 
     View template.
 }}
-{{creatorusername}} - {{taskname}} - {{pypuoi}} - {{outcomes}}
+<tr class="task {{^published}}not-published{{/published}} {{#draftjson}}has-draft{{/draftjson}}">
+    <td class="cell c0">{{taskname}}</td>
+    <td class="cell c1">{{pypuoi}}</td>
+    <td class="cell c2">{{outcomes}}</td>
+    <td class="cell c3">{{#published}}{{#str}}yes{{/str}}{{/published}}{{^published}}{{#str}}no{{/str}}{{/published}}{{#draftjson}}. {{#str}}unpublishededits, mod_psgrading{{/str}}{{/draftjson}}</td>
+    <td class="cell c4">{{readabletime}}</td>
+    <td class="cell c5 lastcol"><a href="{{editurl}}">Edit</a></td>
+</tr>

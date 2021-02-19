@@ -57,5 +57,4 @@ $string['pypuoi:htww'] = 'How the World Works';
 
 $string['view:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
-
-
+$string['unpublishededits'] = 'Contains unpublished edits.';

@@ -29,9 +29,23 @@
         <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}">{{# str }}createtask, mod_psgrading{{/ str }}</a>
     </div>
     <div class="tasks">
-        {{#tasks}}
-            {{>mod_psgrading/task}}
-        {{/tasks}}
+        <table class="table generaltable">
+            <thead>
+                <tr>
+                    <th class="header c0" scope="col">Name</th>
+                    <th class="header c1" style="" scope="col">PYP UOI</th>
+                    <th class="header c2" style="" scope="col">Outcomes</th>
+                    <th class="header c3" style="" scope="col">Published</th>
+                    <th class="header c4" style="" scope="col">Last modified</th>
+                    <th class="header c5 lastcol" style="" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#tasks}}
+                    {{>mod_psgrading/task}}
+                {{/tasks}}
+            </tbody>
+        </table>
         {{^tasks.0}}{{#str}} view:notasks, mod_psgrading {{/str}}{{/tasks.0}}
     </div>
 </div>

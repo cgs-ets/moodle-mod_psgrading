@@ -24,7 +24,8 @@
 namespace mod_psgrading\persistents;
 
 defined('MOODLE_INTERNAL') || die();
-;
+
+use \mod_psgrading\utils;
 use \core\persistent;
 use \core_user;
 use \context_user;
@@ -37,6 +38,7 @@ class task extends persistent {
 
     /** Table to store this persistent model instances. */
     const TABLE = 'psgrading_tasks';
+    const TABLE_TASKS_LOG = 'psgrading_tasks_log';
 
     /**
      * Return the definition of the properties of this model.
@@ -88,12 +90,30 @@ class task extends persistent {
     }
 
     public static function save_from_data($data) {
+        global $DB, $USER;
         // Some validation.
         if (empty($data->id)) {
             return;
         }
+
+        // Update the task.
         $task = new static($data->id, $data);
         $task->save();
+
+        // Add a log entry.
+        $log = new \stdClass();
+        $log->taskid = $data->id;
+        $log->username = $USER->username;
+        $log->logtime = $task->get('timemodified');
+        $log->formjson = json_encode($data);
+
+        //echo "<pre>"; var_export($log); exit;
+
+        $DB->insert_record(static::TABLE_TASKS_LOG, $log);
+        
+        // Create criterions.
+
+        // Create evidences.
 
         return $data->id;
     }
@@ -118,7 +138,7 @@ class task extends persistent {
                   FROM {" . static::TABLE . "}
                  WHERE deleted = 0
                    AND cmid = ?
-              ORDER BY published DESC, timemodified DESC";
+              ORDER BY timemodified DESC";
         $params = array($cmid);
 
         $records = $DB->get_records_sql($sql, $params);

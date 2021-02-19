@@ -24,8 +24,9 @@ namespace mod_psgrading;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
+require_once($CFG->dirroot . '/mod/wiki/diff/difflib.php'); // Use wiki's diff lib.
 
 /**
  * Provides utility functions for this plugin.
@@ -106,4 +107,60 @@ class utils {
         $criterion->subject = '';
         return $criterion;
     }
+
+    public static function get_taskdata_as_xml($data) {
+        $xml = "<taskname>{$data->taskname}</taskname>";
+        $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";
+        $xml .= "<outcomes>{$data->outcomes}</outcomes>";
+        $xml .= "<rubricjson>{$data->rubricjson}</rubricjson>";
+
+        return $xml;
+    }
+
+    /* TODO:
+    Uses mod_wikis diff lib */
+    public static function diff_versions($json1, $json2) {
+        global $DB, $PAGE;
+        $olddata = json_decode($json1);
+        $newdata = json_decode($json2);
+
+        $oldxml = static::get_taskdata_as_xml($olddata);
+        $newxml = static::get_taskdata_as_xml($newdata);
+
+        list($diff1, $diff2) = ouwiki_diff_html($oldxml, $newxml);
+
+        $diff1 = format_text($diff1, FORMAT_HTML, array('overflowdiv'=>true));
+        $diff2 = format_text($diff2, FORMAT_HTML, array('overflowdiv'=>true));
+
+        // Mock up the data needed by the wiki renderer.
+        $wikioutput = $PAGE->get_renderer('mod_wiki');
+        $oldversion = array(
+            'id' => 1111, // Use log id.
+            'pageid' => $olddata->id,
+            'content' => $oldxml,
+            'contentformat' => 'html',
+            'version' => 1111, // Use log id.
+            'timecreated' => 1613693887,
+            'userid' => 2,
+            'diff' => $diff1,
+            'user' => $DB->get_record('user', array('id' => 2)),
+        );
+        $newversion = array(
+            'id' => 1112, // Use log id.
+            'pageid' => $newdata->id,
+            'content' => $newxml,
+            'contentformat' => 'html',
+            'version' => 1112, // Use log id.
+            'timecreated' => 1613693887,
+            'userid' => 2,
+            'diff' => $diff2,
+            'user' => $DB->get_record('user', array('id' => 2)),
+        );
+
+        echo $wikioutput->diff($newdata->id, (object) $oldversion, (object) $newversion, array('total' => 9999));
+
+    }
+
+
+
 }
