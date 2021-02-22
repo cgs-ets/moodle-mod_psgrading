@@ -99,37 +99,61 @@ if ($create) {
         exit;
     }
 
-    $taskname = $task->get('taskname');
-    $pypuoi = $task->get('pypuoi');
-    $outcomes = $task->get('outcomes');
-    $rubricjson = $task->get('rubricjson');
-    $evidencejson = $task->get('evidencejson');
-    $published = $task->get('published');
-
-    // Use draft values if they are present.
-    if ($draft = $task->get('draftjson')) {
-        $draft = json_decode($draft);
-        $taskname = $draft->taskname ? $draft->taskname : $taskname;
-        $pypuoi = $draft->pypuoi ? $draft->pypuoi : $pypuoi;
-        $outcomes = $draft->outcomes ? $draft->outcomes : $outcomes;
-        $rubricjson = $draft->rubricjson ? $draft->rubricjson : $rubricjson;
-        $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
-    }
-
     // Instantiate the form.
-    $formtask = new form_task($taskediturl->out(false), 
-        array(
-            'rubricjson' => $rubricjson,
-            'evidencejson' => $evidencejson,
-            'published' => $published,
-        ), 
-        'post', '', array('data-form' => 'psgrading-task')
+    $formtask = new form_task(
+        $taskediturl->out(false), 
+        array('rubricjson' => '', 'evidencejson' => '', 'published' => 0, 'activities' => []),
+        'post', '', []
     );
-
     $formdata = $formtask->get_data();
 
+    // Check whether loading page or submitting page.
     if (empty($formdata)) {
-        // Set up the form with values.
+        // Editing (not submitted).
+
+        // Course activities that can be selected as evidence.
+        $activities = array();
+        $modinfo = get_fast_modinfo($course, $USER->id);
+        $cms = $modinfo->get_cms();
+        foreach ($cms as $cm) {
+            $cmrec = $cm->get_course_module_record(true);
+            if ($cmrec->deletioninprogress) {
+                continue;
+            }
+            $activities[] = $cmrec;
+        }
+        echo "<pre>"; var_export($activities); exit;
+
+        // Get existing task data.
+        $taskname = $task->get('taskname');
+        $pypuoi = $task->get('pypuoi');
+        $outcomes = $task->get('outcomes');
+        $rubricjson = $task->get('rubricjson');
+        $evidencejson = $task->get('evidencejson');
+        $published = $task->get('published');
+
+        // Override with draft data if it is present.
+        if ($draft = $task->get('draftjson')) {
+            $draft = json_decode($draft);
+            $taskname = $draft->taskname ? $draft->taskname : $taskname;
+            $pypuoi = $draft->pypuoi ? $draft->pypuoi : $pypuoi;
+            $outcomes = $draft->outcomes ? $draft->outcomes : $outcomes;
+            $rubricjson = $draft->rubricjson ? $draft->rubricjson : $rubricjson;
+            $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
+        }
+
+        // Reinstantiate the form with needed data.
+        $formtask = new form_task($taskediturl->out(false), 
+            array(
+                'rubricjson' => $rubricjson,
+                'evidencejson' => $evidencejson,
+                'published' => $published,
+                'activities' => $activities,
+            ), 
+            'post', '', array('data-form' => 'psgrading-task')
+        );
+
+        // Set the form values.
         $formtask->set_data(
             array(
                 'general' => get_string('taskform:create', 'mod_psgrading'),

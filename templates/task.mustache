@@ -24,10 +24,32 @@
     View template.
 }}
 <tr class="task {{^published}}not-published{{/published}} {{#draftjson}}has-draft{{/draftjson}}">
-    <td class="cell c0">{{taskname}}</td>
-    <td class="cell c1">{{pypuoi}}</td>
-    <td class="cell c2">{{outcomes}}</td>
-    <td class="cell c3">{{#published}}{{#str}}yes{{/str}}{{/published}}{{^published}}{{#str}}no{{/str}}{{/published}}{{#draftjson}}. {{#str}}unpublishededits, mod_psgrading{{/str}}{{/draftjson}}</td>
-    <td class="cell c4">{{readabletime}}</td>
-    <td class="cell c5 lastcol"><a href="{{editurl}}">Edit</a></td>
+    {{#published}}
+        <td class="cell c0 c-name">{{taskname}}</td>
+        <td class="cell c1 c-pypuoi">{{pypuoi}}</td>
+        <td class="cell c2 c-outcomes">{{outcomes}}</td>
+    {{/published}}
+    {{^published}}
+        <td class="cell c0 c-name">{{draftdata.taskname}}</td>
+        <td class="cell c1 c-pypuoi">{{draftdata.pypuoi}}</td>
+        <td class="cell c2 c-outcomes">{{draftdata.outcomes}}</td>
+    {{/published}}
+    <td class="cell c3 c-published">
+        {{#published}}
+            <i class="fa fa-check-square" aria-hidden="true"></i><br>
+            {{#draftjson}}
+                <span class="badge badge-warning">
+                    {{#str}}unpublishededits, mod_psgrading{{/str}}
+                </span>
+            {{/draftjson}}
+        {{/published}}
+        {{^published}}
+            <i class="fa fa-square-o" aria-hidden="true"></i><br>
+            <span class="badge badge-warning">
+                {{#str}}notpublishedyet, mod_psgrading{{/str}}
+            </span>
+        {{/published}}
+    </td>
+    <td class="cell c4 c-lastmod">{{readabletime}}</td>
+    <td class="cell c5 c-actions lastcol"><a href="{{editurl}}">Edit</a></td>
 </tr>

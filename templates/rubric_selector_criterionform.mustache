@@ -24,7 +24,7 @@
     View for the rubric selector component.
 }}
 {{#criterions}}
-    <ul class="tbl-tr">
+    <ul class="tbl-tr {{#hidden}}criterion-hidden{{/hidden}}">
         <li class="tbl-col tbl-col-1 tbl-col-first">
             <textarea name="criterion" class="form-control">{{description}}</textarea>
         </li>
@@ -87,17 +87,11 @@
                 </select>
             </div>
             <div>
-                <input name="hidden" type="hidden" value="{{hidden}}"/>
-                {{#hidden}}
-                    <a class="btn btn-primary toggle-hide" href="#">
-                        <i class="fa fa-eye-slash fa-fw" aria-hidden="true"></i>
-                    </a>
-                {{/hidden}}
-                {{^hidden}}
-                    <a class="btn btn-secondary toggle-hide" href="#">
-                        <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
-                    </a>
-                {{/hidden}}
+                <div class="hidden-control">
+                    <input name="hidden" type="checkbox" {{#hidden}}checked="true"{{/hidden}}/>
+                    <span class="toggle"></span>
+                    <span class="desc">{{#hidden}}Hidden from students{{/hidden}}{{^hidden}}Hide from students{{/hidden}}</span>
+                </div>
 
                 <a class="btn btn-secondary btn-delete" href="#"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
             </div>

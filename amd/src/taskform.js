@@ -68,7 +68,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var self = this;
 
         // Handle auto-save when leaving a field.
-        self.rootel.on('blur', 'input, select, textarea', function(e) {
+        self.rootel.on('blur', 'input[type="text"], select, textarea', function(e) {
             var input = $(this);
             var isCriterionInput = !!input.closest('.criterions').length;
             if (isCriterionInput) {
@@ -90,10 +90,16 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         });
 
         // Hide criterion.
-        self.rootel.on('click', '.toggle-hide', function(e) {
-            e.preventDefault();
+        self.rootel.on('click', '.toggle', function(e) {
             var toggle = $(this);
             self.toggleCriterion(toggle);
+        });
+
+        // Delete criterion.
+        self.rootel.on('click', '.btn-delete', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            self.deleteCriterion(button);
         });
 
         // Save draft clicked.
@@ -231,7 +237,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
                 level4: row.find('[name=gorunwithit]').val(),
                 subject: row.find('[name=subject]').val(),
                 weight: row.find('[name=weight]').val(),
-                hidden: row.find('[name=hidden]').val(),
+                hidden: row.find('[name=hidden]').is(":checked") ? 1 : 0, //row.find('[name=hidden]').val(),
             };
             criterions.push(criterion);
         });
@@ -261,29 +267,49 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     };
 
     /**
-     * Add a new blank criterion to the form.
+     * Toggle criterion visibility.
      *
      * @method
      */
     TaskForm.prototype.toggleCriterion = function (toggle) {
         var self = this;
 
-        var input = toggle.prev();
-        var tbltr = input.closest('.tbl-tr');
-        if (input.val() == 1) {
+        var control = toggle.closest('.hidden-control');
+        var tbltr = control.closest('.tbl-tr');
+        var input = control.find('input');
+        var desc = control.find('.desc');
+        if (input.is(":checked")) {
             // Unhide.
-            input.val(0);
+            input.prop('checked', false);
             tbltr.removeClass('criterion-hidden');
-            toggle.html('<i class="fa fa-eye fa-fw" aria-hidden="true"></i>').addClass('btn-secondary').removeClass('btn-primary');
+            desc.html('Hide from students');
         } else {
             // Hide.
-            input.val(1);
+            input.prop('checked', true);
             tbltr.addClass('criterion-hidden');
-            toggle.html('<i class="fa fa-eye-slash fa-fw" aria-hidden="true"></i>').addClass('btn-primary').removeClass('btn-secondary');
+            desc.html('Hidden from students');
         }
         self.regeneraterubricjson();
         self.autosaving = false; // Force an autosave in case rapid toggles.
         self.autoSave(); 
+    };
+
+
+    /**
+     * Delete criterion.
+     *
+     * @method
+     */
+    TaskForm.prototype.deleteCriterion = function (button) {
+        var self = this;
+
+        var tbltr = button.closest('.tbl-tr');
+        tbltr.fadeOut(200, function() {
+            $(this).remove();
+            self.regeneraterubricjson();
+            self.autosaving = false; // Force an autosave in case rapid toggles.
+            self.autoSave(); 
+        });
     };
 
 

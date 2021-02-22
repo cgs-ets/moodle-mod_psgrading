@@ -62,6 +62,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'draftdata' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -79,9 +84,12 @@ class task_exporter extends persistent_exporter {
 
         $readabletime = date('j M Y, g:ia', $this->data->timemodified);
 
+        $draftdata = json_decode($this->data->draftjson);
+
     	return [
 	        'editurl' => $editurl->out(false),
 	        'readabletime' => $readabletime,
+	        'draftdata' => $draftdata,
 	    ];
     }
 

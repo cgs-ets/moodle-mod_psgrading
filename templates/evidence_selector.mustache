@@ -24,5 +24,18 @@
     View for the evidence selector component.
 }}
 <div class="evidence-selector">
-    Magic here...
+    <div class="evidences">
+        {{#evidence}}
+            -Test
+        {{/evidence}}
+    </div>
+    <div class="finder">
+        {{#activities}}
+            <label>
+                <input class="cmid" type="checkbox" value="{{id}}">
+                <span class="name">{{name}} ({{modname}})</span>
+            </label>
+        {{/activities}}
+    </div>
+    <a id="btn-addevidence" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addevidence, mod_psgrading{{/str}}</a>
 </div>

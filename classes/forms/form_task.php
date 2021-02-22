@@ -43,6 +43,7 @@ class form_task extends \moodleform {
         $published = $this->_customdata['published'];
         $rubricjson = $this->_customdata['rubricjson'];
         $evidencejson = $this->_customdata['evidencejson'];
+        $activities = $this->_customdata['activities'];
 
         /****
         * Notes:
@@ -102,13 +103,18 @@ class form_task extends \moodleform {
          *----------------------*/
         // A custom JS driven component.
         // Section title
-        /*$mform->addElement('header', 'evidencesection', get_string("taskform:evidence", "mod_psgrading"));
+        $mform->addElement('header', 'evidencesection', get_string("taskform:evidence", "mod_psgrading"));
+        $mform->setExpanded('evidencesection');
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
         $mform->setType('evidencejson', PARAM_RAW);
-        // The custom component html.
-        $mform->addElement('html', $evidencehtml);*/
-
+        // Render the evidence from json.
+        $evidencedata = json_decode($evidencejson);
+        $evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', array(
+            'evidences' => $evidencedata, 
+            'activities' => (array) $activities,
+        ));
+        $mform->addElement('html', $evidencehtml);
 
         // Buttons.
         $mform->addElement('header', 'actions', '');
