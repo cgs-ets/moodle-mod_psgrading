@@ -235,6 +235,24 @@ form[data-form="psgrading-task"] .evidence-selector {
   background-color: #f0f4f8;
   padding: 25px 20px 25px 30px;
 }
+form[data-form="psgrading-task"] .evidence-selector .heading {
+  font-size: 110%;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+form[data-form="psgrading-task"] .evidence-selector table {
+  max-width: 500px;
+}
+form[data-form="psgrading-task"] .evidence-selector table td {
+  border: 1px solid #dee2e6;
+}
+form[data-form="psgrading-task"] .evidence-selector .c-checkbox {
+  width: 37px;
+}
+form[data-form="psgrading-task"] .evidence-selector .c-link {
+  width: 80px;
+  text-align: center;
+}
 form[data-form="psgrading-task"] {
   position: relative;
   /*

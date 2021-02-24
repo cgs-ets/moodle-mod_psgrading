@@ -102,7 +102,7 @@ if ($create) {
     // Instantiate the form.
     $formtask = new form_task(
         $taskediturl->out(false), 
-        array('rubricjson' => '', 'evidencejson' => '', 'published' => 0, 'activities' => []),
+        array('rubricdata' => [], 'evidencedata' => [], 'published' => 0),
         'post', '', []
     );
     $formdata = $formtask->get_data();
@@ -111,18 +111,7 @@ if ($create) {
     if (empty($formdata)) {
         // Editing (not submitted).
 
-        // Course activities that can be selected as evidence.
-        $activities = array();
-        $modinfo = get_fast_modinfo($course, $USER->id);
-        $cms = $modinfo->get_cms();
-        foreach ($cms as $cm) {
-            $cmrec = $cm->get_course_module_record(true);
-            if ($cmrec->deletioninprogress) {
-                continue;
-            }
-            $activities[] = $cmrec;
-        }
-        echo "<pre>"; var_export($activities); exit;
+        //echo "<pre>"; var_export($activities); var_export(array_column($activities, 'name')); exit;
 
         // Get existing task data.
         $taskname = $task->get('taskname');
@@ -142,13 +131,22 @@ if ($create) {
             $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
         }
 
+        // Course activities that can be selected as evidence.
+        $evidencedata = utils::get_evidencedata($course, $evidencejson);
+
+        // Get and decorate criterion data.
+        $rubricdata = json_decode($rubricjson);
+        if (empty($rubricdata)) {
+            $rubricdata = [utils::get_stub_criterion()]; // Add a default empty criterion.
+        }
+        $rubricdata = utils::decorate_subjectdata($rubricdata);
+
         // Reinstantiate the form with needed data.
         $formtask = new form_task($taskediturl->out(false), 
             array(
-                'rubricjson' => $rubricjson,
-                'evidencejson' => $evidencejson,
+                'rubricdata' => $rubricdata,
+                'evidencedata' => $evidencedata,
                 'published' => $published,
-                'activities' => $activities,
             ), 
             'post', '', array('data-form' => 'psgrading-task')
         );

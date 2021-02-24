@@ -68,19 +68,22 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var self = this;
 
         // Handle auto-save when leaving a field.
-        self.rootel.on('blur', 'input[type="text"], select, textarea', function(e) {
+        self.rootel.on('blur', 'input[type="text"], input[type="checkbox"], select, textarea', function(e) {
             var input = $(this);
-            var isCriterionInput = !!input.closest('.criterions').length;
-            if (isCriterionInput) {
-                self.regeneraterubricjson();
+            var isRubricInput = !!input.closest('.criterions').length;
+            if (isRubricInput) {
+                self.regenerateRubricJSON();
+            }
+            var isEvidenceInput = !!input.closest('.activity').length;
+            if (isEvidenceInput) {
+                self.regenerateEvidenceJSON();
             }
             self.autoSave();
         });
 
         // Run auto-save every 15 seconds regardless of blur.
         setInterval(function() {
-            self.regeneraterubricjson();
-            self.autoSave(); 
+            self.regenerateAndSave();
         }, 15000);
 
         // Add criterion.
@@ -106,10 +109,9 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.on('click', '#btn-savedraft', function(e) {
             e.preventDefault();
             window.onbeforeunload = null;
-            self.regeneraterubricjson();
             // Force an autosave.
             self.autosaving = false;
-            self.autoSave(false);
+            self.regenerateAndSave(false);
             self.rootel.find('[name="action"]').val('savedraft');
             self.rootel.submit();
         });
@@ -143,8 +145,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
 
     };
 
-        /**
-     * Autosave progress.
+    /**
+     * Generate json from form fields.
      *
      * @method
      */
@@ -156,7 +158,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var pypuoi = $('select[name="pypuoi"]').val();
         var outcomes = $('textarea[name="outcomes"]').val();
         var rubricjson = $('input[name="rubricjson"]').val();
-        var evidencejson = '';
+        var evidencejson = $('input[name="evidencejson"]').val();
 
         var formdata = {
             id: id,
@@ -170,6 +172,19 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var formjson = JSON.stringify(formdata);
 
         return formjson;
+    };
+
+    /**
+     * Regenerate json and autosave.
+     *
+     * @method
+     */
+    TaskForm.prototype.regenerateAndSave = function (async) {
+        var self = this;
+
+        self.regenerateEvidenceJSON();
+        self.regenerateRubricJSON();
+        self.autoSave(async);
     };
 
     /**
@@ -218,11 +233,40 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     };
 
     /**
+     * Regenerate evidence json.
+     *
+     * @method
+     */
+    TaskForm.prototype.regenerateEvidenceJSON = function () {
+        var self = this;
+
+        var evidencejson = $('input[name="evidencejson"]');
+        var evidences = new Array();
+
+        self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
+            var checkbox = $(this);
+            var cm = {
+                id: checkbox.val(),
+            };
+            evidences.push(cm);
+        });
+
+        // Encode to json and add tag to hidden input.
+        var evidencesStr = '';
+        if (evidences.length) {
+            evidencesStr = JSON.stringify(evidences);
+            evidencejson.val(evidencesStr);
+        }
+
+        return evidencesStr;
+    };
+
+    /**
      * Regenerate rubric json.
      *
      * @method
      */
-    TaskForm.prototype.regeneraterubricjson = function () {
+    TaskForm.prototype.regenerateRubricJSON = function () {
         var self = this;
 
         var rubricjson = $('input[name="rubricjson"]');
@@ -289,11 +333,9 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             tbltr.addClass('criterion-hidden');
             desc.html('Hidden from students');
         }
-        self.regeneraterubricjson();
         self.autosaving = false; // Force an autosave in case rapid toggles.
-        self.autoSave(); 
+        self.regenerateAndSave(); 
     };
-
 
     /**
      * Delete criterion.
@@ -306,12 +348,10 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var tbltr = button.closest('.tbl-tr');
         tbltr.fadeOut(200, function() {
             $(this).remove();
-            self.regeneraterubricjson();
             self.autosaving = false; // Force an autosave in case rapid toggles.
-            self.autoSave(); 
+            self.regenerateAndSave(); 
         });
     };
-
 
     /**
      * Set status to autosaving.
@@ -352,7 +392,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             return "Are you sure?";
         };
     }
-
 
     /**
      * Helper used to preload a template

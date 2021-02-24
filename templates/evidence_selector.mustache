@@ -24,18 +24,23 @@
     View for the evidence selector component.
 }}
 <div class="evidence-selector">
-    <div class="evidences">
-        {{#evidence}}
-            -Test
-        {{/evidence}}
-    </div>
-    <div class="finder">
-        {{#activities}}
-            <label>
-                <input class="cmid" type="checkbox" value="{{id}}">
-                <span class="name">{{name}} ({{modname}})</span>
-            </label>
-        {{/activities}}
-    </div>
-    <a id="btn-addevidence" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addevidence, mod_psgrading{{/str}}</a>
+    <div class="heading">{{#str}}addevidence, mod_psgrading{{/str}}</div>
+    <table class="table generaltable">
+        {{!<thead>
+            <tr>
+                <th class="header c0 c-checkbox" scope="col"></th>
+                <th class="header c1 c-name" style="" scope="col">Activity</th>
+                <th class="header c2 c-link lastcol" style="" scope="col">Link</th>
+            </tr>
+        </thead>}}
+        <tbody>
+            {{#evidences}}
+                <tr class="activity">
+                    <td class="cell c0 c-checkbox"><input class="cmid" type="checkbox" value="{{id}}" {{#sel}}checked="true"{{/sel}}></td>
+                    <td class="cell c1 c-name"><img src="{{icon}}" class="icon" role="presentation" aria-hidden="true"><span class="name">{{name}}</span></td>
+                    <td class="cell c2 c-link lastcol"><a class="link" target="_blank" href="{{url}}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
+                </tr>
+            {{/evidences}}
+        </tbody>
+    </table>
 </div>

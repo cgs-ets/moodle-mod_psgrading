@@ -59,7 +59,7 @@ $string['view:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
 $string['unpublishededits'] = 'Contains unpublished edits';
 $string['notpublishedyet'] = 'Not published yet';
-$string['addevidence'] = 'Add evidence';
 $string['addcriterion'] = 'Add criterion';
+$string['addevidence'] = 'Select any course activities that form part of this task';
 
 

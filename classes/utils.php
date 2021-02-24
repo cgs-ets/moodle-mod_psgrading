@@ -108,6 +108,38 @@ class utils {
         return $criterion;
     }
 
+    public static function get_evidencedata($course, $evidencejson) {
+        global $USER;
+
+        // Already selected activities.
+        $selectedcms = array_column(json_decode($evidencejson), 'id');
+
+        $activities = array();
+        $modinfo = get_fast_modinfo($course, $USER->id);
+        $cms = $modinfo->get_cms();
+        foreach ($cms as $cm) {
+            if (!$cm->uservisible) {
+                continue;
+            }
+            $cmrec = $cm->get_course_module_record(true);
+            if ($cmrec->deletioninprogress) { // Don't include deleted activities.
+                continue;
+            }
+            if ($cmrec->modname == 'psgrading') { //Don't include this mod.
+                continue;
+            }
+            //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
+            $cmrec->icon = $cm->get_icon_url()->out();
+            $cmrec->url = $cm->url;
+            if (in_array($cmrec->id, $selectedcms)) {
+                $cmrec->sel = true;
+            }
+            $activities[] = $cmrec;
+        }
+
+        return $activities;
+    }
+
     public static function get_taskdata_as_xml($data) {
         $xml = "<taskname>{$data->taskname}</taskname>";
         $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";
@@ -117,8 +149,7 @@ class utils {
         return $xml;
     }
 
-    /* TODO:
-    Uses mod_wikis diff lib */
+    /* TODO: Uses mod_wikis diff lib */
     public static function diff_versions($json1, $json2) {
         global $DB, $PAGE;
         $olddata = json_decode($json1);

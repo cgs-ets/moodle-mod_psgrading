@@ -41,9 +41,8 @@ class form_task extends \moodleform {
 
         $mform =& $this->_form;
         $published = $this->_customdata['published'];
-        $rubricjson = $this->_customdata['rubricjson'];
-        $evidencejson = $this->_customdata['evidencejson'];
-        $activities = $this->_customdata['activities'];
+        $rubricdata = $this->_customdata['rubricdata'];
+        $evidencedata = $this->_customdata['evidencedata'];
 
         /****
         * Notes:
@@ -89,11 +88,6 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'rubricjson', 'Rubric JSON');
         $mform->setType('rubricjson', PARAM_RAW);
         // Render the rubric from json.
-        $rubricdata = json_decode($rubricjson);
-        if (empty($rubricdata)) {
-            $rubricdata = [utils::get_stub_criterion()]; // Add a default empty criterion.
-        }
-        $rubricdata = utils::decorate_subjectdata($rubricdata);
         $rubrichtml = $OUTPUT->render_from_template('mod_psgrading/rubric_selector', array('criterions' => $rubricdata));
         $mform->addElement('html', $rubrichtml);
 
@@ -109,10 +103,8 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
         $mform->setType('evidencejson', PARAM_RAW);
         // Render the evidence from json.
-        $evidencedata = json_decode($evidencejson);
         $evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', array(
-            'evidences' => $evidencedata, 
-            'activities' => (array) $activities,
+            'evidences' => (array) $evidencedata,
         ));
         $mform->addElement('html', $evidencehtml);
 
