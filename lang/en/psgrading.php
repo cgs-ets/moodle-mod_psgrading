@@ -52,6 +52,7 @@ $string['taskform:publish'] = 'Publish';
 $string['taskform:publishchanges'] = 'Publish changes';
 $string['taskform:savedraft'] = 'Save draft';
 $string['taskform:discardchanges'] = 'Discard changes';
+$string['taskform:deletedraft'] = 'Delete';
 
 $string['pypuoi:htww'] = 'How the World Works';
 

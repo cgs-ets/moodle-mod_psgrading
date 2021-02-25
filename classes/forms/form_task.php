@@ -51,7 +51,7 @@ class form_task extends \moodleform {
 
         // Page title.
         $mform->addElement('header', 'general', '');
-        $mform->setExpanded('general');
+        $mform->setExpanded('general', true, true);
 
         // Autosave.
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_autosave', []));
@@ -83,7 +83,7 @@ class form_task extends \moodleform {
         // A custom JS driven component.
         // Section title
         $mform->addElement('header', 'rubricsection', get_string("taskform:rubric", "mod_psgrading"));
-        $mform->setExpanded('rubricsection');
+        $mform->setExpanded('rubricsection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'rubricjson', 'Rubric JSON');
         $mform->setType('rubricjson', PARAM_RAW);
@@ -98,7 +98,7 @@ class form_task extends \moodleform {
         // A custom JS driven component.
         // Section title
         $mform->addElement('header', 'evidencesection', get_string("taskform:evidence", "mod_psgrading"));
-        $mform->setExpanded('evidencesection');
+        $mform->setExpanded('evidencesection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
         $mform->setType('evidencejson', PARAM_RAW);
@@ -110,8 +110,8 @@ class form_task extends \moodleform {
 
         // Buttons.
         $mform->addElement('header', 'actions', '');
+        $mform->setExpanded('actions', true, true);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_buttons', array('published' => $published)));
-        $mform->setExpanded('actions');
 
 
         // Hidden fields

@@ -31,5 +31,5 @@
         <input type="submit" class="btn btn-primary" name="publish" id="btn-publish" value="{{#str}}taskform:publish, mod_psgrading{{/str}}">
     {{/published}}
     <input type="submit" class="btn btn-secondary" name="savedraft" id="btn-savedraft" value="{{#str}}taskform:savedraft, mod_psgrading{{/str}}">
-    <input type="submit" class="btn btn-secondary" name="discardchanges" id="btn-discardchanges" value="{{#str}}taskform:discardchanges, mod_psgrading{{/str}}">
+    <input type="submit" class="btn btn-secondary" name="discardchanges" id="btn-discardchanges" value="{{#published}}{{#str}}taskform:discardchanges, mod_psgrading{{/str}}{{/published}}{{^published}}{{#str}}taskform:deletedraft, mod_psgrading{{/str}}{{/published}}">
 </div>

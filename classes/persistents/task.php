@@ -38,7 +38,7 @@ class task extends persistent {
 
     /** Table to store this persistent model instances. */
     const TABLE = 'psgrading_tasks';
-    const TABLE_TASKS_LOG = 'psgrading_tasks_log';
+    const TABLE_TASK_LOGS = 'psgrading_task_logs';
 
     /**
      * Return the definition of the properties of this model.
@@ -91,6 +91,7 @@ class task extends persistent {
 
     public static function save_from_data($data) {
         global $DB, $USER;
+
         // Some validation.
         if (empty($data->id)) {
             return;
@@ -106,14 +107,14 @@ class task extends persistent {
         $log->username = $USER->username;
         $log->logtime = $task->get('timemodified');
         $log->formjson = json_encode($data);
-
-        //echo "<pre>"; var_export($log); exit;
-
-        $DB->insert_record(static::TABLE_TASKS_LOG, $log);
+        $DB->insert_record(static::TABLE_TASK_LOGS, $log);
         
         // Create criterions.
 
         // Create evidences.
+
+
+
 
         return $data->id;
     }

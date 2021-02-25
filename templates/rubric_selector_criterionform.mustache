@@ -88,12 +88,12 @@
             </div>
             <div>
                 <div class="hidden-control">
-                    <input name="hidden" type="checkbox" {{#hidden}}checked="true"{{/hidden}}/>
+                    <input name="hidden" type="checkbox" {{^hidden}}checked="true"{{/hidden}}/>
                     <span class="toggle"></span>
-                    <span class="desc">{{#hidden}}Hidden from students{{/hidden}}{{^hidden}}Hide from students{{/hidden}}</span>
+                    <span class="desc">{{#hidden}}Hidden from students{{/hidden}}{{^hidden}}Visible{{/hidden}}</span>
                 </div>
 
-                <a class="btn btn-secondary btn-delete" href="#"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+                <a class="btn-delete" href="#"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
             </div>
         </li>
     </ul>

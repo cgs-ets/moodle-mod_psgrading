@@ -67,21 +67,24 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
    TaskForm.prototype.main = function () {
         var self = this;
 
-        // Handle auto-save when leaving a field.
-        self.rootel.on('blur', 'input[type="text"], input[type="checkbox"], select, textarea', function(e) {
+        // Auto-save when leaving a field.
+        self.rootel.on('blur', 'input[type="text"], select, textarea', function(e) {
             var input = $(this);
             var isRubricInput = !!input.closest('.criterions').length;
             if (isRubricInput) {
                 self.regenerateRubricJSON();
             }
-            var isEvidenceInput = !!input.closest('.activity').length;
-            if (isEvidenceInput) {
-                self.regenerateEvidenceJSON();
-            }
             self.autoSave();
         });
 
-        // Run auto-save every 15 seconds regardless of blur.
+        // Auto-save on evidence selection.
+        self.rootel.on('change', '.evidence-selector .cmid', function() {
+            self.regenerateEvidenceJSON();
+            self.autosaving = false; // Force an autosave.
+            self.autoSave();
+        });
+
+        // Auto-save every 15 seconds.
         setInterval(function() {
             self.regenerateAndSave();
         }, 15000);
@@ -281,7 +284,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
                 level4: row.find('[name=gorunwithit]').val(),
                 subject: row.find('[name=subject]').val(),
                 weight: row.find('[name=weight]').val(),
-                hidden: row.find('[name=hidden]').is(":checked") ? 1 : 0, //row.find('[name=hidden]').val(),
+                hidden: row.find('[name=hidden]').is(":checked") ? 0 : 1,
             };
             criterions.push(criterion);
         });
@@ -323,17 +326,17 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var input = control.find('input');
         var desc = control.find('.desc');
         if (input.is(":checked")) {
-            // Unhide.
+            // Checked = visible. Make it hidden.
             input.prop('checked', false);
-            tbltr.removeClass('criterion-hidden');
-            desc.html('Hide from students');
-        } else {
-            // Hide.
-            input.prop('checked', true);
             tbltr.addClass('criterion-hidden');
             desc.html('Hidden from students');
+        } else {
+            // Unchecked = hidden. Make it visible.
+            input.prop('checked', true);
+            tbltr.removeClass('criterion-hidden');
+            desc.html('Visible');
         }
-        self.autosaving = false; // Force an autosave in case rapid toggles.
+        self.autosaving = false; // Force an autosave.
         self.regenerateAndSave(); 
     };
 
@@ -348,7 +351,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var tbltr = button.closest('.tbl-tr');
         tbltr.fadeOut(200, function() {
             $(this).remove();
-            self.autosaving = false; // Force an autosave in case rapid toggles.
+            self.autosaving = false; // Force an autosave.
             self.regenerateAndSave(); 
         });
     };

@@ -112,7 +112,11 @@ class utils {
         global $USER;
 
         // Already selected activities.
-        $selectedcms = array_column(json_decode($evidencejson), 'id');
+        $selectedcms = array();
+        $evidencejson = json_decode($evidencejson);
+        if ($evidencejson) {
+            $selectedcms = array_column($selectedcms, 'id');
+        }
 
         $activities = array();
         $modinfo = get_fast_modinfo($course, $USER->id);
