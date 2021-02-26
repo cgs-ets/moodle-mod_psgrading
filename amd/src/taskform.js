@@ -32,7 +32,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     /**
      * Initializes the taskform component.
      */
-    function init() {
+    function init(stubcriterion) {
         Log.debug('mod_psgrading/task: initializing');
 
         var rootel = $('form[data-form="psgrading-task"]');
@@ -42,7 +42,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             return;
         }
 
-        var taskform = new TaskForm(rootel);
+        var taskform = new TaskForm(rootel, stubcriterion);
         taskform.main();
     }
 
@@ -52,12 +52,13 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function TaskForm(rootel) {
+    function TaskForm(rootel, stubcriterion) {
         var self = this;
         self.rootel = rootel;
         self.formjson = self.getFormJSON();
         self.autosaving = false;
         self.savestatus = self.rootel.find('#savestatus');
+        self.stubcriterion = stubcriterion;
     }
 
     /**
@@ -249,7 +250,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
             var checkbox = $(this);
             var cm = {
-                id: checkbox.val(),
+                type: 'cm',
+                data: checkbox.val(),
             };
             evidences.push(cm);
         });
@@ -278,10 +280,10 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.find('.criterions .tbl-tr').each(function() {
             var row = $(this);
             var criterion = {
-                description: row.find('[name=criterion]').val(),
-                level2: row.find('[name=goodstart]').val(),
-                level3: row.find('[name=makingstride]').val(),
-                level4: row.find('[name=gorunwithit]').val(),
+                description: row.find('[name=description]').val(),
+                level2: row.find('[name=level2]').val(),
+                level3: row.find('[name=level3]').val(),
+                level4: row.find('[name=level4]').val(),
                 subject: row.find('[name=subject]').val(),
                 weight: row.find('[name=weight]').val(),
                 hidden: row.find('[name=hidden]').is(":checked") ? 0 : 1,
@@ -306,7 +308,9 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      */
     TaskForm.prototype.addCriterion = function () {
         var self = this;
-        var stubcriterion = {"criterions":[{"subject":""}]};
+
+        var stubcriterion = {"criterions": [self.stubcriterion]};
+
         Templates.render(self.templates.CRITERION, stubcriterion)
             .done(function(html) {
                 self.rootel.find('.criterions').append(html);

@@ -40,7 +40,7 @@ class utils {
 
     const SUBJECTOPTIONS = array (
         array (
-            'txt' => 'Select',
+            'txt' => 'Area of learning',
             'val' => '',
         ),
         array (
@@ -81,6 +81,93 @@ class utils {
         ),
     );
 
+    const WEIGHTOPTIONS = array (
+        array (
+            'txt' => 'Weight',
+            'val' => '',
+        ),
+        array (
+            'txt' => '5%',
+            'val' => '5',
+        ),
+        array (
+            'txt' => '10%',
+            'val' => '10',
+        ),
+        array (
+            'txt' => '15%',
+            'val' => '15',
+        ),
+        array (
+            'txt' => '20%',
+            'val' => '20',
+        ),
+        array (
+            'txt' => '25%',
+            'val' => '25',
+        ),
+        array (
+            'txt' => '30%',
+            'val' => '30',
+        ),
+        array (
+            'txt' => '35%',
+            'val' => '35',
+        ),
+        array (
+            'txt' => '40%',
+            'val' => '40',
+        ),
+        array (
+            'txt' => '45%',
+            'val' => '45',
+        ),
+        array (
+            'txt' => '50%',
+            'val' => '50',
+        ),
+        array (
+            'txt' => '55%',
+            'val' => '55',
+        ),
+        array (
+            'txt' => '60%',
+            'val' => '60',
+        ),
+        array (
+            'txt' => '65%',
+            'val' => '65',
+        ),
+        array (
+            'txt' => '70%',
+            'val' => '70',
+        ),
+        array (
+            'txt' => '75%',
+            'val' => '75',
+        ),
+        array (
+            'txt' => '80%',
+            'val' => '80',
+        ),
+        array (
+            'txt' => '85%',
+            'val' => '85',
+        ),
+        array (
+            'txt' => '90%',
+            'val' => '90',
+        ),
+        array (
+            'txt' => '95%',
+            'val' => '95',
+        ),
+        array (
+            'txt' => '100%',
+            'val' => '100',
+        ),
+    );
+
     public static function decorate_subjectdata($rubricdata) {
         foreach ($rubricdata as $i => $row) {
             $rubricdata[$i]->subject = array(
@@ -102,9 +189,39 @@ class utils {
         return $options;
     }
 
+
+    public static function decorate_weightdata($rubricdata) {
+        foreach ($rubricdata as $i => $row) {
+            $weight = isset($row->weight) ? $row->weight : '';
+            $rubricdata[$i]->weight = array(
+                'value' => $weight,
+                'options' => static::get_weight_options_with_selected($weight),
+            );
+        }
+        return $rubricdata;
+    }
+
+    public static function get_weight_options_with_selected($selected) {
+        $options = array();
+        foreach (static::WEIGHTOPTIONS as $i => $option) {
+            if ($option['val'] === $selected) {
+                $option['sel'] = true;
+            }
+            $options[] = $option;
+        };
+        return $options;
+    }
+
     public static function get_stub_criterion() {
         $criterion = new \stdClass();
-        $criterion->subject = '';
+        $criterion->subject = array(
+            'value' => '',
+            'options' => static::SUBJECTOPTIONS,
+        );
+        $criterion->weight = array(
+            'value' => '',
+            'options' => static::WEIGHTOPTIONS,
+        );
         return $criterion;
     }
 
@@ -115,7 +232,7 @@ class utils {
         $selectedcms = array();
         $evidencejson = json_decode($evidencejson);
         if ($evidencejson) {
-            $selectedcms = array_column($selectedcms, 'id');
+            $selectedcms = array_column($evidencejson, 'data');
         }
 
         $activities = array();
@@ -140,7 +257,6 @@ class utils {
             }
             $activities[] = $cmrec;
         }
-
         return $activities;
     }
 

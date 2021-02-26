@@ -308,3 +308,6 @@ form[data-form="psgrading-task"] .custom-footer-buttons {
 #page-mod-psgrading-view .generaltable tbody tr.task .c-outcomes {
   max-width: 270px;
 }
+#page-mod-psgrading-view .header {
+  padding: 20px 0;
+}

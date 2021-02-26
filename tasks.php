@@ -52,22 +52,19 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$modulecontext = context_module::instance($cm->id);
-
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
-    'id' => $cm->id,
-));
 $taskediturl = new moodle_url('/mod/psgrading/tasks.php', array(
     'cmid' => $cm->id,
     'edit' => $edit,
 ));
+$viewurl = new moodle_url('/mod/psgrading/view.php', array(
+    'id' => $cm->id,
+));
 
+$modulecontext = context_module::instance($cm->id);
+$PAGE->set_context($modulecontext);
 $PAGE->set_url($taskediturl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
-$PAGE->set_context($modulecontext);
-//$PAGE->navbar->add(get_string('title', 'mod_psgrading'), $taskediturl);
-
 
 // Determine if creating new / editing / or viewing list.
 if ($create) {
@@ -105,14 +102,12 @@ if ($create) {
         array('rubricdata' => [], 'evidencedata' => [], 'published' => 0),
         'post', '', []
     );
+
     $formdata = $formtask->get_data();
 
     // Check whether loading page or submitting page.
     if (empty($formdata)) {
         // Editing (not submitted).
-
-        //echo "<pre>"; var_export($activities); var_export(array_column($activities, 'name')); exit;
-
         // Get existing task data.
         $taskname = $task->get('taskname');
         $pypuoi = $task->get('pypuoi');
@@ -137,9 +132,10 @@ if ($create) {
         // Get and decorate criterion data.
         $rubricdata = json_decode($rubricjson);
         if (empty($rubricdata)) {
-            $rubricdata = [utils::get_stub_criterion()]; // Add a default empty criterion.
+            $rubricdata = array(utils::get_stub_criterion()); // Add a default empty criterion.
         }
         $rubricdata = utils::decorate_subjectdata($rubricdata);
+        $rubricdata = utils::decorate_weightdata($rubricdata);
 
         // Reinstantiate the form with needed data.
         $formtask = new form_task($taskediturl->out(false), 
@@ -163,7 +159,12 @@ if ($create) {
                 'evidencejson' => $evidencejson,
             )
         );
+
+        // Run get_data again to trigger validation and set errors.
+        $formdata = $formtask->get_data();
+
     } else {
+
         // The form was submitted.
         if ($formdata->action == 'savedraft') {
             redirect($viewurl->out());
@@ -195,6 +196,7 @@ if ($create) {
             $data->pypuoi = $formdata->pypuoi;
             $data->outcomes = $formdata->outcomes;
             $data->rubricjson = $formdata->rubricjson;
+            $data->evidencejson = $formdata->evidencejson;
 
             $result = task::save_from_data($data);
             if ($result) {
@@ -229,7 +231,9 @@ if ($create) {
     $formtask->display();
 
     // Add scripts.
-    $PAGE->requires->js_call_amd('mod_psgrading/taskform', 'init');
+    $PAGE->requires->js_call_amd('mod_psgrading/taskform', 'init', array(
+        'stubcriterion' => utils::get_stub_criterion(),
+    ));
 
     echo $OUTPUT->footer();
 

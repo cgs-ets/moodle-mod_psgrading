@@ -46,7 +46,7 @@ class form_task extends \moodleform {
 
         /****
         * Notes:
-        * - Can't use client validation with custom action buttons. Validation is done on server in tasks.php.
+        * - Can't use client validation when using custom action buttons. Validation is done on server in tasks.php.
         ****/
 
         // Page title.
@@ -91,7 +91,6 @@ class form_task extends \moodleform {
         $rubrichtml = $OUTPUT->render_from_template('mod_psgrading/rubric_selector', array('criterions' => $rubricdata));
         $mform->addElement('html', $rubrichtml);
 
-
         /*----------------------
          *   Evidence
          *----------------------*/
@@ -112,7 +111,6 @@ class form_task extends \moodleform {
         $mform->addElement('header', 'actions', '');
         $mform->setExpanded('actions', true, true);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_buttons', array('published' => $published)));
-
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');

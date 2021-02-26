@@ -39,6 +39,8 @@ class task extends persistent {
     /** Table to store this persistent model instances. */
     const TABLE = 'psgrading_tasks';
     const TABLE_TASK_LOGS = 'psgrading_task_logs';
+    const TABLE_TASK_EVIDENCES = 'psgrading_task_evidences';
+    const TABLE_TASK_CRITERIONS = 'psgrading_task_criterions';
 
     /**
      * Return the definition of the properties of this model.
@@ -109,12 +111,21 @@ class task extends persistent {
         $log->formjson = json_encode($data);
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
         
-        // Create criterions.
+        // Recreate criterions.
+        $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
+        $criterions = json_decode($data->rubricjson);
+        foreach ($criterions as $criterion) {
+            $criterion->taskid = $data->id;
+            $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);
+        }
 
         // Create evidences.
-
-
-
+        $DB->delete_records(static::TABLE_TASK_EVIDENCES, array('taskid' => $data->id));
+        $evidences = json_decode($data->evidencejson);
+        foreach ($evidences as $evidence) {
+            $evidence->taskid = $data->id;
+            $DB->insert_record(static::TABLE_TASK_EVIDENCES, $evidence);
+        }
 
         return $data->id;
     }
