@@ -236,7 +236,6 @@ class utils {
         if ($evidencejson) {
             $selectedcms = array_column($evidencejson, 'data');
         }
-echo "<pre>";
         $activities = array();
         $modinfo = get_fast_modinfo($course, $USER->id);
         $cms = $modinfo->get_cms();
@@ -259,9 +258,7 @@ echo "<pre>";
                 $cmrec->sel = true;
             }
             $activities[] = $cmrec;
-        var_export($cm);
         }
-        var_export($activities); exit;
         return $activities;
     }
 
