@@ -40,8 +40,9 @@ class utils {
 
     const SUBJECTOPTIONS = array (
         array (
-            'txt' => 'Area of learning',
+            'txt' => 'Subject',
             'val' => '',
+            'attrs' => 'disabled selected',
         ),
         array (
             'txt' => 'English',
@@ -85,6 +86,7 @@ class utils {
         array (
             'txt' => 'Weight',
             'val' => '',
+            'attrs' => 'disabled selected',
         ),
         array (
             'txt' => '5%',

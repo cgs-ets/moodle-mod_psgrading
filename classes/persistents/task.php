@@ -122,9 +122,11 @@ class task extends persistent {
         // Create evidences.
         $DB->delete_records(static::TABLE_TASK_EVIDENCES, array('taskid' => $data->id));
         $evidences = json_decode($data->evidencejson);
-        foreach ($evidences as $evidence) {
-            $evidence->taskid = $data->id;
-            $DB->insert_record(static::TABLE_TASK_EVIDENCES, $evidence);
+        if ($evidences) {
+            foreach ($evidences as $evidence) {
+                $evidence->taskid = $data->id;
+                $DB->insert_record(static::TABLE_TASK_EVIDENCES, $evidence);
+            }
         }
 
         return $data->id;

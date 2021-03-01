@@ -200,10 +200,7 @@ if ($create) {
 
             $result = task::save_from_data($data);
             if ($result) {
-                $notice = get_string("taskform:createsuccess", "mod_psgrading");
-                if ($edit) {
-                    $notice = get_string("taskform:editsuccess", "mod_psgrading");
-                }
+                $notice = get_string("taskform:publishsuccess", "mod_psgrading");
                 redirect(
                     $viewurl->out(),
                     '<p>'.$notice.'</p>',

@@ -136,6 +136,17 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             self.rootel.submit();
         });
 
+        // Styling the criterion selects based on selected option.
+        self.rootel.on('change', 'select', function(e) {
+            var select = $(this);
+            select.removeClass('selected');
+            if (select.children(':selected').val()) {
+                select.addClass('selected');
+            }
+            //select.attr('class', 'form-control').addClass(select.children(':selected').val());
+        });
+        self.rootel.find('select').change();
+
         // Preload the modals and templates.
         self.templates = {
             CRITERION: 'mod_psgrading/rubric_selector_criterionform',
@@ -147,6 +158,10 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             self.rootel.addClass('preloads-completed');
         })
 
+    };
+
+    TaskForm.prototype.checkSelects = function () {
+        
     };
 
     /**

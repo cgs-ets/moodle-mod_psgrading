@@ -41,7 +41,7 @@ $string['privacy:metadata'] = 'Primary School Grading does not store any persona
 
 $string['taskform:create'] = 'Create a new task';
 $string['taskform:editsuccess'] = 'Task was successfully edited.';
-$string['taskform:createsuccess'] = 'Task was successfully created.';
+$string['taskform:publishsuccess'] = 'Task was successfully published.';
 $string['taskform:createfail'] = 'Failed to create task.';
 $string['taskform:name'] = 'Name';
 $string['taskform:pypuoi'] = 'PYP UOI';

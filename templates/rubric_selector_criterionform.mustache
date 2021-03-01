@@ -44,14 +44,14 @@
             <div>
                 <select name="subject" class="form-control">
                     {{#subject.options}}
-                        <option value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                        <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
                     {{/subject.options}}
                 </select>
             </div>
             <div>
                 <select name="weight" class="form-control">
                     {{#weight.options}}
-                        <option value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                        <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
                     {{/weight.options}}
                 </select>
             </div>

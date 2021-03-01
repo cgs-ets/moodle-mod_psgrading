@@ -69,6 +69,18 @@ form[data-form="psgrading-task"] {
 			    font-size: 90%;
 			    height: calc(1.5em + .75rem + 4px);
 			}
+			select {
+				color: #aaa;
+				&.selected {
+					color: #000;
+				}
+				option {
+					color: #000;
+					&:disabled {
+					    color: #aaa;
+					}
+				}
+			}
 			&.tbl-col-last {
 				padding-right: 30px;
 			}

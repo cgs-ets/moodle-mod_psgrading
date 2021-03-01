@@ -120,6 +120,18 @@ form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
   font-size: 90%;
   height: calc(1.5em + 0.75rem + 4px);
 }
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
+  color: #aaa;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select.selected {
+  color: #000;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select option {
+  color: #000;
+}
+form[data-form="psgrading-task"] .rubric-selector .tbl-col select option:disabled {
+  color: #aaa;
+}
 form[data-form="psgrading-task"] .rubric-selector .tbl-col.tbl-col-last {
   padding-right: 30px;
 }
@@ -301,6 +313,9 @@ form[data-form="psgrading-task"] #savestatus .badge i {
 form[data-form="psgrading-task"] .custom-footer-buttons {
   padding: 25px 0 30px;
   text-align: center;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task .c-published .fa-check-square {
+  color: green;
 }
 #page-mod-psgrading-view .generaltable tbody tr.task .c-name {
   max-width: 200px;
