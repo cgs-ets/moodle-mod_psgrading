@@ -236,7 +236,7 @@ class utils {
         if ($evidencejson) {
             $selectedcms = array_column($evidencejson, 'data');
         }
-
+echo "<pre>";
         $activities = array();
         $modinfo = get_fast_modinfo($course, $USER->id);
         $cms = $modinfo->get_cms();
@@ -248,7 +248,8 @@ class utils {
             if ($cmrec->deletioninprogress) { // Don't include deleted activities.
                 continue;
             }
-            if ($cmrec->modname == 'psgrading') { //Don't include this mod.
+            // Don't include self, and resources.
+            if (in_array($cmrec->modname, array('psgrading', 'resource', 'folder', 'book', 'label', 'page', 'url'))) {
                 continue;
             }
             //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
@@ -258,7 +259,9 @@ class utils {
                 $cmrec->sel = true;
             }
             $activities[] = $cmrec;
+        var_export($cm);
         }
+        var_export($activities); exit;
         return $activities;
     }
 
