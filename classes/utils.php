@@ -248,7 +248,18 @@ class utils {
                 continue;
             }
             // Don't include self, and resources.
-            if (in_array($cmrec->modname, array('psgrading', 'resource', 'folder', 'book', 'label', 'page', 'url'))) {
+            if (in_array($cmrec->modname, array(
+                    'psgrading', 
+                    'resource', 
+                    'folder', 
+                    'book', 
+                    'label', 
+                    'page', 
+                    'url',
+                    'clickview',
+                    'unilabel',
+                    'zoom',
+                ))) {
                 continue;
             }
             //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
