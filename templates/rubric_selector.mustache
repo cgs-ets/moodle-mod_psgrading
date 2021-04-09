@@ -26,15 +26,17 @@
 <div class="rubric-selector">
     <div class="headings">
         <ul class="tbl-th">
-            <li class="tbl-col tbl-col-1 tbl-col-first"></li>
+            <li class="tbl-col tbl-col-1 tbl-col-first">Descriptor</li>
             <li class="tbl-col tbl-col-2">Good start</li>
             <li class="tbl-col tbl-col-3">Making strides</li>
             <li class="tbl-col tbl-col-4">Go run with it</li>
             <li class="tbl-col tbl-col-5 tbl-col-last"></li>
         </ul>
     </div>
-    <div class="criterions">
+    <div id="task-criterions" class="criterions">
         {{>mod_psgrading/rubric_selector_criterionform}}
     </div>
-    <a id="btn-addcriterion" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addcriterion, mod_psgrading{{/str}}</a>
+    <div class="foot">
+        <a id="btn-addcriterion" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addcriterion, mod_psgrading{{/str}}</a>
+    </div>
 </div>

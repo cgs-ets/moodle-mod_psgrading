@@ -158,11 +158,25 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             self.rootel.addClass('preloads-completed');
         })
 
+
+        // Set up drag reordering of criterions.
+        if(typeof Sortable != 'undefined') {
+            var el = document.getElementById('task-criterions');
+            var sortable = new Sortable(el, {
+                handle: '.btn-reorder',
+                animation: 150,
+                ghostClass: 'reordering',
+                //onEnd: self.SortEnd
+            });
+        }
+
     };
 
-    TaskForm.prototype.checkSelects = function () {
-        
+    TaskForm.prototype.SortEnd = function (e) {
+        self = this;
+        console.log(e);
     };
+
 
     /**
      * Generate json from form fields.

@@ -222,6 +222,8 @@ if ($create) {
 
     // Add css.
     $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+    // Add vendor js.
+    $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 
     echo $OUTPUT->header();
 

@@ -114,9 +114,12 @@ class task extends persistent {
         // Recreate criterions.
         $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
         $criterions = json_decode($data->rubricjson);
+        $seq = 0;
         foreach ($criterions as $criterion) {
             $criterion->taskid = $data->id;
+            $criterion->seq = $seq;
             $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);
+            $seq++;
         }
 
         // Create evidences.

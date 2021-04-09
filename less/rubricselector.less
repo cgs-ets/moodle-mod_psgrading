@@ -24,7 +24,7 @@
 form[data-form="psgrading-task"] {
 	.rubric-selector {
     	background-color: #f0f4f8;
-    	padding: 25px 20px 25px 30px;
+    	padding: 25px 20px 25px 25px;
 		.headings, .criterions {
 			display: table;
 	    	width: 100%;
@@ -32,15 +32,19 @@ form[data-form="psgrading-task"] {
 		.tbl-th, .tbl-tr {
 			display: table-row;
 			padding: 0;
-		} 
+		}
 		.tbl-th {
 			font-weight: 600;
     		font-size: 110%;
 		}
+		.tbl-tr.reordering {
+		    background-color: #cce5ff;
+		    box-shadow: 0 0 2px 0px #004085;
+		}
 		.tbl-col {
 			display: table-cell;
 			width: 20%;
-			padding: 0 10px 10px 0;
+			padding: 5px 5px 5px 5px;
 			vertical-align: top;
 			position: relative;
 			.label {
@@ -87,8 +91,19 @@ form[data-form="psgrading-task"] {
 		}
 		a.btn-delete {
 			position: absolute;
-		    top: 0;
+		    top: 35px;
 		    right: 0;
+		    cursor: pointer;
+		    color: #005b94;
+		}
+		a.btn-reorder {
+			position: absolute;
+		    top: 5px;
+		    right: 0px;
+		    width: 20px;
+		    text-align: center;
+		    cursor: pointer;
+		    color: #005b94;
 		}
 		// Hidden toggle.
 		.hidden-control {
@@ -143,6 +158,9 @@ form[data-form="psgrading-task"] {
 		    	    background: #fff;
 		    	}
 			}
+		}
+		.foot {
+			padding: 5px;
 		}
 		@media only screen and (max-width: 1160px)  {
 			padding: 0px 0px 25px 0px;
