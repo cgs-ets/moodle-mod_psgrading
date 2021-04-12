@@ -1,0 +1,39 @@
+#page-mod-psgrading-mark {
+	.activity-navigation {
+		display: none;
+	}
+	#region-main-settings-menu {
+		display: none;
+	}
+	.header {
+		background-color: #f5f5f5;
+	    overflow: hidden;
+    	padding: 20px;
+    	margin: -21px -20px 0 -20px;
+    	box-shadow: 1px 0 12px -3px black;
+		.selected-student {
+			float: left;
+		}
+		.student-selector {
+			float: right;
+			select {
+				display: inline-block;
+			    width: 230px;
+			    margin: 0 6px;
+			}
+			a {
+				cursor: pointer;
+			}
+		}
+	}
+	.task {
+		min-height: 300px;
+        .spinner {
+        }
+		&.loading {
+            .spinner {
+                display: block;
+            }
+        }
+	}
+}

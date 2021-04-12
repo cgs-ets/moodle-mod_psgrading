@@ -83,10 +83,10 @@ class view_exporter extends exporter {
 			$tasks[] = $taskexporter->export($output);
 		}
 
-		$taskcreateurl = new \moodle_url('/mod/psgrading/tasks.php', array(
-		    'cmid' => $this->related['cmid'],
-		    'create' => 1,
-		));
+        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
+            'cmid' => $this->related['cmid'],
+            'create' => 1,
+        ));
 
         return array(
             'tasks' => $tasks,

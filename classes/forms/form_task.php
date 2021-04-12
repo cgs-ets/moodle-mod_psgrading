@@ -41,12 +41,12 @@ class form_task extends \moodleform {
 
         $mform =& $this->_form;
         $published = $this->_customdata['published'];
-        $rubricdata = $this->_customdata['rubricdata'];
+        $criteriondata = $this->_customdata['criteriondata'];
         $evidencedata = $this->_customdata['evidencedata'];
 
         /****
         * Notes:
-        * - Can't use client validation when using custom action buttons. Validation is done on server in tasks.php.
+        * - Can't use client validation when using custom action buttons. Validation is done on server in task.php.
         ****/
 
         // Page title.
@@ -78,18 +78,18 @@ class form_task extends \moodleform {
         $mform->setType('name', PARAM_TEXT);
 
         /*----------------------
-         *   Rubric
+         *   Criterion
          *----------------------*/
         // A custom JS driven component.
         // Section title
-        $mform->addElement('header', 'rubricsection', get_string("taskform:rubric", "mod_psgrading"));
-        $mform->setExpanded('rubricsection', true, true);
+        $mform->addElement('header', 'criterionsection', get_string("taskform:criterion", "mod_psgrading"));
+        $mform->setExpanded('criterionsection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
-        $mform->addElement('text', 'rubricjson', 'Rubric JSON');
-        $mform->setType('rubricjson', PARAM_RAW);
-        // Render the rubric from json.
-        $rubrichtml = $OUTPUT->render_from_template('mod_psgrading/rubric_selector', array('criterions' => $rubricdata));
-        $mform->addElement('html', $rubrichtml);
+        $mform->addElement('text', 'criterionjson', 'Criterion JSON');
+        $mform->setType('criterionjson', PARAM_RAW);
+        // Render the criterion from json.
+        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array('criterions' => $criteriondata));
+        $mform->addElement('html', $criterionhtml);
 
         /*----------------------
          *   Evidence
@@ -142,33 +142,33 @@ class form_task extends \moodleform {
             $errors['outcomes'] = get_string('required');
         }
         
-        $rubric = json_decode($data['rubricjson']);
-        if (empty($rubric)) {
-            $errors['rubricjson'] = get_string('required');
+        $criterion = json_decode($data['criterionjson']);
+        if (empty($criterion)) {
+            $errors['criterionjson'] = get_string('required');
         } else {
-            foreach ($rubric as $criterion) {
+            foreach ($criterion as $criterion) {
                 if (empty($criterion->description)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
                 if (empty($criterion->level2)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
                 if (empty($criterion->level3)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
                 if (empty($criterion->level4)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
                 if (empty($criterion->subject)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
                 if (empty($criterion->weight)) {
-                    $errors['rubricjson'] = get_string('required');
+                    $errors['criterionjson'] = get_string('required');
                     break;
                 }
             }

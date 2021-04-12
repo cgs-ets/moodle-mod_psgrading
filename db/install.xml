@@ -29,7 +29,7 @@
         <FIELD NAME="taskname" TYPE="char" LENGTH="250" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="pypuoi" TYPE="char" LENGTH="250" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="outcomes" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="rubricjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="criterionjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="evidencejson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="published" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -57,7 +57,7 @@
       </KEYS>
     </TABLE>
 
-    <TABLE NAME="psgrading_task_criterions" COMMENT="Rubric criterions for a task">
+    <TABLE NAME="psgrading_task_criterions" COMMENT="Criterions for a task">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="taskid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

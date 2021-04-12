@@ -68,7 +68,7 @@ class task extends persistent {
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
-            "rubricjson" => [
+            "criterionjson" => [
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
@@ -113,7 +113,7 @@ class task extends persistent {
         
         // Recreate criterions.
         $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
-        $criterions = json_decode($data->rubricjson);
+        $criterions = json_decode($data->criterionjson);
         $seq = 0;
         foreach ($criterions as $criterion) {
             $criterion->taskid = $data->id;

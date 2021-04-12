@@ -2,7 +2,8 @@
 .path-mod-psgrading .spinner {
   display: none;
   padding: 0;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   overflow: hidden;
 }
 .path-mod-psgrading .spinner .circle {
@@ -47,66 +48,123 @@
     transform: rotate(360deg);
   }
 }
+#page-mod-psgrading-task #page-content .action-menu {
+  display: none !important;
+}
+#page-mod-psgrading-task #page-content .collapse-all {
+  display: none;
+}
+#page-mod-psgrading-task .activity-navigation {
+  display: none;
+}
+form[data-form="psgrading-task"] {
+  position: relative;
+}
+form[data-form="psgrading-task"].mform .col-md-3 {
+  max-width: 170px;
+  margin-right: 0;
+  padding-right: 0;
+}
+form[data-form="psgrading-task"].mform div#fgroup_id_buttonar .col-md-9 {
+  padding-left: 0;
+}
+form[data-form="psgrading-task"].mform legend a.fheader {
+  background: none !important;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+form[data-form="psgrading-task"].mform fieldset {
+  margin-left: 0 !important;
+}
+form[data-form="psgrading-task"] #id_actions {
+  border: 0 none;
+}
+form[data-form="psgrading-task"] #id_actions .ftoggler {
+  display: none;
+}
+form[data-form="psgrading-task"] #savestatus .badge {
+  position: absolute;
+  top: 10px;
+  left: 220px;
+  display: none;
+  border-radius: 17px;
+  padding: 4px 7px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+form[data-form="psgrading-task"] #savestatus .badge .spinner,
+form[data-form="psgrading-task"] #savestatus .badge i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  margin-right: 3px;
+}
+form[data-form="psgrading-task"] .custom-footer-buttons {
+  padding: 25px 0 30px;
+  text-align: center;
+}
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
-#page-mod-psgrading-tasks #fitem_id_rubricjson {
+#page-mod-psgrading-task #fitem_id_criterionjson {
   display: none;
 }
-#page-mod-psgrading-tasks #fitem_id_rubricjson > div {
+#page-mod-psgrading-task #fitem_id_criterionjson > div {
   display: none;
 }
-#page-mod-psgrading-tasks #fitem_id_rubricjson.has-danger {
+#page-mod-psgrading-task #fitem_id_criterionjson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-#page-mod-psgrading-tasks #fitem_id_rubricjson.has-danger:before {
-  content: "You must complete the rubric. All fields are mandatory.";
+#page-mod-psgrading-task #fitem_id_criterionjson.has-danger:before {
+  content: "You must complete the criterion. All fields are mandatory.";
   color: red;
   width: 100%;
   height: 22px;
   margin-left: 15px;
 }
 /* Component styling */
-form[data-form="psgrading-task"] .rubric-selector {
+form[data-form="psgrading-task"] .criterion-selector {
   background-color: #f0f4f8;
   padding: 25px 20px 25px 25px;
 }
-form[data-form="psgrading-task"] .rubric-selector .headings,
-form[data-form="psgrading-task"] .rubric-selector .criterions {
+form[data-form="psgrading-task"] .criterion-selector .headings,
+form[data-form="psgrading-task"] .criterion-selector .criterions {
   display: table;
   width: 100%;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-th,
-form[data-form="psgrading-task"] .rubric-selector .tbl-tr {
+form[data-form="psgrading-task"] .criterion-selector .tbl-th,
+form[data-form="psgrading-task"] .criterion-selector .tbl-tr {
   display: table-row;
   padding: 0;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-th {
+form[data-form="psgrading-task"] .criterion-selector .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-tr.reordering {
+form[data-form="psgrading-task"] .criterion-selector .tbl-tr.reordering {
   background-color: #cce5ff;
   box-shadow: 0 0 2px 0px #004085;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col {
   display: table-cell;
   width: 20%;
   padding: 5px 5px 5px 5px;
   vertical-align: top;
   position: relative;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col .label {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col .label {
   display: none;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col textarea:focus,
-form[data-form="psgrading-task"] .rubric-selector .tbl-col input:focus,
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select:focus,
-form[data-form="psgrading-task"] .rubric-selector .tbl-col a:focus {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col textarea:focus,
+form[data-form="psgrading-task"] .criterion-selector .tbl-col input:focus,
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select:focus,
+form[data-form="psgrading-task"] .criterion-selector .tbl-col a:focus {
   outline: none;
   box-shadow: none;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col textarea {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col textarea {
   width: 100%;
   height: 140px;
   border: 1px solid #ddd;
@@ -114,8 +172,8 @@ form[data-form="psgrading-task"] .rubric-selector .tbl-col textarea {
   padding: 10px;
   font-size: 90%;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col input,
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col input,
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select {
   margin-bottom: 3px;
   width: 100%;
   border: 1px solid #ddd;
@@ -124,29 +182,29 @@ form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
   font-size: 90%;
   height: calc(1.5em + 0.75rem + 4px);
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select {
   color: #aaa;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select.selected {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select.selected {
   color: #000;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select option {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select option {
   color: #000;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col select option:disabled {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col select option:disabled {
   color: #aaa;
 }
-form[data-form="psgrading-task"] .rubric-selector .tbl-col.tbl-col-last {
+form[data-form="psgrading-task"] .criterion-selector .tbl-col.tbl-col-last {
   padding-right: 30px;
 }
-form[data-form="psgrading-task"] .rubric-selector a.btn-delete {
+form[data-form="psgrading-task"] .criterion-selector a.btn-delete {
   position: absolute;
   top: 35px;
   right: 0;
   cursor: pointer;
   color: #005b94;
 }
-form[data-form="psgrading-task"] .rubric-selector a.btn-reorder {
+form[data-form="psgrading-task"] .criterion-selector a.btn-reorder {
   position: absolute;
   top: 5px;
   right: 0px;
@@ -155,18 +213,18 @@ form[data-form="psgrading-task"] .rubric-selector a.btn-reorder {
   cursor: pointer;
   color: #005b94;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control {
   margin-top: 5px;
   display: flex;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control input[type=checkbox] {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control input[type=checkbox] {
   height: 0;
   width: 0;
   visibility: hidden;
   position: absolute;
   left: -9999px;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control .toggle {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle {
   cursor: pointer;
   text-indent: -9999px;
   width: 32px;
@@ -177,7 +235,7 @@ form[data-form="psgrading-task"] .rubric-selector .hidden-control .toggle {
   position: relative;
   margin-right: 3px;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control .toggle:after {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle:after {
   content: '';
   position: absolute;
   top: 3px;
@@ -188,50 +246,50 @@ form[data-form="psgrading-task"] .rubric-selector .hidden-control .toggle:after 
   border-radius: 90px;
   transition: 0.3s;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control input:checked + .toggle {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked + .toggle {
   background: #005b94;
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control input:checked + .toggle:after {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked + .toggle:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }
-form[data-form="psgrading-task"] .rubric-selector .hidden-control .desc {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control .desc {
   font-size: 82%;
   margin-left: 4px;
   line-height: 19px;
 }
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden input,
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden textarea,
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden select {
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden input,
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden textarea,
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden select {
   background-color: #f2f2f2;
 }
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden input:focus,
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden textarea:focus,
-form[data-form="psgrading-task"] .rubric-selector .criterion-hidden select:focus {
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden input:focus,
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden textarea:focus,
+form[data-form="psgrading-task"] .criterion-selector .criterion-hidden select:focus {
   background: #fff;
 }
-form[data-form="psgrading-task"] .rubric-selector .foot {
+form[data-form="psgrading-task"] .criterion-selector .foot {
   padding: 5px;
 }
 @media only screen and (max-width: 1160px) {
-  form[data-form="psgrading-task"] .rubric-selector {
+  form[data-form="psgrading-task"] .criterion-selector {
     padding: 0px 0px 25px 0px;
     background-color: #fff;
   }
-  form[data-form="psgrading-task"] .rubric-selector .headings {
+  form[data-form="psgrading-task"] .criterion-selector .headings {
     display: none;
   }
-  form[data-form="psgrading-task"] .rubric-selector .tbl-tr {
+  form[data-form="psgrading-task"] .criterion-selector .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 20px 10px 20px 20px;
     border-radius: 4px;
   }
-  form[data-form="psgrading-task"] .rubric-selector .tbl-col {
+  form[data-form="psgrading-task"] .criterion-selector .tbl-col {
     display: block;
     width: 100%;
   }
-  form[data-form="psgrading-task"] .rubric-selector .tbl-col .label {
+  form[data-form="psgrading-task"] .criterion-selector .tbl-col .label {
     display: block;
     position: absolute;
     right: 10px;
@@ -239,18 +297,18 @@ form[data-form="psgrading-task"] .rubric-selector .foot {
   }
 }
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
-#page-mod-psgrading-tasks #fitem_id_evidencejson {
+#page-mod-psgrading-task #fitem_id_evidencejson {
   display: none;
 }
-#page-mod-psgrading-tasks #fitem_id_evidencejson > div {
+#page-mod-psgrading-task #fitem_id_evidencejson > div {
   display: none;
 }
-#page-mod-psgrading-tasks #fitem_id_evidencejson.has-danger {
+#page-mod-psgrading-task #fitem_id_evidencejson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-#page-mod-psgrading-tasks #fitem_id_evidencejson.has-danger:before {
+#page-mod-psgrading-task #fitem_id_evidencejson.has-danger:before {
   content: "You must add evidence.";
   color: red;
   width: 100%;
@@ -281,57 +339,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
 }
-#page-mod-psgrading-tasks #page-content .action-menu {
-  display: none !important;
-}
-#page-mod-psgrading-tasks #page-content .collapse-all {
-  display: none;
-}
-form[data-form="psgrading-task"] {
-  position: relative;
-}
-form[data-form="psgrading-task"].mform .col-md-3 {
-  max-width: 170px;
-  margin-right: 0;
-  padding-right: 0;
-}
-form[data-form="psgrading-task"].mform div#fgroup_id_buttonar .col-md-9 {
-  padding-left: 0;
-}
-form[data-form="psgrading-task"].mform legend a.fheader {
-  background: none !important;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-}
-form[data-form="psgrading-task"].mform fieldset {
-  margin-left: 0 !important;
-}
-form[data-form="psgrading-task"] #id_actions .ftoggler {
-  display: none;
-}
-form[data-form="psgrading-task"] #savestatus .badge {
-  position: absolute;
-  top: 10px;
-  left: 220px;
-  display: none;
-  border-radius: 17px;
-  padding: 4px 7px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-form[data-form="psgrading-task"] #savestatus .badge .spinner,
-form[data-form="psgrading-task"] #savestatus .badge i {
-  display: block;
-  width: 11px;
-  height: 11px;
-  margin-right: 3px;
-}
-form[data-form="psgrading-task"] .custom-footer-buttons {
-  padding: 25px 0 30px;
-  text-align: center;
-}
 #page-mod-psgrading-view .generaltable tbody tr.task .c-published .fa-check-square {
   color: green;
 }
@@ -343,4 +350,37 @@ form[data-form="psgrading-task"] .custom-footer-buttons {
 }
 #page-mod-psgrading-view .header {
   padding: 20px 0;
+}
+#page-mod-psgrading-mark .activity-navigation {
+  display: none;
+}
+#page-mod-psgrading-mark #region-main-settings-menu {
+  display: none;
+}
+#page-mod-psgrading-mark .header {
+  background-color: #f5f5f5;
+  overflow: hidden;
+  padding: 20px;
+  margin: -21px -20px 0 -20px;
+  box-shadow: 1px 0 12px -3px black;
+}
+#page-mod-psgrading-mark .header .selected-student {
+  float: left;
+}
+#page-mod-psgrading-mark .header .student-selector {
+  float: right;
+}
+#page-mod-psgrading-mark .header .student-selector select {
+  display: inline-block;
+  width: 230px;
+  margin: 0 6px;
+}
+#page-mod-psgrading-mark .header .student-selector a {
+  cursor: pointer;
+}
+#page-mod-psgrading-mark .task {
+  min-height: 300px;
+}
+#page-mod-psgrading-mark .task.loading .spinner {
+  display: block;
 }

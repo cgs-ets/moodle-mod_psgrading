@@ -71,9 +71,9 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         // Auto-save when leaving a field.
         self.rootel.on('blur', 'input[type="text"], select, textarea', function(e) {
             var input = $(this);
-            var isRubricInput = !!input.closest('.criterions').length;
-            if (isRubricInput) {
-                self.regenerateRubricJSON();
+            var isCriterionInput = !!input.closest('.criterions').length;
+            if (isCriterionInput) {
+                self.regenerateCriterionJSON();
             }
             self.autoSave();
         });
@@ -149,7 +149,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
 
         // Preload the modals and templates.
         self.templates = {
-            CRITERION: 'mod_psgrading/rubric_selector_criterionform',
+            CRITERION: 'mod_psgrading/criterion_selector_row',
         };
         var preloads = [];
         preloads.push(self.loadTemplate('CRITERION'));
@@ -190,7 +190,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var taskname = $('input[name="taskname"]').val();
         var pypuoi = $('select[name="pypuoi"]').val();
         var outcomes = $('textarea[name="outcomes"]').val();
-        var rubricjson = $('input[name="rubricjson"]').val();
+        var criterionjson = $('input[name="criterionjson"]').val();
         var evidencejson = $('input[name="evidencejson"]').val();
 
         var formdata = {
@@ -198,7 +198,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             taskname: taskname,
             pypuoi: pypuoi,
             outcomes: outcomes,
-            rubricjson: rubricjson,
+            criterionjson: criterionjson,
             evidencejson: evidencejson,
         };
 
@@ -216,7 +216,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var self = this;
 
         self.regenerateEvidenceJSON();
-        self.regenerateRubricJSON();
+        self.regenerateCriterionJSON();
         self.autoSave(async);
     };
 
@@ -296,14 +296,14 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     };
 
     /**
-     * Regenerate rubric json.
+     * Regenerate criterion json.
      *
      * @method
      */
-    TaskForm.prototype.regenerateRubricJSON = function () {
+    TaskForm.prototype.regenerateCriterionJSON = function () {
         var self = this;
 
-        var rubricjson = $('input[name="rubricjson"]');
+        var criterionjson = $('input[name="criterionjson"]');
         var criterions = new Array();
 
         self.rootel.find('.criterions .tbl-tr').each(function() {
@@ -324,7 +324,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var criterionsStr = '';
         if (criterions.length) {
             criterionsStr = JSON.stringify(criterions);
-            rubricjson.val(criterionsStr);
+            criterionjson.val(criterionsStr);
         }
 
         return criterionsStr;

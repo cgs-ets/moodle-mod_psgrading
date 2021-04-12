@@ -57,6 +57,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'markurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
             'readabletime' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -77,17 +82,23 @@ class task_exporter extends persistent_exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
-    	$editurl = new \moodle_url('/mod/psgrading/tasks.php', array(
-		    'cmid' => $this->data->cmid,
-		    'edit' => $this->data->id,
-		));
+        $editurl = new \moodle_url('/mod/psgrading/task.php', array(
+            'cmid' => $this->data->cmid,
+            'edit' => $this->data->id,
+        ));
+
+        $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+            'cmid' => $this->data->cmid,
+            'taskid' => $this->data->id,
+        ));
 
         $readabletime = date('j M Y, g:ia', $this->data->timemodified);
 
         $draftdata = json_decode($this->data->draftjson);
 
     	return [
-	        'editurl' => $editurl->out(false),
+            'editurl' => $editurl->out(false),
+            'markurl' => $markurl->out(false),
 	        'readabletime' => $readabletime,
 	        'draftdata' => $draftdata,
 	    ];

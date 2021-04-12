@@ -52,7 +52,7 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$taskediturl = new moodle_url('/mod/psgrading/tasks.php', array(
+$editurl = new moodle_url('/mod/psgrading/task.php', array(
     'cmid' => $cm->id,
     'edit' => $edit,
 ));
@@ -62,7 +62,7 @@ $viewurl = new moodle_url('/mod/psgrading/view.php', array(
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
-$PAGE->set_url($taskediturl);
+$PAGE->set_url($editurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 
@@ -76,8 +76,8 @@ if ($create) {
     $task->save();
 
     // Redirect to edit.
-    $taskediturl->param('edit', $task->get('id'));
-    redirect($taskediturl->out(false));
+    $editurl->param('edit', $task->get('id'));
+    redirect($editurl->out(false));
     exit;
 
 } elseif ($edit) {
@@ -98,8 +98,8 @@ if ($create) {
 
     // Instantiate the form.
     $formtask = new form_task(
-        $taskediturl->out(false), 
-        array('rubricdata' => [], 'evidencedata' => [], 'published' => 0),
+        $editurl->out(false), 
+        array('criteriondata' => [], 'evidencedata' => [], 'published' => 0),
         'post', '', []
     );
 
@@ -112,7 +112,7 @@ if ($create) {
         $taskname = $task->get('taskname');
         $pypuoi = $task->get('pypuoi');
         $outcomes = $task->get('outcomes');
-        $rubricjson = $task->get('rubricjson');
+        $criterionjson = $task->get('criterionjson');
         $evidencejson = $task->get('evidencejson');
         $published = $task->get('published');
 
@@ -122,7 +122,7 @@ if ($create) {
             $taskname = $draft->taskname ? $draft->taskname : $taskname;
             $pypuoi = $draft->pypuoi ? $draft->pypuoi : $pypuoi;
             $outcomes = $draft->outcomes ? $draft->outcomes : $outcomes;
-            $rubricjson = $draft->rubricjson ? $draft->rubricjson : $rubricjson;
+            $criterionjson = $draft->criterionjson ? $draft->criterionjson : $criterionjson;
             $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
         }
 
@@ -130,17 +130,17 @@ if ($create) {
         $evidencedata = utils::get_evidencedata($course, $evidencejson);
 
         // Get and decorate criterion data.
-        $rubricdata = json_decode($rubricjson);
-        if (empty($rubricdata)) {
-            $rubricdata = array(utils::get_stub_criterion()); // Add a default empty criterion.
+        $criteriondata = json_decode($criterionjson);
+        if (empty($criteriondata)) {
+            $criteriondata = array(utils::get_stub_criterion()); // Add a default empty criterion.
         }
-        $rubricdata = utils::decorate_subjectdata($rubricdata);
-        $rubricdata = utils::decorate_weightdata($rubricdata);
+        $criteriondata = utils::decorate_subjectdata($criteriondata);
+        $criteriondata = utils::decorate_weightdata($criteriondata);
 
         // Reinstantiate the form with needed data.
-        $formtask = new form_task($taskediturl->out(false), 
+        $formtask = new form_task($editurl->out(false), 
             array(
-                'rubricdata' => $rubricdata,
+                'criteriondata' => $criteriondata,
                 'evidencedata' => $evidencedata,
                 'published' => $published,
             ), 
@@ -155,7 +155,7 @@ if ($create) {
                 'taskname' => $taskname,
                 'pypuoi' => $pypuoi,
                 'outcomes' => $outcomes,
-                'rubricjson' => $rubricjson,
+                'criterionjson' => $criterionjson,
                 'evidencejson' => $evidencejson,
             )
         );
@@ -195,7 +195,7 @@ if ($create) {
             $data->taskname = $formdata->taskname;
             $data->pypuoi = $formdata->pypuoi;
             $data->outcomes = $formdata->outcomes;
-            $data->rubricjson = $formdata->rubricjson;
+            $data->criterionjson = $formdata->criterionjson;
             $data->evidencejson = $formdata->evidencejson;
 
             $result = task::save_from_data($data);

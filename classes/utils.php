@@ -170,14 +170,14 @@ class utils {
         ),
     );
 
-    public static function decorate_subjectdata($rubricdata) {
-        foreach ($rubricdata as $i => $row) {
-            $rubricdata[$i]->subject = array(
+    public static function decorate_subjectdata($criteriondata) {
+        foreach ($criteriondata as $i => $row) {
+            $criteriondata[$i]->subject = array(
                 'value' => $row->subject,
                 'options' => static::get_subject_options_with_selected($row->subject),
             );
         }
-        return $rubricdata;
+        return $criteriondata;
     }
 
     public static function get_subject_options_with_selected($selected) {
@@ -192,15 +192,15 @@ class utils {
     }
 
 
-    public static function decorate_weightdata($rubricdata) {
-        foreach ($rubricdata as $i => $row) {
+    public static function decorate_weightdata($criteriondata) {
+        foreach ($criteriondata as $i => $row) {
             $weight = isset($row->weight) ? $row->weight : '';
-            $rubricdata[$i]->weight = array(
+            $criteriondata[$i]->weight = array(
                 'value' => $weight,
                 'options' => static::get_weight_options_with_selected($weight),
             );
         }
-        return $rubricdata;
+        return $criteriondata;
     }
 
     public static function get_weight_options_with_selected($selected) {
@@ -273,11 +273,57 @@ class utils {
         return $activities;
     }
 
+
+    /**
+     * Helper function to get the students enrolled
+     *
+     * @param int $courseid
+     * @return int[]
+     */
+    public static function get_enrolled_students($courseid) {
+        $context = \context_course::instance($courseid);
+        // 5 is student.
+        $users = get_role_users(5, $context, false, 'u.id', 'u.id');
+        return array_map('intval', array_column($users, 'id'));
+    }
+
+
+
+    /**
+     * Helper function to add extra display info for user.
+     *
+     * @param stdClass $user
+     * @return stdClass $user
+     */
+    public static function load_user_display_info(&$user) {
+        global $PAGE;
+
+        // Fullname.
+        $user->fullname = fullname($user);
+
+        // Profile photo.
+        $userphoto = new \user_picture($user);
+        $userphoto->size = 2; // Size f2.
+        $user->profilephoto = $userphoto->get_url($PAGE)->out(false);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static function get_taskdata_as_xml($data) {
         $xml = "<taskname>{$data->taskname}</taskname>";
         $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";
         $xml .= "<outcomes>{$data->outcomes}</outcomes>";
-        $xml .= "<rubricjson>{$data->rubricjson}</rubricjson>";
+        $xml .= "<criterionjson>{$data->criterionjson}</criterionjson>";
 
         return $xml;
     }

@@ -1,4 +1,4 @@
-#page-mod-psgrading-tasks {
+#page-mod-psgrading-task {
 	#page-content {
 		// Hide the module settings cog on task setup page.
 		.action-menu {
@@ -8,6 +8,9 @@
 		.collapse-all {
 			display: none;
 		}
+	}
+	.activity-navigation {
+		display: none;
 	}
 }	
 
@@ -39,6 +42,7 @@ form[data-form="psgrading-task"] {
 	}
 
 	#id_actions {
+		border: 0 none;
 		.ftoggler {
 		    display: none;
 		}
