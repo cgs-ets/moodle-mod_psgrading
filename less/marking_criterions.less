@@ -1,0 +1,76 @@
+/* Component styling */
+#page-mod-psgrading-mark {
+	.grading-criterions {
+		.headings, .criterions {
+			display: table;
+	    	width: 100%;
+	    	border-collapse: collapse;
+		}
+		.tbl-th, .tbl-tr {
+			display: table-row;
+			padding: 0;
+		}
+		.tbl-th {
+			font-weight: 600;
+    		font-size: 110%;
+			.tbl-col {
+				border: 0 none;
+			}
+		}
+		.tbl-col {
+			display: table-cell;
+			width: 20%;
+			padding: 5px 5px 5px 5px;
+			vertical-align: top;
+			position: relative;
+			border: 1px solid #ccc;
+			&.tbl-col-first {
+				padding-left: 0;
+			}
+			.box {
+				width: 100%;
+				height: 90px;
+			    padding: 10px;
+			    font-size: 90%;
+			    border-radius: 2px;
+			}
+			&.descriptor {
+				background-color: #f2f4f6;
+			}
+			&.selectable {
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			&.level2.selected, &.level2:hover {
+			    background-color: #f8d7da;
+			}
+			&.level3.selected, &.level3:hover {
+				background-color: #cce5ff;
+			}
+			&.level4.selected, &.level4:hover {
+				background-color: #d4edda;
+			}
+		}
+		@media only screen and (max-width: 1160px)  {
+			.headings {
+				display: none;
+			}
+			.tbl-tr {
+			    display: block;
+			    background-color: #f0f4f8;
+			    padding: 10px;
+			    border-radius: 4px;
+			}
+			.tbl-col {
+			    display: block;
+			    width: 100%;
+				.label {
+					display: block;
+					position: absolute;
+				    right: 10px;
+				    text-align: right;
+				}
+			}
+		}
+	}
+}

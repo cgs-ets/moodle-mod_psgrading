@@ -378,9 +378,86 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .header .student-selector a {
   cursor: pointer;
 }
-#page-mod-psgrading-mark .task {
-  min-height: 300px;
+#page-mod-psgrading-mark .task .spinner {
+  margin: 80px auto;
 }
 #page-mod-psgrading-mark .task.loading .spinner {
   display: block;
+}
+/* Component styling */
+#page-mod-psgrading-mark .grading-criterions .headings,
+#page-mod-psgrading-mark .grading-criterions .criterions {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-th,
+#page-mod-psgrading-mark .grading-criterions .tbl-tr {
+  display: table-row;
+  padding: 0;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-th {
+  font-weight: 600;
+  font-size: 110%;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-th .tbl-col {
+  border: 0 none;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col {
+  display: table-cell;
+  width: 20%;
+  padding: 5px 5px 5px 5px;
+  vertical-align: top;
+  position: relative;
+  border: 1px solid #ccc;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.tbl-col-first {
+  padding-left: 0;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col .box {
+  width: 100%;
+  height: 90px;
+  padding: 10px;
+  font-size: 90%;
+  border-radius: 2px;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.descriptor {
+  background-color: #f2f4f6;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.selectable {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level2.selected,
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level2:hover {
+  background-color: #f8d7da;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level3.selected,
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level3:hover {
+  background-color: #cce5ff;
+}
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level4.selected,
+#page-mod-psgrading-mark .grading-criterions .tbl-col.level4:hover {
+  background-color: #d4edda;
+}
+@media only screen and (max-width: 1160px) {
+  #page-mod-psgrading-mark .grading-criterions .headings {
+    display: none;
+  }
+  #page-mod-psgrading-mark .grading-criterions .tbl-tr {
+    display: block;
+    background-color: #f0f4f8;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  #page-mod-psgrading-mark .grading-criterions .tbl-col {
+    display: block;
+    width: 100%;
+  }
+  #page-mod-psgrading-mark .grading-criterions .tbl-col .label {
+    display: block;
+    position: absolute;
+    right: 10px;
+    text-align: right;
+  }
 }

@@ -40,6 +40,6 @@ use external_api;
  */
 class api extends external_api {
 
-    use autosave;
+    use load_task_marking;
     
 }

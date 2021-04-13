@@ -167,5 +167,37 @@ class task extends persistent {
         return $tasks;
     }
 
+    public static function get_grades($taskid, $userid) {
+        $grades = new \stdClass();
+
+        $grades->criterions = array (
+            '2' => (object) array( 'gradelevel' => 3),
+            '3' => (object) array( 'gradelevel' => 2),
+        );
+        $grades->evidences = null;
+        $grades->engagement = 'test';
+        $grades->comment = 'test';
+
+        return $grades;
+    }
+
+    public static function load_criterions(&$task) {
+        global $DB;
+
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_TASK_CRITERIONS . "}
+                 WHERE taskid = ?
+              ORDER BY seq ASC";
+        $params = array($task->id);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $criterions = array();
+        foreach ($records as $record) {
+            $criterions[] = $record;
+        }
+
+        $task->criterions = $criterions;
+    }
+
 
 }

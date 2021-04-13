@@ -26,12 +26,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'mod_psgrading_autosave' => [
+    'mod_psgrading_load_task_marking' => [
         'classname'     => 'mod_psgrading\external\api',
-        'methodname'    => 'autosave',
+        'methodname'    => 'load_task_marking',
         'classpath'     => '',
-        'description'   => 'Autosave a task',
-        'type'          => 'write',
+        'description'   => 'Load marks for a student and task',
+        'type'          => 'read',
         'loginrequired' => true,
         'ajax'          => true,
     ],

@@ -103,6 +103,7 @@ $relateds = array(
     'task' => $task,
     'students' => $students,
     'userid' => $userid,
+    'usermarks' => null,
     'markurl' => $markurl,
 );
 $markexporter = new mark_exporter(null, $relateds);
@@ -113,8 +114,8 @@ $output .= $OUTPUT->render_from_template('mod_psgrading/mark', $data);
 
 // Add amd scripts.
 $PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
-    'taskid' => $taskid,
     'userid' => $userid,
+    'taskid' => $taskid,
 ));
 
 // Final outputs.

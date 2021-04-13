@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use renderer_base;
 use core\external\exporter;
 use \mod_psgrading\utils;
+use \mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -81,9 +82,10 @@ class mark_exporter extends exporter {
     protected static function define_related() {
         return [
             'task' => 'mod_psgrading\persistents\task',
-            'students' => 'int[]',
+            'students' => 'int[]?',
             'userid' => 'int',
-            'markurl' => 'moodle_url'
+            'usergrades' => 'stdClass?',
+            'markurl' => 'moodle_url?'
         ];
     }
 
@@ -132,12 +134,33 @@ class mark_exporter extends exporter {
             $students[] = $student;
         }
 
+        if ($prevstudenturl) {
+            $prevstudenturl = $prevstudenturl->out(false);
+            $nextstudenturl = $nextstudenturl->out(false);
+        }
+
+        if ($this->related['usergrades']) {
+            $grades = $this->related['usergrades'];
+            // if user marks have been supplied to the exporter, incorporate this and more info with the task data.
+            task::load_criterions($task);
+            foreach ($task->criterions as $criteron) {
+                // add marks to criterion definitions.
+                if (isset($grades->criterions[$criteron->id])) {
+                    // There is a gradelevel chosen for this criterion.
+                    $criteron->{'level' . $grades->criterions[$criteron->id]->gradelevel . 'selected'} = true;
+                }
+            }
+
+            //task::load_evidences($task);
+
+        }
+
         return array(
             'task' => $task,
             'students' => $students,
             'currstudent' => $currstudent,
-            'nextstudenturl' => $nextstudenturl->out(false),
-            'prevstudenturl' => $prevstudenturl->out(false),
+            'nextstudenturl' => $nextstudenturl,
+            'prevstudenturl' => $prevstudenturl,
         );
     }
 
