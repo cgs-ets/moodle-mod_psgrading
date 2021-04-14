@@ -35,10 +35,10 @@ define(['jquery', 'core/log', 'core/ajax'],
     function init(userid, taskid) {
         Log.debug('mod_psgrading/mark: initializing');
 
-        var rootel = $('.mod_psgrading_mark');
+        var rootel = $('form[data-form="psgrading-mark"]');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/mark: .mod_psgrading_mark not found!');
+            Log.error('mod_psgrading/mark: form[data-form="psgrading-mark"] not found!');
             return;
         }
 
@@ -66,7 +66,21 @@ define(['jquery', 'core/log', 'core/ajax'],
    Mark.prototype.main = function () {
         var self = this;
 
-        self.loadMarks();
+        // Change student
+        self.rootel.on('change', '.student-select', function(e) {
+            var select = $(this);
+            var url = select.find(':selected').data('markurl');
+            if (url) {
+                window.location.replace(url);
+            }
+        });
+
+        // Criterion level select.
+        self.rootel.on('click', '.criterions .level', function(e) {
+            e.preventDefault();
+            var level = $(this);
+            self.selectLevel(level);
+        });
 
         // Save.
         self.rootel.on('click', '#btn-save', function(e) {
@@ -85,30 +99,17 @@ define(['jquery', 'core/log', 'core/ajax'],
 
     };
 
-
     /**
-     * Autosave progress.
+     * Select a criterion level
      *
      * @method
      */
-    Mark.prototype.loadMarks = function () {
+    Mark.prototype.selectLevel = function (level) {
         var self = this;
 
-        Ajax.call([{
-            methodname: 'mod_psgrading_load_task_marking',
-            args: { 
-                taskid: self.taskid, 
-                userid: self.userid, 
-            },
-            done: function(response) {
-                var task = self.rootel.find('.task');
-                task.removeClass('loading');
-                task.html(response);
-            },
-            fail: function(reason) {
-                Log.debug(reason);
-            }
-        }]);
+        var criterion = level.closest('.criterion');
+        criterion.find('.level').removeClass('selected');
+        level.addClass('selected');
     };
 
     return {

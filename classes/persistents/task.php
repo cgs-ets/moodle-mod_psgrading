@@ -167,7 +167,7 @@ class task extends persistent {
         return $tasks;
     }
 
-    public static function get_grades($taskid, $userid) {
+    public static function get_task_user_gradeinfo($taskid, $userid) {
         $grades = new \stdClass();
 
         $grades->criterions = array (
@@ -197,6 +197,23 @@ class task extends persistent {
         }
 
         $task->criterions = $criterions;
+    }
+
+    public static function load_evidences(&$task) {
+        global $DB;
+
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_TASK_EVIDENCES . "}
+                 WHERE taskid = ?";
+        $params = array($task->id);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $evidences = array();
+        foreach ($records as $record) {
+            $evidences[] = $record;
+        }
+
+        $task->evidences = $evidences;
     }
 
 

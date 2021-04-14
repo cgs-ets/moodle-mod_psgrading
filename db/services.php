@@ -25,14 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = [
-    'mod_psgrading_load_task_marking' => [
-        'classname'     => 'mod_psgrading\external\api',
-        'methodname'    => 'load_task_marking',
-        'classpath'     => '',
-        'description'   => 'Load marks for a student and task',
-        'type'          => 'read',
-        'loginrequired' => true,
-        'ajax'          => true,
-    ],
-];
+$functions = [];

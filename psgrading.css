@@ -361,7 +361,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #f5f5f5;
   overflow: hidden;
   padding: 20px;
-  margin: -21px -20px 0 -20px;
+  margin: -21px -20px 30px -20px;
   box-shadow: 1px 0 12px -3px black;
 }
 #page-mod-psgrading-mark .header .selected-student {
@@ -378,86 +378,116 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .header .student-selector a {
   cursor: pointer;
 }
-#page-mod-psgrading-mark .task .spinner {
-  margin: 80px auto;
-}
-#page-mod-psgrading-mark .task.loading .spinner {
-  display: block;
-}
-/* Component styling */
-#page-mod-psgrading-mark .grading-criterions .headings,
-#page-mod-psgrading-mark .grading-criterions .criterions {
+#page-mod-psgrading-mark .marking-criterions .headings,
+#page-mod-psgrading-mark .marking-criterions .criterions {
   display: table;
   width: 100%;
   border-collapse: collapse;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-th,
-#page-mod-psgrading-mark .grading-criterions .tbl-tr {
+#page-mod-psgrading-mark .marking-criterions .tbl-th,
+#page-mod-psgrading-mark .marking-criterions .tbl-tr {
   display: table-row;
   padding: 0;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-th {
+#page-mod-psgrading-mark .marking-criterions .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-th .tbl-col {
+#page-mod-psgrading-mark .marking-criterions .tbl-th .tbl-col {
   border: 0 none;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col {
+#page-mod-psgrading-mark .marking-criterions .tbl-col {
   display: table-cell;
   width: 20%;
   padding: 5px 5px 5px 5px;
   vertical-align: top;
   position: relative;
-  border: 1px solid #ccc;
+  border: 1px dashed #ccc;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.tbl-col-first {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first {
   padding-left: 0;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col .box {
+#page-mod-psgrading-mark .marking-criterions .tbl-col .box {
   width: 100%;
   height: 90px;
   padding: 10px;
   font-size: 90%;
   border-radius: 2px;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.descriptor {
-  background-color: #f2f4f6;
+#page-mod-psgrading-mark .marking-criterions .tbl-col.descriptor {
+  border: 1px solid #ccc;
+  background: #f2f4f6;
+  border-right: 1px solid #ccc;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.selectable {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.selectable {
   cursor: pointer;
   transition: background 0.2s;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level2.selected,
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level2:hover {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level:hover {
+  background-color: #fafafa;
+}
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected {
   background-color: #f8d7da;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level3.selected,
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level3:hover {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected {
   background-color: #cce5ff;
 }
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level4.selected,
-#page-mod-psgrading-mark .grading-criterions .tbl-col.level4:hover {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level4.selected {
   background-color: #d4edda;
 }
 @media only screen and (max-width: 1160px) {
-  #page-mod-psgrading-mark .grading-criterions .headings {
+  #page-mod-psgrading-mark .marking-criterions .headings {
     display: none;
   }
-  #page-mod-psgrading-mark .grading-criterions .tbl-tr {
+  #page-mod-psgrading-mark .marking-criterions .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 10px;
     border-radius: 4px;
   }
-  #page-mod-psgrading-mark .grading-criterions .tbl-col {
+  #page-mod-psgrading-mark .marking-criterions .tbl-col {
     display: block;
     width: 100%;
   }
-  #page-mod-psgrading-mark .grading-criterions .tbl-col .label {
+  #page-mod-psgrading-mark .marking-criterions .tbl-col .label {
     display: block;
     position: absolute;
     right: 10px;
     text-align: right;
   }
+}
+#page-mod-psgrading-mark .marking-evidences {
+  margin-top: 30px;
+  max-width: 500px;
+}
+#page-mod-psgrading-mark .marking-evidences table {
+  border: 1px solid #ccc;
+}
+#page-mod-psgrading-mark .marking-evidences .heading {
+  font-weight: 600;
+  font-size: 120%;
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-mark #fitem_id_evidences {
+  margin: 0;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .col-md-3 {
+  display: none;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .col-md-9 {
+  padding: 0;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-restrictions {
+  display: none;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-pathbar {
+  display: none;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-btn-download {
+  display: none;
+}
+#page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-vb-tree {
+  display: none;
 }

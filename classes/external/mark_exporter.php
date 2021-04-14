@@ -84,8 +84,7 @@ class mark_exporter extends exporter {
             'task' => 'mod_psgrading\persistents\task',
             'students' => 'int[]?',
             'userid' => 'int',
-            'usergrades' => 'stdClass?',
-            'markurl' => 'moodle_url?'
+            'markurl' => 'moodle_url'
         ];
     }
 
@@ -96,9 +95,12 @@ class mark_exporter extends exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
+        global $USER;
+
 		$taskexporter = new task_exporter($this->related['task']);
 		$task = $taskexporter->export($output);
 
+        // Student Navigation.
         $currstudent = null;
         $nextstudenturl = null;
         $prevstudenturl = null;
@@ -106,8 +108,12 @@ class mark_exporter extends exporter {
         foreach ($this->related['students'] as $i => $studentid) {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
-            $student->isselected = false;
+            $student->iscurrent = false;
+            $student->markurl = $this->related['markurl'];
+            $student->markurl->param('userid', $student->id);
+            $student->markurl = $student->markurl->out(false); // Replace markurl with string val.
             if ($this->related['userid'] == $student->id) {
+                $student->iscurrent = true;
                 $currstudent = $student;
                 $len = count($this->related['students']);
                 if ($len > 1) {
@@ -133,26 +139,37 @@ class mark_exporter extends exporter {
             }
             $students[] = $student;
         }
-
         if ($prevstudenturl) {
             $prevstudenturl = $prevstudenturl->out(false);
             $nextstudenturl = $nextstudenturl->out(false);
         }
 
-        if ($this->related['usergrades']) {
-            $grades = $this->related['usergrades'];
-            // if user marks have been supplied to the exporter, incorporate this and more info with the task data.
-            task::load_criterions($task);
-            foreach ($task->criterions as $criteron) {
-                // add marks to criterion definitions.
-                if (isset($grades->criterions[$criteron->id])) {
-                    // There is a gradelevel chosen for this criterion.
-                    $criteron->{'level' . $grades->criterions[$criteron->id]->gradelevel . 'selected'} = true;
-                }
+        // Get existing marking values for this user and incorporate into task criterion data.
+        $taskusergradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
+
+        // Load task criterions.
+        task::load_criterions($task);
+        foreach ($task->criterions as $criteron) {
+            // add marks to criterion definitions.
+            if (isset($taskusergradeinfo->criterions[$criteron->id])) {
+                // There is a gradelevel chosen for this criterion.
+                $criteron->{'level' . $taskusergradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
             }
+        }
 
-            //task::load_evidences($task);
-
+        // Load task evidences (default).
+        task::load_evidences($task);
+        foreach ($task->evidences as &$evidence) {
+            if ($evidence->evidencetype == 'cm') {
+                // get the icon and name.
+                $cm = get_coursemodule_from_id('', $evidence->refdata);
+                $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                $cms = $modinfo->get_cms();
+                $cm = $cms[$evidence->refdata];
+                $evidence->icon = $cm->get_icon_url()->out();
+                $evidence->url = $cm->url;
+                $evidence->name = $cm->name;
+            }
         }
 
         return array(

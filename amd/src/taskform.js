@@ -279,8 +279,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
             var checkbox = $(this);
             var cm = {
-                type: 'cm',
-                data: checkbox.val(),
+                evidencetype: 'cm',
+                refdata: checkbox.val(),
             };
             evidences.push(cm);
         });

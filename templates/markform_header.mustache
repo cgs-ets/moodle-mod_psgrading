@@ -19,22 +19,23 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/marking
+    @template mod_psgrading/markform_header
 }}
-{{#task}}
-    <div class="mark-task">
-
-        Task name<br>
-
-        PYP UOI<br>
-
-        {{>mod_psgrading/marking_criterions}}
-
-        evidences<br>
-
-        Engagement<br>
-
-        Comment<br>
-
+<div class="header">
+    <div class="selected-student" data-userid="{{currstudent.id}}">
+        <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
     </div>
+    <div class="student-selector">
+        <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        <select class="student-select form-control">
+            {{#students}}
+                <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{fullname}}</option>
+            {{/students}}
+        </select>
+        <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+</div>
+
+{{#task}}
+    <h4>{{taskname}} ({{pypuoi}})</h4>
 {{/task}}

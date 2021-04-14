@@ -27,6 +27,7 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
+use \mod_psgrading\forms\form_mark;
 use mod_psgrading\external\mark_exporter;
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
@@ -78,50 +79,128 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
-// Get the students in the course.
-$students = utils::get_enrolled_students($course->id);
-if (empty($students)) {
-    redirect($viewurl->out(false));
-    exit;
+// Instantiate the form.
+$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
+$formdata = $formmark->get_data();
+
+// Check whether loading page or submitting page.
+if (empty($formdata)) { // Editing (not submitted).
+
+    // Get the students in the course.
+    $students = utils::get_enrolled_students($course->id);
+    if (empty($students)) {
+        redirect($viewurl->out(false));
+        exit;
+    }
+
+    // Set a default user for marking.
+    if (empty($userid)) {
+        $userid = $students[0];
+        $markurl->param('userid', $userid);
+        $PAGE->set_url($markurl);
+    }
+
+    // Export the data.
+    $relateds = array(
+        'task' => $task,
+        'students' => $students,
+        'userid' => $userid,
+        'markurl' => $markurl,
+    );
+    $markexporter = new mark_exporter(null, $relateds);
+    $data = $markexporter->export($OUTPUT);
+
+    // Reinstantiate the form with the data.
+    $formmark = new form_mark($markurl->out(false), ['data' => $data],'post', '', array('data-form' => 'psgrading-mark'));
+
+    // Set the form values.
+    /*$formmark->set_data(
+        array(
+            //evidence filemanager...
+        )
+    );*/
+
+    // Run get_data again to trigger validation and set errors.
+    $formdata = $formmark->get_data();
+
+} else {
+    echo "<pre>"; var_export($formdata); exit;
+    // The form was submitted.
+    if ($formdata->action == 'savedraft') {
+        redirect($viewurl->out());
+        exit;
+    }
+
+    if ($formdata->action == 'discardchanges') {
+        // If already published, remove draftjson.
+        if ($task->get('published')) {
+            $task->set('draftjson', '');
+            $task->save();
+        } else {
+            $task->set('deleted', 1);
+            $task->save();
+        }
+
+        // If not yet publised, delete the task.
+        redirect($viewurl->out());
+        exit;
+    }
+
+    if ($formdata->action == 'publish') {
+
+        $data = new \stdClass();
+        $data->id = $edit;
+        $data->published = 1;
+        $data->draftjson = '';
+        $data->taskname = $formdata->taskname;
+        $data->pypuoi = $formdata->pypuoi;
+        $data->outcomes = $formdata->outcomes;
+        $data->criterionjson = $formdata->criterionjson;
+        $data->evidencejson = $formdata->evidencejson;
+
+        $result = task::save_from_data($data);
+        if ($result) {
+            $notice = get_string("taskform:publishsuccess", "mod_psgrading");
+            redirect(
+                $viewurl->out(),
+                '<p>'.$notice.'</p>',
+                null,
+                \core\output\notification::NOTIFY_SUCCESS
+            );
+        } else {
+            $notice = get_string("taskform:createfail", "mod_psgrading");
+            redirect(
+                $viewurl->out(),
+                '<p>'.$notice.'</p>',
+                null,
+                \core\output\notification::NOTIFY_ERROR
+            );
+        }
+    }
+    
 }
 
-// Set a default user for marking.
-if (empty($userid)) {
-    $userid = $students[0];
-    $markurl->param('userid', $userid);
-    $PAGE->set_url($markurl);
-}
 
-// Add required styles and scripts.
+
+
+
+
+
+
+
+
+
+// Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
-// Start building page output.
-$output = $OUTPUT->header();
+echo $OUTPUT->header();
 
-// Export the data for the template using the course students and task marking.
-$relateds = array(
-    'task' => $task,
-    'students' => $students,
-    'userid' => $userid,
-    'usermarks' => null,
-    'markurl' => $markurl,
-);
-$markexporter = new mark_exporter(null, $relateds);
-$data = $markexporter->export($OUTPUT);
+$formmark->display();
 
-// Render the template.
-$output .= $OUTPUT->render_from_template('mod_psgrading/mark', $data);
-
-// Add amd scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
+// Add scripts.
+$PAGE->requires->js_call_amd('mod_psgrading/markform', 'init', array(
     'userid' => $userid,
     'taskid' => $taskid,
 ));
 
-// Final outputs.
-$output .= $OUTPUT->footer();
-echo $output;
-
-
-
-
+echo $OUTPUT->footer();
