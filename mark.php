@@ -110,55 +110,33 @@ if (empty($formdata)) { // Editing (not submitted).
     $markexporter = new mark_exporter(null, $relateds);
     $data = $markexporter->export($OUTPUT);
 
+    // Set up draft evidences file manager.
+    $draftevidence = file_get_submitted_draft_itemid('evidences');
+    $evidenceoptions = form_mark::evidence_options();
+    $uniqueid = sprintf( "%d%d", $taskid, $userid ); // Join the taskid and userid to make a unique itemid.
+    file_prepare_draft_area($draftevidence, $modulecontext->id, 'mod_psgrading', 
+        'evidences', $uniqueid, $evidenceoptions);
+
     // Reinstantiate the form with the data.
-    $formmark = new form_mark($markurl->out(false), ['data' => $data],'post', '', array('data-form' => 'psgrading-mark'));
+    $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 
     // Set the form values.
-    /*$formmark->set_data(
-        array(
-            //evidence filemanager...
-        )
-    );*/
+    $formmark->set_data(array(
+        'evidences' => $draftevidence,
+    ));
 
     // Run get_data again to trigger validation and set errors.
     $formdata = $formmark->get_data();
 
 } else {
-    echo "<pre>"; var_export($formdata); exit;
+    // Add some goodies.
+    $formdata->taskid = $taskid;
+    $formdata->userid = $userid;
     // The form was submitted.
-    if ($formdata->action == 'savedraft') {
-        redirect($viewurl->out());
-        exit;
-    }
+    if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
+        $result = task::save_task_grades($formdata);
+        var_export($result); exit;
 
-    if ($formdata->action == 'discardchanges') {
-        // If already published, remove draftjson.
-        if ($task->get('published')) {
-            $task->set('draftjson', '');
-            $task->save();
-        } else {
-            $task->set('deleted', 1);
-            $task->save();
-        }
-
-        // If not yet publised, delete the task.
-        redirect($viewurl->out());
-        exit;
-    }
-
-    if ($formdata->action == 'publish') {
-
-        $data = new \stdClass();
-        $data->id = $edit;
-        $data->published = 1;
-        $data->draftjson = '';
-        $data->taskname = $formdata->taskname;
-        $data->pypuoi = $formdata->pypuoi;
-        $data->outcomes = $formdata->outcomes;
-        $data->criterionjson = $formdata->criterionjson;
-        $data->evidencejson = $formdata->evidencejson;
-
-        $result = task::save_from_data($data);
         if ($result) {
             $notice = get_string("taskform:publishsuccess", "mod_psgrading");
             redirect(
@@ -176,6 +154,11 @@ if (empty($formdata)) { // Editing (not submitted).
                 \core\output\notification::NOTIFY_ERROR
             );
         }
+    }
+
+    if ($formdata->action == 'reset') {
+
+        
     }
     
 }

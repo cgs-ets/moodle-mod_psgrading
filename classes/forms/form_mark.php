@@ -61,7 +61,11 @@ class form_mark extends \moodleform {
         $data = $this->_customdata['data'];
 
         if (empty($data)) {
-            return;
+            // create a stub so that the fields can be setup properly.
+            $data = new \stdClass();
+            $data->task = new \stdClass();
+            $data->task->criterions = [];
+            $data->task->evidences = [];
         }
 
         /****
@@ -73,6 +77,8 @@ class form_mark extends \moodleform {
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_header', $data));
 
         // Critions.
+        $mform->addElement('text', 'criterionjson', 'Criterion JSON');
+        $mform->setType('criterionjson', PARAM_RAW);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_criterions', 
             array('criterions' => $data->task->criterions))
         );
@@ -84,14 +90,25 @@ class form_mark extends \moodleform {
         // Evidences filemanager.
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
 
+        // Engagement.
+        $engagementoptions = array(
+           'acceptable' => 'Acceptable',
+           'something' => 'Something',
+        );
+        $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), $engagementoptions);
+        $mform->setType('comment', PARAM_RAW);
+
 
         // Comment.
+        $mform->addElement('textarea', 'comment', get_string("markform:comment", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
+        $mform->setType('comment', PARAM_RAW);
 
+        // Buttons.
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_buttons', array()));
 
-        // Hidden fields
-        $mform->addElement('hidden', 'edit');
-        $mform->setType('edit', PARAM_INT);
-
+        // Hidden.
+        $mform->addElement('hidden', 'action');
+        $mform->setType('action', PARAM_RAW);
     }
 
 

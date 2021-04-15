@@ -41,6 +41,8 @@ class task extends persistent {
     const TABLE_TASK_LOGS = 'psgrading_task_logs';
     const TABLE_TASK_EVIDENCES = 'psgrading_task_evidences';
     const TABLE_TASK_CRITERIONS = 'psgrading_task_criterions';
+    const TABLE_GRADES = 'psgrading_grades';
+    const TABLE_GRADE_CRITERIONS = 'psgrading_grade_criterions';
 
     /**
      * Return the definition of the properties of this model.
@@ -167,19 +169,35 @@ class task extends persistent {
         return $tasks;
     }
 
+
     public static function get_task_user_gradeinfo($taskid, $userid) {
-        $grades = new \stdClass();
+        global $DB;
 
-        $grades->criterions = array (
-            '2' => (object) array( 'gradelevel' => 3),
-            '3' => (object) array( 'gradelevel' => 2),
-        );
-        $grades->evidences = null;
-        $grades->engagement = 'test';
-        $grades->comment = 'test';
+        // Check if grade for this task/user already exists.
+        $student = \core_user::get_user($userid);
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_GRADES . "}
+                 WHERE taskid = ?
+                   AND studentusername = ?";
+        $params = array($taskid, $student->username);
+        $gradeinfo = $DB->get_record_sql($sql, $params);
 
-        return $grades;
+        if ($gradeinfo) {
+            $gradeinfo->criterions = array();
+            // Get the criterions.
+            $sql = "SELECT *
+                      FROM {" . static::TABLE_GRADE_CRITERIONS . "}
+                     WHERE gradeid = ?";
+            $params = array($gradeinfo->id);
+            $criterionrecs = $DB->get_records_sql($sql, $params);
+            foreach ($criterionrecs as $rec) {
+                $gradeinfo->criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel );
+            }
+        }
+
+        return $gradeinfo;
     }
+
 
     public static function load_criterions(&$task) {
         global $DB;
@@ -214,6 +232,59 @@ class task extends persistent {
         }
 
         $task->evidences = $evidences;
+    }
+
+
+    public static function save_task_grades($data) {
+        global $DB, $USER;
+
+        // Some validation.
+        if (empty($data->taskid) || empty($data->userid)) {
+            return;
+        }
+
+        $student = \core_user::get_user($data->userid);
+
+        // Check if grade for this task/user already exists.
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_GRADES . "}
+                 WHERE taskid = ?
+                   AND studentusername = ?";
+        $params = array($data->taskid, $student->username);
+        $graderec = $DB->get_record_sql($sql, $params);
+
+        if ($graderec) {
+            // Update the existing grade data.
+            $graderec->graderusername = $USER->username;
+            $graderec->engagement = $data->engagement;
+            $graderec->comment = $data->comment;
+            $graderec->evidences = $data->evidences;
+            $DB->update_record(static::TABLE_GRADES, $graderec);
+        } else {
+            // Insert new grade data.
+            $graderec = new \stdClass();
+            $graderec->taskid = $data->taskid;
+            $graderec->studentusername = $student->username;
+            $graderec->graderusername = $USER->username;
+            $graderec->engagement = $data->engagement;
+            $graderec->comment = $data->comment;
+            $graderec->evidences = $data->evidences;
+            $graderec->id = $DB->insert_record(static::TABLE_GRADES, $graderec);
+        }
+
+        // Recreate criterion grades.
+        $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+        $criterions = json_decode($data->criterionjson);
+        foreach ($criterions as $selection) {
+            $criterion = new \stdClass();
+            $criterion->taskid = $data->taskid;
+            $criterion->criterionid = $selection->id;
+            $criterion->gradeid = $graderec->id;
+            $criterion->gradelevel = $selection->selectedlevel;
+            $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
+        }
+
+        return $graderec->id;
     }
 
 

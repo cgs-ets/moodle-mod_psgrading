@@ -97,6 +97,8 @@ class mark_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER;
 
+        $baseurl = clone($this->related['markurl']);
+
 		$taskexporter = new task_exporter($this->related['task']);
 		$task = $taskexporter->export($output);
 
@@ -109,7 +111,7 @@ class mark_exporter extends exporter {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
             $student->iscurrent = false;
-            $student->markurl = $this->related['markurl'];
+            $student->markurl = clone($baseurl);
             $student->markurl->param('userid', $student->id);
             $student->markurl = $student->markurl->out(false); // Replace markurl with string val.
             if ($this->related['userid'] == $student->id) {
@@ -118,8 +120,8 @@ class mark_exporter extends exporter {
                 $len = count($this->related['students']);
                 if ($len > 1) {
                     // Base url.
-                    $nextstudenturl = $this->related['markurl'];
-                    $prevstudenturl = $this->related['markurl'];
+                    $nextstudenturl = clone($baseurl);
+                    $prevstudenturl = clone($baseurl);
 
                     // Determine next and prev users.
                     if ($i == 0) {

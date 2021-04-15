@@ -26,11 +26,9 @@
 			}
 		}
 	}
-
-
-
-
-
+	#fitem_id_criterionjson {
+		display: none;
+	}
 	.marking-criterions {
 		.headings, .criterions {
 			display: table;
@@ -109,24 +107,35 @@
 			}
 		}
 	}
-
-
-
-
 	.marking-evidences {
 		margin-top: 30px;
-		max-width: 500px;
-		table {
-			border: 1px solid #ccc;
-		}
 		.heading {
 			font-weight: 600;
 	    	font-size: 120%;
 	    	padding-bottom: 5px;
 		}
+		.body {
+			overflow: hidden;
+    		background: #f2f4f6;
+    		padding: 20px 20px 0 20px;
+    		border: 1px solid #ccc;
+    		border-bottom: 0 none;
+		}
+		table {
+			border: 1px solid #ccc;
+			max-width: 500px;
+			background: #fff;
+		}
+		h6 {
+		    font-weight: 600;
+		}
 	}
 	#fitem_id_evidences {
 		margin: 0;
+    	padding: 0 20px 20px 20px;
+    	background: #f2f4f6;
+    	border: 1px solid #ccc;
+    	border-top: 0 none;
 		.col-md-3 {
 		    display: none;
 		}
@@ -150,6 +159,42 @@
 			}
 	    }
 	}
-
+	#fitem_id_engagement {
+		margin: 0;
+		.col-md-3 {
+		    padding: 20px 0 5px 0;
+		    font-weight: 600;
+    		font-size: 120%;
+		}
+		.col-md-9 {
+			padding: 0;
+			max-width: 100%;
+    		flex: 0 0 100%;
+		}
+		select {
+			width: 100%;
+			max-width: 500px;
+		}
+	}
+	#fitem_id_comment {
+		margin: 0;
+		.col-md-3 {
+		    padding: 20px 0 5px 0;
+		    font-weight: 600;
+    		font-size: 120%;
+		}
+		.col-md-9 {
+			padding: 0;
+			max-width: 100%;
+    		flex: 0 0 100%;
+		}
+		textarea {
+			width: 100%;
+			max-width: 500px;
+		}
+	}
+	.custom-footer-buttons {
+		margin-top: 30px;
+	}
 
 }

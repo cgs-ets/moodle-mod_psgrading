@@ -75,7 +75,7 @@ class form_task extends \moodleform {
          *   Outcomes
          *----------------------*/
         $mform->addElement('textarea', 'outcomes', get_string("taskform:outcomes", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
-        $mform->setType('name', PARAM_TEXT);
+        $mform->setType('outcomes', PARAM_RAW);
 
         /*----------------------
          *   Criterion

@@ -378,6 +378,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .header .student-selector a {
   cursor: pointer;
 }
+#page-mod-psgrading-mark #fitem_id_criterionjson {
+  display: none;
+}
 #page-mod-psgrading-mark .marking-criterions .headings,
 #page-mod-psgrading-mark .marking-criterions .criterions {
   display: table;
@@ -458,18 +461,33 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .marking-evidences {
   margin-top: 30px;
-  max-width: 500px;
-}
-#page-mod-psgrading-mark .marking-evidences table {
-  border: 1px solid #ccc;
 }
 #page-mod-psgrading-mark .marking-evidences .heading {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
 }
+#page-mod-psgrading-mark .marking-evidences .body {
+  overflow: hidden;
+  background: #f2f4f6;
+  padding: 20px 20px 0 20px;
+  border: 1px solid #ccc;
+  border-bottom: 0 none;
+}
+#page-mod-psgrading-mark .marking-evidences table {
+  border: 1px solid #ccc;
+  max-width: 500px;
+  background: #fff;
+}
+#page-mod-psgrading-mark .marking-evidences h6 {
+  font-weight: 600;
+}
 #page-mod-psgrading-mark #fitem_id_evidences {
   margin: 0;
+  padding: 0 20px 20px 20px;
+  background: #f2f4f6;
+  border: 1px solid #ccc;
+  border-top: 0 none;
 }
 #page-mod-psgrading-mark #fitem_id_evidences .col-md-3 {
   display: none;
@@ -490,4 +508,41 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-vb-tree {
   display: none;
+}
+#page-mod-psgrading-mark #fitem_id_engagement {
+  margin: 0;
+}
+#page-mod-psgrading-mark #fitem_id_engagement .col-md-3 {
+  padding: 20px 0 5px 0;
+  font-weight: 600;
+  font-size: 120%;
+}
+#page-mod-psgrading-mark #fitem_id_engagement .col-md-9 {
+  padding: 0;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+#page-mod-psgrading-mark #fitem_id_engagement select {
+  width: 100%;
+  max-width: 500px;
+}
+#page-mod-psgrading-mark #fitem_id_comment {
+  margin: 0;
+}
+#page-mod-psgrading-mark #fitem_id_comment .col-md-3 {
+  padding: 20px 0 5px 0;
+  font-weight: 600;
+  font-size: 120%;
+}
+#page-mod-psgrading-mark #fitem_id_comment .col-md-9 {
+  padding: 0;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+#page-mod-psgrading-mark #fitem_id_comment textarea {
+  width: 100%;
+  max-width: 500px;
+}
+#page-mod-psgrading-mark .custom-footer-buttons {
+  margin-top: 30px;
 }

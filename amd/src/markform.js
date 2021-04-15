@@ -42,7 +42,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             return;
         }
 
-        var mark = new Mark(rootel, userid, taskid);
+        var mark = new MarkForm(rootel, userid, taskid);
         mark.main();
     }
 
@@ -52,7 +52,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function Mark(rootel, userid, taskid) {
+    function MarkForm(rootel, userid, taskid) {
         var self = this;
         self.rootel = rootel;
         self.userid = userid;
@@ -63,7 +63,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      * Run the Audience Selector.
      *
      */
-   Mark.prototype.main = function () {
+   MarkForm.prototype.main = function () {
         var self = this;
 
         // Change student
@@ -85,31 +85,78 @@ define(['jquery', 'core/log', 'core/ajax'],
         // Save.
         self.rootel.on('click', '#btn-save', function(e) {
             e.preventDefault();
+            window.onbeforeunload = null;
+            self.regenerateCriterionJSON();
+            self.rootel.find('[name="action"]').val('save');
+            self.rootel.submit();
         });
 
         // Save and show next.
         self.rootel.on('click', '#btn-saveshownext', function(e) {
             e.preventDefault();
+            window.onbeforeunload = null;
+            self.regenerateCriterionJSON();
+            self.rootel.find('[name="action"]').val('saveshownext');
+            self.rootel.submit();
         });
 
         // Reset.
         self.rootel.on('click', '#btn-reset', function(e) {
             e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('reset');
+            self.rootel.submit();
         });
 
     };
+
 
     /**
      * Select a criterion level
      *
      * @method
      */
-    Mark.prototype.selectLevel = function (level) {
+    MarkForm.prototype.selectLevel = function (level) {
         var self = this;
 
         var criterion = level.closest('.criterion');
         criterion.find('.level').removeClass('selected');
         level.addClass('selected');
+    };
+
+
+    /**
+     * Regenerate criterion json.
+     *
+     * @method
+     */
+    MarkForm.prototype.regenerateCriterionJSON = function () {
+        var self = this;
+
+        var criterionjson = $('input[name="criterionjson"]');
+        var criterions = new Array();
+
+        self.rootel.find('.criterion.tbl-tr').each(function() {
+            var row = $(this);
+            var selectedlevel = row.find('.level.selected').first().data('level');
+            if (typeof selectedlevel === 'undefined') {
+                selectedlevel = 0;
+            }
+            var criterion = {
+                id: row.data('id'),
+                selectedlevel: selectedlevel,
+            };
+            criterions.push(criterion);
+        });
+
+        // Encode to json and add tag to hidden input.
+        var criterionsStr = '';
+        if (criterions.length) {
+            criterionsStr = JSON.stringify(criterions);
+            criterionjson.val(criterionsStr);
+        }
+
+        return criterionsStr;
     };
 
     return {

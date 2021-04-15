@@ -25,17 +25,19 @@
 }}
 <div class="marking-evidences">
     <div class="heading">{{#str}}taskform:evidence, mod_psgrading{{/str}}</div>
-    <h6>Default evidence</h6>
-    <table class="table generaltable">
-        <tbody>
-            {{#evidences}}
-                <tr class="evidence" data-id="{{id}}">
-                    <td class="cell">
-                        <img src="{{icon}}" class="icon" role="presentation" aria-hidden="true"><span class="name">{{name}}</span> <a class="link" target="_blank" href="{{url}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-            {{/evidences}}
-        </tbody>
-    </table>
-    <h6>Additional evidence</h6>
+    <div class="body">
+        <h6>Predefined activties related to this task</h6>
+        <table class="table generaltable">
+            <tbody>
+                {{#evidences}}
+                    <tr class="evidence" data-id="{{id}}">
+                        <td class="cell">
+                            <img src="{{icon}}" class="icon" role="presentation" aria-hidden="true"><span class="name">{{name}}</span> <a class="link" target="_blank" href="{{url}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {{/evidences}}
+            </tbody>
+        </table>
+        <h6>Additional evidence uploads</h6>
+    </div>
 </div>
