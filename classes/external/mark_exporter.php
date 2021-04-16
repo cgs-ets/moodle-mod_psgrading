@@ -69,6 +69,11 @@ class mark_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'gradeinfo' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -147,15 +152,15 @@ class mark_exporter extends exporter {
         }
 
         // Get existing marking values for this user and incorporate into task criterion data.
-        $taskusergradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
+        $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
 
         // Load task criterions.
         task::load_criterions($task);
         foreach ($task->criterions as $criteron) {
             // add marks to criterion definitions.
-            if (isset($taskusergradeinfo->criterions[$criteron->id])) {
+            if (isset($gradeinfo->criterions[$criteron->id])) {
                 // There is a gradelevel chosen for this criterion.
-                $criteron->{'level' . $taskusergradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
+                $criteron->{'level' . $gradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
             }
         }
 
@@ -180,6 +185,7 @@ class mark_exporter extends exporter {
             'currstudent' => $currstudent,
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
+            'gradeinfo' => $gradeinfo,
         );
     }
 

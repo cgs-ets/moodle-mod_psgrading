@@ -58,6 +58,9 @@ $string['markform:engagement'] = 'Engagement';
 $string['markform:save'] = 'Save';
 $string['markform:saveshownext'] = 'Save and show next';
 $string['markform:reset'] = 'Reset';
+$string['markform:savesuccess'] = 'Grade data was saved for {$a}';
+$string['markform:savefail'] = 'Failed to save grade data for {$a}';
+$string['markform:resetsuccess'] = 'Grade data was reset for {$a}';
 
 $string['pypuoi:htww'] = 'How the World Works';
 

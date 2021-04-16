@@ -79,37 +79,35 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
-// Instantiate the form.
+// Get the students in the course.
+$students = utils::get_enrolled_students($course->id);
+if (empty($students)) {
+    redirect($viewurl->out(false));
+    exit;
+}
+
+// Set a default user for marking.
+if (empty($userid)) {
+    $userid = $students[0];
+    $markurl->param('userid', $userid);
+    $PAGE->set_url($markurl);
+}
+// Export the data.
+$relateds = array(
+    'task' => $task,
+    'students' => $students,
+    'userid' => $userid,
+    'markurl' => $markurl,
+);
+$markexporter = new mark_exporter(null, $relateds);
+$output = $PAGE->get_renderer('core');
+$data = $markexporter->export($output);
+
+// Instantiate empty form so that we can "get_data" with minimal processing.
 $formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 $formdata = $formmark->get_data();
-
-// Check whether loading page or submitting page.
-if (empty($formdata)) { // Editing (not submitted).
-
-    // Get the students in the course.
-    $students = utils::get_enrolled_students($course->id);
-    if (empty($students)) {
-        redirect($viewurl->out(false));
-        exit;
-    }
-
-    // Set a default user for marking.
-    if (empty($userid)) {
-        $userid = $students[0];
-        $markurl->param('userid', $userid);
-        $PAGE->set_url($markurl);
-    }
-
-    // Export the data.
-    $relateds = array(
-        'task' => $task,
-        'students' => $students,
-        'userid' => $userid,
-        'markurl' => $markurl,
-    );
-    $markexporter = new mark_exporter(null, $relateds);
-    $data = $markexporter->export($OUTPUT);
-
+if (empty($formdata)) { 
+    // Editing (not submitted).
     // Set up draft evidences file manager.
     $draftevidence = file_get_submitted_draft_itemid('evidences');
     $evidenceoptions = form_mark::evidence_options();
@@ -123,33 +121,38 @@ if (empty($formdata)) { // Editing (not submitted).
     // Set the form values.
     $formmark->set_data(array(
         'evidences' => $draftevidence,
+        'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
+        'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
     ));
 
     // Run get_data again to trigger validation and set errors.
     $formdata = $formmark->get_data();
 
 } else {
-    // Add some goodies.
+    // Add some goodies to the submitted data.
     $formdata->taskid = $taskid;
     $formdata->userid = $userid;
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
-        $result = task::save_task_grades($formdata);
-        var_export($result); exit;
+        $result = task::save_task_grades_for_student($formdata);
 
         if ($result) {
-            $notice = get_string("taskform:publishsuccess", "mod_psgrading");
+            $redirecturl = $markurl->out();
+            if ($formdata->action == 'saveshownext') {
+                $redirecturl = $data->nextstudenturl;
+            }
+            $notice = get_string("markform:savesuccess", "mod_psgrading", $data->currstudent->fullname);
             redirect(
-                $viewurl->out(),
-                '<p>'.$notice.'</p>',
+                $redirecturl,
+                $notice,
                 null,
                 \core\output\notification::NOTIFY_SUCCESS
             );
         } else {
-            $notice = get_string("taskform:createfail", "mod_psgrading");
+            $notice = get_string("markform:savefail", "mod_psgrading", $data->currstudent->fullname);
             redirect(
-                $viewurl->out(),
-                '<p>'.$notice.'</p>',
+                $markurl->out(),
+                $notice,
                 null,
                 \core\output\notification::NOTIFY_ERROR
             );
@@ -157,8 +160,14 @@ if (empty($formdata)) { // Editing (not submitted).
     }
 
     if ($formdata->action == 'reset') {
-
-        
+        task::reset_task_grades_for_student($formdata);
+        $notice = get_string("markform:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
+        redirect(
+            $markurl->out(),
+            $notice,
+            null,
+            \core\output\notification::NOTIFY_SUCCESS
+        );
     }
     
 }

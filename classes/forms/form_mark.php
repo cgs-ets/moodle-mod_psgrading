@@ -92,6 +92,7 @@ class form_mark extends \moodleform {
 
         // Engagement.
         $engagementoptions = array(
+           '' => 'Select',
            'acceptable' => 'Acceptable',
            'something' => 'Something',
         );

@@ -30,6 +30,7 @@ use \core\persistent;
 use \core_user;
 use \context_user;
 use \context_course;
+use \mod_psgrading\forms\form_mark;
 
 /**
  * Persistent model representing a single task.
@@ -170,10 +171,25 @@ class task extends persistent {
     }
 
 
+    public static function get_grade_criterion_selections($gradeid) {
+        global $DB;
+
+        $criterions = array();
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_GRADE_CRITERIONS . "}
+                 WHERE gradeid = ?";
+        $params = array($gradeid);
+        $criterionrecs = $DB->get_records_sql($sql, $params);
+        foreach ($criterionrecs as $rec) {
+            $criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel );
+        }
+
+        return $criterions;
+    }
+
     public static function get_task_user_gradeinfo($taskid, $userid) {
         global $DB;
 
-        // Check if grade for this task/user already exists.
         $student = \core_user::get_user($userid);
         $sql = "SELECT *
                   FROM {" . static::TABLE_GRADES . "}
@@ -183,16 +199,7 @@ class task extends persistent {
         $gradeinfo = $DB->get_record_sql($sql, $params);
 
         if ($gradeinfo) {
-            $gradeinfo->criterions = array();
-            // Get the criterions.
-            $sql = "SELECT *
-                      FROM {" . static::TABLE_GRADE_CRITERIONS . "}
-                     WHERE gradeid = ?";
-            $params = array($gradeinfo->id);
-            $criterionrecs = $DB->get_records_sql($sql, $params);
-            foreach ($criterionrecs as $rec) {
-                $gradeinfo->criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel );
-            }
+            $gradeinfo->criterions = static::get_grade_criterion_selections($gradeinfo->id);
         }
 
         return $gradeinfo;
@@ -235,15 +242,31 @@ class task extends persistent {
     }
 
 
-    public static function save_task_grades($data) {
+    public static function save_task_grades_for_student($data) {
         global $DB, $USER;
 
         // Some validation.
         if (empty($data->taskid) || empty($data->userid)) {
             return;
         }
-
+        // Load needed data.
+        $task = new static($data->taskid);
         $student = \core_user::get_user($data->userid);
+        $modulecontext = \context_module::instance($task->get('cmid'));
+
+        // Save evidence files to permanent store.
+        if (isset($data->evidences)) {
+            $evidenceoptions = form_mark::evidence_options();
+            $uniqueid = sprintf( "%d%d", $data->taskid, $data->userid ); // Join the taskid and userid to make a unique itemid.
+            file_save_draft_area_files(
+                $data->evidences, 
+                $modulecontext->id, 
+                'mod_psgrading', 
+                'evidences', 
+                $uniqueid, 
+                $evidenceoptions
+            );
+        }
 
         // Check if grade for this task/user already exists.
         $sql = "SELECT *
@@ -273,18 +296,54 @@ class task extends persistent {
         }
 
         // Recreate criterion grades.
-        $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
-        $criterions = json_decode($data->criterionjson);
-        foreach ($criterions as $selection) {
-            $criterion = new \stdClass();
-            $criterion->taskid = $data->taskid;
-            $criterion->criterionid = $selection->id;
-            $criterion->gradeid = $graderec->id;
-            $criterion->gradelevel = $selection->selectedlevel;
-            $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
+        if ($graderec->id) {
+            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+            $criterions = json_decode($data->criterionjson);
+            foreach ($criterions as $selection) {
+                $criterion = new \stdClass();
+                $criterion->taskid = $data->taskid;
+                $criterion->criterionid = $selection->id;
+                $criterion->gradeid = $graderec->id;
+                $criterion->gradelevel = $selection->selectedlevel;
+                $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
+            }
         }
 
         return $graderec->id;
+    }
+
+    public static function reset_task_grades_for_student($data) {
+        global $DB, $USER;
+
+        // Some validation.
+        if (empty($data->taskid) || empty($data->userid)) {
+            return;
+        }
+        // Load needed data.
+        $task = new static($data->taskid);
+        $student = \core_user::get_user($data->userid);
+        $modulecontext = \context_module::instance($task->get('cmid'));
+
+        // Check if grade for this task/user already exists.
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_GRADES . "}
+                 WHERE taskid = ?
+                   AND studentusername = ?";
+        $params = array($data->taskid, $student->username);
+        $graderec = $DB->get_record_sql($sql, $params);
+
+        if ($graderec) {
+            // Delete everything...
+            $DB->delete_records(static::TABLE_GRADES, array('id' => $graderec->id));
+            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+            // Delete evidence files.
+            $fs = get_file_storage();
+            $uniqueid = sprintf( "%d%d", $data->taskid, $data->userid ); // Join the taskid and userid to make a unique itemid.
+            $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
+            foreach ($files as $file) {
+                $file->delete();
+            }
+        }
     }
 
 

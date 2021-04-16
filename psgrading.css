@@ -357,11 +357,20 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark #region-main-settings-menu {
   display: none;
 }
+#page-mod-psgrading-mark #region-main {
+  padding: 0;
+}
+#page-mod-psgrading-mark #user-notifications .alert {
+  margin: 0;
+}
+#page-mod-psgrading-mark form[data-form="psgrading-mark"] {
+  padding: 0 20px 20px 20px;
+}
 #page-mod-psgrading-mark .header {
   background-color: #f5f5f5;
   overflow: hidden;
   padding: 20px;
-  margin: -21px -20px 30px -20px;
+  margin: -1px -20px 30px -20px;
   box-shadow: 1px 0 12px -3px black;
 }
 #page-mod-psgrading-mark .header .selected-student {
