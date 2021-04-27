@@ -366,7 +366,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark form[data-form="psgrading-mark"] {
   padding: 0 20px 20px 20px;
 }
-#page-mod-psgrading-mark abbr.text-danger,
+#page-mod-psgrading-mark .text-danger[title="Required"],
 #page-mod-psgrading-mark .fdescription.required {
   display: none;
 }
