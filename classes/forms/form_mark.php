@@ -102,8 +102,9 @@ class form_mark extends \moodleform {
 
 
         // Comment.
-        $mform->addElement('textarea', 'comment', get_string("markform:comment", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
+        $mform->addElement('textarea', 'comment', get_string("markform:comment", "mod_psgrading") . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('comment', PARAM_RAW);
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_commentbank', array()));
 
         // Buttons.
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_buttons', array()));

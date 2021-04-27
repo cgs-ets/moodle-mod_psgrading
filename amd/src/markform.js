@@ -66,7 +66,7 @@ define(['jquery', 'core/log', 'core/ajax'],
    MarkForm.prototype.main = function () {
         var self = this;
 
-        // Change student
+        // Change student.
         self.rootel.on('change', '.student-select', function(e) {
             var select = $(this);
             var url = select.find(':selected').data('markurl');
@@ -110,6 +110,12 @@ define(['jquery', 'core/log', 'core/ajax'],
             window.onbeforeunload = null;
             self.rootel.find('[name="action"]').val('reset');
             self.rootel.submit();
+        });
+
+        // Save comment to bank.
+        self.rootel.on('click', '#save-to-comment-bank', function(e) {
+            e.preventDefault();
+            self.saveComment();
         });
 
     };
@@ -161,6 +167,18 @@ define(['jquery', 'core/log', 'core/ajax'],
         }
 
         return criterionsStr;
+    };
+
+    /**
+     * Select a criterion level
+     *
+     * @method
+     */
+    MarkForm.prototype.saveComment = function () {
+        var self = this;
+
+        var comment = self.rootel.find('textarea[name="comment"]');
+        alert(comment.val());
     };
 
     return {

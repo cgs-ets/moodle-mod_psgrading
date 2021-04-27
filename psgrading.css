@@ -429,7 +429,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col .box {
   width: 100%;
-  height: 90px;
   padding: 10px;
   font-size: 90%;
   border-radius: 2px;
@@ -551,11 +550,16 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark #fitem_id_comment {
   margin: 0;
+  float: left;
+  width: 35%;
+  position: relative;
+  padding-bottom: 24px;
 }
 #page-mod-psgrading-mark #fitem_id_comment .col-md-3 {
   padding: 20px 0 5px 0;
   font-weight: 600;
   font-size: 120%;
+  position: unset;
 }
 #page-mod-psgrading-mark #fitem_id_comment .col-md-9 {
   padding: 0;
@@ -564,7 +568,33 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark #fitem_id_comment textarea {
   width: 100%;
-  max-width: 500px;
+}
+#page-mod-psgrading-mark #save-to-comment-bank {
+  margin-left: 0;
+  margin-top: -26px;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+#page-mod-psgrading-mark .comment-bank {
+  float: left;
+  width: 65%;
+  padding: 52px 0 0 10px;
+}
+#page-mod-psgrading-mark .comment-bank .comment {
+  background: #f2f4f6;
+  padding: 5px 10px;
+  border: 1px dashed #ddd;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 3px;
+}
+#page-mod-psgrading-mark .clear {
+  clear: both;
 }
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
