@@ -473,7 +473,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   }
   #page-mod-psgrading-mark .marking-criterions .tbl-col {
     display: block;
-    width: 100%;
+    width: 100% !important;
   }
   #page-mod-psgrading-mark .marking-criterions .tbl-col .label {
     display: block;
