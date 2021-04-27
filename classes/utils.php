@@ -234,7 +234,7 @@ class utils {
         $selectedcms = array();
         $evidencejson = json_decode($evidencejson);
         if ($evidencejson) {
-            $selectedcms = array_column($evidencejson, 'data');
+            $selectedcms = array_column($evidencejson, 'refdata');
         }
         $activities = array();
         $modinfo = get_fast_modinfo($course, $USER->id);

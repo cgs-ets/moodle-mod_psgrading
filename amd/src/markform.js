@@ -80,6 +80,10 @@ define(['jquery', 'core/log', 'core/ajax'],
             e.preventDefault();
             var level = $(this);
             self.selectLevel(level);
+            // Trigger check if user attempts to leave page.
+            window.onbeforeunload = function() {
+                return 'You have unsaved changes!';
+            }
         });
 
         // Save.

@@ -97,7 +97,8 @@ class form_mark extends \moodleform {
            'something' => 'Something',
         );
         $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), $engagementoptions);
-        $mform->setType('comment', PARAM_RAW);
+        $mform->setType('engagement', PARAM_RAW);
+        $mform->addRule('engagement', get_string('required'), 'required', null, 'client');
 
 
         // Comment.

@@ -103,6 +103,9 @@ $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
 
+// Add task to nav.
+$PAGE->navbar->add($data->task->taskname, $data->task->editurl);
+
 // Instantiate empty form so that we can "get_data" with minimal processing.
 $formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 $formdata = $formmark->get_data();
@@ -137,7 +140,7 @@ if (empty($formdata)) {
         $result = task::save_task_grades_for_student($formdata);
 
         if ($result) {
-            $redirecturl = $markurl->out();
+            $redirecturl = $viewurl->out();
             if ($formdata->action == 'saveshownext') {
                 $redirecturl = $data->nextstudenturl;
             }
