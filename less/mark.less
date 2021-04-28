@@ -244,6 +244,36 @@
 		    text-overflow: ellipsis;
 		    white-space: nowrap;
 		    margin-bottom: 3px;
+		    position: relative;
+		    cursor: pointer;
+		    transition: padding 0.3s;
+		    a {
+		    	transition: all 0.3s;
+		    	opacity: 0;
+		    	position: absolute;
+		    	visibility: hidden;
+		    	background: #f2f4f6;
+			    text-align: center;
+		    }
+		    a.delete {
+			    top: 4px;
+    			right: 0;
+    			width: 30px;
+		    }
+		    a.append {
+			    top: 4px;
+    			left: 10px;
+		    }
+		    &:hover {
+		    	padding-left: 23px;
+		    	a {
+		    		opacity: 1;
+		    		visibility: visible;
+		    	}
+			    a.append {
+	    			left: 5px;
+			    }
+		    }
 	    }
 	}
 	.clear {

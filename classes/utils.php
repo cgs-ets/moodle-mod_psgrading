@@ -307,18 +307,6 @@ class utils {
         $user->profilephoto = $userphoto->get_url($PAGE)->out(false);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public static function get_taskdata_as_xml($data) {
         $xml = "<taskname>{$data->taskname}</taskname>";
         $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";

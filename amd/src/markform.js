@@ -63,7 +63,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      * Run the Audience Selector.
      *
      */
-   MarkForm.prototype.main = function () {
+    MarkForm.prototype.main = function () {
         var self = this;
 
         // Change student.
@@ -116,6 +116,26 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.rootel.on('click', '#save-to-comment-bank', function(e) {
             e.preventDefault();
             self.saveComment();
+        });
+
+        // Append comment.
+        self.rootel.on('click', '.comment', function(e) {
+            e.preventDefault();
+            var comment = $(this);
+            var text = comment.find('.text').html();
+            var textarea = self.rootel.find('#id_comment');
+            if (textarea.val()) {
+                text = textarea.val() + '\n' + text;
+            }
+            textarea.val(text);
+        });
+
+        // Delete comment from bank.
+        self.rootel.on('click', '.comment .delete', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var button = $(this);
+            self.deleteComment(button);
         });
 
     };
@@ -178,7 +198,57 @@ define(['jquery', 'core/log', 'core/ajax'],
         var self = this;
 
         var comment = self.rootel.find('textarea[name="comment"]');
-        alert(comment.val());
+        if (!comment.val().length) {
+            return;
+        }
+
+        var data = {
+            comment : comment.val(),
+            taskid : self.taskid,
+        };
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'save_comment',
+                data: JSON.stringify(data),
+            },
+            done: function(html) {
+                self.rootel.find('.comment-bank .stored').html(html);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+
+    };
+
+    /**
+     * Select a criterion level
+     *
+     * @method
+     */
+    MarkForm.prototype.deleteComment = function (button) {
+        var self = this;
+
+        var comment = button.closest('.comment');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'delete_comment',
+                data: comment.data('id'),
+            },
+            done: function(response) {
+                comment.fadeOut(300, function(){
+                    $(this).remove();
+                });
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+
     };
 
     return {

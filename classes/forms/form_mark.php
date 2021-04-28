@@ -29,6 +29,7 @@ require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
 use \mod_psgrading\utils;
+use \mod_psgrading\persistents\task;
 
 class form_mark extends \moodleform {
 
@@ -64,6 +65,7 @@ class form_mark extends \moodleform {
             // create a stub so that the fields can be setup properly.
             $data = new \stdClass();
             $data->task = new \stdClass();
+            $data->task->id = -1;
             $data->task->criterions = [];
             $data->task->evidences = [];
         }
@@ -104,7 +106,8 @@ class form_mark extends \moodleform {
         // Comment.
         $mform->addElement('textarea', 'comment', get_string("markform:comment", "mod_psgrading") . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('comment', PARAM_RAW);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_commentbank', array()));
+        $comments = task::get_comment_bank($data->task->id);
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_commentbank', array('comments' => $comments)));
 
         // Buttons.
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_buttons', array()));

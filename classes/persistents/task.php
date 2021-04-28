@@ -346,5 +346,52 @@ class task extends persistent {
         }
     }
 
+    public static function save_comment_and_reload($taskid, $comment) {
+        global $OUTPUT;
+        static::save_comment($taskid, $comment);
+        $comments = static::get_comment_bank($taskid);
+        $html = $OUTPUT->render_from_template('mod_psgrading/markform_commentbank_comments', array('comments' => $comments));
+        return $html;
+    }
+
+    public static function save_comment($taskid, $commenttext) {
+        global $DB, $USER;
+        $comment = new \stdClass();
+        $comment->taskid = $taskid;
+        $comment->comment = $commenttext;
+        $comment->username = $USER->username;
+        $comment->id = $DB->insert_record('psgrading_comment_bank', $comment);
+        return $comment;
+    }
+
+    public static function get_comment_bank($taskid) {
+        global $DB, $USER;
+        
+        $sql = "SELECT *
+                  FROM {psgrading_comment_bank}
+                 WHERE taskid = ?
+                   AND username = ?
+              ORDER BY id DESC";
+        $params = array($taskid, $USER->username);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $comments = array();
+        foreach ($records as $record) {
+            $comments[] = $record;
+        }
+        return $comments;
+    }
+
+    public static function delete_comment($commentid) {
+        global $USER, $DB;
+
+        $DB->delete_records('psgrading_comment_bank', array(
+            'id' => $commentid,
+            'username' => $USER->username,
+        ));
+
+        return 1;
+    }
+
 
 }

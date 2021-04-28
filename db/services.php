@@ -25,4 +25,23 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = [];
+$functions = [
+    'mod_psgrading_autosave' => [
+        'classname'     => 'mod_psgrading\external\api',
+        'methodname'    => 'autosave',
+        'classpath'     => '',
+        'description'   => 'Autosave a task',
+        'type'          => 'write',
+        'loginrequired' => true,
+        'ajax'          => true,
+    ],
+    'mod_psgrading_apicontrol' => [
+        'classname'     => 'mod_psgrading\external\api',
+        'methodname'    => 'apicontrol',
+        'classpath'     => '',
+        'description'   => 'API control',
+        'type'          => 'write',
+        'loginrequired' => true,
+        'ajax'          => true,
+    ],
+];

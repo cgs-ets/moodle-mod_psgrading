@@ -19,11 +19,13 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/markform_commentbank
+    @template mod_psgrading/markform_commentbank_comments
 }}
-<div class="comment-bank">
-    <div class="stored">
-        {{>mod_psgrading/markform_commentbank_comments}}
+
+{{#comments}}
+    <div class="comment" data-id="{{id}}">
+        <a class="append" href="#" title="Append comment text"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        <div class="text">{{comment}}</div>
+        <a class="delete" href="#" title="Delete comment from bank"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
-</div>
-<div class="clear"></div>
+{{/comments}}
