@@ -25,6 +25,15 @@
     <div class="selected-student" data-userid="{{currstudent.id}}">
         <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
     </div>
+    <div class="task-selector">
+        {{#currstudent.othertasks.0}}
+            <select class="task-select form-control">
+                {{#currstudent.othertasks}}
+                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{taskname}}</option>
+                {{/currstudent.othertasks}}
+            </select>
+        {{/currstudent.othertasks.0}}
+    </div>
     <div class="student-selector">
         <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
         <select class="student-select form-control">

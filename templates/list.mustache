@@ -19,9 +19,9 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/view
+    @template mod_psgrading/list
 
-    View template.
+    List template.
 }}
 
 <div class="mod_psgrading">
@@ -42,10 +42,10 @@
             </thead>
             <tbody>
                 {{#tasks}}
-                    {{>mod_psgrading/view_task}}
+                    {{>mod_psgrading/list_task}}
                 {{/tasks}}
             </tbody>
         </table>
-        {{^tasks.0}}{{#str}} view:notasks, mod_psgrading {{/str}}{{/tasks.0}}
+        {{^tasks.0}}{{#str}} list:notasks, mod_psgrading {{/str}}{{/tasks.0}}
     </div>
 </div>

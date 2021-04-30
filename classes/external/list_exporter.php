@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Provides {@link mod_psgrading\external\view_exporter} class.
+ * Provides {@link mod_psgrading\external\list_exporter} class.
  *
  * @package   mod_psgrading
  * @copyright 2021 Michael Vangelovski
@@ -31,7 +31,7 @@ use core\external\exporter;
 /**
  * Exporter of a single task
  */
-class view_exporter extends exporter {
+class list_exporter extends exporter {
 
     /**
     * Return the list of additional properties.

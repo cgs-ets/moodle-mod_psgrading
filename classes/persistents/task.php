@@ -205,6 +205,29 @@ class task extends persistent {
         return $gradeinfo;
     }
 
+    public static function get_cm_user_taskinfo($cmid, $userid, $currtaskid = -1) {
+        global $DB;
+
+        $taskinfo = array();
+
+        $tasks = static::get_for_coursemodule($cmid);
+        foreach ($tasks as $task) {
+            $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+                'cmid' => $cmid,
+                'taskid' => $task->get('id'),
+                'userid' => $userid,
+            ));
+            $taskinfo[] = array(
+                'id' => $task->get('id'),
+                'taskname' => $task->get('taskname'),
+                'markurl' => $markurl->out(false),
+                'iscurrent' => ($task->get('id') == $currtaskid),
+            );
+        }
+
+        return $taskinfo;
+    }
+
 
     public static function load_criterions(&$task) {
         global $DB;

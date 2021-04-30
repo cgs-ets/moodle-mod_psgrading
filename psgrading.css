@@ -380,6 +380,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .header .selected-student {
   float: left;
 }
+#page-mod-psgrading-mark .header .task-selector {
+  float: left;
+  margin-left: 15px;
+}
+#page-mod-psgrading-mark .header .task-selector select {
+  width: auto;
+  min-width: 200px;
+}
 #page-mod-psgrading-mark .header .student-selector {
   float: right;
 }
@@ -622,6 +630,12 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .comment-bank .comment:hover a.append {
   left: 5px;
+}
+#page-mod-psgrading-mark .comment-bank.submitting .spinner {
+  display: block;
+  margin: 0 0 5px 0;
+  height: 25px;
+  width: 25px;
 }
 #page-mod-psgrading-mark .clear {
   clear: both;

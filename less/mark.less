@@ -28,6 +28,14 @@
 		.selected-student {
 			float: left;
 		}
+		.task-selector {
+			float: left;
+			margin-left: 15px;
+			select {
+			    width: auto;
+			    min-width: 200px;
+			}
+		}
 		.student-selector {
 			float: right;
 			select {
@@ -274,6 +282,14 @@
 	    			left: 5px;
 			    }
 		    }
+	    }
+	    &.submitting {
+	    	.spinner {
+	    		display: block;
+	    		margin: 0 0 5px 0;
+			    height: 25px;
+			    width: 25px;
+	    	}
 	    }
 	}
 	.clear {

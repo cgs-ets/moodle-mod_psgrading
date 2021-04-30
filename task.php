@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A student portfolio tool for CGS.
+ * A framework for CGS's Primary School assessment grading model.
  *
  * @package   mod_psgrading
  * @copyright 2020 Michael Vangelovski
@@ -56,7 +56,7 @@ $editurl = new moodle_url('/mod/psgrading/task.php', array(
     'cmid' => $cm->id,
     'edit' => $edit,
 ));
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
+$listurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
 ));
 
@@ -92,7 +92,7 @@ if ($create) {
     }
 
     if (!$exists || $task->get('deleted')) {
-        redirect($viewurl->out(false));
+        redirect($listurl->out(false));
         exit;
     }
 
@@ -167,7 +167,7 @@ if ($create) {
 
         // The form was submitted.
         if ($formdata->action == 'savedraft') {
-            redirect($viewurl->out());
+            redirect($listurl->out());
             exit;
         }
 
@@ -182,7 +182,7 @@ if ($create) {
             }
 
             // If not yet publised, delete the task.
-            redirect($viewurl->out());
+            redirect($listurl->out());
             exit;
         }
 
@@ -202,7 +202,7 @@ if ($create) {
             if ($result) {
                 $notice = get_string("taskform:publishsuccess", "mod_psgrading");
                 redirect(
-                    $viewurl->out(),
+                    $listurl->out(),
                     '<p>'.$notice.'</p>',
                     null,
                     \core\output\notification::NOTIFY_SUCCESS
@@ -210,7 +210,7 @@ if ($create) {
             } else {
                 $notice = get_string("taskform:createfail", "mod_psgrading");
                 redirect(
-                    $viewurl->out(),
+                    $listurl->out(),
                     '<p>'.$notice.'</p>',
                     null,
                     \core\output\notification::NOTIFY_ERROR

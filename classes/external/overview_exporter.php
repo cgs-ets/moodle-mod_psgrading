@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Provides {@link mod_psgrading\external\mark_exporter} class.
+ * Provides {@link mod_psgrading\external\overview_exporter} class.
  *
  * @package   mod_psgrading
  * @copyright 2021 Michael Vangelovski
@@ -33,7 +33,7 @@ use \mod_psgrading\persistents\task;
 /**
  * Exporter of a single task
  */
-class mark_exporter extends exporter {
+class overview_exporter extends exporter {
 
     /**
     * Return the list of additional properties.
@@ -44,8 +44,8 @@ class mark_exporter extends exporter {
     */
     protected static function define_other_properties() {
         return [
-            'task' => [
-                'type' => task_exporter::read_properties_definition(),
+            'tasks' => [
+                'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
             ],
@@ -69,11 +69,6 @@ class mark_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'gradeinfo' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],
         ];
     }
 
@@ -86,10 +81,10 @@ class mark_exporter extends exporter {
     */
     protected static function define_related() {
         return [
-            'task' => 'mod_psgrading\persistents\task',
+            'cmid' => 'int',
             'students' => 'int[]?',
             'userid' => 'int',
-            'markurl' => 'moodle_url'
+            'overviewurl' => 'moodle_url'
         ];
     }
 
@@ -102,10 +97,47 @@ class mark_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER;
 
-        $baseurl = clone($this->related['markurl']);
+        $baseurl = clone($this->related['overviewurl']);
 
-		$taskexporter = new task_exporter($this->related['task']);
-		$task = $taskexporter->export($output);
+        $tasks = array();
+        $cmtasks = task::get_for_coursemodule($this->related['cmid']);
+
+        foreach ($cmtasks as $task) {
+            $taskexporter = new task_exporter($task);
+            $task = $taskexporter->export($output);
+
+            // Get existing marking values for this user and incorporate into task criterion data.
+            $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
+
+            // Load task criterions.
+            task::load_criterions($task);
+            foreach ($task->criterions as $criteron) {
+                // add marks to criterion definitions.
+                if (isset($gradeinfo->criterions[$criteron->id])) {
+                    // There is a gradelevel chosen for this criterion.
+                    $criteron->{'level' . $gradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
+                }
+            }
+
+            $task->gradeinfo = $gradeinfo;
+
+            // Load task evidences (default).
+            task::load_evidences($task);
+            foreach ($task->evidences as &$evidence) {
+                if ($evidence->evidencetype == 'cm') {
+                    // get the icon and name.
+                    $cm = get_coursemodule_from_id('', $evidence->refdata);
+                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                    $cms = $modinfo->get_cms();
+                    $cm = $cms[$evidence->refdata];
+                    $evidence->icon = $cm->get_icon_url()->out();
+                    $evidence->url = $cm->url;
+                    $evidence->name = $cm->name;
+                }
+            }
+
+            $tasks[] = $task;
+        }
 
         // Student Navigation.
         $currstudent = null;
@@ -116,9 +148,9 @@ class mark_exporter extends exporter {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
             $student->iscurrent = false;
-            $student->markurl = clone($baseurl);
-            $student->markurl->param('userid', $student->id);
-            $student->markurl = $student->markurl->out(false); // Replace markurl with string val.
+            $student->overviewurl = clone($baseurl);
+            $student->overviewurl->param('userid', $student->id);
+            $student->overviewurl = $student->overviewurl->out(false); // Replace overviewurl with string val.
             if ($this->related['userid'] == $student->id) {
                 $student->iscurrent = true;
                 $currstudent = $student;
@@ -151,44 +183,12 @@ class mark_exporter extends exporter {
             $nextstudenturl = $nextstudenturl->out(false);
         }
 
-        // Load current students other tasks from this activity.
-        $currstudent->othertasks = task::get_cm_user_taskinfo($task->cmid, $this->related['userid'], $task->id);
-
-        // Get existing marking values for this user and incorporate into task criterion data.
-        $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
-
-        // Load task criterions.
-        task::load_criterions($task);
-        foreach ($task->criterions as $criteron) {
-            // add marks to criterion definitions.
-            if (isset($gradeinfo->criterions[$criteron->id])) {
-                // There is a gradelevel chosen for this criterion.
-                $criteron->{'level' . $gradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
-            }
-        }
-
-        // Load task evidences (default).
-        task::load_evidences($task);
-        foreach ($task->evidences as &$evidence) {
-            if ($evidence->evidencetype == 'cm') {
-                // get the icon and name.
-                $cm = get_coursemodule_from_id('', $evidence->refdata);
-                $modinfo = get_fast_modinfo($cm->course, $USER->id);
-                $cms = $modinfo->get_cms();
-                $cm = $cms[$evidence->refdata];
-                $evidence->icon = $cm->get_icon_url()->out();
-                $evidence->url = $cm->url;
-                $evidence->name = $cm->name;
-            }
-        }
-
         return array(
-            'task' => $task,
+            'tasks' => $tasks,
             'students' => $students,
             'currstudent' => $currstudent,
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
-            'gradeinfo' => $gradeinfo,
         );
     }
 

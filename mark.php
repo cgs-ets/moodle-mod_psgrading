@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A student portfolio tool for CGS.
+ * A framework for CGS's Primary School assessment grading model.
  *
  * @package   mod_psgrading
  * @copyright 2020 Michael Vangelovski
@@ -28,7 +28,7 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use \mod_psgrading\forms\form_mark;
-use mod_psgrading\external\mark_exporter;
+use \mod_psgrading\external\mark_exporter;
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
 
@@ -58,7 +58,7 @@ $markurl = new moodle_url('/mod/psgrading/mark.php', array(
     'taskid' => $taskid,
     'userid' => $userid,
 ));
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
+$listurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
 ));
 
@@ -75,14 +75,14 @@ if ($exists) {
 }
 
 if (!$exists || $task->get('deleted')) {
-    redirect($viewurl->out(false));
+    redirect($listurl->out(false));
     exit;
 }
 
 // Get the students in the course.
 $students = utils::get_enrolled_students($course->id);
 if (empty($students)) {
-    redirect($viewurl->out(false));
+    redirect($listurl->out(false));
     exit;
 }
 
@@ -140,7 +140,7 @@ if (empty($formdata)) {
         $result = task::save_task_grades_for_student($formdata);
 
         if ($result) {
-            $redirecturl = $viewurl->out();
+            $redirecturl = $listurl->out();
             if ($formdata->action == 'saveshownext') {
                 $redirecturl = $data->nextstudenturl;
             }

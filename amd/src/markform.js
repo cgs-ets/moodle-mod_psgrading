@@ -75,6 +75,15 @@ define(['jquery', 'core/log', 'core/ajax'],
             }
         });
 
+        // Change task.
+        self.rootel.on('change', '.task-select', function(e) {
+            var select = $(this);
+            var url = select.find(':selected').data('markurl');
+            if (url) {
+                window.location.replace(url);
+            }
+        });
+
         // Criterion level select.
         self.rootel.on('click', '.criterions .level', function(e) {
             e.preventDefault();
@@ -202,6 +211,9 @@ define(['jquery', 'core/log', 'core/ajax'],
             return;
         }
 
+        var commentbank = self.rootel.find('.comment-bank');
+        commentbank.addClass('submitting');
+
         var data = {
             comment : comment.val(),
             taskid : self.taskid,
@@ -214,7 +226,8 @@ define(['jquery', 'core/log', 'core/ajax'],
                 data: JSON.stringify(data),
             },
             done: function(html) {
-                self.rootel.find('.comment-bank .stored').html(html);
+                commentbank.find('.stored').html(html);
+                commentbank.removeClass('submitting');
             },
             fail: function(reason) {
                 Log.debug(reason);
@@ -232,6 +245,7 @@ define(['jquery', 'core/log', 'core/ajax'],
         var self = this;
 
         var comment = button.closest('.comment');
+        comment.css('opacity', '0.4');
 
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',

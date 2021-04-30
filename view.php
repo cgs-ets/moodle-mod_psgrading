@@ -26,7 +26,7 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use mod_psgrading\persistents\task;
-use mod_psgrading\external\view_exporter;
+use mod_psgrading\external\list_exporter;
 
 // Course_module ID, or
 $id = optional_param('id', 0, PARAM_INT);
@@ -66,11 +66,11 @@ $relateds = array(
     'cmid' => $cm->id,
 	'tasks' => $taskdata,
 );
-$viewexporter = new view_exporter(null, $relateds);
-$data = $viewexporter->export($OUTPUT);
+$listexporter = new list_exporter(null, $relateds);
+$data = $listexporter->export($OUTPUT);
 
 // Render the announcement list.
-$output .= $OUTPUT->render_from_template('mod_psgrading/view', $data);
+$output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
 
 // Final outputs.
 $output .= $OUTPUT->footer();

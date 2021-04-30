@@ -64,7 +64,7 @@ $string['markform:resetsuccess'] = 'Grade data was reset for {$a}';
 
 $string['pypuoi:htww'] = 'How the World Works';
 
-$string['view:notasks'] = 'There are no tasks yet.';
+$string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
 $string['unpublishededits'] = 'Contains unpublished edits';
 $string['notpublishedyet'] = 'Not published yet';
