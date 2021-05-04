@@ -378,8 +378,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-view .generaltable tbody tr.task .c-outcomes {
   max-width: 270px;
 }
-#page-mod-psgrading-view .header {
-  padding: 20px 0;
+#page-mod-psgrading-view .tasks {
+  margin-top: 25px;
 }
 #page-mod-psgrading-mark .activity-navigation {
   display: none;
