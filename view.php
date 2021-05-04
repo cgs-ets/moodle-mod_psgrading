@@ -75,4 +75,3 @@ $output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
 // Final outputs.
 $output .= $OUTPUT->footer();
 echo $output;
-

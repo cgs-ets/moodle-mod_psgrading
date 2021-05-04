@@ -91,22 +91,24 @@ $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 
-echo "<pre>";
-var_export($data);
-exit;
+
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
-echo $OUTPUT->header();
+$output = $OUTPUT->header();
 
 
+echo "<h3>Render me!</h3>";
+echo "<pre>";
+var_export($data);
+exit;
 
-
-
+$output .= $OUTPUT->render_from_template('mod_psgrading/overview', $data);
 
 
 // Add scripts.
 $PAGE->requires->js_call_amd('mod_psgrading/overview', 'init');
 
-echo $OUTPUT->footer();
+$output .= $OUTPUT->footer();
+echo $output;

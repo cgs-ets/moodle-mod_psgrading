@@ -48,6 +48,36 @@
     transform: rotate(360deg);
   }
 }
+/* Helpers */
+.path-mod-psgrading .header {
+  background-color: #f5f5f5;
+  overflow: hidden;
+  padding: 20px;
+  margin: -1px -20px 30px -20px;
+  box-shadow: 1px 0 12px -3px black;
+}
+.path-mod-psgrading .header .selected-student {
+  float: left;
+}
+.path-mod-psgrading .header .task-selector {
+  float: left;
+  margin-left: 15px;
+}
+.path-mod-psgrading .header .task-selector select {
+  width: auto;
+  min-width: 200px;
+}
+.path-mod-psgrading .header .student-selector {
+  float: right;
+}
+.path-mod-psgrading .header .student-selector select {
+  display: inline-block;
+  width: 230px;
+  margin: 0 6px;
+}
+.path-mod-psgrading .header .student-selector a {
+  cursor: pointer;
+}
 #page-mod-psgrading-task #page-content .action-menu {
   display: none !important;
 }
@@ -370,35 +400,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .fdescription.required {
   display: none;
 }
-#page-mod-psgrading-mark .header {
-  background-color: #f5f5f5;
-  overflow: hidden;
-  padding: 20px;
-  margin: -1px -20px 30px -20px;
-  box-shadow: 1px 0 12px -3px black;
-}
-#page-mod-psgrading-mark .header .selected-student {
-  float: left;
-}
-#page-mod-psgrading-mark .header .task-selector {
-  float: left;
-  margin-left: 15px;
-}
-#page-mod-psgrading-mark .header .task-selector select {
-  width: auto;
-  min-width: 200px;
-}
-#page-mod-psgrading-mark .header .student-selector {
-  float: right;
-}
-#page-mod-psgrading-mark .header .student-selector select {
-  display: inline-block;
-  width: 230px;
-  margin: 0 6px;
-}
-#page-mod-psgrading-mark .header .student-selector a {
-  cursor: pointer;
-}
 #page-mod-psgrading-mark #fitem_id_criterionjson {
   display: none;
 }
@@ -642,4 +643,16 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
+}
+#page-mod-psgrading-overview .activity-navigation {
+  display: none;
+}
+#page-mod-psgrading-overview #region-main-settings-menu {
+  display: none;
+}
+#page-mod-psgrading-overview #region-main {
+  padding-top: 0;
+}
+#page-mod-psgrading-overview #user-notifications .alert {
+  margin: 0;
 }
