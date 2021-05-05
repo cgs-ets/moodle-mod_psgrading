@@ -24,7 +24,7 @@
     View for the criterion selector component.
 }}
 {{#criterions}}
-    <ul class="tbl-tr {{#hidden}}criterion-hidden{{/hidden}}">
+    <ul class="tbl-tr {{#hidden}}criterion-hidden{{/hidden}}" data-id="{{#id}}{{id}}{{/id}}{{^id}}-1{{/id}}">
         <li class="tbl-col tbl-col-1 tbl-col-first">
             <textarea name="description" class="form-control">{{description}}</textarea>
         </li>

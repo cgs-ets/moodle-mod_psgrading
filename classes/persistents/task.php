@@ -97,6 +97,10 @@ class task extends persistent {
     public static function save_from_data($data) {
         global $DB, $USER;
 
+//echo "<pre>";
+//var_export(json_decode($data->criterionjson));
+//exit;
+
         // Some validation.
         if (empty($data->id)) {
             return;
@@ -113,16 +117,30 @@ class task extends persistent {
         $log->logtime = $task->get('timemodified');
         $log->formjson = json_encode($data);
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
-        
-        // Recreate criterions.
-        $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
+        // Create/update criterions.
+        $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
         $criterions = json_decode($data->criterionjson);
         $seq = 0;
-        foreach ($criterions as $criterion) {
+        foreach ($criterions as &$criterion) {
             $criterion->taskid = $data->id;
             $criterion->seq = $seq;
-            $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);
+            // Criterion does not already exist.
+            if (!in_array($criterion->id, array_keys($existingcriterions))) {
+                $criterion->id = $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);
+            } else {
+                // Update existing criterion. 
+                $DB->update_record(static::TABLE_TASK_CRITERIONS, $criterion);
+                unset($existingcriterions[$criterion->id]);
+            }
             $seq++;
+        }
+        // Regenerate criterionjson from real criterion records so that they include ids and other cols.
+        $task->set('criterionjson', json_encode($criterions));
+        $task->save();
+
+        // Delete leftovers.
+        foreach ($existingcriterions as $existing) {
+            $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('id' => $existing->id));
         }
 
         // Create evidences.
@@ -181,7 +199,7 @@ class task extends persistent {
         $params = array($gradeid);
         $criterionrecs = $DB->get_records_sql($sql, $params);
         foreach ($criterionrecs as $rec) {
-            $criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel );
+            $criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel, 'criterionid' => $rec->criterionid );
         }
 
         return $criterions;
@@ -200,9 +218,10 @@ class task extends persistent {
 
         if ($gradeinfo) {
             $gradeinfo->criterions = static::get_grade_criterion_selections($gradeinfo->id);
+            return $gradeinfo;
         }
 
-        return $gradeinfo;
+        return [];
     }
 
     public static function get_cm_user_taskinfo($cmid, $userid, $currtaskid = -1) {
@@ -228,7 +247,6 @@ class task extends persistent {
         return $taskinfo;
     }
 
-
     public static function load_criterions(&$task) {
         global $DB;
 
@@ -241,7 +259,7 @@ class task extends persistent {
         $records = $DB->get_records_sql($sql, $params);
         $criterions = array();
         foreach ($records as $record) {
-            $criterions[] = $record;
+            $criterions[$record->id] = $record;
         }
 
         $task->criterions = $criterions;

@@ -99,10 +99,10 @@ $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.cs
 $output = $OUTPUT->header();
 
 
-echo "<h3>Render me!</h3>";
-echo "<pre>";
-var_export($data);
-exit;
+//echo "<h3>Render me!</h3>";
+//echo "<pre>";
+//var_export($data);
+//exit;
 
 $output .= $OUTPUT->render_from_template('mod_psgrading/overview', $data);
 

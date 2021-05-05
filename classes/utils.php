@@ -216,6 +216,7 @@ class utils {
 
     public static function get_stub_criterion() {
         $criterion = new \stdClass();
+        $criterion->id = -1;
         $criterion->subject = array(
             'value' => '',
             'options' => static::SUBJECTOPTIONS,

@@ -66,12 +66,15 @@ $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
 $PAGE->set_url($markurl);
 $PAGE->set_title(format_string($moduleinstance->name));
-$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_heading(format_string($moduleinstance->name));
 
 // Load existing task.
 $exists = task::record_exists($taskid);
 if ($exists) {
     $task = new task($taskid);
+    $title = $task->get('taskname') . ' (' . $task->get('pypuoi') . ')';
+    $PAGE->set_title(format_string($title));
+    $PAGE->set_heading(format_string($title));
 }
 
 if (!$exists || $task->get('deleted')) {

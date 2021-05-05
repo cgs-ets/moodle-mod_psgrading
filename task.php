@@ -96,6 +96,10 @@ if ($create) {
         exit;
     }
 
+    // Check whether grades already exist for this task. 
+    // A task cannot be edited after marking has begun as it will mess up the criterion grading.
+    
+
     // Instantiate the form.
     $formtask = new form_task(
         $editurl->out(false), 

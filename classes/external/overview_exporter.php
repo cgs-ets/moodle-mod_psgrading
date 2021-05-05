@@ -99,26 +99,39 @@ class overview_exporter extends exporter {
 
         $baseurl = clone($this->related['overviewurl']);
 
+        // Get all tasks for this course module.
         $tasks = array();
         $cmtasks = task::get_for_coursemodule($this->related['cmid']);
 
         foreach ($cmtasks as $task) {
             $taskexporter = new task_exporter($task);
             $task = $taskexporter->export($output);
+            // Add the task criterion definitions.
+            task::load_criterions($task);
 
             // Get existing marking values for this user and incorporate into task criterion data.
             $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
-
-            // Load task criterions.
-            task::load_criterions($task);
-            foreach ($task->criterions as $criteron) {
-                // add marks to criterion definitions.
-                if (isset($gradeinfo->criterions[$criteron->id])) {
-                    // There is a gradelevel chosen for this criterion.
-                    $criteron->{'level' . $gradeinfo->criterions[$criteron->id]->gradelevel . 'selected'} = true;
+            
+            // Process criterions for the overview matrix.
+            $subjectgrades = array();
+            foreach ($gradeinfo->criterions as $criteriongrade) {
+                //$criteriongrade->definition = $task->criterions[$criteriongrade->criterionid];
+                $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
+                if (!isset($subjectgrades[$criterionsubject])) {
+                    $subjectgrades[$criterionsubject] = array();
                 }
+                $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
+            }
+            // Convert subject grades to rounded averages.
+            foreach ($subjectgrades as &$subjectgrade) {
+                $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
+                $subjectgrade = (int) round($subjectgrade, 0);
             }
 
+
+echo "<pre>"; 
+var_export($subjectgrades); 
+exit;
             $task->gradeinfo = $gradeinfo;
 
             // Load task evidences (default).

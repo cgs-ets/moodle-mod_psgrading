@@ -167,6 +167,9 @@ class mark_exporter extends exporter {
             }
         }
 
+        // Zero indexes so templates work.
+        $task->criterions = array_values($task->criterions);
+
         // Load task evidences (default).
         task::load_evidences($task);
         foreach ($task->evidences as &$evidence) {

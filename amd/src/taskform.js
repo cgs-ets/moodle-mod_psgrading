@@ -309,6 +309,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.find('.criterions .tbl-tr').each(function() {
             var row = $(this);
             var criterion = {
+                id: row.data('id'),
                 description: row.find('[name=description]').val(),
                 level2: row.find('[name=level2]').val(),
                 level3: row.find('[name=level3]').val(),
