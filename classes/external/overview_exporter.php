@@ -109,10 +109,11 @@ class overview_exporter extends exporter {
             // Add the task criterion definitions.
             task::load_criterions($task);
 
-            // Get existing marking values for this user and incorporate into task criterion data.
+            // Get existing grades for this user.
             $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
-            
-            // Process criterions for the overview matrix.
+            $task->gradeinfo = $gradeinfo;
+
+            // Process graded criterions into subject grades for the overview matrix.
             $subjectgrades = array();
             foreach ($gradeinfo->criterions as $criteriongrade) {
                 //$criteriongrade->definition = $task->criterions[$criteriongrade->criterionid];
@@ -127,12 +128,21 @@ class overview_exporter extends exporter {
                 $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
                 $subjectgrade = (int) round($subjectgrade, 0);
             }
-
-
-echo "<pre>"; 
-var_export($subjectgrades); 
-exit;
-            $task->gradeinfo = $gradeinfo;
+            $task->subjectgrades = array();
+            foreach (utils::SUBJECTOPTIONS as $subject) {
+                if ($subject['val']) {
+                    $grade = 0;
+                    if (isset($subjectgrades[$subject['val']])) {
+                        $grade = $subjectgrades[$subject['val']];
+                    }
+                    $task->subjectgrades[] = array(
+                        'subject' => $subject['val'],
+                        'grade' => $grade,
+                    );
+                }
+            }
+            // Ditch some unnecessary data.
+            unset($task->criterions);
 
             // Load task evidences (default).
             task::load_evidences($task);

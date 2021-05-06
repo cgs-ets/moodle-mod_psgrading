@@ -40,12 +40,40 @@
         </div>
     </div>
     <div class="matrix">
-        {{#task}}
-            <div class="task">
-                <div>{{taskname}}</div>
-                <div>{{pypuoi}}</div>
-                <div>{{outcomes}}</div>
+        <div class="column x-axis-header">
+            <div class="cell">Task</div>
+            <div class="cell">PYP UOI</div>
+            <div class="cell">Outcomes</div>
+            <div class="subjects">
+            {{#tasks.0}}
+                {{#subjectgrades}}
+                    <div class="cell">{{subject}}</div>
+                {{/subjectgrades}}
+            {{/tasks.0}}
             </div>
-        {{/task}}
+            <div class="cell">Evidence</div>
+            <div class="cell">Rubric</div>
+            <div class="cell">Success</div>
+            <div class="cell">Comments</div>
+        </div>
     </dv>
+    {{#tasks}}
+        <div class="column task">
+            <div class="cell">{{taskname}}</div>
+            <div class="cell">{{pypuoi}}</div>
+            <div class="cell">{{outcomes}}</div>
+            <div class="subjects">
+                {{#subjectgrades}}
+                    <div class="cell" data-grade="{{grade}}">{{grade}}</div>
+                {{/subjectgrades}}
+            </div>
+        </div>
+    {{/tasks}}
 </div>
+
+
+
+
+
+
+

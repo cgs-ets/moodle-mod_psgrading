@@ -13,4 +13,50 @@
 		    margin: 0;
 		}
 	}
+	.matrix {
+		.column {
+		    float: left;
+		}
+		.cell {
+			padding: 3px 3px;
+		    line-height: 30px;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+		    width: 140px;
+		}
+		.column.x-axis-header {
+			.subjects {
+				div {
+					border-left: 1px solid #ccc;
+				    border-top: 1px solid #ccc;
+				}
+				div:last-of-type {
+				    border-bottom: 1px solid #ccc;
+				}
+			}
+		}
+		.column.task {
+			.subjects {
+				div {
+				    border-top: 1px solid #ccc;
+				}
+				div:last-of-type {
+				    border-bottom: 1px solid #ccc;
+				}
+			}
+			.cell[data-grade="0"] {
+				text-indent: -999px;
+				color: transparent;
+			}
+		}
+
+		div.column.task:last-of-type {
+			.subjects {
+				div {
+				    border-right: 1px solid #ccc;
+				}
+			}
+		}
+	}
 }

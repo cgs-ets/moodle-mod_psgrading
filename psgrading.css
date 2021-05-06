@@ -658,3 +658,34 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-overview #user-notifications .alert {
   margin: 0;
 }
+#page-mod-psgrading-overview .matrix .column {
+  float: left;
+}
+#page-mod-psgrading-overview .matrix .cell {
+  padding: 3px 3px;
+  line-height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 140px;
+}
+#page-mod-psgrading-overview .matrix .column.x-axis-header .subjects div {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+#page-mod-psgrading-overview .matrix .column.x-axis-header .subjects div:last-of-type {
+  border-bottom: 1px solid #ccc;
+}
+#page-mod-psgrading-overview .matrix .column.task .subjects div {
+  border-top: 1px solid #ccc;
+}
+#page-mod-psgrading-overview .matrix .column.task .subjects div:last-of-type {
+  border-bottom: 1px solid #ccc;
+}
+#page-mod-psgrading-overview .matrix .column.task .cell[data-grade="0"] {
+  text-indent: -999px;
+  color: transparent;
+}
+#page-mod-psgrading-overview .matrix div.column.task:last-of-type .subjects div {
+  border-right: 1px solid #ccc;
+}
