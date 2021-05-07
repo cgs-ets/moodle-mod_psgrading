@@ -6,16 +6,25 @@
 		display: none;
 	}
 	#region-main {
-		padding-top: 0;
+		padding: 0;
 	}
 	#user-notifications {
 	    .alert {
 		    margin: 0;
 		}
 	}
+	.psgrading-overview > .header {
+		margin: -1px 0px 0px 0px;
+		z-index: 999;
+    	position: relative;
+	}
 	.matrix {
+		white-space: nowrap;
+		overflow: auto;
+		padding: 20px;
 		.column {
-		    float: left;
+		    display: inline-block;
+		    vertical-align: top;
 		}
 		.cell {
 			padding: 3px 3px;
@@ -25,37 +34,75 @@
 		    text-overflow: ellipsis;
 		    width: 140px;
 		}
-		.column.x-axis-header {
+		.column.y-header {
+			div {
+				padding: 3px 6px;
+			}
 			.subjects {
+				padding: 0;
+				background-color: #f2f4f6;
 				div {
-					border-left: 1px solid #ccc;
-				    border-top: 1px solid #ccc;
+					padding: 3px 6px;
+					border-left: 1px solid #aaa;
+				    border-top: 1px solid #aaa;
 				}
 				div:last-of-type {
-				    border-bottom: 1px solid #ccc;
+				    border-bottom: 1px solid #aaa;
 				}
+			}
+			.cell-engagement {
+			    background: #f2f4f6;
+			    padding: 3px 6px;
+			    border-left: 1px solid #aaa;
+			    border-bottom: 1px solid #aaa;
 			}
 		}
 		.column.task {
+			margin-left: -4px;
 			.subjects {
 				div {
-				    border-top: 1px solid #ccc;
+					padding: 3px 6px;
+				    border-top: 1px solid #aaa;
 				}
 				div:last-of-type {
-				    border-bottom: 1px solid #ccc;
+				    border-bottom: 1px solid #aaa;
 				}
 			}
-			.cell[data-grade="0"] {
-				text-indent: -999px;
-				color: transparent;
+			.cell[data-grade="1"] {
+				background-color: #f8d7da;
+			}
+			.cell[data-grade="2"] {
+				background-color: #ffeeba;
+			}
+			.cell[data-grade="3"] {
+				background-color: #cce5ff;
+			}
+			.cell[data-grade="4"] {
+				background-color: #d4edda;
+			}
+			.cell[data-grade="5"] {
+				background-color: #bee5eb;
+			}
+			.cell-engagement {
+				padding: 3px 6px;
+				border-bottom: 1px solid #aaa;
 			}
 		}
 
-		div.column.task:last-of-type {
+		div.column.task.last {
 			.subjects {
 				div {
-				    border-right: 1px solid #ccc;
+				    border-right: 1px solid #aaa;
 				}
+			}
+			.cell-engagement {
+				border-right: 1px solid #aaa;
+			}
+		}
+
+		div.column.report-grades {
+			font-weight: 600;
+			.subjects {
 			}
 		}
 	}

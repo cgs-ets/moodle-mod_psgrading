@@ -46,7 +46,12 @@ class overview_exporter extends exporter {
         return [
             'tasks' => [
                 'type' => PARAM_RAW,
-                'multiple' => false,
+                'multiple' => true,
+                'optional' => false,
+            ],
+            'reportgrades' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
                 'optional' => false,
             ],
             'students' => [
@@ -84,7 +89,8 @@ class overview_exporter extends exporter {
             'cmid' => 'int',
             'students' => 'int[]?',
             'userid' => 'int',
-            'overviewurl' => 'moodle_url'
+            'overviewurl' => 'moodle_url',
+            'isstaff' => 'bool',
         ];
     }
 
@@ -113,21 +119,21 @@ class overview_exporter extends exporter {
             $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
             $task->gradeinfo = $gradeinfo;
 
-            // Process graded criterions into subject grades for the overview matrix.
+            // Extract subject grades from criterion grades.
             $subjectgrades = array();
             foreach ($gradeinfo->criterions as $criteriongrade) {
-                //$criteriongrade->definition = $task->criterions[$criteriongrade->criterionid];
                 $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
                 if (!isset($subjectgrades[$criterionsubject])) {
                     $subjectgrades[$criterionsubject] = array();
                 }
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
             }
-            // Convert subject grades to rounded averages.
+            // Flatten to rounded averages.
             foreach ($subjectgrades as &$subjectgrade) {
                 $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
                 $subjectgrade = (int) round($subjectgrade, 0);
             }
+            // Rebuild into mustache friendly array.
             $task->subjectgrades = array();
             foreach (utils::SUBJECTOPTIONS as $subject) {
                 if ($subject['val']) {
@@ -135,14 +141,20 @@ class overview_exporter extends exporter {
                     if (isset($subjectgrades[$subject['val']])) {
                         $grade = $subjectgrades[$subject['val']];
                     }
+                    $gradelang = utils::GRADELANG[$grade];
                     $task->subjectgrades[] = array(
                         'subject' => $subject['val'],
                         'grade' => $grade,
+                        'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
                     );
                 }
             }
-            // Ditch some unnecessary data.
-            unset($task->criterions);
+
+            // Calculate success.
+            $success = array_sum($subjectgrades)/count($subjectgrades);
+            $success = (int) round($success, 0);
+            $gradelang = utils::GRADELANG[$success];
+            $task->success = $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'];
 
             // Load task evidences (default).
             task::load_evidences($task);
@@ -159,7 +171,56 @@ class overview_exporter extends exporter {
                 }
             }
 
+            // Ditch some unnecessary data.
+            unset($task->criterions);
+
             $tasks[] = $task;
+        }
+
+        $index = count( $tasks ) - 1;
+        $tasks[$index]->islast = true;
+
+        // Calculate report grades.
+        $reportgrades = array();
+        if ($this->related['isstaff']) {
+            foreach (utils::SUBJECTOPTIONS as $subject) {
+                $subject = $subject['val'];
+                if (!$subject) {
+                    continue;
+                }
+                // Get all the grades for this subject accross all of the tasks.
+                foreach ($tasks as $task) {
+                    foreach ($task->subjectgrades as $subjectgrade) {
+                        if ($subjectgrade['subject'] == $subject) {
+                            if (!isset($reportgrades[$subject])) {
+                                $reportgrades[$subject] = array();
+                            }
+                            if ($subjectgrade['grade']) {
+                                $reportgrades[$subject][] = $subjectgrade['grade'];
+                            }
+                        }
+                    }
+                }
+            }
+            // Flatten to rounded averages.
+            foreach ($reportgrades as &$reportgrade) {
+                if (array_sum($reportgrade)) {
+                    $reportgrade = array_sum($reportgrade)/count($reportgrade);
+                    $reportgrade = (int) round($reportgrade, 0);
+                } else {
+                    $reportgrade = 0;
+                }
+            }
+            //var_export($reportgrades); exit;
+            // Rebuild into mustache friendly array.
+            foreach ($reportgrades as $key => $grade) {
+                $reportgrades[$key] = array(
+                    'subject' => $key,
+                    'grade' => $grade,
+                    'gradelang' => utils::GRADELANG[$grade]['full'],
+                );
+            }
+            $reportgrades = array_values($reportgrades);
         }
 
         // Student Navigation.
@@ -208,6 +269,7 @@ class overview_exporter extends exporter {
 
         return array(
             'tasks' => $tasks,
+            'reportgrades' => $reportgrades,
             'students' => $students,
             'currstudent' => $currstudent,
             'nextstudenturl' => $nextstudenturl,

@@ -86,6 +86,7 @@ $relateds = array(
     'students' => $students,
     'userid' => $userid,
     'overviewurl' => $overviewurl,
+    'isstaff' => utils::is_cgs_staff(),
 );
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');

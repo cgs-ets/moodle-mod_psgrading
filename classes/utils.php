@@ -170,6 +170,33 @@ class utils {
         ),
     );
 
+    const GRADELANG = array (
+        '0' => array (
+            'full' => '&nbsp;',
+            'minimal' => '&nbsp;',
+        ),
+        '1' => array (
+            'full' => '1',
+            'minimal' => '&nbsp;',
+        ),
+        '2' => array (
+            'full' => '2 (GS)',
+            'minimal' => 'GS',
+        ),
+        '3' => array (
+            'full' => '3 (MS)',
+            'minimal' => 'MS',
+        ),
+        '4' => array (
+            'full' => '4 (GRWI)',
+            'minimal' => 'GRWI',
+        ),
+        '5' => array (
+            'full' => '5',
+            'minimal' => '&nbsp;',
+        ),
+    );
+
     public static function decorate_subjectdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {
             $criteriondata[$i]->subject = array(
@@ -288,7 +315,17 @@ class utils {
         return array_map('intval', array_column($users, 'id'));
     }
 
+    public static function is_cgs_staff() {
+        global $USER;
+        
+        profile_load_custom_fields($USER);
+        $campusroles = strtolower($USER->profile['CampusRoles']);
+        if (strpos($campusroles, 'staff') !== false) {
+            return true;
+        }
 
+        return false;
+    }
 
     /**
      * Helper function to add extra display info for user.

@@ -40,35 +40,68 @@
         </div>
     </div>
     <div class="matrix">
-        <div class="column x-axis-header">
+        <div class="column y-header">
             <div class="cell">Task</div>
             <div class="cell">PYP UOI</div>
             <div class="cell">Outcomes</div>
             <div class="subjects">
-            {{#tasks.0}}
-                {{#subjectgrades}}
-                    <div class="cell">{{subject}}</div>
-                {{/subjectgrades}}
-            {{/tasks.0}}
+                {{#tasks.0}}
+                    {{#subjectgrades}}
+                        <div class="cell">{{subject}}</div>
+                    {{/subjectgrades}}
+                {{/tasks.0}}
             </div>
+            <div class="cell cell-engagement">Engagement</div>
             <div class="cell">Evidence</div>
             <div class="cell">Rubric</div>
             <div class="cell">Success</div>
             <div class="cell">Comments</div>
         </div>
-    </dv>
-    {{#tasks}}
-        <div class="column task">
-            <div class="cell">{{taskname}}</div>
-            <div class="cell">{{pypuoi}}</div>
-            <div class="cell">{{outcomes}}</div>
-            <div class="subjects">
-                {{#subjectgrades}}
-                    <div class="cell" data-grade="{{grade}}">{{grade}}</div>
-                {{/subjectgrades}}
+        {{#tasks}}
+            <div class="column task{{#islast}} last{{/islast}}">
+                <div class="cell">{{taskname}}</div>
+                <div class="cell">{{pypuoi}}</div>
+                <div class="cell"><span title="{{outcomes}}">{{outcomes}}</span></div>
+                <div class="subjects">
+                    {{#subjectgrades}}
+                        <div class="cell" data-grade="{{grade}}">{{{gradelang}}}</div>
+                    {{/subjectgrades}}
+                </div>
+                <div class="cell cell-engagement" data-engagement="{{gradeinfo.engagement}}">
+                    {{gradeinfo.engagement}}
+                </div>
+                <div class="cell">
+                    <a href="#"><i class="fa fa-folder-open" aria-hidden="true"></i></a>
+                </div>
+                <div class="cell">
+                    <a href="#"><i class="fa fa-table" aria-hidden="true"></i></a>
+                </div>
+                <div class="cell">
+                    {{{success}}}
+                </div>
+                <div class="cell">
+                    <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                </div>
             </div>
+        {{/tasks}}
+        <div class="column report-grades">
+            <div class="cell">&nbsp;</div>
+            <div class="cell">&nbsp;</div>
+            <div class="cell">Report Grade</div>
+            <div class="subjects">
+                {{#reportgrades}}
+                    <div class="cell" data-grade="{{grade}}"> 
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                        {{#grade}}{{{gradelang}}}{{/grade}}{{^grade}}{{{grade}}}{{/grade}}
+                    </div>
+                {{/reportgrades}}
+            </div>
+            <div class="cell cell-engagement">&nbsp;</div>
+            <div class="cell">&nbsp;</div>
+            <div class="cell">&nbsp;</div>
+            <div class="cell">&nbsp;</div>
+            <div class="cell">&nbsp;</div>
         </div>
-    {{/tasks}}
 </div>
 
 
