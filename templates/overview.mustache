@@ -33,7 +33,7 @@
             <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
             <select class="student-select form-control">
                 {{#students}}
-                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{fullname}}</option>
+                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{fullname}}</option>
                 {{/students}}
             </select>
             <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -56,9 +56,8 @@
             <div class="cell">Rubric</div>
             <div class="cell">Success</div>
             <div class="cell">Comments</div>
-        </div>
-        {{#tasks}}
-            <div class="column task{{#islast}} last{{/islast}}">
+        </div>{{!
+        }}{{#tasks}}<div class="column task{{#islast}} last{{/islast}}">
                 <div class="cell">{{taskname}}</div>
                 <div class="cell">{{pypuoi}}</div>
                 <div class="cell"><span title="{{outcomes}}">{{outcomes}}</span></div>
@@ -76,22 +75,20 @@
                 <div class="cell">
                     <a href="#"><i class="fa fa-table" aria-hidden="true"></i></a>
                 </div>
-                <div class="cell">
-                    {{{success}}}
+                <div class="cell" data-grade="{{success.grade}}">
+                    {{{success.gradelang}}}
                 </div>
                 <div class="cell">
                     <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>
                 </div>
-            </div>
-        {{/tasks}}
-        <div class="column report-grades">
+            </div>{{/tasks}}{{!
+        }}<div class="column report-grades">
             <div class="cell">&nbsp;</div>
             <div class="cell">&nbsp;</div>
-            <div class="cell">Report Grade</div>
+            <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
             <div class="subjects">
                 {{#reportgrades}}
                     <div class="cell" data-grade="{{grade}}"> 
-                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                         {{#grade}}{{{gradelang}}}{{/grade}}{{^grade}}{{{grade}}}{{/grade}}
                     </div>
                 {{/reportgrades}}

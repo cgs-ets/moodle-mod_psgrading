@@ -154,7 +154,10 @@ class overview_exporter extends exporter {
             $success = array_sum($subjectgrades)/count($subjectgrades);
             $success = (int) round($success, 0);
             $gradelang = utils::GRADELANG[$success];
-            $task->success = $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'];
+            $task->success = array(
+                'grade' => $success,
+                'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
+            );
 
             // Load task evidences (default).
             task::load_evidences($task);
@@ -208,10 +211,9 @@ class overview_exporter extends exporter {
                     $reportgrade = array_sum($reportgrade)/count($reportgrade);
                     $reportgrade = (int) round($reportgrade, 0);
                 } else {
-                    $reportgrade = 0;
+                    //$reportgrade = 0;
                 }
             }
-            //var_export($reportgrades); exit;
             // Rebuild into mustache friendly array.
             foreach ($reportgrades as $key => $grade) {
                 $reportgrades[$key] = array(

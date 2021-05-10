@@ -430,6 +430,21 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   vertical-align: top;
   position: relative;
   border: 1px dashed #ccc;
+  /*&.level1.selected {
+			    background-color: #f8d7da;
+			}
+			&.level2.selected {
+			    background-color: #ffeeba;
+			}
+			&.level3.selected {
+				background-color: #cce5ff;
+			}
+			&.level4.selected {
+			    background-color: #d4edda;
+			}
+			&.level5.selected {
+			    background-color: #bee5eb;
+			}*/
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first {
   padding-left: 0;
@@ -457,19 +472,19 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #fafafa;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level1.selected {
-  background-color: #f8d7da;
+  background-color: #D90617;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected {
-  background-color: #ffeeba;
+  background-color: #F97D01;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected {
-  background-color: #cce5ff;
+  background-color: #FFDB00;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level4.selected {
-  background-color: #d4edda;
+  background-color: #6BB82E;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level5.selected {
-  background-color: #bee5eb;
+  background-color: #00812F;
 }
 @media only screen and (max-width: 1160px) {
   #page-mod-psgrading-mark .marking-criterions .headings {
@@ -667,13 +682,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   white-space: nowrap;
   overflow: auto;
   padding: 20px;
+  font-size: 1.125em;
 }
 #page-mod-psgrading-overview .matrix .column {
   display: inline-block;
   vertical-align: top;
 }
 #page-mod-psgrading-overview .matrix .cell {
-  padding: 3px 3px;
+  padding: 3px 6px;
   line-height: 30px;
   overflow: hidden;
   white-space: nowrap;
@@ -688,54 +704,107 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #f2f4f6;
 }
 #page-mod-psgrading-overview .matrix .column.y-header .subjects div {
-  padding: 3px 6px;
-  border-left: 1px solid #aaa;
-  border-top: 1px solid #aaa;
+  padding: 6px 6px;
+  border-left: 1px dashed #ccc;
+  border-top: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.y-header .subjects div:last-of-type {
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.y-header .cell-engagement {
   background: #f2f4f6;
-  padding: 3px 6px;
-  border-left: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
+  padding: 6px 6px;
+  border-left: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.task {
-  margin-left: -4px;
+  transition: all 0.2s;
+  position: relative;
 }
 #page-mod-psgrading-overview .matrix .column.task .subjects div {
-  padding: 3px 6px;
-  border-top: 1px solid #aaa;
+  padding: 6px 6px;
+  border-top: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.task .subjects div:last-of-type {
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell[data-grade="1"] {
-  background-color: #f8d7da;
+  background-color: #D90617;
+  color: #fff;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell[data-grade="2"] {
-  background-color: #ffeeba;
+  background-color: #F97D01;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell[data-grade="3"] {
-  background-color: #cce5ff;
+  background-color: #FFDB00;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell[data-grade="4"] {
-  background-color: #d4edda;
+  background-color: #6BB82E;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell[data-grade="5"] {
-  background-color: #bee5eb;
+  background-color: #00812F;
+  color: #fff;
 }
 #page-mod-psgrading-overview .matrix .column.task .cell-engagement {
-  padding: 3px 6px;
-  border-bottom: 1px solid #aaa;
+  padding: 6px 6px;
+  border-bottom: 1px dashed #ccc;
+}
+#page-mod-psgrading-overview .matrix .column.task .cell-engagement[data-engagement="poor"] {
+  background-color: #D90617;
+  color: #fff;
+}
+#page-mod-psgrading-overview .matrix .column.task .cell-engagement[data-engagement="acceptable"] {
+  background-color: #FFDB00;
+}
+#page-mod-psgrading-overview .matrix .column.task .cell-engagement[data-engagement="good"] {
+  background-color: #00812F;
+  color: #fff;
 }
 #page-mod-psgrading-overview .matrix div.column.task.last .subjects div {
-  border-right: 1px solid #aaa;
+  border-right: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix div.column.task.last .cell-engagement {
-  border-right: 1px solid #aaa;
+  border-right: 1px dashed #ccc;
 }
-#page-mod-psgrading-overview .matrix div.column.report-grades {
-  font-weight: 600;
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell-report-grade {
+  padding: 0;
+  overflow: visible;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell-report-grade > span {
+  transform: skewX(-7deg);
+  text-align: center;
+  background-color: #f2f4f6;
+  padding: 2px 6px 3px;
+  display: block;
+  margin-left: 2px;
+  width: 141px;
+  border: 1px dashed #ccc;
+  border-bottom: 0 none;
+  font-weight: 400;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .subjects {
+  background-color: #f2f4f6;
+  border-bottom: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .subjects div {
+  padding: 6px 13px;
+  border-top: 1px dashed #ccc;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="1"] {
+  background-color: #D90617;
+  color: #fff;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="2"] {
+  background-color: #F97D01;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="3"] {
+  background-color: #FFDB00;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="4"] {
+  background-color: #6BB82E;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="5"] {
+  background-color: #00812F;
+  color: #fff;
 }

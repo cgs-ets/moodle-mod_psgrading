@@ -95,8 +95,9 @@ class form_mark extends \moodleform {
         // Engagement.
         $engagementoptions = array(
            '' => 'Select',
+           'poor' => 'Poor',
            'acceptable' => 'Acceptable',
-           'something' => 'Something',
+           'good' => 'Good',
         );
         $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), $engagementoptions);
         $mform->setType('engagement', PARAM_RAW);

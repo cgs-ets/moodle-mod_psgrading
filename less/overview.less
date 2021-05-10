@@ -1,3 +1,6 @@
+@subjectsborder: 1px dashed #ccc;
+//@subjectsborder: 1px solid #000;
+
 #page-mod-psgrading-overview {
 	.activity-navigation {
 		display: none;
@@ -22,12 +25,13 @@
 		white-space: nowrap;
 		overflow: auto;
 		padding: 20px;
+		font-size: 1.125em;
 		.column {
 		    display: inline-block;
 		    vertical-align: top;
 		}
 		.cell {
-			padding: 3px 3px;
+			padding: 3px 6px;
 		    line-height: 30px;
 		    overflow: hidden;
 		    white-space: nowrap;
@@ -42,67 +46,124 @@
 				padding: 0;
 				background-color: #f2f4f6;
 				div {
-					padding: 3px 6px;
-					border-left: 1px solid #aaa;
-				    border-top: 1px solid #aaa;
+					padding: 6px 6px;
+					border-left: @subjectsborder;
+				    border-top: @subjectsborder;
 				}
 				div:last-of-type {
-				    border-bottom: 1px solid #aaa;
+				    border-bottom: @subjectsborder;
 				}
 			}
 			.cell-engagement {
 			    background: #f2f4f6;
-			    padding: 3px 6px;
-			    border-left: 1px solid #aaa;
-			    border-bottom: 1px solid #aaa;
+			    padding: 6px 6px;
+			    border-left: @subjectsborder;
+			    border-bottom: @subjectsborder;
 			}
 		}
 		.column.task {
-			margin-left: -4px;
+			transition: all 0.2s;
+			position: relative;
 			.subjects {
 				div {
-					padding: 3px 6px;
-				    border-top: 1px solid #aaa;
+					padding: 6px 6px;
+				    border-top: @subjectsborder;
 				}
 				div:last-of-type {
-				    border-bottom: 1px solid #aaa;
+				    border-bottom: @subjectsborder;
 				}
 			}
 			.cell[data-grade="1"] {
-				background-color: #f8d7da;
+			    background-color: #D90617;
+			    color: #fff;
 			}
 			.cell[data-grade="2"] {
-				background-color: #ffeeba;
+			    background-color: #F97D01;
 			}
 			.cell[data-grade="3"] {
-				background-color: #cce5ff;
+				background-color: #FFDB00;
 			}
 			.cell[data-grade="4"] {
-				background-color: #d4edda;
+			    background-color: #6BB82E;
 			}
 			.cell[data-grade="5"] {
-				background-color: #bee5eb;
+			    background-color: #00812F;
+			    color: #fff;
 			}
 			.cell-engagement {
-				padding: 3px 6px;
-				border-bottom: 1px solid #aaa;
+				padding: 6px 6px;
+				border-bottom: @subjectsborder;
+				&[data-engagement="poor"] {
+				    background-color: #D90617;
+				    color: #fff;
+				}
+				&[data-engagement="acceptable"] {
+					background-color: #FFDB00;
+				}
+				&[data-engagement="good"] {
+				    background-color: #00812F;
+				    color: #fff;
+				}
+			}
+			&:hover {
+				//box-shadow: 0 0 90px -50px #000;
+			    //z-index: 1;
 			}
 		}
 
 		div.column.task.last {
 			.subjects {
 				div {
-				    border-right: 1px solid #aaa;
+				    border-right: @subjectsborder;
 				}
 			}
 			.cell-engagement {
-				border-right: 1px solid #aaa;
+				border-right: @subjectsborder;
 			}
 		}
 
 		div.column.report-grades {
-			font-weight: 600;
+			.cell-report-grade {
+			    padding: 0;
+			    overflow: visible;
+			    &>span {
+					transform: skewX(-7deg);
+			    	text-align: center;
+			        background-color: #f2f4f6;
+				    padding: 2px 6px 3px;
+				    display: block;
+				    margin-left: 2px;
+				    width: 141px;
+				    border: @subjectsborder;
+				    border-bottom: 0 none;
+					font-weight: 400;
+			    }
+			}
 			.subjects {
+				background-color: #f2f4f6;
+				border-bottom: @subjectsborder;
+				border-right: @subjectsborder;
+				div {
+					padding: 6px 13px;
+					border-top: @subjectsborder;
+				}
+			}
+			.cell[data-grade="1"] {
+			    background-color: #D90617;
+			    color: #fff;
+			}
+			.cell[data-grade="2"] {
+			    background-color: #F97D01;
+			}
+			.cell[data-grade="3"] {
+				background-color: #FFDB00;
+			}
+			.cell[data-grade="4"] {
+			    background-color: #6BB82E;
+			}
+			.cell[data-grade="5"] {
+			    background-color: #00812F;
+			    color: #fff;
 			}
 		}
 	}
