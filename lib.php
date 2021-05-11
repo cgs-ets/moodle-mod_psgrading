@@ -24,6 +24,42 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+
+/** Include required files */
+require_once($CFG->libdir.'/filelib.php');
+
+/**
+ * Serves the plugin attachments.
+ *
+ * @package  local_excursions
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool false if file not found, does not return if found - justsend the file
+ */
+function mod_psgrading_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/$context->id/mod_psgrading/$filearea/$relativepath";
+
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        return false;
+    }
+
+    // finally send the file
+    send_stored_file($file, 0, 0, true, $options); // download MUST be forced - security!
+}
+
+
 /**
  * Return if the plugin supports $feature.
  *

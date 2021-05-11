@@ -23,7 +23,6 @@
 
     Overview template.
 }}
-
 <div class="psgrading-overview">
     <div class="header">
         <div class="selected-student" data-userid="{{currstudent.id}}">
@@ -73,7 +72,7 @@
                     <a href="#"><i class="fa fa-folder-open" aria-hidden="true"></i></a>
                 </div>
                 <div class="cell">
-                    <a href="#"><i class="fa fa-table" aria-hidden="true"></i></a>
+                    <a href="{{rubricurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>
                 </div>
                 <div class="cell" data-grade="{{success.grade}}">
                     {{{success.gradelang}}}
@@ -88,22 +87,12 @@
             <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
             <div class="subjects">
                 {{#reportgrades}}
-                    <div class="cell" data-grade="{{grade}}"> 
-                        {{#grade}}{{{gradelang}}}{{/grade}}{{^grade}}{{{grade}}}{{/grade}}
-                    </div>
+                    <div class="cell cell-{{subject}}" data-grade="{{grade}}">{{{gradelang}}}</div>
                 {{/reportgrades}}
             </div>
-            <div class="cell cell-engagement">&nbsp;</div>
             <div class="cell">&nbsp;</div>
             <div class="cell">&nbsp;</div>
             <div class="cell">&nbsp;</div>
             <div class="cell">&nbsp;</div>
         </div>
 </div>
-
-
-
-
-
-
-

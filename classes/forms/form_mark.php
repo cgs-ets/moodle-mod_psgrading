@@ -93,13 +93,7 @@ class form_mark extends \moodleform {
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
 
         // Engagement.
-        $engagementoptions = array(
-           '' => 'Select',
-           'poor' => 'Poor',
-           'acceptable' => 'Acceptable',
-           'good' => 'Good',
-        );
-        $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), $engagementoptions);
+        $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
         $mform->setType('engagement', PARAM_RAW);
         $mform->addRule('engagement', get_string('required'), 'required', null, 'client');
 

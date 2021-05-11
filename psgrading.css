@@ -430,21 +430,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   vertical-align: top;
   position: relative;
   border: 1px dashed #ccc;
-  /*&.level1.selected {
-			    background-color: #f8d7da;
-			}
-			&.level2.selected {
-			    background-color: #ffeeba;
-			}
-			&.level3.selected {
-				background-color: #cce5ff;
-			}
-			&.level4.selected {
-			    background-color: #d4edda;
-			}
-			&.level5.selected {
-			    background-color: #bee5eb;
-			}*/
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first {
   padding-left: 0;
@@ -807,4 +792,142 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="5"] {
   background-color: #00812F;
   color: #fff;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="25"] {
+  background-color: #D90617;
+  color: #fff;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="50"] {
+  background-color: #FFDB00;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="75"] {
+  background-color: #6BB82E;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="100"] {
+  background-color: #00812F;
+  color: #fff;
+}
+#page-mod-psgrading-rubric .activity-navigation {
+  display: none;
+}
+#page-mod-psgrading-rubric #region-main-settings-menu {
+  display: none;
+}
+#page-mod-psgrading-rubric #region-main {
+  padding: 0;
+}
+#page-mod-psgrading-rubric #user-notifications .alert {
+  margin: 0;
+}
+#page-mod-psgrading-rubric .psgrading-rubric > .header {
+  margin: -1px 0px 0px 0px;
+}
+#page-mod-psgrading-rubric .contents {
+  padding: 20px;
+}
+#page-mod-psgrading-rubric .heading {
+  font-weight: 600;
+  font-size: 120%;
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-rubric .rubric-criterions {
+  margin-bottom: 30px;
+}
+#page-mod-psgrading-rubric .rubric-criterions .headings,
+#page-mod-psgrading-rubric .rubric-criterions .criterions {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-th,
+#page-mod-psgrading-rubric .rubric-criterions .tbl-tr {
+  display: table-row;
+  padding: 0;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-th {
+  font-weight: 600;
+  font-size: 110%;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-th .tbl-col {
+  border: 0 none;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col {
+  display: table-cell;
+  width: 20%;
+  padding: 5px 5px 5px 5px;
+  vertical-align: top;
+  position: relative;
+  border: 1px dashed #ccc;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.tbl-col-first {
+  padding-left: 0;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level1,
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level5 {
+  width: 10%;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col .box {
+  width: 100%;
+  padding: 10px;
+  font-size: 90%;
+  border-radius: 2px;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.descriptor {
+  border: 1px solid #ccc;
+  background: #f2f4f6;
+  border-right: 1px solid #ccc;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.selectable {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level:hover {
+  background-color: #fafafa;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level1.selected {
+  background-color: #D90617;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level2.selected {
+  background-color: #F97D01;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level3.selected {
+  background-color: #FFDB00;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level4.selected {
+  background-color: #6BB82E;
+}
+#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level5.selected {
+  background-color: #00812F;
+}
+@media only screen and (max-width: 1160px) {
+  #page-mod-psgrading-rubric .rubric-criterions .headings {
+    display: none;
+  }
+  #page-mod-psgrading-rubric .rubric-criterions .tbl-tr {
+    display: block;
+    background-color: #f0f4f8;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  #page-mod-psgrading-rubric .rubric-criterions .tbl-col {
+    display: block;
+    width: 100% !important;
+  }
+  #page-mod-psgrading-rubric .rubric-criterions .tbl-col .label {
+    display: block;
+    position: absolute;
+    right: 10px;
+    text-align: right;
+  }
+}
+#page-mod-psgrading-rubric .rubric-evidences {
+  margin-top: 30px;
+}
+#page-mod-psgrading-rubric .rubric-evidences table {
+  border: 1px solid #ccc;
+  max-width: 500px;
+  background: #fff;
+}
+#page-mod-psgrading-rubric .rubric-evidences h6 {
+  font-weight: 600;
 }

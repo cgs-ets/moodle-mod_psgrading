@@ -197,6 +197,20 @@ class utils {
         ),
     );
 
+    const ENGAGEMENTOPTIONS = array (
+        '' => 'Select',
+        'poor' => 'Poor',
+        'acceptable' => 'Acceptable',
+        'good' => 'Good',
+    );
+
+    const ENGAGEMENTWEIGHTS = array (
+        'poor' => 25,
+        'acceptable' => 50,
+        'good' => 75,
+        'verygood' => 100,
+    );
+
     public static function decorate_subjectdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {
             $criteriondata[$i]->subject = array(

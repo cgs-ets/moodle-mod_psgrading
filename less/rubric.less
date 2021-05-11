@@ -1,0 +1,128 @@
+#page-mod-psgrading-rubric {
+	.activity-navigation {
+		display: none;
+	}
+	#region-main-settings-menu {
+		display: none;
+	}
+	#region-main {
+		padding: 0;
+	}
+	#user-notifications {
+	    .alert {
+		    margin: 0;
+		}
+	}
+	.psgrading-rubric > .header {
+		margin: -1px 0px 0px 0px;
+	}
+	.contents {
+		padding: 20px;
+	}
+	.heading {
+		font-weight: 600;
+	    font-size: 120%;
+	    padding-bottom: 5px;
+	}
+	.rubric-criterions {
+		margin-bottom: 30px;
+		.headings, .criterions {
+			display: table;
+		    width: 100%;
+		    border-collapse: collapse;
+		}
+		.tbl-th, .tbl-tr {
+			display: table-row;
+			padding: 0;
+		}
+		.tbl-th {
+			font-weight: 600;
+    		font-size: 110%;
+			.tbl-col {
+				border: 0 none;
+			}
+		}
+		.tbl-col {
+			display: table-cell;
+		    width: 20%;
+		    padding: 5px 5px 5px 5px;
+		    vertical-align: top;
+		    position: relative;
+		    border: 1px dashed #ccc;
+			&.tbl-col-first {
+				padding-left: 0;
+			}
+			// Level 1 and 5 are smaller than the others.
+			&.level1, &.level5 {
+			    width: 10%;
+			}
+			.box {
+				width: 100%;
+				//height: 90px;
+			    padding: 10px;
+			    font-size: 90%;
+			    border-radius: 2px;
+			}
+			&.descriptor {
+				border: 1px solid #ccc;
+    			background: #f2f4f6;
+    			border-right: 1px solid #ccc;
+			}
+			&.selectable {
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			&.level:hover {
+				background-color: #fafafa;
+			}
+			&.level1.selected {
+			    background-color: #D90617;
+			}
+			&.level2.selected {
+			    background-color: #F97D01;
+			}
+			&.level3.selected {
+				background-color: #FFDB00;
+			}
+			&.level4.selected {
+			    background-color: #6BB82E;
+			}
+			&.level5.selected {
+			    background-color: #00812F;
+			}
+		}
+		@media only screen and (max-width: 1160px)  {
+			.headings {
+				display: none;
+			}
+			.tbl-tr {
+			    display: block;
+			    background-color: #f0f4f8;
+			    padding: 10px;
+			    border-radius: 4px;
+			}
+			.tbl-col {
+			    display: block;
+			    width: 100% !important;
+				.label {
+					display: block;
+					position: absolute;
+				    right: 10px;
+				    text-align: right;
+				}
+			}
+		}
+	}
+	.rubric-evidences {
+		margin-top: 30px;
+
+		table {
+			border: 1px solid #ccc;
+			max-width: 500px;
+			background: #fff;
+		}
+		h6 {
+		    font-weight: 600;
+		}
+	}
+}
