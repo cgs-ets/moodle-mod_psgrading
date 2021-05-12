@@ -202,6 +202,7 @@ class utils {
         'poor' => 'Poor',
         'acceptable' => 'Acceptable',
         'good' => 'Good',
+        'verygood' => 'Very Good',
     );
 
     const ENGAGEMENTWEIGHTS = array (

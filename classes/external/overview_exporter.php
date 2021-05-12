@@ -240,7 +240,9 @@ class overview_exporter extends exporter {
             // Get the engagement accross all tasks.
             $engagement = array();
             foreach ($tasks as $task) {
-                $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
+                if ($task->gradeinfo->engagement) {
+                    $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
+                }
             }
             // Round engagement.
             if (array_sum($engagement)) {
