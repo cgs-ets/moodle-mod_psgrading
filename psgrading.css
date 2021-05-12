@@ -1132,13 +1132,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background: #f2f4f6;
   border-right: 1px solid #ccc;
 }
-#page-mod-psgrading-rubric .rubric-criterions .tbl-col.selectable {
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#page-mod-psgrading-rubric .rubric-criterions .tbl-col.level:hover {
-  background-color: #fafafa;
-}
 #page-mod-psgrading-rubric .rubric-criterions .tbl-col.level1.selected {
   background-color: #D90617;
 }
