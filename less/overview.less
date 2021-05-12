@@ -62,8 +62,10 @@
 			}
 		}
 		.column.task {
-			transition: all 0.2s;
 			position: relative;
+			.cell-taskname {
+				font-weight: 600;
+			}
 			.subjects {
 				div {
 					padding: 6px 6px;
@@ -106,8 +108,9 @@
 				}
 			}
 			&:hover {
-				//box-shadow: 0 0 90px -50px #000;
-			    //z-index: 1;
+				box-shadow: 0 0 90px -50px #000;
+				box-shadow: 0 0 0px 1px #000;
+			    z-index: 1;
 			}
 		}
 
@@ -140,13 +143,21 @@
 			    }
 			}
 			.subjects {
-				background-color: #f2f4f6;
-				border-bottom: @subjectsborder;
-				border-right: @subjectsborder;
 				div {
+					background-color: #f2f4f6;
 					padding: 6px 13px;
 					border-top: @subjectsborder;
+    				border-right: @subjectsborder;
+    				&:last-of-type {
+    					border-bottom: @subjectsborder;
+    				}
 				}
+			}
+			.cell-engagement {
+				background-color: #f2f4f6;
+				padding: 6px 13px;
+    			border-bottom: @subjectsborder;
+    			border-right: @subjectsborder;
 			}
 			.cell[data-grade="1"] {
 			    background-color: #D90617;
@@ -180,5 +191,54 @@
 			    color: #fff;
 			}
 		}
+
+		@subjects: English, HAAS, Science, Technology, Maths, HPE, VisArts, Language, Music, engagement;
+		
+		.generate-subjecthovers(length(@subjects));
+
+		.generate-subjecthovers(@i) when (@i > 0) {
+			@name: extract(@subjects, @i);
+ 			&.hover-@{name} {
+			    .column.y-header div.cell-@{name} {
+			        border-left: 1px solid #000 !important;
+			        border-top: 1px solid #000 !important;
+			        border-bottom: 1px solid #000 !important;
+			        &:not(:last-of-type) {
+			        	padding-bottom: 5px;
+			        }
+			    }
+			    .column.task div.cell-@{name} {
+			        border-top: 1px solid #000 !important;
+			        border-bottom: 1px solid #000 !important;
+			        &:not(:last-of-type) {
+			        	padding-bottom: 5px;
+			        }
+			    }
+			    .column.report-grades div.cell-@{name} {
+			        border-top: 1px solid #000 !important;
+			        border-right: 1px solid #000 !important;
+			        border-bottom: 1px solid #000 !important;
+			        &:not(:last-of-type) {
+			        	padding-bottom: 5px;
+			        }
+			    }
+			}
+		   .generate-subjecthovers((@i - 1));
+		}
+		&.hover-engagement {
+			.column.y-header div.cell-engagement {
+				margin-top: -1px;
+				padding-bottom: 6px !important;
+			}
+			.column.task div.cell-engagement {
+				margin-top: -1px;
+				padding-bottom: 6px !important;
+		    }
+		    .column.report-grades div.cell-engagement {
+				margin-top: -1px;
+				padding-bottom: 6px !important;
+		    }
+		}
+	
 	}
 }

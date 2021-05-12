@@ -703,8 +703,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border-bottom: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix .column.task {
-  transition: all 0.2s;
   position: relative;
+}
+#page-mod-psgrading-overview .matrix .column.task .cell-taskname {
+  font-weight: 600;
 }
 #page-mod-psgrading-overview .matrix .column.task .subjects div {
   padding: 6px 6px;
@@ -745,6 +747,11 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #00812F;
   color: #fff;
 }
+#page-mod-psgrading-overview .matrix .column.task:hover {
+  box-shadow: 0 0 90px -50px #000;
+  box-shadow: 0 0 0px 1px #000;
+  z-index: 1;
+}
 #page-mod-psgrading-overview .matrix div.column.task.last .subjects div {
   border-right: 1px dashed #ccc;
 }
@@ -767,14 +774,20 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border-bottom: 0 none;
   font-weight: 400;
 }
-#page-mod-psgrading-overview .matrix div.column.report-grades .subjects {
-  background-color: #f2f4f6;
-  border-bottom: 1px dashed #ccc;
-  border-right: 1px dashed #ccc;
-}
 #page-mod-psgrading-overview .matrix div.column.report-grades .subjects div {
+  background-color: #f2f4f6;
   padding: 6px 13px;
   border-top: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .subjects div:last-of-type {
+  border-bottom: 1px dashed #ccc;
+}
+#page-mod-psgrading-overview .matrix div.column.report-grades .cell-engagement {
+  background-color: #f2f4f6;
+  padding: 6px 13px;
+  border-bottom: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
 }
 #page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="1"] {
   background-color: #D90617;
@@ -806,6 +819,248 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-overview .matrix div.column.report-grades .cell[data-grade="100"] {
   background-color: #00812F;
   color: #fff;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.y-header div.cell-engagement {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.y-header div.cell-engagement:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.task div.cell-engagement {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.task div.cell-engagement:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.report-grades div.cell-engagement {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.report-grades div.cell-engagement:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.y-header div.cell-Music {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.y-header div.cell-Music:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.task div.cell-Music {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.task div.cell-Music:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.report-grades div.cell-Music {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Music .column.report-grades div.cell-Music:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.y-header div.cell-Language {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.y-header div.cell-Language:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.task div.cell-Language {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.task div.cell-Language:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.report-grades div.cell-Language {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Language .column.report-grades div.cell-Language:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.y-header div.cell-VisArts {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.y-header div.cell-VisArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.task div.cell-VisArts {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.task div.cell-VisArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.report-grades div.cell-VisArts {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-VisArts .column.report-grades div.cell-VisArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.y-header div.cell-HPE {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.y-header div.cell-HPE:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.task div.cell-HPE {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.task div.cell-HPE:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.report-grades div.cell-HPE {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HPE .column.report-grades div.cell-HPE:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.y-header div.cell-Maths {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.y-header div.cell-Maths:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.task div.cell-Maths {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.task div.cell-Maths:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.report-grades div.cell-Maths {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Maths .column.report-grades div.cell-Maths:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.y-header div.cell-Technology {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.y-header div.cell-Technology:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.task div.cell-Technology {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.task div.cell-Technology:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.report-grades div.cell-Technology {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Technology .column.report-grades div.cell-Technology:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.y-header div.cell-Science {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.y-header div.cell-Science:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.task div.cell-Science {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.task div.cell-Science:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.report-grades div.cell-Science {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-Science .column.report-grades div.cell-Science:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.y-header div.cell-HAAS {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.y-header div.cell-HAAS:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.task div.cell-HAAS {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.task div.cell-HAAS:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.report-grades div.cell-HAAS {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-HAAS .column.report-grades div.cell-HAAS:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.y-header div.cell-English {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.y-header div.cell-English:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.task div.cell-English {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.task div.cell-English:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.report-grades div.cell-English {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+#page-mod-psgrading-overview .matrix.hover-English .column.report-grades div.cell-English:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.y-header div.cell-engagement {
+  margin-top: -1px;
+  padding-bottom: 6px !important;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.task div.cell-engagement {
+  margin-top: -1px;
+  padding-bottom: 6px !important;
+}
+#page-mod-psgrading-overview .matrix.hover-engagement .column.report-grades div.cell-engagement {
+  margin-top: -1px;
+  padding-bottom: 6px !important;
 }
 #page-mod-psgrading-rubric .activity-navigation {
   display: none;

@@ -63,10 +63,8 @@ $PAGE->set_url($overviewurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 
-// Load the tasks for this cm.
-
 // Get the students in the course.
-$students = utils::get_enrolled_students($course->id);
+$students = utils::get_filtered_students($course->id, $userid);
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;

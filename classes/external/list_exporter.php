@@ -52,6 +52,11 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'overviewurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -88,9 +93,14 @@ class list_exporter extends exporter {
             'create' => 1,
         ));
 
+        $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+            'cmid' => $this->related['cmid'],
+        ));
+
         return array(
             'tasks' => $tasks,
             'taskcreateurl' => $taskcreateurl->out(false),
+            'overviewurl' => $overviewurl->out(false),
         );
     }
 

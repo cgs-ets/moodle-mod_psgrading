@@ -78,11 +78,8 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
-
-// TODO::::: FOR NON-STAFF ONLY MENTEE....
-
 // Get the students in the course.
-$students = utils::get_enrolled_students($course->id);
+$students = utils::get_filtered_students($course->id, $userid);
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;

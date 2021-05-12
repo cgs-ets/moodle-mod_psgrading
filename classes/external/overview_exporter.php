@@ -153,6 +153,7 @@ class overview_exporter extends exporter {
                     $gradelang = utils::GRADELANG[$grade];
                     $task->subjectgrades[] = array(
                         'subject' => $subject['val'],
+                        'subjectsanitised' => str_replace('&', '', $subject['val']),
                         'grade' => $grade,
                         'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
                     );
@@ -228,8 +229,10 @@ class overview_exporter extends exporter {
             foreach ($reportgrades as $key => $grade) {
                 $reportgrades[$key] = array(
                     'subject' => $key,
+                    'subjectsanitised' => str_replace('&', '', $key),
                     'grade' => $grade,
                     'gradelang' => utils::GRADELANG[$grade]['full'],
+                    'issubject' => true,
                 );
             }
             $reportgrades = array_values($reportgrades);
@@ -251,8 +254,10 @@ class overview_exporter extends exporter {
             // Add to report grades.
             $reportgrades[] = array(
                 'subject' => 'Engagement',
+                'subjectsanitised' => 'engagement',
                 'grade' => $engagement,
                 'gradelang' => $engagement,
+                'issubject' => false,
             );
         }
 

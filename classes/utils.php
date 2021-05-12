@@ -315,7 +315,6 @@ class utils {
         return $activities;
     }
 
-
     /**
      * Helper function to get the students enrolled
      *
@@ -327,6 +326,46 @@ class utils {
         // 5 is student.
         $users = get_role_users(5, $context, false, 'u.id', 'u.id');
         return array_map('intval', array_column($users, 'id'));
+    }
+
+    /**
+     * Helper function to get the students enrolled.
+     * If this is a non-staff member, filter the list and perform permission check.
+     *
+     * @param int $courseid
+     * @param int $accessuserid. The user id that is being viewed.
+     * @return int[]
+     */
+    public static function get_filtered_students($courseid, $accessuserid) {
+        global $USER;
+
+        $students = static::get_enrolled_students($courseid);
+
+        $isstaff = static::is_cgs_staff();
+        if (!$isstaff) {
+            $vars = array(
+                'userid' => $USER->id,
+                'mentees' => static::get_users_mentees($USER->id, 'id'),
+            );
+            // Filter students to only contain self + mentees.
+            $students = array_filter($students, function($student) use ($vars) {
+                if ($student == $vars['userid']) { // The student is the user themselves.
+                    return true;
+                }
+                if (in_array($student, $vars['mentees'])) { // The student is a mentee.
+                    return true;
+                }
+                return false;
+            });
+            $students = array_values($students);
+            // If a specific user is being viewed, ensure that the user being viewed is in the list of students.
+            if (!empty($accessuserid)) {
+                if (!in_array($accessuserid, $students)) {
+                    exit;
+                }
+            }
+        }
+        return $students;
     }
 
     public static function is_cgs_staff() {
@@ -357,6 +396,47 @@ class utils {
         $userphoto = new \user_picture($user);
         $userphoto->size = 2; // Size f2.
         $user->profilephoto = $userphoto->get_url($PAGE)->out(false);
+    }
+
+    public static function get_users_mentors($userid, $field = 'username') {
+        global $DB;
+
+        $mentors = array();
+        $mentorssql = "SELECT u.*
+                         FROM {role_assignments} ra, {context} c, {user} u
+                        WHERE c.instanceid = :menteeid
+                          AND c.contextlevel = :contextlevel
+                          AND ra.contextid = c.id
+                          AND u.id = ra.userid";
+        $mentorsparams = array(
+            'menteeid' => $userid,
+            'contextlevel' => CONTEXT_USER
+        );
+        if ($mentors = $DB->get_records_sql($mentorssql, $mentorsparams)) {
+            $mentors = array_column($mentors, $field);
+        }
+        return $mentors;
+    }
+
+    public static function get_users_mentees($userid, $field = 'username') {
+        global $DB;
+
+        // Get mentees for user.
+        $mentees = array();
+        $menteessql = "SELECT u.*
+                         FROM {role_assignments} ra, {context} c, {user} u
+                        WHERE ra.userid = :mentorid
+                          AND ra.contextid = c.id
+                          AND c.instanceid = u.id
+                          AND c.contextlevel = :contextlevel";     
+        $menteesparams = array(
+            'mentorid' => $userid,
+            'contextlevel' => CONTEXT_USER
+        );
+        if ($mentees = $DB->get_records_sql($menteessql, $menteesparams)) {
+            $mentees = array_column($mentees, $field);
+        }
+        return $mentees;
     }
 
     public static function get_taskdata_as_xml($data) {

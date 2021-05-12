@@ -55,6 +55,7 @@ define(['jquery', 'core/log', 'core/ajax'],
     function Overview(rootel) {
         var self = this;
         self.rootel = rootel;
+        self.matrix = rootel.find('.matrix');
     }
 
     /**
@@ -72,6 +73,17 @@ define(['jquery', 'core/log', 'core/ajax'],
                 window.location.replace(url);
             }
         });
+
+        self.rootel.find('.matrix .column.y-header .subjects .cell, .matrix .column.y-header .cell-engagement').hover(
+            function() {
+                self.matrix.addClass( 'hover-' + $(this).data('subject') );
+            }, function() {
+                self.matrix.removeClass(function (index, className) {
+                    return (className.match (/(^|\s)hover-\S+/g) || []).join(' ');
+                });
+            }
+        );
+
     };
 
 

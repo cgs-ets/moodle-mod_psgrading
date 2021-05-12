@@ -27,6 +27,7 @@ require_once(__DIR__.'/lib.php');
 
 use mod_psgrading\persistents\task;
 use mod_psgrading\external\list_exporter;
+use mod_psgrading\utils;
 
 // Course_module ID, or
 $id = optional_param('id', 0, PARAM_INT);
@@ -45,6 +46,14 @@ if ($id) {
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
+
+// If a non-staff, redirect them to the overview page instead.
+$isstaff = utils::is_cgs_staff();
+if (!$isstaff) {
+	$url = new moodle_url('/mod/psgrading/overview.php', array('cmid' => $cm->id));
+	redirect($url->out(false));
+	exit;
+} 
 
 $coursecontext = context_course::instance($course->id);
 $modulecontext = context_module::instance($cm->id);
