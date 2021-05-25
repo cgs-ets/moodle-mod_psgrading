@@ -26,7 +26,6 @@
 
 <div class="mod_psgrading">
     <div>
-        <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}">{{#str}}createtask, mod_psgrading{{/str}}</a>
         <a id="btn-overview" class="btn btn-primary" href="{{overviewurl}}">{{#str}}overview, mod_psgrading{{/str}}</a>
     </div>
     <div class="tasks">
@@ -35,7 +34,6 @@
                 <tr>
                     <th class="th c0" scope="col">Name</th>
                     <th class="th c1" style="" scope="col">PYP UOI</th>
-                    <th class="th c2" style="" scope="col">Outcomes</th>
                     <th class="th c3" style="" scope="col">Published</th>
                     <th class="th c4" style="" scope="col">Last modified</th>
                     <th class="th c5 lastcol" style="" scope="col"></th>
@@ -48,5 +46,8 @@
             </tbody>
         </table>
         {{^tasks.0}}{{#str}} list:notasks, mod_psgrading {{/str}}{{/tasks.0}}
+    </div>
+    <div>
+        <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}">{{#str}}createtask, mod_psgrading{{/str}}</a>
     </div>
 </div>

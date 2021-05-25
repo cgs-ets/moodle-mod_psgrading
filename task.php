@@ -154,7 +154,7 @@ if ($create) {
         // Set the form values.
         $formtask->set_data(
             array(
-                'general' => get_string('taskform:create', 'mod_psgrading'),
+                'general' => get_string('task:create', 'mod_psgrading'),
                 'edit' => $edit,
                 'taskname' => $taskname,
                 'pypuoi' => $pypuoi,
@@ -204,7 +204,7 @@ if ($create) {
 
             $result = task::save_from_data($data);
             if ($result) {
-                $notice = get_string("taskform:publishsuccess", "mod_psgrading");
+                $notice = get_string("task:publishsuccess", "mod_psgrading");
                 redirect(
                     $listurl->out(),
                     '<p>'.$notice.'</p>',
@@ -212,7 +212,7 @@ if ($create) {
                     \core\output\notification::NOTIFY_SUCCESS
                 );
             } else {
-                $notice = get_string("taskform:createfail", "mod_psgrading");
+                $notice = get_string("task:createfail", "mod_psgrading");
                 redirect(
                     $listurl->out(),
                     '<p>'.$notice.'</p>',
@@ -234,7 +234,7 @@ if ($create) {
     $formtask->display();
 
     // Add scripts.
-    $PAGE->requires->js_call_amd('mod_psgrading/taskform', 'init', array(
+    $PAGE->requires->js_call_amd('mod_psgrading/task', 'init', array(
         'stubcriterion' => utils::get_stub_criterion(),
     ));
 

@@ -27,7 +27,7 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\external\rubric_exporter;
+use \mod_psgrading\external\details_exporter;
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
 
@@ -52,7 +52,7 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$rubricurl = new moodle_url('/mod/psgrading/rubric.php', array(
+$detailsurl = new moodle_url('/mod/psgrading/details.php', array(
     'cmid' => $cm->id,
     'taskid' => $taskid,
     'userid' => $userid,
@@ -60,7 +60,7 @@ $rubricurl = new moodle_url('/mod/psgrading/rubric.php', array(
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
-$PAGE->set_url($rubricurl);
+$PAGE->set_url($detailsurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($moduleinstance->name));
 
@@ -79,7 +79,7 @@ if (!$exists || $task->get('deleted')) {
 }
 
 // Get the students in the course.
-$students = utils::get_filtered_students($course->id, $userid);
+$students = utils::get_filtered_students($course->id, $userid); // Also ensures only user/staff/mentor is viewing.
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;
@@ -88,7 +88,7 @@ if (empty($students)) {
 // Set a default user for marking.
 if (empty($userid)) {
     $userid = $students[0];
-    $rubricurl->param('userid', $userid);
+    $detailsurl->param('userid', $userid);
     $PAGE->set_url($markurl);
 }
 // Export the data.
@@ -97,12 +97,15 @@ $relateds = array(
     'task' => $task,
     'students' => $students,
     'userid' => $userid,
-    'rubricurl' => $rubricurl,
+    'detailsurl' => $detailsurl,
     'isstaff' => utils::is_cgs_staff(),
 );
-$rubricexporter = new rubric_exporter(null, $relateds);
+$detailsexporter = new details_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
-$data = $rubricexporter->export($output);
+$data = $detailsexporter->export($output);
+
+// Add overview to nav.
+$PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
@@ -114,7 +117,10 @@ $output = $OUTPUT->header();
 //var_export($data);
 //exit;
 
-$output .= $OUTPUT->render_from_template('mod_psgrading/rubric', $data);
+$output .= $OUTPUT->render_from_template('mod_psgrading/details', $data);
+
+// Add scripts.
+$PAGE->requires->js_call_amd('mod_psgrading/details', 'init');
 
 $output .= $OUTPUT->footer();
 echo $output;

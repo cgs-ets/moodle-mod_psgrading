@@ -75,37 +75,34 @@ class form_mark extends \moodleform {
         * - Can't use client validation when using custom action buttons. Validation is done on server in mark.php.
         ****/
 
-        // Header.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_header', $data));
-
         // Critions.
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_criterions', 
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_criterions', 
             array('criterions' => $data->task->criterions))
         );
 
         // Evidence.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_evidence', 
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_evidence', 
             array('evidences' => $data->task->evidences))
         );
         // Evidences filemanager.
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
 
         // Engagement.
-        $mform->addElement('select', 'engagement', get_string("markform:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
+        $mform->addElement('select', 'engagement', get_string("mark:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
         $mform->setType('engagement', PARAM_RAW);
         $mform->addRule('engagement', get_string('required'), 'required', null, 'client');
 
 
         // Comment.
-        $mform->addElement('textarea', 'comment', get_string("markform:comment", "mod_psgrading") . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
+        $mform->addElement('textarea', 'comment', get_string("mark:comment", "mod_psgrading") . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('comment', PARAM_RAW);
         $comments = task::get_comment_bank($data->task->id);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_commentbank', array('comments' => $comments)));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_commentbank', array('comments' => $comments)));
 
         // Buttons.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/markform_buttons', array()));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_buttons', array()));
 
         // Hidden.
         $mform->addElement('hidden', 'action');

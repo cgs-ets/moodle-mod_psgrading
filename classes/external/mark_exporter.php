@@ -119,6 +119,11 @@ class mark_exporter extends exporter {
             $student->markurl = clone($baseurl);
             $student->markurl->param('userid', $student->id);
             $student->markurl = $student->markurl->out(false); // Replace markurl with string val.
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+                'cmid' => $task->cmid,
+                'userid' => $student->id,
+            ));
+            $student->overviewurl = $overviewurl->out(false);
             if ($this->related['userid'] == $student->id) {
                 $student->iscurrent = true;
                 $currstudent = $student;

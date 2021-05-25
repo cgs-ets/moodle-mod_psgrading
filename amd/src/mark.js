@@ -35,14 +35,14 @@ define(['jquery', 'core/log', 'core/ajax'],
     function init(userid, taskid) {
         Log.debug('mod_psgrading/mark: initializing');
 
-        var rootel = $('form[data-form="psgrading-mark"]');
+        var rootel = $('#page-mod-psgrading-mark');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/mark: form[data-form="psgrading-mark"] not found!');
+            Log.error('mod_psgrading/mark: #page-mod-psgrading-mark not found!');
             return;
         }
 
-        var mark = new MarkForm(rootel, userid, taskid);
+        var mark = new Mark(rootel, userid, taskid);
         mark.main();
     }
 
@@ -52,7 +52,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function MarkForm(rootel, userid, taskid) {
+    function Mark(rootel, userid, taskid) {
         var self = this;
         self.rootel = rootel;
         self.userid = userid;
@@ -63,7 +63,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      * Run the Audience Selector.
      *
      */
-    MarkForm.prototype.main = function () {
+    Mark.prototype.main = function () {
         var self = this;
 
         // Change student.
@@ -90,6 +90,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             var level = $(this);
             self.selectLevel(level);
             // Trigger check if user attempts to leave page.
+            Log.debug("Adding leave page check...");
             window.onbeforeunload = function() {
                 return 'You have unsaved changes!';
             }
@@ -155,7 +156,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    MarkForm.prototype.selectLevel = function (level) {
+    Mark.prototype.selectLevel = function (level) {
         var self = this;
 
         var criterion = level.closest('.criterion');
@@ -169,7 +170,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    MarkForm.prototype.regenerateCriterionJSON = function () {
+    Mark.prototype.regenerateCriterionJSON = function () {
         var self = this;
 
         var criterionjson = $('input[name="criterionjson"]');
@@ -203,7 +204,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    MarkForm.prototype.saveComment = function () {
+    Mark.prototype.saveComment = function () {
         var self = this;
 
         var comment = self.rootel.find('textarea[name="comment"]');
@@ -241,7 +242,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    MarkForm.prototype.deleteComment = function (button) {
+    Mark.prototype.deleteComment = function (button) {
         var self = this;
 
         var comment = button.closest('.comment');

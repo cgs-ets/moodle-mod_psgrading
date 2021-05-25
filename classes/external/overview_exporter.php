@@ -113,13 +113,21 @@ class overview_exporter extends exporter {
             $taskexporter = new task_exporter($task);
             $task = $taskexporter->export($output);
 
-            // Add rubric url.
-            $rubricurl = new \moodle_url('/mod/psgrading/rubric.php', array(
-                'cmid' => $task->cmid,
-                'taskid' => $task->id,
-                'userid' => $this->related['userid'],
-            ));
-            $task->rubricurl = $rubricurl->out(false);
+            // Add details url.
+            if ($this->related['isstaff']) {
+                $detailsurl = new \moodle_url('/mod/psgrading/mark.php', array(
+                    'cmid' => $task->cmid,
+                    'taskid' => $task->id,
+                    'userid' => $this->related['userid'],
+                ));
+            } else {
+                $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
+                    'cmid' => $task->cmid,
+                    'taskid' => $task->id,
+                    'userid' => $this->related['userid'],
+                ));
+            }
+            $task->detailsurl = $detailsurl->out(false);
 
             // Add the task criterion definitions.
             task::load_criterions($task);

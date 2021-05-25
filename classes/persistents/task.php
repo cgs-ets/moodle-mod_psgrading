@@ -236,9 +236,15 @@ class task extends persistent {
                 'taskid' => $task->get('id'),
                 'userid' => $userid,
             ));
+            $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
+                'cmid' => $cmid,
+                'taskid' => $task->get('id'),
+                'userid' => $userid,
+            ));
             $taskinfo[] = array(
                 'id' => $task->get('id'),
                 'taskname' => $task->get('taskname'),
+                'detailsurl' => $detailsurl->out(false),
                 'markurl' => $markurl->out(false),
                 'iscurrent' => ($task->get('id') == $currtaskid),
             );
@@ -391,7 +397,7 @@ class task extends persistent {
         global $OUTPUT;
         static::save_comment($taskid, $comment);
         $comments = static::get_comment_bank($taskid);
-        $html = $OUTPUT->render_from_template('mod_psgrading/markform_commentbank_comments', array('comments' => $comments));
+        $html = $OUTPUT->render_from_template('mod_psgrading/mark_commentbank_comments', array('comments' => $comments));
         return $html;
     }
 

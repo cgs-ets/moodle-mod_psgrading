@@ -54,12 +54,12 @@ class form_task extends \moodleform {
         $mform->setExpanded('general', true, true);
 
         // Autosave.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_autosave', []));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_autosave', []));
 
         /*----------------------
          *   Name.
          *----------------------*/
-        $mform->addElement('text', 'taskname', get_string('taskform:name', 'mod_psgrading'), 'size="48"');
+        $mform->addElement('text', 'taskname', get_string('task:name', 'mod_psgrading'), 'size="48"');
         $mform->setType('taskname', PARAM_TEXT);
 
         /*----------------------
@@ -69,12 +69,12 @@ class form_task extends \moodleform {
             '' => 'Select',
             'HtWW' => get_string('pypuoi:htww', 'mod_psgrading'),
         );
-        $mform->addElement('select', 'pypuoi', get_string('taskform:pypuoi', 'mod_psgrading'), $pypuoioptions);
+        $mform->addElement('select', 'pypuoi', get_string('task:pypuoi', 'mod_psgrading'), $pypuoioptions);
 
         /*----------------------
          *   Outcomes
          *----------------------*/
-        $mform->addElement('textarea', 'outcomes', get_string("taskform:outcomes", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
+        $mform->addElement('textarea', 'outcomes', get_string("task:outcomes", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('outcomes', PARAM_RAW);
 
         /*----------------------
@@ -82,7 +82,7 @@ class form_task extends \moodleform {
          *----------------------*/
         // A custom JS driven component.
         // Section title
-        $mform->addElement('header', 'criterionsection', get_string("taskform:criterion", "mod_psgrading"));
+        $mform->addElement('header', 'criterionsection', get_string("task:criterion", "mod_psgrading"));
         $mform->setExpanded('criterionsection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
@@ -96,7 +96,7 @@ class form_task extends \moodleform {
          *----------------------*/
         // A custom JS driven component.
         // Section title
-        $mform->addElement('header', 'evidencesection', get_string("taskform:evidence", "mod_psgrading"));
+        $mform->addElement('header', 'evidencesection', get_string("task:evidence", "mod_psgrading"));
         $mform->setExpanded('evidencesection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
@@ -110,7 +110,7 @@ class form_task extends \moodleform {
         // Buttons.
         $mform->addElement('header', 'actions', '');
         $mform->setExpanded('actions', true, true);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/taskform_buttons', array('published' => $published)));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('published' => $published)));
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');

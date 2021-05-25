@@ -19,17 +19,10 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/taskform_autosave
-
-    View for the evidence selector component.
+    @template mod_psgrading/mark_buttons
 }}
 <div class="custom-footer-buttons">
-    {{#published}}
-        <input type="submit" class="btn btn-primary" name="publish" id="btn-publish" value="{{#str}}taskform:publishchanges, mod_psgrading{{/str}}">
-    {{/published}}
-    {{^published}}
-        <input type="submit" class="btn btn-primary" name="publish" id="btn-publish" value="{{#str}}taskform:publish, mod_psgrading{{/str}}">
-    {{/published}}
-    <input type="submit" class="btn btn-secondary" name="savedraft" id="btn-savedraft" value="{{#str}}taskform:savedraft, mod_psgrading{{/str}}">
-    <input type="submit" class="btn btn-secondary" name="discardchanges" id="btn-discardchanges" value="{{#published}}{{#str}}taskform:discardchanges, mod_psgrading{{/str}}{{/published}}{{^published}}{{#str}}taskform:discarddraft, mod_psgrading{{/str}}{{/published}}">
+    <input type="submit" class="btn btn-primary" name="save" id="btn-save" value="{{#str}}mark:save, mod_psgrading{{/str}}">
+    <input type="submit" class="btn btn-secondary" name="saveshownext" id="btn-saveshownext" value="{{#str}}mark:saveshownext, mod_psgrading{{/str}}">
+    <input type="submit" class="btn btn-secondary" name="reset" id="btn-reset" value="{{#str}}mark:reset, mod_psgrading{{/str}}">
 </div>

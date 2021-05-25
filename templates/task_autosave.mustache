@@ -19,13 +19,15 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/markform_commentbank_comments
-}}
+    @template mod_psgrading/task_autosave
 
-{{#comments}}
-    <div class="comment" data-id="{{id}}">
-        <a class="append" href="#" title="Append comment text"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-        <div class="text">{{comment}}</div>
-        <a class="delete" href="#" title="Delete comment from bank"><i class="fa fa-trash" aria-hidden="true"></i></a>
-    </div>
-{{/comments}}
+    View for the evidence selector component.
+}}
+{{!
+<div class="autosave-control">
+    <input type="checkbox" id="autosave-switch" /><label for="autosave-switch">Autosave</label>
+    <span class="switch-label">Autosave</span>
+    <div id="savestatus"></div>
+</div>
+}}
+<div id="savestatus"></div>

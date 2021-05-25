@@ -19,23 +19,12 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/marking_evidence
-
-    View for the evidence selector component.
+    @template mod_psgrading/mark_commentbank
 }}
-<div class="rubric-evidences">
-    <div class="heading">{{#str}}taskform:evidence, mod_psgrading{{/str}}</div>
-    <div class="body">
-        <table class="table generaltable">
-            <tbody>
-                {{#task.evidences}}
-                    <tr class="evidence" data-id="{{id}}">
-                        <td class="cell">
-                            <a class="link" target="_blank" href="{{url}}"><img src="{{icon}}" class="icon" role="presentation" aria-hidden="true"><span class="name">{{name}}</span></a>
-                        </td>
-                    </tr>
-                {{/task.evidences}}
-            </tbody>
-        </table>
+<div class="comment-bank">
+    <div class="spinner"><div class="circle spin"></div></div>
+    <div class="stored">
+        {{>mod_psgrading/mark_commentbank_comments}}
     </div>
 </div>
+<div class="clear"></div>

@@ -34,7 +34,7 @@ use \mod_psgrading\external\mark_exporter;
 /**
  * Exporter of a single task
  */
-class rubric_exporter extends exporter {
+class details_exporter extends exporter {
 
     /**
     * Return the list of additional properties.
@@ -96,7 +96,7 @@ class rubric_exporter extends exporter {
             'task' => 'mod_psgrading\persistents\task',
             'students' => 'int[]?',
             'userid' => 'int',
-            'rubricurl' => 'moodle_url',
+            'detailsurl' => 'moodle_url',
             'isstaff' => 'bool',
         ];
     }
@@ -115,7 +115,7 @@ class rubric_exporter extends exporter {
             'task' => $this->related['task'],
             'students' => $this->related['students'],
             'userid' => $this->related['userid'],
-            'markurl' => $this->related['rubricurl'],
+            'markurl' => $this->related['detailsurl'],
         );      
         $markexporter = new mark_exporter(null, $markrelateds);
         $out = $markexporter->export($output);

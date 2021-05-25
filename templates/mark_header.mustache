@@ -19,11 +19,11 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/markform_header
+    @template mod_psgrading/mark_header
 }}
 <div class="header">
     <div class="selected-student" data-userid="{{currstudent.id}}">
-        <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
+        <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
     </div>
     <div class="task-selector">
         {{#currstudent.othertasks.0}}

@@ -106,8 +106,9 @@ $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
 
-// Add task to nav.
+// Add task edit, and overview to nav.
 $PAGE->navbar->add($data->task->taskname, $data->task->editurl);
+$PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
 // Instantiate empty form so that we can "get_data" with minimal processing.
 $formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
@@ -147,7 +148,7 @@ if (empty($formdata)) {
             if ($formdata->action == 'saveshownext') {
                 $redirecturl = $data->nextstudenturl;
             }
-            $notice = get_string("markform:savesuccess", "mod_psgrading", $data->currstudent->fullname);
+            $notice = get_string("Mark:savesuccess", "mod_psgrading", $data->currstudent->fullname);
             redirect(
                 $redirecturl,
                 $notice,
@@ -155,7 +156,7 @@ if (empty($formdata)) {
                 \core\output\notification::NOTIFY_SUCCESS
             );
         } else {
-            $notice = get_string("markform:savefail", "mod_psgrading", $data->currstudent->fullname);
+            $notice = get_string("Mark:savefail", "mod_psgrading", $data->currstudent->fullname);
             redirect(
                 $markurl->out(),
                 $notice,
@@ -167,7 +168,7 @@ if (empty($formdata)) {
 
     if ($formdata->action == 'reset') {
         task::reset_task_grades_for_student($formdata);
-        $notice = get_string("markform:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
+        $notice = get_string("Mark:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
         redirect(
             $markurl->out(),
             $notice,
@@ -193,10 +194,12 @@ $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.cs
 
 echo $OUTPUT->header();
 
+echo $OUTPUT->render_from_template('mod_psgrading/mark_header', $data);
+
 $formmark->display();
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/markform', 'init', array(
+$PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
     'userid' => $userid,
     'taskid' => $taskid,
 ));

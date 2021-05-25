@@ -51,10 +51,6 @@
                 {{/tasks.0}}
             </div>
             <div class="cell cell-engagement" data-subject="engagement">Engagement</div>
-            <!-- 
-                <div class="cell">Evidence</div>
-                <div class="cell">Rubric</div>
-            -->
             <div class="cell">Success</div>
             <div class="cell">Comments</div>
             <div class="cell">Details</div>
@@ -71,14 +67,6 @@
                 <div class="cell cell-engagement" data-engagement="{{gradeinfo.engagement}}">
                     {{gradeinfo.engagement}}&nbsp;
                 </div>
-                <!--
-                    <div class="cell">
-                        <a href="#"><i class="fa fa-folder-open" aria-hidden="true"></i></a>
-                    </div>
-                    <div class="cell">
-                        <a href="{{rubricurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>
-                    </div>
-                -->
                 <div class="cell" data-grade="{{success.grade}}">
                     {{{success.gradelang}}}
                 </div>
@@ -86,7 +74,7 @@
                     <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>
                 </div>
                 <div class="cell">
-                    <a href="{{rubricurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                    <a href="{{detailsurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                 </div>
             </div>{{/tasks}}{{!
         }}{{#reportgrades.0}}<div class="column report-grades">

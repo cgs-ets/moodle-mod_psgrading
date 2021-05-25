@@ -23,14 +23,14 @@
  */
 
 /**
- * @module mod_psgrading/taskform
+ * @module mod_psgrading/task
  */
 define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'], 
     function($, Log, Templates, Ajax, Str) {    
     'use strict';
 
     /**
-     * Initializes the taskform component.
+     * Initializes the task component.
      */
     function init(stubcriterion) {
         Log.debug('mod_psgrading/task: initializing');
@@ -42,8 +42,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             return;
         }
 
-        var taskform = new TaskForm(rootel, stubcriterion);
-        taskform.main();
+        var task = new Task(rootel, stubcriterion);
+        task.main();
     }
 
     /**
@@ -52,20 +52,24 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function TaskForm(rootel, stubcriterion) {
+    function Task(rootel, stubcriterion) {
         var self = this;
         self.rootel = rootel;
-        self.formjson = self.getFormJSON();
         self.autosaving = false;
         self.savestatus = self.rootel.find('#savestatus');
         self.stubcriterion = stubcriterion;
+
+        // Setup initial json.
+        self.regenerateEvidenceJSON();
+        self.regenerateCriterionJSON();
+        self.formjson = self.getFormJSON();
     }
 
     /**
      * Run the Audience Selector.
      *
      */
-   TaskForm.prototype.main = function () {
+   Task.prototype.main = function () {
         var self = this;
 
         // Auto-save when leaving a field.
@@ -172,7 +176,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
 
     };
 
-    TaskForm.prototype.SortEnd = function (e) {
+    Task.prototype.SortEnd = function (e) {
         self = this;
         console.log(e);
     };
@@ -183,7 +187,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.getFormJSON = function () {
+    Task.prototype.getFormJSON = function () {
         var self = this;
 
         var id = $('input[name="edit"]').val();
@@ -212,7 +216,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.regenerateAndSave = function (async) {
+    Task.prototype.regenerateAndSave = function (async) {
         var self = this;
 
         self.regenerateEvidenceJSON();
@@ -225,7 +229,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.autoSave = function (async) {
+    Task.prototype.autoSave = function (async) {
         var self = this;
 
         // Check if saving already in-progress.
@@ -270,7 +274,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.regenerateEvidenceJSON = function () {
+    Task.prototype.regenerateEvidenceJSON = function () {
         var self = this;
 
         var evidencejson = $('input[name="evidencejson"]');
@@ -300,7 +304,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.regenerateCriterionJSON = function () {
+    Task.prototype.regenerateCriterionJSON = function () {
         var self = this;
 
         var criterionjson = $('input[name="criterionjson"]');
@@ -336,7 +340,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.addCriterion = function () {
+    Task.prototype.addCriterion = function () {
         var self = this;
 
         var stubcriterion = {"criterions": [self.stubcriterion]};
@@ -352,7 +356,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.toggleCriterion = function (toggle) {
+    Task.prototype.toggleCriterion = function (toggle) {
         var self = this;
 
         var control = toggle.closest('.hidden-control');
@@ -379,14 +383,14 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    TaskForm.prototype.deleteCriterion = function (button) {
+    Task.prototype.deleteCriterion = function (button) {
         var self = this;
 
         var tbltr = button.closest('.tbl-tr');
         tbltr.fadeOut(200, function() {
             $(this).remove();
             self.autosaving = false; // Force an autosave.
-            self.regenerateAndSave(); 
+            self.regenerateAndSave();
         });
     };
 
@@ -394,7 +398,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * Set status to autosaving.
      *
      */
-    TaskForm.prototype.statusSaving = function () {
+    Task.prototype.statusSaving = function () {
         var self = this;
         self.autosaving = true;
         self.savestatus.html('<div class="badge badge-secondary"><div class="spinner"><div class="circle spin"></div></div> Auto saving</div>');
@@ -408,7 +412,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * Set status to autosaved.
      *
      */
-    TaskForm.prototype.statusSaved = function () {
+    Task.prototype.statusSaved = function () {
         var self = this;
         self.autosaving = false;
         self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-check" aria-hidden="true"></i> Draft saved</div>');
@@ -420,7 +424,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * Set status to save failed.
      *
      */
-    TaskForm.prototype.statusSaveFailed = function () {
+    Task.prototype.statusSaveFailed = function () {
         var self = this;
         self.autosaving = false;
         self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-cross" aria-hidden="true"></i> Changes unsaved</div>');
@@ -437,7 +441,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * @param {string} templatekey The property of the global templates variable
      * @return {object} jQuery promise
      */
-    TaskForm.prototype.loadTemplate = function (templatekey) {
+    Task.prototype.loadTemplate = function (templatekey) {
         var self = this;
         return Templates.render(self.templates[templatekey], {});
     }
