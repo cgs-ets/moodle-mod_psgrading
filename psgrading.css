@@ -59,13 +59,15 @@
 .path-mod-psgrading .header .selected-student {
   float: left;
 }
-.path-mod-psgrading .header .task-selector {
+.path-mod-psgrading .header .task-selector,
+.path-mod-psgrading .header .group-selector {
   position: absolute;
   top: -70px;
   right: 35px;
   width: 200px;
 }
-.path-mod-psgrading .header .task-selector select {
+.path-mod-psgrading .header .task-selector select,
+.path-mod-psgrading .header .group-selector select {
   width: auto;
   min-width: 200px;
   max-width: 100%;
@@ -664,8 +666,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-overview .psgrading-overview > .header {
   margin: -1px 0px 0px 0px;
-  z-index: 999;
-  position: relative;
 }
 #page-mod-psgrading-overview .matrix {
   white-space: nowrap;

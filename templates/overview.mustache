@@ -28,6 +28,16 @@
         <div class="selected-student" data-userid="{{currstudent.id}}">
             <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
         </div>
+        <div class="group-selector">
+            {{#groups.1}}
+                <select class="group-select form-control">
+                    <option value="0" data-overviewurl="{{baseurl}}">Groups</option>
+                    {{#groups}}
+                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
+                    {{/groups}}
+                </select>
+            {{/groups.1}}
+        </div>
         <div class="student-selector">
             <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
             <select class="student-select form-control">

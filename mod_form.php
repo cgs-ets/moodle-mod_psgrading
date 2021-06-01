@@ -39,7 +39,32 @@ class mod_psgrading_mod_form extends moodleform_mod {
      * Defines forms elements
      */
     public function definition() {
-        global $CFG;
+        global $CFG, $DB, $COURSE, $PAGE;
+
+
+        // Only allow a single instance per course.
+        $urlparams = $PAGE->url->params();
+        if (isset($urlparams['add'])) {
+            $exists = $DB->get_record('psgrading', array('course' => $COURSE->id), '*', IGNORE_MULTIPLE);
+            if ($exists) {
+                $courseurl = new moodle_url('/course/view.php', array(
+                    'id' => $COURSE->id,
+                ));
+                $modurl = new moodle_url('/mod/psgrading/view.php', array(
+                    'id' => $exists->id,
+                ));
+            see $modurl
+                $notice = get_string("singleinstanceonly", "mod_psgrading");
+                redirect(
+                    $courseurl->out(),
+                    '<p>'.$notice.'</p>',
+                    null,
+                    \core\output\notification::NOTIFY_ERROR
+                );
+                exit;
+            }
+        }
+        
 
         $mform = $this->_form;
 

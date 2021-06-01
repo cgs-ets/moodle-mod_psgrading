@@ -65,6 +65,15 @@ define(['jquery', 'core/log', 'core/ajax'],
     Overview.prototype.main = function () {
         var self = this;
 
+        // Change group.
+        self.rootel.on('change', '.group-select', function(e) {
+            var select = $(this);
+            var url = select.find(':selected').data('overviewurl');
+            if (url) {
+                window.location.replace(url);
+            }
+        });
+
         // Change student.
         self.rootel.on('change', '.student-select', function(e) {
             var select = $(this);

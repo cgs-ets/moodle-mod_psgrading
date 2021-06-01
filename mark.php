@@ -148,7 +148,7 @@ if (empty($formdata)) {
             if ($formdata->action == 'saveshownext') {
                 $redirecturl = $data->nextstudenturl;
             }
-            $notice = get_string("Mark:savesuccess", "mod_psgrading", $data->currstudent->fullname);
+            $notice = get_string("mark:savesuccess", "mod_psgrading", $data->currstudent->fullname);
             redirect(
                 $redirecturl,
                 $notice,
@@ -156,7 +156,7 @@ if (empty($formdata)) {
                 \core\output\notification::NOTIFY_SUCCESS
             );
         } else {
-            $notice = get_string("Mark:savefail", "mod_psgrading", $data->currstudent->fullname);
+            $notice = get_string("mark:savefail", "mod_psgrading", $data->currstudent->fullname);
             redirect(
                 $markurl->out(),
                 $notice,
@@ -168,7 +168,7 @@ if (empty($formdata)) {
 
     if ($formdata->action == 'reset') {
         task::reset_task_grades_for_student($formdata);
-        $notice = get_string("Mark:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
+        $notice = get_string("mark:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
         redirect(
             $markurl->out(),
             $notice,

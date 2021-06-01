@@ -33,6 +33,7 @@ use \mod_psgrading\utils;
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
 $p  = optional_param('p', 0, PARAM_INT);
+$groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 
 if ($cmid) {
@@ -51,6 +52,7 @@ require_login($course, true, $cm);
 
 $overviewurl = new moodle_url('/mod/psgrading/overview.php', array(
     'cmid' => $cm->id,
+    'groupid' => $groupid,
     'userid' => $userid,
 ));
 $listurl = new moodle_url('/mod/psgrading/view.php', array(
@@ -63,15 +65,30 @@ $PAGE->set_url($overviewurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 
+// Get groups in the course.
+$groups = utils::get_course_groups($course->id);
+// Set a default group.
+//if (empty($groupid)) {
+//    $groupid = $groups[0];
+//    $overviewurl->param('groupid', $groupid);
+//    $PAGE->set_url($overviewurl);
+//}
+
 // Get the students in the course.
-$students = utils::get_filtered_students($course->id, $userid);
+if (empty($groupid)) {
+    // Groupid = 0, get all students in course.
+    $students = utils::get_filtered_students($course->id, $userid);
+} else {
+    // Get by group.
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid);
+}
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;
 }
 
 // Set a default user.
-if (empty($userid)) {
+if (empty($userid) || (!in_array($userid, $students))) {
     $userid = $students[0];
     $overviewurl->param('userid', $userid);
     $PAGE->set_url($overviewurl);
@@ -80,8 +97,10 @@ if (empty($userid)) {
 // Export the data for this page.
 $relateds = array(
     'cmid' => (int) $cm->id,
+    'groups' => $groups,
     'students' => $students,
     'userid' => $userid,
+    'groupid' => $groupid,
     'overviewurl' => $overviewurl,
     'isstaff' => utils::is_cgs_staff(),
 );

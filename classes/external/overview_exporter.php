@@ -54,12 +54,22 @@ class overview_exporter extends exporter {
                 'multiple' => true,
                 'optional' => false,
             ],
+            'groups' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
             'students' => [
                 'type' => PARAM_RAW,
                 'multiple' => true,
                 'optional' => false,
             ],
             'currstudent' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
+            'baseurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -87,8 +97,10 @@ class overview_exporter extends exporter {
     protected static function define_related() {
         return [
             'cmid' => 'int',
+            'groups' => 'int[]?',
             'students' => 'int[]?',
             'userid' => 'int',
+            'groupid' => 'int',
             'overviewurl' => 'moodle_url',
             'isstaff' => 'bool',
         ];
@@ -129,12 +141,34 @@ class overview_exporter extends exporter {
             }
             $task->detailsurl = $detailsurl->out(false);
 
+            // Load task evidences (default).
+            task::load_evidences($task);
+            foreach ($task->evidences as &$evidence) {
+                if ($evidence->evidencetype == 'cm') {
+                    // get the icon and name.
+                    $cm = get_coursemodule_from_id('', $evidence->refdata);
+                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                    $cms = $modinfo->get_cms();
+                    $cm = $cms[$evidence->refdata];
+                    $evidence->icon = $cm->get_icon_url()->out();
+                    $evidence->url = $cm->url;
+                    $evidence->name = $cm->name;
+                }
+            }
+
             // Add the task criterion definitions.
             task::load_criterions($task);
 
             // Get existing grades for this user.
             $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
             $task->gradeinfo = $gradeinfo;
+            $task->subjectgrades = array();
+
+            if (empty($gradeinfo)) {
+                // There is no gradeinfo for this user/task. Skip over the calculations.
+                $tasks[] = $task;
+                continue;
+            }
 
             // Extract subject grades from criterion grades.
             $subjectgrades = array();
@@ -145,13 +179,13 @@ class overview_exporter extends exporter {
                 }
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
             }
+        
             // Flatten to rounded averages.
             foreach ($subjectgrades as &$subjectgrade) {
                 $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
                 $subjectgrade = (int) round($subjectgrade, 0);
             }
             // Rebuild into mustache friendly array.
-            $task->subjectgrades = array();
             foreach (utils::SUBJECTOPTIONS as $subject) {
                 if ($subject['val']) {
                     $grade = 0;
@@ -177,20 +211,7 @@ class overview_exporter extends exporter {
                 'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
             );
 
-            // Load task evidences (default).
-            task::load_evidences($task);
-            foreach ($task->evidences as &$evidence) {
-                if ($evidence->evidencetype == 'cm') {
-                    // get the icon and name.
-                    $cm = get_coursemodule_from_id('', $evidence->refdata);
-                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
-                    $cms = $modinfo->get_cms();
-                    $cm = $cms[$evidence->refdata];
-                    $evidence->icon = $cm->get_icon_url()->out();
-                    $evidence->url = $cm->url;
-                    $evidence->name = $cm->name;
-                }
-            }
+
 
             // Ditch some unnecessary data.
             unset($task->criterions);
@@ -248,7 +269,7 @@ class overview_exporter extends exporter {
             // Get the engagement accross all tasks.
             $engagement = array();
             foreach ($tasks as $task) {
-                if ($task->gradeinfo->engagement) {
+                if (isset($task->gradeinfo->engagement)) {
                     $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
                 }
             }
@@ -271,7 +292,21 @@ class overview_exporter extends exporter {
             );
         }
 
-        // Student Navigation.
+        // Group navigation.
+        $groups = array();
+        foreach ($this->related['groups'] as $i => $groupid) {
+            $group = utils::get_group_display_info($groupid);
+            $group->overviewurl = clone($baseurl);
+            $group->overviewurl->param('groupid', $groupid);
+            $group->overviewurl = $group->overviewurl->out(false); // Replace overviewurl with string val.
+            $group->iscurrent = false;
+            if ($this->related['groupid'] == $group->id) {
+                $group->iscurrent = true;
+            }
+            $groups[] = $group;
+        }
+
+        // Student navigation.
         $currstudent = null;
         $nextstudenturl = null;
         $prevstudenturl = null;
@@ -315,11 +350,15 @@ class overview_exporter extends exporter {
             $nextstudenturl = $nextstudenturl->out(false);
         }
 
+        $baseurl->param('groupid', 0);
+
         return array(
             'tasks' => $tasks,
             'reportgrades' => $reportgrades,
+            'groups' => $groups,
             'students' => $students,
             'currstudent' => $currstudent,
+            'baseurl' => $baseurl->out(false),
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
         );

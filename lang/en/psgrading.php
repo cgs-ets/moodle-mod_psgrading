@@ -34,6 +34,7 @@ $string['modulenameplural'] = 'Primary School Grading';
 $string['modform:name'] = 'Name';
 $string['modform:name_help'] = 'Name for the PS Grading system';
 $string['pluginadministration'] = '';
+$string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\' is allowed per course.';
 
 $string['tasksetup'] = 'Task setup';
 $string['psgrading:task'] = 'Create a new task';

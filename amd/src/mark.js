@@ -55,6 +55,7 @@ define(['jquery', 'core/log', 'core/ajax'],
     function Mark(rootel, userid, taskid) {
         var self = this;
         self.rootel = rootel;
+        self.form = self.rootel.find('form[data-form="psgrading-mark"]');
         self.userid = userid;
         self.taskid = taskid;
     }
@@ -102,7 +103,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             window.onbeforeunload = null;
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('save');
-            self.rootel.submit();
+            self.form.submit();
         });
 
         // Save and show next.
@@ -111,7 +112,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             window.onbeforeunload = null;
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('saveshownext');
-            self.rootel.submit();
+            self.form.submit();
         });
 
         // Reset.
@@ -119,7 +120,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             e.preventDefault();
             window.onbeforeunload = null;
             self.rootel.find('[name="action"]').val('reset');
-            self.rootel.submit();
+            self.form.submit();
         });
 
         // Save comment to bank.
@@ -172,7 +173,6 @@ define(['jquery', 'core/log', 'core/ajax'],
      */
     Mark.prototype.regenerateCriterionJSON = function () {
         var self = this;
-
         var criterionjson = $('input[name="criterionjson"]');
         var criterions = new Array();
 

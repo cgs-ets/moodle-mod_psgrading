@@ -369,6 +369,66 @@ class utils {
         return $students;
     }
 
+    /**
+     * Helper function to get groups in a course.
+     *
+     * @param int $courseid
+     * @return int[]
+     */
+    public static function get_course_groups($courseid) {
+        global $DB;
+
+        $sql = "SELECT g.id
+                  FROM {groups} g
+                 WHERE g.courseid = ?";
+        $groups = $DB->get_records_sql($sql, array($courseid));
+        $groups = array_map('intval', array_column($groups, 'id'));
+
+        return $groups;
+    }
+
+    /**
+     * Helper function to get group info.
+     *
+     * @param int $groupid
+     * @return stdClass
+     */
+    public static function get_group_display_info($groupid) {
+        global $DB;
+
+
+        $sql = "SELECT g.id, g.name, g.description
+                  FROM {groups} g
+                 WHERE g.id = ?";
+        $group = $DB->get_record_sql($sql, array($groupid));
+
+        return $group;
+    }
+
+    /**
+     * Helper function to get the students enrolled.
+     * If this is a non-staff member, filter the list and perform permission check.
+     *
+     * @param int $courseid
+     * @param int $groupid
+     * @param int $accessuserid. The user id that is being viewed.
+     * @return int[]
+     */
+    public static function get_filtered_students_by_group($courseid, $groupid, $accessuserid) {
+        global $DB;
+
+        $students = static::get_filtered_students($courseid, $accessuserid);
+
+        $sql = "SELECT DISTINCT gm.userid
+                  FROM {groups_members} gm
+                 WHERE gm.groupid = ?";
+        $members = array_column($DB->get_records_sql($sql, array($groupid)), 'userid');
+
+        $students = array_values(array_intersect($students, $members));
+
+        return $students;
+    }
+
     public static function is_cgs_staff() {
         global $USER;
         
@@ -398,6 +458,7 @@ class utils {
         $userphoto->size = 2; // Size f2.
         $user->profilephoto = $userphoto->get_url($PAGE)->out(false);
     }
+
 
     public static function get_users_mentors($userid, $field = 'username') {
         global $DB;
