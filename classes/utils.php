@@ -325,7 +325,7 @@ class utils {
     public static function get_enrolled_students($courseid) {
         $context = \context_course::instance($courseid);
         // 5 is student.
-        $users = get_role_users(5, $context, false, 'u.id', 'u.id');
+        $users = get_role_users(5, $context, false, 'u.id, u.firstname', 'u.firstname'); //last param is sort by.
         return array_map('intval', array_column($users, 'id'));
     }
 
