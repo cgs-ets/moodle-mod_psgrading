@@ -92,8 +92,8 @@ if (!$exists || $task->get('deleted')) {
 if (empty($groupid) && $view != 'all') {
     $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
     if ($groupid) {
-        $overviewurl->param('groupid', $groupid);
-        $PAGE->set_url($overviewurl);
+        $markurl->param('groupid', $groupid);
+        $PAGE->set_url($markurl);
     }
 } else {
     set_user_preference('mod_psgrading_groupid', $groupid);
