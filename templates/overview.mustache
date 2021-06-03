@@ -30,8 +30,9 @@
         </div>
         <div class="group-selector">
             {{#groups.1}}
+                <span class="selector-label">Group</span>
                 <select class="group-select form-control">
-                    <option value="0" data-overviewurl="{{baseurl}}">Groups</option>
+                    <option value="0" data-overviewurl="{{baseurl}}">All groups</option>
                     {{#groups}}
                         <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
                     {{/groups}}

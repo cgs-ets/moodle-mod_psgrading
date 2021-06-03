@@ -37,7 +37,9 @@ $cmid = optional_param('cmid', 0, PARAM_INT);
 $p  = optional_param('p', 0, PARAM_INT);
 
 $taskid = required_param('taskid', PARAM_INT);
+$groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
+$view = optional_param('view', '', PARAM_RAW);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
@@ -56,6 +58,7 @@ require_login($course, true, $cm);
 $markurl = new moodle_url('/mod/psgrading/mark.php', array(
     'cmid' => $cm->id,
     'taskid' => $taskid,
+    'groupid' => $groupid,
     'userid' => $userid,
 ));
 $listurl = new moodle_url('/mod/psgrading/view.php', array(
@@ -67,6 +70,9 @@ $PAGE->set_context($modulecontext);
 $PAGE->set_url($markurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($moduleinstance->name));
+
+// Get groups in the course.
+$groups = utils::get_course_groups($course->id);
 
 // Load existing task.
 $exists = task::record_exists($taskid);
@@ -82,15 +88,32 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
+// If group is not specified, check if preference is set.
+if (empty($groupid) && $view != 'all') {
+    $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
+    if ($groupid) {
+        $overviewurl->param('groupid', $groupid);
+        $PAGE->set_url($overviewurl);
+    }
+} else {
+    set_user_preference('mod_psgrading_groupid', $groupid);
+}
+
 // Get the students in the course.
-$students = utils::get_enrolled_students($course->id);
+if (empty($groupid)) {
+    // Groupid = 0, get all students in course.
+    $students = utils::get_filtered_students($course->id, $userid);
+} else {
+    // Get by group.
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid);
+}
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;
 }
 
 // Set a default user for marking.
-if (empty($userid)) {
+if (empty($userid) || !in_array($userid, $students)) {
     $userid = $students[0];
     $markurl->param('userid', $userid);
     $PAGE->set_url($markurl);
@@ -101,6 +124,8 @@ $relateds = array(
     'students' => $students,
     'userid' => $userid,
     'markurl' => $markurl,
+    'groups' => $groups,
+    'groupid' => $groupid,
 );
 $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');

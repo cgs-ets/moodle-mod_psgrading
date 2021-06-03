@@ -85,6 +85,15 @@ define(['jquery', 'core/log', 'core/ajax'],
             }
         });
 
+        // Change group.
+        self.rootel.on('change', '.group-select', function(e) {
+            var select = $(this);
+            var url = select.find(':selected').data('markurl');
+            if (url) {
+                window.location.replace(url);
+            }
+        });
+
         // Criterion level select.
         self.rootel.on('click', '.criterions .level', function(e) {
             e.preventDefault();

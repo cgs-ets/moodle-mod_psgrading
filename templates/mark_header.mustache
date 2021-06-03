@@ -27,12 +27,24 @@
     </div>
     <div class="task-selector">
         {{#currstudent.othertasks.0}}
+            <span class="selector-label">Task</span>
             <select class="task-select form-control">
                 {{#currstudent.othertasks}}
                     <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{taskname}}</option>
                 {{/currstudent.othertasks}}
             </select>
         {{/currstudent.othertasks.0}}
+    </div>
+    <div class="group-selector">
+        {{#groups.1}}
+            <span class="selector-label">Group</span>
+            <select class="group-select form-control">
+                <option value="0" data-markurl="{{baseurl}}">All groups</option>
+                {{#groups}}
+                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{name}}</option>
+                {{/groups}}
+            </select>
+        {{/groups.1}}
     </div>
     <div class="student-selector">
         <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>

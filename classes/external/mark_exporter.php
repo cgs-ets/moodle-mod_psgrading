@@ -49,12 +49,22 @@ class mark_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'groups' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
             'students' => [
                 'type' => PARAM_RAW,
                 'multiple' => true,
                 'optional' => false,
             ],
             'currstudent' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
+            'baseurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -89,7 +99,9 @@ class mark_exporter extends exporter {
             'task' => 'mod_psgrading\persistents\task',
             'students' => 'int[]?',
             'userid' => 'int',
-            'markurl' => 'moodle_url'
+            'markurl' => 'moodle_url',
+            'groups' => 'int[]?',
+            'groupid' => 'int',
         ];
     }
 
@@ -106,6 +118,20 @@ class mark_exporter extends exporter {
 
 		$taskexporter = new task_exporter($this->related['task']);
 		$task = $taskexporter->export($output);
+
+        // Group navigation.
+        $groups = array();
+        foreach ($this->related['groups'] as $i => $groupid) {
+            $group = utils::get_group_display_info($groupid);
+            $group->markurl = clone($baseurl);
+            $group->markurl->param('groupid', $groupid);
+            $group->markurl = $group->markurl->out(false); // Replace markurl with string val.
+            $group->iscurrent = false;
+            if ($this->related['groupid'] == $group->id) {
+                $group->iscurrent = true;
+            }
+            $groups[] = $group;
+        }
 
         // Student Navigation.
         $currstudent = null;
@@ -189,11 +215,16 @@ class mark_exporter extends exporter {
                 $evidence->name = $cm->name;
             }
         }
+        
+        $baseurl->param('groupid', 0);
+        $baseurl->param('view', 'all');
 
         return array(
             'task' => $task,
             'students' => $students,
+            'groups' => $groups,
             'currstudent' => $currstudent,
+            'baseurl' => $baseurl->out(false),
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'gradeinfo' => $gradeinfo,

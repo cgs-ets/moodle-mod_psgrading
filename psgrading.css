@@ -83,6 +83,12 @@
 .path-mod-psgrading .header .student-selector a {
   cursor: pointer;
 }
+.path-mod-psgrading .header .selector-label {
+  position: absolute;
+  left: -51px;
+  font-size: 85%;
+  padding-top: 9px;
+}
 #page-mod-psgrading-task #page-content .action-menu {
   display: none !important;
 }
@@ -410,6 +416,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark #fitem_id_criterionjson {
   display: none;
+}
+#page-mod-psgrading-mark.path-mod-psgrading .header .task-selector {
+  top: -115px;
 }
 #page-mod-psgrading-mark .marking-criterions .headings,
 #page-mod-psgrading-mark .marking-criterions .criterions {
