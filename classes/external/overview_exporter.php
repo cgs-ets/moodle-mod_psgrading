@@ -115,11 +115,26 @@ class overview_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER;
 
+        $out = array(
+            'tasks' => null,
+            'reportgrades' => null,
+            'groups' => null,
+            'students' => null,
+            'currstudent' => null,
+            'baseurl' => null,
+            'nextstudenturl' => null,
+            'prevstudenturl' => null,
+        );
+
         $baseurl = clone($this->related['overviewurl']);
 
         // Get all tasks for this course module.
         $tasks = array();
         $cmtasks = task::get_for_coursemodule($this->related['cmid']);
+
+        if (empty($cmtasks)) {
+            return $out;
+        }
 
         foreach ($cmtasks as $task) {
             $taskexporter = new task_exporter($task);
@@ -211,8 +226,6 @@ class overview_exporter extends exporter {
                 'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
             );
 
-
-
             // Ditch some unnecessary data.
             unset($task->criterions);
 
@@ -232,6 +245,9 @@ class overview_exporter extends exporter {
                 }
                 // Get all the grades for this subject accross all of the tasks.
                 foreach ($tasks as $task) {
+                    if (empty($task->subjectgrades)) {
+                        continue;
+                    }
                     foreach ($task->subjectgrades as $subjectgrade) {
                         if ($subjectgrade['subject'] == $subject) {
                             if (!isset($reportgrades[$subject])) {
@@ -353,7 +369,7 @@ class overview_exporter extends exporter {
         $baseurl->param('groupid', 0);
         $baseurl->param('view', 'all');
 
-        return array(
+        $out = array(
             'tasks' => $tasks,
             'reportgrades' => $reportgrades,
             'groups' => $groups,
@@ -363,6 +379,7 @@ class overview_exporter extends exporter {
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
         );
+        return $out;
     }
 
 }

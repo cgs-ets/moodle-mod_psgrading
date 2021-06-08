@@ -1,0 +1,78 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2021 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/overview_matrix
+
+    Overview matrix template.
+}}
+<div class="psgrading-matrix">
+    <div class="column y-header">
+        <div class="cell cell-taskname">Task</div>
+        <div class="cell">PYP UOI</div>
+        <div class="cell">Outcomes</div>
+        <div class="subjects">
+            {{#tasks.0}}
+                {{#subjectgrades}}
+                    <div class="cell cell-{{subjectsanitised}}" data-subject="{{subjectsanitised}}">{{subject}}</div>
+                {{/subjectgrades}}
+            {{/tasks.0}}
+        </div>
+        <div class="cell cell-engagement" data-subject="engagement">Engagement</div>
+        <div class="cell">Success</div>
+        <div class="cell">Comments</div>
+        <div class="cell">Details</div>
+    </div>{{!
+    }}{{#tasks}}<div class="column task{{#islast}} last{{/islast}}">
+            <div class="cell cell-taskname" title="{{taskname}}">{{taskname}}</div>
+            <div class="cell">{{pypuoi}}</div>
+            <div class="cell"><span title="{{outcomes}}">{{outcomes}}</span></div>
+            <div class="subjects">
+                {{#subjectgrades}}
+                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+                {{/subjectgrades}}
+            </div>
+            <div class="cell cell-engagement" data-engagement="{{gradeinfo.engagement}}">
+                {{gradeinfo.engagement}}&nbsp;
+            </div>
+            <div class="cell" data-grade="{{success.grade}}">
+                {{{success.gradelang}}}
+            </div>
+            <div class="cell">
+                <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+            </div>
+            <div class="cell">
+                <a href="{{detailsurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </div>
+        </div>{{/tasks}}{{!
+    }}{{#reportgrades.0}}<div class="column report-grades">
+        <div class="cell cell-taskname">&nbsp;</div>
+        <div class="cell">&nbsp;</div>
+        <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
+        <div class="subjects">
+            {{#reportgrades}}{{#issubject}}
+                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+            {{/issubject}}{{/reportgrades}}
+        </div>
+        {{#reportgrades}}{{^issubject}}
+            <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+        {{/issubject}}{{/reportgrades}}
+    </div>{{/reportgrades.0}}
+</div>

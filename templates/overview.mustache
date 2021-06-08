@@ -49,56 +49,5 @@
             <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
     </div>
-    <div class="matrix">
-        <div class="column y-header">
-            <div class="cell cell-taskname">Task</div>
-            <div class="cell">PYP UOI</div>
-            <div class="cell">Outcomes</div>
-            <div class="subjects">
-                {{#tasks.0}}
-                    {{#subjectgrades}}
-                        <div class="cell cell-{{subjectsanitised}}" data-subject="{{subjectsanitised}}">{{subject}}</div>
-                    {{/subjectgrades}}
-                {{/tasks.0}}
-            </div>
-            <div class="cell cell-engagement" data-subject="engagement">Engagement</div>
-            <div class="cell">Success</div>
-            <div class="cell">Comments</div>
-            <div class="cell">Details</div>
-        </div>{{!
-        }}{{#tasks}}<div class="column task{{#islast}} last{{/islast}}">
-                <div class="cell cell-taskname" title="{{taskname}}">{{taskname}}</div>
-                <div class="cell">{{pypuoi}}</div>
-                <div class="cell"><span title="{{outcomes}}">{{outcomes}}</span></div>
-                <div class="subjects">
-                    {{#subjectgrades}}
-                        <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
-                    {{/subjectgrades}}
-                </div>
-                <div class="cell cell-engagement" data-engagement="{{gradeinfo.engagement}}">
-                    {{gradeinfo.engagement}}&nbsp;
-                </div>
-                <div class="cell" data-grade="{{success.grade}}">
-                    {{{success.gradelang}}}
-                </div>
-                <div class="cell">
-                    <a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>
-                </div>
-                <div class="cell">
-                    <a href="{{detailsurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-                </div>
-            </div>{{/tasks}}{{!
-        }}{{#reportgrades.0}}<div class="column report-grades">
-            <div class="cell cell-taskname">&nbsp;</div>
-            <div class="cell">&nbsp;</div>
-            <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
-            <div class="subjects">
-                {{#reportgrades}}{{#issubject}}
-                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
-                {{/issubject}}{{/reportgrades}}
-            </div>
-            {{#reportgrades}}{{^issubject}}
-                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
-            {{/issubject}}{{/reportgrades}}
-        </div>{{/reportgrades.0}}
+    {{>mod_psgrading/overview_matrix}}
 </div>

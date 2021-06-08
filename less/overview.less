@@ -19,224 +19,224 @@
 	.psgrading-overview > .header {
 		margin: -1px 0px 0px 0px;
 	}
-	.matrix {
-		white-space: nowrap;
-		overflow: auto;
-		padding: 20px;
-		font-size: 1.125em;
-		.column {
-		    display: inline-block;
-		    vertical-align: top;
-		}
-		.cell {
+}
+
+.psgrading-matrix {
+	white-space: nowrap;
+	overflow: auto;
+	padding: 20px;
+	font-size: 1.125em;
+	.column {
+	    display: inline-block;
+	    vertical-align: top;
+	}
+	.cell {
+		padding: 3px 6px;
+	    line-height: 30px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+	    width: 140px;
+	}
+	.column.y-header {
+		div {
 			padding: 3px 6px;
-		    line-height: 30px;
-		    overflow: hidden;
-		    white-space: nowrap;
-		    text-overflow: ellipsis;
-		    width: 140px;
 		}
-		.column.y-header {
+		.subjects {
+			padding: 0;
+			background-color: #f2f4f6;
 			div {
-				padding: 3px 6px;
+				padding: 6px 6px;
+				border-left: @subjectsborder;
+			    border-top: @subjectsborder;
 			}
-			.subjects {
-				padding: 0;
-				background-color: #f2f4f6;
-				div {
-					padding: 6px 6px;
-					border-left: @subjectsborder;
-				    border-top: @subjectsborder;
-				}
-				div:last-of-type {
-				    border-bottom: @subjectsborder;
-				}
-			}
-			.cell-engagement {
-			    background: #f2f4f6;
-			    padding: 6px 6px;
-			    border-left: @subjectsborder;
+			div:last-of-type {
 			    border-bottom: @subjectsborder;
 			}
 		}
-		.column.task {
-			position: relative;
-			.cell-taskname {
-				font-weight: 600;
+		.cell-engagement {
+		    background: #f2f4f6;
+		    padding: 6px 6px;
+		    border-left: @subjectsborder;
+		    border-bottom: @subjectsborder;
+		}
+	}
+	.column.task {
+		position: relative;
+		.cell-taskname {
+			font-weight: 600;
+		}
+		.subjects {
+			div {
+				padding: 6px 6px;
+			    border-top: @subjectsborder;
 			}
-			.subjects {
-				div {
-					padding: 6px 6px;
-				    border-top: @subjectsborder;
-				}
-				div:last-of-type {
-				    border-bottom: @subjectsborder;
-				}
+			div:last-of-type {
+			    border-bottom: @subjectsborder;
 			}
-			.cell[data-grade="1"] {
+		}
+		.cell[data-grade="1"] {
+		    background-color: #D90617;
+		    color: #fff;
+		}
+		.cell[data-grade="2"] {
+		    background-color: #F97D01;
+		}
+		.cell[data-grade="3"] {
+			background-color: #FFDB00;
+		}
+		.cell[data-grade="4"] {
+		    background-color: #6BB82E;
+		}
+		.cell[data-grade="5"] {
+		    background-color: #00812F;
+		    color: #fff;
+		}
+		.cell-engagement {
+			padding: 6px 6px;
+			border-bottom: @subjectsborder;
+			&[data-engagement="poor"] {
 			    background-color: #D90617;
 			    color: #fff;
 			}
-			.cell[data-grade="2"] {
-			    background-color: #F97D01;
-			}
-			.cell[data-grade="3"] {
+			&[data-engagement="acceptable"] {
 				background-color: #FFDB00;
 			}
-			.cell[data-grade="4"] {
-			    background-color: #6BB82E;
-			}
-			.cell[data-grade="5"] {
+			&[data-engagement="good"] {
 			    background-color: #00812F;
 			    color: #fff;
 			}
-			.cell-engagement {
-				padding: 6px 6px;
-				border-bottom: @subjectsborder;
-				&[data-engagement="poor"] {
-				    background-color: #D90617;
-				    color: #fff;
-				}
-				&[data-engagement="acceptable"] {
-					background-color: #FFDB00;
-				}
-				&[data-engagement="good"] {
-				    background-color: #00812F;
-				    color: #fff;
-				}
-			}
-			&:hover {
-				box-shadow: 0 0 90px -50px #000;
-				box-shadow: 0 0 0px 1px #000;
-			    z-index: 1;
+		}
+		&:hover {
+			box-shadow: 0 0 90px -50px #000;
+			box-shadow: 0 0 0px 1px #000;
+		    z-index: 1;
+		}
+	}
+
+	div.column.task.last {
+		.subjects {
+			div {
+			    border-right: @subjectsborder;
 			}
 		}
-
-		div.column.task.last {
-			.subjects {
-				div {
-				    border-right: @subjectsborder;
-				}
-			}
-			.cell-engagement {
-				border-right: @subjectsborder;
-			}
+		.cell-engagement {
+			border-right: @subjectsborder;
 		}
+	}
 
-		div.column.report-grades {
-			.cell-report-grade {
-			    padding: 0;
-			    overflow: visible;
-			    &>span {
-					transform: skewX(-7deg);
-			    	text-align: center;
-			        background-color: #f2f4f6;
-				    padding: 2px 6px 3px;
-				    display: block;
-				    margin-left: 2px;
-				    width: 141px;
-				    border: @subjectsborder;
-				    border-bottom: 0 none;
-					font-weight: 400;
-			    }
-			}
-			.subjects {
-				div {
-					background-color: #f2f4f6;
-					padding: 6px 13px;
-					border-top: @subjectsborder;
-    				border-right: @subjectsborder;
-    				&:last-of-type {
-    					border-bottom: @subjectsborder;
-    				}
-				}
-			}
-			.cell-engagement {
+	div.column.report-grades {
+		.cell-report-grade {
+		    padding: 0;
+		    overflow: visible;
+		    &>span {
+				transform: skewX(-7deg);
+		    	text-align: center;
+		        background-color: #f2f4f6;
+			    padding: 2px 6px 3px;
+			    display: block;
+			    margin-left: 2px;
+			    width: 141px;
+			    border: @subjectsborder;
+			    border-bottom: 0 none;
+				font-weight: 400;
+		    }
+		}
+		.subjects {
+			div {
 				background-color: #f2f4f6;
 				padding: 6px 13px;
-    			border-bottom: @subjectsborder;
-    			border-right: @subjectsborder;
-			}
-			.cell[data-grade="1"] {
-			    background-color: #D90617;
-			    color: #fff;
-			}
-			.cell[data-grade="2"] {
-			    background-color: #F97D01;
-			}
-			.cell[data-grade="3"] {
-				background-color: #FFDB00;
-			}
-			.cell[data-grade="4"] {
-			    background-color: #6BB82E;
-			}
-			.cell[data-grade="5"] {
-			    background-color: #00812F;
-			    color: #fff;
-			}
-			.cell[data-grade="25"] {
-			    background-color: #D90617;
-			    color: #fff;
-			}
-			.cell[data-grade="50"] {
-			    background-color: #FFDB00;
-			}
-			.cell[data-grade="75"] {
-			    background-color: #6BB82E;
-			}
-			.cell[data-grade="100"] {
-			    background-color: #00812F;
-			    color: #fff;
+				border-top: @subjectsborder;
+				border-right: @subjectsborder;
+				&:last-of-type {
+					border-bottom: @subjectsborder;
+				}
 			}
 		}
+		.cell-engagement {
+			background-color: #f2f4f6;
+			padding: 6px 13px;
+			border-bottom: @subjectsborder;
+			border-right: @subjectsborder;
+		}
+		.cell[data-grade="1"] {
+		    background-color: #D90617;
+		    color: #fff;
+		}
+		.cell[data-grade="2"] {
+		    background-color: #F97D01;
+		}
+		.cell[data-grade="3"] {
+			background-color: #FFDB00;
+		}
+		.cell[data-grade="4"] {
+		    background-color: #6BB82E;
+		}
+		.cell[data-grade="5"] {
+		    background-color: #00812F;
+		    color: #fff;
+		}
+		.cell[data-grade="25"] {
+		    background-color: #D90617;
+		    color: #fff;
+		}
+		.cell[data-grade="50"] {
+		    background-color: #FFDB00;
+		}
+		.cell[data-grade="75"] {
+		    background-color: #6BB82E;
+		}
+		.cell[data-grade="100"] {
+		    background-color: #00812F;
+		    color: #fff;
+		}
+	}
 
-		@subjects: English, HAAS, Science, Technology, Maths, HPE, VisArts, Language, Music, engagement;
-		
-		.generate-subjecthovers(length(@subjects));
-
-		.generate-subjecthovers(@i) when (@i > 0) {
-			@name: extract(@subjects, @i);
- 			&.hover-@{name} {
-			    .column.y-header div.cell-@{name} {
-			        border-left: 1px solid #000 !important;
-			        border-top: 1px solid #000 !important;
-			        border-bottom: 1px solid #000 !important;
-			        &:not(:last-of-type) {
-			        	padding-bottom: 5px;
-			        }
-			    }
-			    .column.task div.cell-@{name} {
-			        border-top: 1px solid #000 !important;
-			        border-bottom: 1px solid #000 !important;
-			        &:not(:last-of-type) {
-			        	padding-bottom: 5px;
-			        }
-			    }
-			    .column.report-grades div.cell-@{name} {
-			        border-top: 1px solid #000 !important;
-			        border-right: 1px solid #000 !important;
-			        border-bottom: 1px solid #000 !important;
-			        &:not(:last-of-type) {
-			        	padding-bottom: 5px;
-			        }
-			    }
-			}
-		   .generate-subjecthovers((@i - 1));
-		}
-		&.hover-engagement {
-			.column.y-header div.cell-engagement {
-				margin-top: -1px;
-				padding-bottom: 6px !important;
-			}
-			.column.task div.cell-engagement {
-				margin-top: -1px;
-				padding-bottom: 6px !important;
-		    }
-		    .column.report-grades div.cell-engagement {
-				margin-top: -1px;
-				padding-bottom: 6px !important;
-		    }
-		}
+	@subjects: English, HAAS, Science, Technology, Maths, HPE, VisArts, Language, Music, engagement;
 	
+	.generate-subjecthovers(length(@subjects));
+
+	.generate-subjecthovers(@i) when (@i > 0) {
+		@name: extract(@subjects, @i);
+			&.hover-@{name} {
+		    .column.y-header div.cell-@{name} {
+		        border-left: 1px solid #000 !important;
+		        border-top: 1px solid #000 !important;
+		        border-bottom: 1px solid #000 !important;
+		        &:not(:last-of-type) {
+		        	padding-bottom: 5px;
+		        }
+		    }
+		    .column.task div.cell-@{name} {
+		        border-top: 1px solid #000 !important;
+		        border-bottom: 1px solid #000 !important;
+		        &:not(:last-of-type) {
+		        	padding-bottom: 5px;
+		        }
+		    }
+		    .column.report-grades div.cell-@{name} {
+		        border-top: 1px solid #000 !important;
+		        border-right: 1px solid #000 !important;
+		        border-bottom: 1px solid #000 !important;
+		        &:not(:last-of-type) {
+		        	padding-bottom: 5px;
+		        }
+		    }
+		}
+	   .generate-subjecthovers((@i - 1));
+	}
+	&.hover-engagement {
+		.column.y-header div.cell-engagement {
+			margin-top: -1px;
+			padding-bottom: 6px !important;
+		}
+		.column.task div.cell-engagement {
+			margin-top: -1px;
+			padding-bottom: 6px !important;
+	    }
+	    .column.report-grades div.cell-engagement {
+			margin-top: -1px;
+			padding-bottom: 6px !important;
+	    }
 	}
 }

@@ -55,7 +55,7 @@ define(['jquery', 'core/log', 'core/ajax'],
     function Overview(rootel) {
         var self = this;
         self.rootel = rootel;
-        self.matrix = rootel.find('.matrix');
+        self.matrix = rootel.find('.psgrading-matrix');
     }
 
     /**
@@ -83,7 +83,8 @@ define(['jquery', 'core/log', 'core/ajax'],
             }
         });
 
-        self.rootel.find('.matrix .column.y-header .subjects .cell, .matrix .column.y-header .cell-engagement').hover(
+        // Matrix horizontal highlighting.
+        self.rootel.find('.psgrading-matrix .column.y-header .subjects .cell, .psgrading-matrix .column.y-header .cell-engagement').hover(
             function() {
                 self.matrix.addClass( 'hover-' + $(this).data('subject') );
             }, function() {

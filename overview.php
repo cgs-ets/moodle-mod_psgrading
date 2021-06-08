@@ -120,6 +120,9 @@ $relateds = array(
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
+if (empty($data->tasks)) {
+    echo "No tasks have been created yet."; exit;
+}
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
