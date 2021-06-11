@@ -1,0 +1,139 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2020 Michael Vangelovski <michael.vangelovski@hotmail.com>
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/myconnect_post
+
+    Renders a single post.
+}}
+<div class="post-wrap">
+    <div class="post {{#uilogic.hasmultipleusers}}has-multiple{{/uilogic.hasmultipleusers}}" data-id="{{id}}" data-postsusersid="{{postsusersid}}" data-creator="{{creator}}">
+
+        <div class="post-header">
+        
+            <div class="selector"></div>
+
+            {{#uilogic.showcreator}}
+                <div class="creator">
+                    <nobr>
+                        <span {{#loggedinuser.isstaff}}href="{{creatorurl}}" {{/loggedinuser.isstaff}}title="{{creatorfullname}} timeline">
+                            <span class="userphoto"><img src="{{creatorphoto}}" alt="{{creatorfullname}}" title="{{creatorfullname}}" /></span>
+                            <span class="fullname">{{creatorfullname}}</span>
+                        </span>
+                        {{#timelineuser.isstudent}}{{#senttocount}}
+                            <span class="sent-to-count">{{senttocount}} recipients</span>
+                        {{/senttocount}}{{/timelineuser.isstudent}}
+                    </nobr>
+                </div>
+            {{/uilogic.showcreator}}
+
+            {{#uilogic.showrecipient}}
+                <div class="recipients {{#uilogic.hasmultipleusers}}collapsed{{/uilogic.hasmultipleusers}}">
+                    {{#recipients}}
+                        <div class="recipient">
+                            <nobr>
+                            <span href="{{url}}" title="{{fullname}} timeline">
+                                <span class="userphoto"><img src="{{photo}}" alt="{{fullname}}" title="{{fullname}}" /></span>
+                                <span class="fullname">{{fullname}}</span>
+                            </span>
+                            </nobr>
+                        </div>
+                    {{/recipients}}
+                    {{#uilogic.hasmultipleusers}}
+                        <span class="expand-recipients" href="#">
+                            <span>{{recipientscount}} students</span>
+                        </span>
+                    {{/uilogic.hasmultipleusers}}
+                    {{#boards}}
+                        <div class="board">
+                            <nobr>
+                            <span href="{{url}}" title="{{fullname}}">
+                                <span class="fullname">{{fullname}}</span>
+                            </span>
+                            </nobr>
+                        </div>
+                    {{/boards}}
+                </div>
+            {{/uilogic.showrecipient}}
+
+            <div class="meta">
+                <div class="time">{{readabletime.timeago}}</div>
+            </div>
+
+        </div>
+
+        <div class="post-body {{#coverimage}}has-cover{{/coverimage}}">
+            {{#coverimage}}
+                <div class="cover">
+                    <span class="slide-trigger" {{#isattachmentsslides}}data-iscover="1"{{/isattachmentsslides}}{{^isattachmentsslides}}data-isimage="1"{{/isattachmentsslides}}>
+                        <img src="{{path}}">
+                    </span>
+                </div>
+            {{/coverimage}}
+            {{#isattachmentsslides}}
+                <div class="album">      
+                    {{#formattedattachments}}
+                        {{#canpreview}}
+                            {{#isimage}}
+                                <div class="photo">
+                                    <span class="slide-trigger" data-isimage="1">
+                                        <img src="{{path}}?preview=thumb">
+                                    </span>
+                                </div>
+                            {{/isimage}}
+                            {{#isvideo}}
+                                <div class="video">
+                                    <span class="slide-trigger" data-isvideo="1" data-mimetype="{{mimetype}}">
+                                        <video>
+                                            <source src="{{path}}" type="{{mimetype}}">
+                                        </video>
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            {{/isvideo}}
+                        {{/canpreview}}
+                        {{^canpreview}}
+                            <div class="doc">
+                                <span class="slide-trigger" data-isdoc="1" data-iconimage="{{iconimage}}" data-filename="{{formattedfilename}}">
+                                    <img class="icon" src="{{iconimage}}"> {{formattedfilename}}
+                                </span>
+                            </div>
+                        {{/canpreview}}
+                    {{/formattedattachments}}
+                </div>
+            {{/isattachmentsslides}}
+
+            {{#isattachmentslist}}
+                <div class="attachments">
+                    <ul>
+                    {{#formattedattachments}}
+                        <li><span target="_blank"><img class="icon" src="{{iconimage}}"> {{filename}}</span></li>
+                    {{/formattedattachments}}
+                    </ul>
+                </div>
+            {{/isattachmentslist}}
+           
+            <div class="post-comment">
+                {{{comment}}}
+            </div>
+
+        </div>
+    </div>
+</div>

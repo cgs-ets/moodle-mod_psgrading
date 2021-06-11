@@ -1,0 +1,52 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2020 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/myconnect_selector
+}}
+<div class="myconnect-selector">
+    <div class="frame">
+        <div class="actions">
+            <a href="#" class="btn btn-secondary btn-exit"><i class="fa fa-times" aria-hidden="true"></i></a>
+            <a href="#" class="btn btn-primary btn-add">Add</a>
+        </div>
+        <h5>MyConnect Selector</h5>
+        <div class="grid">
+            <div class="posts">
+                {{#posts}}
+                    {{>mod_psgrading/myconnect_post}}
+                {{/posts}}
+                {{^posts.0}}
+                    {{#loggedinuser.isstaff}}{{#loggedinuser.isstudent}}
+                    {{#str}} list:noposts, mod_psgrading {{/str}}
+                    {{/loggedinuser.isstudent}}{{/loggedinuser.isstaff}}     
+                {{/posts.0}}
+            </div>
+        </div>
+        {{#possiblemore}}
+            {{{nextpagelink}}}
+            <div class="page-load-status">
+                <div class="infinite-scroll-request loader">
+                    <div class="circle spin"></div>
+                </div>
+            </div>
+        {{/possiblemore}}
+    </div>
+</div>

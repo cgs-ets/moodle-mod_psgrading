@@ -84,6 +84,11 @@ class mark_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'myconnect' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -112,7 +117,7 @@ class mark_exporter extends exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
-        global $USER;
+        global $USER, $CFG;
 
         $baseurl = clone($this->related['markurl']);
 
@@ -219,6 +224,28 @@ class mark_exporter extends exporter {
         $baseurl->param('groupid', 0);
         $baseurl->param('view', 'all');
 
+        // Get MyConnect posts for user.
+        $myconnect = null;
+        if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
+            // Load users through MyConnect.
+            $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
+            $timelineuser = \local_myconnect\utils::get_user_with_extras($currstudent->username);
+            // Get the posts.
+            $posts = \local_myconnect\persistents\post::get_timeline($timelineuser);
+            // Export the posts data.
+            $relateds = [
+                'context' => \context_system::instance(),
+                'posts' => $posts,
+                'jump' => 0,
+                'page' => 0,
+                'timelineuser' => $timelineuser,
+                'loggedinuser' => $loggedinuser,
+            ];
+            $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
+            $myconnect = $timeline->export($output);
+            $myconnect->posts = array_merge($myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts);
+        }
+
         return array(
             'task' => $task,
             'students' => $students,
@@ -228,6 +255,7 @@ class mark_exporter extends exporter {
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'gradeinfo' => $gradeinfo,
+            'myconnect' => $myconnect,
         );
     }
 

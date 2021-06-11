@@ -204,18 +204,12 @@ if (empty($formdata)) {
     
 }
 
-
-
-
-
-
-
-
-
-
-
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+// Add vendor js.
+$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/masonry.pkgd.min.js'), true );
+
+echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', $data->myconnect);
 
 echo $OUTPUT->header();
 

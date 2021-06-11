@@ -158,6 +158,38 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.deleteComment(button);
         });
 
+        // MyConnect Selector events.
+        self.rootel.on('click', '.myconnect-selector .btn-exit', function(e) {
+            self.rootel.find('.myconnect-selector').hide();
+            $('body').css("overflow", "");
+        });
+
+        // Set up masonry for myconnect selector.
+        if(typeof Masonry != 'undefined') {
+            var grid = document.querySelector('.posts');
+            var msnry = new Masonry( grid, {
+              itemSelector: '.post-wrap',
+              columnWidth: 10,
+              horizontalOrder: true
+            });
+        }
+
+        $('body').css("overflow","hidden");
+
+        
+        // Handle scroll.
+        var scrolltimer;
+        var frame = self.rootel.find('.myconnect-selector .frame');
+        frame.scroll(function() {
+            var el = $(this);
+            clearTimeout(scrolltimer);
+            scrolltimer = setTimeout(function () {
+                if(el.scrollTop() + el.innerHeight() >= el[0].scrollHeight) {
+                    self.loadNextMyConnectPosts();
+                }
+            }, 500);
+        });
+
     };
 
 
