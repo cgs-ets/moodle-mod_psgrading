@@ -22,7 +22,7 @@
     @template mod_psgrading/mark_header
 }}
 <div class="header">
-    <div class="selected-student" data-userid="{{currstudent.id}}">
+    <div class="selected-student" data-userid="{{currstudent.id}}" data-username="{{currstudent.username}}">
         <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
     </div>
     <div class="task-selector">

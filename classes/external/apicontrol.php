@@ -29,6 +29,7 @@ namespace mod_psgrading\external;
 defined('MOODLE_INTERNAL') || die();
 
 use \mod_psgrading\persistents\task;
+use \mod_psgrading\utils;
 use external_function_parameters;
 use external_value;
 use context_user;
@@ -58,7 +59,7 @@ trait apicontrol {
      * @param int $query The search query
      */
     public static function apicontrol($action, $data) {
-        global $USER;
+        global $USER, $OUTPUT, $PAGE;
 
         // Setup context.
         $context = \context_user::instance($USER->id);
@@ -77,9 +78,17 @@ trait apicontrol {
             return task::delete_comment($commentid);
         }
 
-        // Save.
-        return 1;
+        if ($action == 'load_next_myconnect_posts') {
+            $data = json_decode($data);
+            $myconnect = utils::get_myconnect_data($data->username, intval($data->page));
+            $html = '';
+            foreach ($myconnect->posts as $post) {
+                $html .= $OUTPUT->render_from_template('mod_psgrading/myconnect_post', $post);
+            }
+            return $html;
+        }
 
+        return 0;
     }
 
     /**

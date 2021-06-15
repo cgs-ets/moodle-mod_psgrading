@@ -517,10 +517,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .marking-evidences .body {
   overflow: hidden;
-  background: #f2f4f6;
-  padding: 20px 20px 0 20px;
-  border: 1px solid #ccc;
-  border-bottom: 0 none;
 }
 #page-mod-psgrading-mark .marking-evidences table {
   border: 1px solid #ccc;
@@ -535,10 +531,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark #fitem_id_evidences {
   margin: 0;
-  padding: 0 20px 20px 20px;
-  background: #f2f4f6;
-  border: 1px solid #ccc;
-  border-top: 0 none;
 }
 #page-mod-psgrading-mark #fitem_id_evidences .col-md-3 {
   display: none;
@@ -664,7 +656,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
 }
-.myconnect-selector {
+#page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
   top: 0;
@@ -675,7 +667,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 20px;
   overflow: hidden;
 }
-.myconnect-selector .frame {
+#page-mod-psgrading-mark .myconnect-selector .frame {
   background-color: #fff;
   margin: 0 auto;
   height: 100%;
@@ -683,15 +675,15 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   overflow: scroll;
   position: relative;
 }
-.myconnect-selector .grid {
+#page-mod-psgrading-mark .myconnect-selector .grid {
   padding: 20px;
 }
-.myconnect-selector h5 {
+#page-mod-psgrading-mark .myconnect-selector h5 {
   background: #f2f4f6;
   padding: 20px;
   margin: 0;
 }
-.myconnect-selector .actions {
+#page-mod-psgrading-mark .myconnect-selector .actions {
   position: fixed;
   right: 50px;
   color: #777;
@@ -701,18 +693,33 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background: #f2f4f6;
   z-index: 9999;
 }
-.myconnect-selector .actions a {
+#page-mod-psgrading-mark .myconnect-selector .actions a {
   float: right;
   margin-right: 3px;
 }
-.myconnect-selector .actions .btn-exit {
+#page-mod-psgrading-mark .myconnect-selector .actions .btn-exit {
   padding: 10px;
   height: 36px;
 }
-.myconnect-selector .post-wrap {
+#page-mod-psgrading-mark .myconnect-selector .post-wrap {
   width: 300px;
+  float: left;
 }
-.myconnect-selector .post {
+#page-mod-psgrading-mark .myconnect-carousel {
+  overflow: hidden;
+  background-color: #fff;
+  margin: 10px 0;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post {
+  cursor: default;
+  width: 270px;
+  float: left;
+  margin: 10px 10px 10px 0px;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .selector {
+  display: none;
+}
+#page-mod-psgrading-mark .post {
   margin-bottom: 30px;
   background-color: #f2f4f6;
   color: #000;
@@ -722,13 +729,29 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin: 10px 10px 30px 10px;
   cursor: pointer;
 }
-.myconnect-selector .post:hover {
-  border: 1px solid #e0e0e0;
+#page-mod-psgrading-mark .post:hover {
+  border: 1px solid #ddd;
 }
-.myconnect-selector .post:hover .post-header .selector {
-  background: #ccc;
+#page-mod-psgrading-mark .post:hover .post-header .selector {
+  background: #c8c8ff;
 }
-.myconnect-selector .post .post-header {
+#page-mod-psgrading-mark .post.selected {
+  border: 1px solid #ccc;
+}
+#page-mod-psgrading-mark .post.selected .post-header .selector {
+  border: 1px solid blue;
+  background: blue;
+}
+#page-mod-psgrading-mark .post.selected .post-header .selector:after {
+  content: "✓";
+  color: #fff;
+  line-height: 18px;
+  font-size: 11px;
+  text-align: center;
+  display: block;
+  font-family: monospace;
+}
+#page-mod-psgrading-mark .post .post-header {
   position: relative;
   width: 100%;
   border-bottom: 1px solid #f6f6f6;
@@ -736,7 +759,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   font-weight: 600;
   min-height: 63px;
 }
-.myconnect-selector .post .post-header .selector {
+#page-mod-psgrading-mark .post .post-header .selector {
   border: 1px solid black;
   width: 18px;
   height: 18px;
@@ -749,41 +772,28 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   box-shadow: 2px 2px 7px -2px rgba(0, 0, 0, 0.4);
   transition: background linear 0.1s;
 }
-.myconnect-selector .post .post-header .selector.selected {
-  border: 1px solid blue;
-  background: blue;
-}
-.myconnect-selector .post .post-header .selector.selected:after {
-  content: "✓";
-  color: #fff;
-  line-height: 18px;
-  font-size: 11px;
-  text-align: center;
-  display: block;
-  font-family: monospace;
-}
-.myconnect-selector .post .post-header .meta {
+#page-mod-psgrading-mark .post .post-header .meta {
   color: #aaa;
   float: right;
   text-align: right;
 }
-.myconnect-selector .post .post-header .creator,
-.myconnect-selector .post .post-header .seperator,
-.myconnect-selector .post .post-header .recipients,
-.myconnect-selector .post .post-header .recipient,
-.myconnect-selector .post .post-header .board {
+#page-mod-psgrading-mark .post .post-header .creator,
+#page-mod-psgrading-mark .post .post-header .seperator,
+#page-mod-psgrading-mark .post .post-header .recipients,
+#page-mod-psgrading-mark .post .post-header .recipient,
+#page-mod-psgrading-mark .post .post-header .board {
   display: inline-block;
 }
-.myconnect-selector .post .post-header .creator a,
-.myconnect-selector .post .post-header .seperator a,
-.myconnect-selector .post .post-header .recipients a,
-.myconnect-selector .post .post-header .recipient a,
-.myconnect-selector .post .post-header .board a {
+#page-mod-psgrading-mark .post .post-header .creator a,
+#page-mod-psgrading-mark .post .post-header .seperator a,
+#page-mod-psgrading-mark .post .post-header .recipients a,
+#page-mod-psgrading-mark .post .post-header .recipient a,
+#page-mod-psgrading-mark .post .post-header .board a {
   display: inline-block;
   text-decoration: none;
   color: #000;
 }
-.myconnect-selector .post .post-header .sent-to-count {
+#page-mod-psgrading-mark .post .post-header .sent-to-count {
   font-weight: 400;
   font-size: 12px;
   color: #646464;
@@ -794,37 +804,37 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin-top: 2px;
   position: absolute;
 }
-.myconnect-selector .post .post-header .recipients.collapsed .recipient {
+#page-mod-psgrading-mark .post .post-header .recipients.collapsed .recipient {
   display: none;
 }
-.myconnect-selector .post .post-header .recipients .expand-recipients {
+#page-mod-psgrading-mark .post .post-header .recipients .expand-recipients {
   color: #005b94;
 }
-.myconnect-selector .post .post-header .recipients.expanded a {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded a {
   margin-right: 3px;
 }
-.myconnect-selector .post .post-header .recipients.expanded .userphoto {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded .userphoto {
   margin-right: 4px;
   width: 18px;
   height: 18px;
 }
-.myconnect-selector .post .post-header .recipients.expanded .fullname {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded .fullname {
   font-size: 13px;
 }
-.myconnect-selector .post .post-header .fullname {
+#page-mod-psgrading-mark .post .post-header .fullname {
   white-space: nowrap;
   overflow: hidden;
 }
-.myconnect-selector .post .post-header .recipient:not(:last-of-type) .fullname:after {
+#page-mod-psgrading-mark .post .post-header .recipient:not(:last-of-type) .fullname:after {
   content: ", ";
 }
-.myconnect-selector .post .post-header.show-both-users .creator .fullname:after {
+#page-mod-psgrading-mark .post .post-header.show-both-users .creator .fullname:after {
   content: "▸";
   margin-left: 10px;
   margin-right: 10px;
   color: #000;
 }
-.myconnect-selector .post .post-header .userphoto {
+#page-mod-psgrading-mark .post .post-header .userphoto {
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -835,39 +845,39 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border: 0 none;
   background-color: #ccc;
 }
-.myconnect-selector .post .post-header .userphoto img {
+#page-mod-psgrading-mark .post .post-header .userphoto img {
   display: block;
   width: 100%;
   height: 100%;
 }
-.myconnect-selector .post .attachments {
+#page-mod-psgrading-mark .post .attachments {
   padding: 8px 20px;
   background-color: #fafafa;
 }
-.myconnect-selector .post .attachments ul {
+#page-mod-psgrading-mark .post .attachments ul {
   list-style: none;
   padding: 0;
   margin-bottom: 0px;
 }
-.myconnect-selector .post .attachments ul li {
+#page-mod-psgrading-mark .post .attachments ul li {
   margin-bottom: 3px;
 }
-.myconnect-selector .post .cover a {
+#page-mod-psgrading-mark .post .cover a {
   cursor: zoom-in;
 }
-.myconnect-selector .post .cover img {
+#page-mod-psgrading-mark .post .cover img {
   display: block;
   width: 100%;
 }
-.myconnect-selector .post .album {
+#page-mod-psgrading-mark .post .album {
   background-color: #fafafa;
   overflow: hidden;
   box-shadow: inset 0 0 20px -5px rgb(0 0 0%);
   width: 100%;
 }
-.myconnect-selector .post .album .photo,
-.myconnect-selector .post .album .doc,
-.myconnect-selector .post .album .video {
+#page-mod-psgrading-mark .post .album .photo,
+#page-mod-psgrading-mark .post .album .doc,
+#page-mod-psgrading-mark .post .album .video {
   height: 90px;
   background-color: #ccc;
   float: left;
@@ -877,41 +887,41 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   position: relative;
   overflow: hidden;
 }
-.myconnect-selector .post .album .photo a,
-.myconnect-selector .post .album .doc a,
-.myconnect-selector .post .album .video a {
+#page-mod-psgrading-mark .post .album .photo a,
+#page-mod-psgrading-mark .post .album .doc a,
+#page-mod-psgrading-mark .post .album .video a {
   cursor: zoom-in;
 }
-.myconnect-selector .post .album .photo img,
-.myconnect-selector .post .album .doc img,
-.myconnect-selector .post .album .video img {
+#page-mod-psgrading-mark .post .album .photo img,
+#page-mod-psgrading-mark .post .album .doc img,
+#page-mod-psgrading-mark .post .album .video img {
   height: 100%;
   width: auto;
   display: block;
 }
-.myconnect-selector .post .album .doc {
+#page-mod-psgrading-mark .post .album .doc {
   width: 85px;
   font-size: 11px;
   text-align: center;
   line-height: 11px;
   background: #fafafa;
 }
-.myconnect-selector .post .album .doc a {
+#page-mod-psgrading-mark .post .album .doc a {
   margin: 7px;
   display: block;
   overflow: hidden;
   height: 76px;
 }
-.myconnect-selector .post .album .doc .icon {
+#page-mod-psgrading-mark .post .album .doc .icon {
   height: 20px;
   margin: 0 auto;
 }
-.myconnect-selector .post .album .video video {
+#page-mod-psgrading-mark .post .album .video video {
   height: 100%;
   width: auto;
   display: block;
 }
-.myconnect-selector .post .album .video i {
+#page-mod-psgrading-mark .post .album .video i {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -924,19 +934,19 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   text-align: center;
   font-size: 14px;
 }
-.myconnect-selector .post .post-body {
+#page-mod-psgrading-mark .post .post-body {
   position: relative;
 }
-.myconnect-selector .post .post-body.has-cover .album {
+#page-mod-psgrading-mark .post .post-body.has-cover .album {
   box-shadow: none;
   background-color: transparent;
   position: absolute;
   top: 5px;
   left: 5px;
 }
-.myconnect-selector .post .post-body.has-cover .album .photo,
-.myconnect-selector .post .post-body.has-cover .album .doc,
-.myconnect-selector .post .post-body.has-cover .album .video {
+#page-mod-psgrading-mark .post .post-body.has-cover .album .photo,
+#page-mod-psgrading-mark .post .post-body.has-cover .album .doc,
+#page-mod-psgrading-mark .post .post-body.has-cover .album .video {
   height: 35px;
   float: left;
   border: 1px solid #fff;
@@ -944,19 +954,19 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   position: relative;
   margin-right: 4px;
 }
-.myconnect-selector .post .post-body.has-cover .album .video i {
+#page-mod-psgrading-mark .post .post-body.has-cover .album .video i {
   padding: 4px 0 4px 4px;
   width: 25px;
   height: 25px;
 }
-.myconnect-selector .post .post-comment {
+#page-mod-psgrading-mark .post .post-comment {
   padding: 15px 20px 35px;
   overflow: hidden;
 }
-.myconnect-selector .post .post-comment p:last-of-type {
+#page-mod-psgrading-mark .post .post-comment p:last-of-type {
   margin-bottom: 0;
 }
-.myconnect-selector .post .post-comment img {
+#page-mod-psgrading-mark .post .post-comment img {
   max-width: 100%;
 }
 #page-mod-psgrading-overview .activity-navigation {

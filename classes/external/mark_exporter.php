@@ -225,26 +225,7 @@ class mark_exporter extends exporter {
         $baseurl->param('view', 'all');
 
         // Get MyConnect posts for user.
-        $myconnect = null;
-        if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
-            // Load users through MyConnect.
-            $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
-            $timelineuser = \local_myconnect\utils::get_user_with_extras($currstudent->username);
-            // Get the posts.
-            $posts = \local_myconnect\persistents\post::get_timeline($timelineuser);
-            // Export the posts data.
-            $relateds = [
-                'context' => \context_system::instance(),
-                'posts' => $posts,
-                'jump' => 0,
-                'page' => 0,
-                'timelineuser' => $timelineuser,
-                'loggedinuser' => $loggedinuser,
-            ];
-            $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
-            $myconnect = $timeline->export($output);
-            $myconnect->posts = array_merge($myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts,$myconnect->posts);
-        }
+        $myconnect = utils::get_myconnect_data($currstudent->username);
 
         return array(
             'task' => $task,

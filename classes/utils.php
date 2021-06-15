@@ -501,6 +501,35 @@ class utils {
         return $mentees;
     }
 
+
+    public static function get_myconnect_data($username, $page = 0) {
+        global $CFG, $USER, $OUTPUT;
+
+        $myconnect = null;
+
+        if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
+            // Load users through MyConnect.
+            $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
+            $timelineuser = \local_myconnect\utils::get_user_with_extras($username);
+            // Get the posts.
+            $posts = \local_myconnect\persistents\post::get_timeline($timelineuser, $page, 10);
+            // Export the posts data.
+            $relateds = [
+                'context' => \context_system::instance(),
+                'posts' => $posts,
+                'jump' => 0,
+                'page' => $page,
+                'timelineuser' => $timelineuser,
+                'loggedinuser' => $loggedinuser,
+            ];
+            $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
+            $myconnect = $timeline->export($OUTPUT);
+        }
+
+        return $myconnect;
+    }
+
+
     public static function get_taskdata_as_xml($data) {
         $xml = "<taskname>{$data->taskname}</taskname>";
         $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";

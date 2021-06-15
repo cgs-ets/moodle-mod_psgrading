@@ -21,11 +21,11 @@
 {{!
     @template mod_psgrading/myconnect_selector
 }}
-<div class="myconnect-selector">
+<div class="myconnect-selector" style="display:none;">
     <div class="frame">
         <div class="actions">
             <a href="#" class="btn btn-secondary btn-exit"><i class="fa fa-times" aria-hidden="true"></i></a>
-            <a href="#" class="btn btn-primary btn-add">Add</a>
+            <a href="#" class="btn btn-primary btn-add disabled">Add</a>
         </div>
         <h5>MyConnect Selector</h5>
         <div class="grid">
@@ -40,13 +40,6 @@
                 {{/posts.0}}
             </div>
         </div>
-        {{#possiblemore}}
-            {{{nextpagelink}}}
-            <div class="page-load-status">
-                <div class="infinite-scroll-request loader">
-                    <div class="circle spin"></div>
-                </div>
-            </div>
-        {{/possiblemore}}
+        <input name="myconnectnextpage" type="hidden" value="1"/>
     </div>
 </div>

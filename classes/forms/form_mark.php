@@ -68,6 +68,7 @@ class form_mark extends \moodleform {
             $data->task->id = -1;
             $data->task->criterions = [];
             $data->task->evidences = [];
+            $data->myconnect = null;
         }
 
         /****
@@ -83,8 +84,11 @@ class form_mark extends \moodleform {
         );
 
         // Evidence.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_evidence', 
-            array('evidences' => $data->task->evidences))
+        $mform->addElement('html', 
+            $OUTPUT->render_from_template('mod_psgrading/mark_evidence', array(
+                'evidences' => $data->task->evidences,
+                'myconnect' => $data->myconnect,
+            ))
         );
         // Evidences filemanager.
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
@@ -107,6 +111,11 @@ class form_mark extends \moodleform {
         // Hidden.
         $mform->addElement('hidden', 'action');
         $mform->setType('action', PARAM_RAW);
+
+        // MyConnect evidence.
+        $mform->addElement('hidden', 'myconnectevidencejson');
+        $mform->setType('myconnectevidencejson', PARAM_RAW);
+        
     }
 
 

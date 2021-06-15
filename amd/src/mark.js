@@ -58,6 +58,7 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.form = self.rootel.find('form[data-form="psgrading-mark"]');
         self.userid = userid;
         self.taskid = taskid;
+        self.loadingmyconnect = false;
     }
 
     /**
@@ -157,27 +158,8 @@ define(['jquery', 'core/log', 'core/ajax'],
             var button = $(this);
             self.deleteComment(button);
         });
-
-        // MyConnect Selector events.
-        self.rootel.on('click', '.myconnect-selector .btn-exit', function(e) {
-            self.rootel.find('.myconnect-selector').hide();
-            $('body').css("overflow", "");
-        });
-
-        // Set up masonry for myconnect selector.
-        if(typeof Masonry != 'undefined') {
-            var grid = document.querySelector('.posts');
-            var msnry = new Masonry( grid, {
-              itemSelector: '.post-wrap',
-              columnWidth: 10,
-              horizontalOrder: true
-            });
-        }
-
-        $('body').css("overflow","hidden");
-
         
-        // Handle scroll.
+        // Handle infinite load for myconnect posts.
         var scrolltimer;
         var frame = self.rootel.find('.myconnect-selector .frame');
         frame.scroll(function() {
@@ -188,6 +170,98 @@ define(['jquery', 'core/log', 'core/ajax'],
                     self.loadNextMyConnectPosts();
                 }
             }, 500);
+        });
+
+        // If page is bigger than content and there is potentially more, go ahead and load.
+        var myconnecttimer = setInterval(function() {
+            var el = self.rootel.find('.myconnect-selector .frame');
+            var windowHeight = el.innerHeight();
+            var contentHeight = el[0].scrollHeight;
+            var nextPage = self.rootel.find('input[name="myconnectnextpage"]').val();
+            if (windowHeight > contentHeight && nextPage > 0) {
+                // There is room for more.
+                self.loadNextMyConnectPosts();
+            } else {
+                clearTimeout(myconnecttimer);
+            }
+        }, 3000);
+
+        // MyConnect Selector events.
+        self.rootel.on('click', '.myconnect-selector .btn-exit', function(e) {
+            self.closeMyConnectSelector();
+        });
+
+        // MyConnect Selector browse.
+        self.rootel.on('click', '.myconnect-evidence .btn-browse', function(e) {
+            // Show the frame.
+            self.rootel.find('.myconnect-selector').show();
+            $('body').css("overflow", "hidden");
+
+            // Initialise masonry.
+            if(typeof Masonry !== 'undefined' && typeof self.msnry === 'undefined') {
+                self.msnry = new Masonry( '.myconnect-selector .posts', {
+                    itemSelector: '.post-wrap',
+                    columnWidth: 10,
+                    horizontalOrder: true
+                });
+            }
+        });
+
+        // Select posts.
+        self.rootel.on('mousedown', '.myconnect-selector .post', function(e) {
+            var post = $(this);
+
+            if (post.hasClass('selected')) {
+                post.removeClass('selected');
+            } else {
+                post.addClass('selected');
+            }
+
+            var btnAdd = self.rootel.find('.myconnect-selector .btn-add');
+            btnAdd.addClass('disabled');
+
+            var numSelected = self.rootel.find('.myconnect-selector .post.selected').length;
+            if (numSelected) {
+                btnAdd.removeClass('disabled');
+            }
+
+        });
+
+        // Add posts as evidence.
+        self.rootel.on('click', '.myconnect-selector .btn-add', function(e) {
+            // Get selected posts.
+            var selectedPosts = self.rootel.find('.myconnect-selector .post.selected');
+
+            // Clear selected.
+            selectedPosts.removeClass('selected');
+
+            // Get the carousel for selected posts.
+            var carousel = self.rootel.find('.myconnect-carousel');
+
+            // Add selected ids to the hidden input.
+            var myconnectevidencejson = $('input[name="myconnectevidencejson"]');
+            var postids = new Array();
+
+            selectedPosts.each(function() {
+                var post = $(this);
+
+                // Add the id to the array.
+                postids.push(post.data('id'));
+
+                //Add the post to the carousel.
+                carousel.append(post);
+            });
+
+            // Encode id array to json for the hidden input.
+            var postidsStr = '';
+            if (postids.length) {
+                postidsStr = JSON.stringify(postids);
+                myconnectevidencejson.val(postidsStr);
+            }
+            
+
+            // Close the selector.
+            self.closeMyConnectSelector();
         });
 
     };
@@ -306,6 +380,69 @@ define(['jquery', 'core/log', 'core/ajax'],
         }]);
 
     };
+
+
+    /**
+     * Select a criterion level
+     *
+     * @method
+     */
+    Mark.prototype.loadNextMyConnectPosts = function () {
+        var self = this;
+
+        if (self.loadingmyconnect) {
+            return;
+        }
+
+        self.loadingmyconnect = true;
+        var page = self.rootel.find('input[name="myconnectnextpage"]');
+        var posts = self.rootel.find('.myconnect-selector .posts');
+
+        var data = {
+            'username': self.rootel.find('.selected-student').data('username'),
+            'page': page.val(),
+        };
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'load_next_myconnect_posts',
+                data: JSON.stringify(data),
+            },
+            done: function(html) {
+                // Append the posts and update Masonry.
+                var content = $(html);
+                posts.append(content);
+                if (typeof self.msnry !== 'undefined') {
+                    self.msnry.appended( content );
+                }
+
+                // Potentially more.
+                if (html) {
+                    page.val(page.val() + 1);
+                    self.loadingmyconnect = false;
+                } else {
+                    page.val(-1);
+                }
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+                self.loadingmyconnect = false;
+            }
+        }]);
+    };
+
+    /**
+     * Close the MyConnect selector.
+     *
+     * @method
+     */
+    Mark.prototype.closeMyConnectSelector = function () {
+        var self = this;
+        self.rootel.find('.myconnect-selector').hide();
+        $('body').css("overflow", "");
+    };
+
 
     return {
         init: init
