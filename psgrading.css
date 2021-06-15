@@ -526,9 +526,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .marking-evidences h6 {
   font-weight: 600;
 }
-#page-mod-psgrading-mark .marking-evidences .myconnect-evidence {
-  margin-bottom: 1rem;
-}
 #page-mod-psgrading-mark #fitem_id_evidences {
   margin: 0;
 }
@@ -656,6 +653,15 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
 }
+#page-mod-psgrading-mark #myconnect-evidence {
+  margin-bottom: 1rem;
+  position: relative;
+}
+#page-mod-psgrading-mark #myconnect-evidence.has-posts .btn-browse {
+  position: absolute;
+  right: 10px;
+  top: 50px;
+}
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
@@ -706,18 +712,40 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   float: left;
 }
 #page-mod-psgrading-mark .myconnect-carousel {
-  overflow: hidden;
+  overflow: auto;
+  white-space: nowrap;
   background-color: #fff;
   margin: 10px 0;
+  background-color: #f2f4f6;
+  padding: 0 0 0 10px;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post {
+  background-color: #fff;
   cursor: default;
   width: 270px;
-  float: left;
+  display: inline-block;
   margin: 10px 10px 10px 0px;
+  vertical-align: top;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .selector {
+#page-mod-psgrading-mark .myconnect-carousel .post:hover .post-header .selector {
+  display: block;
+  background: #000;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector {
   display: none;
+  right: -8px;
+  left: auto;
+  border: 1px solid #000;
+  background: #000;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector:after {
+  display: block;
+  content: "✕";
+  color: #fff;
+  line-height: 18px;
+  font-size: 11px;
+  text-align: center;
+  font-family: monospace;
 }
 #page-mod-psgrading-mark .post {
   margin-bottom: 30px;

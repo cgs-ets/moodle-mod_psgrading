@@ -1,71 +1,114 @@
-#page-mod-psgrading-mark .myconnect-selector {
-	position: fixed;
-    height: 100%;
-    top: 0;
-    width: 100%;
-    left: 0;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
-    padding: 20px;
-    overflow: hidden;
-    .frame {
-    	background-color: #fff;
-	    margin: 0 auto;
-	    height: 100%;
-	    margin-top: 0;
-	    overflow: scroll;
-	    position: relative;
-    }
-    .grid {
-    	padding: 20px;
-    }
-	h5 {
-		background: #f2f4f6;
-	    padding: 20px;
-	    margin: 0;
+#page-mod-psgrading-mark  {
+
+	#myconnect-evidence {
+		margin-bottom: 1rem;
+		position: relative;
+		&.has-posts {
+			.btn-browse {
+				position: absolute;
+		    	right: 10px;
+		    	top: 50px;
+			}
+		}
 	}
-	.actions {
+
+
+	.myconnect-selector {
 		position: fixed;
-	    right: 50px;
-	    color: #777;
-	    text-align: center;
-	    padding: 13px 13px 16px 16px;
-	    font-size: 17px;
-	    background: #f2f4f6;
+	    height: 100%;
+	    top: 0;
+	    width: 100%;
+	    left: 0;
+	    background-color: rgba(0,0,0,0.6);
 	    z-index: 9999;
-	    a {
-	    	float: right;
-	    	margin-right: 3px;
+	    padding: 20px;
+	    overflow: hidden;
+	    .frame {
+	    	background-color: #fff;
+		    margin: 0 auto;
+		    height: 100%;
+		    margin-top: 0;
+		    overflow: scroll;
+		    position: relative;
 	    }
-	    .btn-exit {
-	    	padding: 10px;
-    		height: 36px;
+	    .grid {
+	    	padding: 20px;
 	    }
+		h5 {
+			background: #f2f4f6;
+		    padding: 20px;
+		    margin: 0;
+		}
+		.actions {
+			position: fixed;
+		    right: 50px;
+		    color: #777;
+		    text-align: center;
+		    padding: 13px 13px 16px 16px;
+		    font-size: 17px;
+		    background: #f2f4f6;
+		    z-index: 9999;
+		    a {
+		    	float: right;
+		    	margin-right: 3px;
+		    }
+		    .btn-exit {
+		    	padding: 10px;
+	    		height: 36px;
+		    }
+		}
+
+		.post-wrap {
+			width: 300px;
+			float: left;
+		}
 	}
 
 
-	.post-wrap {
-		width: 300px;
-		float: left;
+	.myconnect-carousel {
+		overflow: auto;
+		white-space: nowrap;
+	    background-color: #fff;
+	    margin: 10px 0;
+	    background-color: #f2f4f6;
+	    padding: 0 0 0 10px;
+		.post {
+			background-color: #fff;
+			cursor: default;
+	    	width: 270px;
+	    	display: inline-block;
+	    	margin: 10px 10px 10px 0px;
+	    	vertical-align: top;
+	    	&:hover {
+				.post-header {
+					.selector {
+		    			display: block;
+						background: #000;
+					}	
+				}
+			}
+	    	.post-header  {
+		    	.selector {
+		    		display: none;
+		    		right: -8px;
+		    		left: auto;
+				    border: 1px solid #000;
+		    		background: #000;
+		    		&:after {
+		    			display: block;
+			    		content: "✕";
+					    color: #fff;
+					    line-height: 18px;
+					    font-size: 11px;
+					    text-align: center;
+					    font-family: monospace;
+			    	}
+		    	}
+	    	}
+		}
 	}
-}
 
-#page-mod-psgrading-mark .myconnect-carousel {
-	overflow: hidden;
-    background-color: #fff;
-    margin: 10px 0;
-	.post {
-		cursor: default;
-    	width: 270px;
-    	float: left;
-    	margin: 10px 10px 10px 0px;
-    	.selector {
-    		display: none;
-    	}
-	}
-}
 
-#page-mod-psgrading-mark {
 	.post {
 		margin-bottom: 30px;
 		background-color: #f2f4f6;

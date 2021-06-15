@@ -188,23 +188,14 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // MyConnect Selector events.
         self.rootel.on('click', '.myconnect-selector .btn-exit', function(e) {
+            e.preventDefault();
             self.closeMyConnectSelector();
         });
 
         // MyConnect Selector browse.
-        self.rootel.on('click', '.myconnect-evidence .btn-browse', function(e) {
-            // Show the frame.
-            self.rootel.find('.myconnect-selector').show();
-            $('body').css("overflow", "hidden");
-
-            // Initialise masonry.
-            if(typeof Masonry !== 'undefined' && typeof self.msnry === 'undefined') {
-                self.msnry = new Masonry( '.myconnect-selector .posts', {
-                    itemSelector: '.post-wrap',
-                    columnWidth: 10,
-                    horizontalOrder: true
-                });
-            }
+        self.rootel.on('click', '#myconnect-evidence .btn-browse', function(e) {
+            e.preventDefault();
+            self.openMyConnectSelector();
         });
 
         // Select posts.
@@ -229,39 +220,15 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Add posts as evidence.
         self.rootel.on('click', '.myconnect-selector .btn-add', function(e) {
-            // Get selected posts.
-            var selectedPosts = self.rootel.find('.myconnect-selector .post.selected');
+            e.preventDefault();
+            self.addMyConnectPosts();
+        });
 
-            // Clear selected.
-            selectedPosts.removeClass('selected');
-
-            // Get the carousel for selected posts.
-            var carousel = self.rootel.find('.myconnect-carousel');
-
-            // Add selected ids to the hidden input.
-            var myconnectevidencejson = $('input[name="myconnectevidencejson"]');
-            var postids = new Array();
-
-            selectedPosts.each(function() {
-                var post = $(this);
-
-                // Add the id to the array.
-                postids.push(post.data('id'));
-
-                //Add the post to the carousel.
-                carousel.append(post);
-            });
-
-            // Encode id array to json for the hidden input.
-            var postidsStr = '';
-            if (postids.length) {
-                postidsStr = JSON.stringify(postids);
-                myconnectevidencejson.val(postidsStr);
-            }
-            
-
-            // Close the selector.
-            self.closeMyConnectSelector();
+        // Save comment to bank.
+        self.rootel.on('click', '.myconnect-carousel .selector', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            self.removeMyConnectPost(button);
         });
 
     };
@@ -433,6 +400,40 @@ define(['jquery', 'core/log', 'core/ajax'],
     };
 
     /**
+     * Open the MyConnect selector.
+     *
+     * @method
+     */
+    Mark.prototype.openMyConnectSelector = function () {
+        var self = this;
+
+        // Show the frame.
+        self.rootel.find('.myconnect-selector').show();
+        $('body').css("overflow", "hidden");
+
+        // Initialise masonry.
+        if(typeof Masonry !== 'undefined' && typeof self.msnry === 'undefined') {
+            self.msnry = new Masonry( '.myconnect-selector .posts', {
+                itemSelector: '.post-wrap',
+                columnWidth: 10,
+                horizontalOrder: true
+            });
+        }
+
+        // Preselect posts that have already been added.
+        var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
+        if (myconnectevidencejson.val()) {
+            var postids = JSON.parse(myconnectevidencejson.val());
+            for (i = 0; i < postids.length; i++) {
+                var id = postids[i];
+                self.rootel.find('.myconnect-selector .post[data-id="' + id + '"]').addClass('selected');
+                console.log(id);
+            }
+        }
+        
+    };
+
+    /**
      * Close the MyConnect selector.
      *
      * @method
@@ -441,6 +442,116 @@ define(['jquery', 'core/log', 'core/ajax'],
         var self = this;
         self.rootel.find('.myconnect-selector').hide();
         $('body').css("overflow", "");
+        document.getElementById("myconnect-evidence").scrollIntoView();
+    };
+
+    /**
+     * Add MyConnect post to carousel.
+     *
+     * @method
+     */
+    Mark.prototype.addMyConnectPosts = function () {
+        var self = this;
+
+        // Get selected posts.
+        var selectedPosts = self.rootel.find('.myconnect-selector .post.selected');
+
+        // Clear selected.
+        selectedPosts.removeClass('selected');
+
+        // Get the carousel for selected posts and clear it.
+        var carousel = self.rootel.find('.myconnect-carousel');
+        carousel.html('');
+
+        // Loop through the selected posts.
+        var postids = new Array();
+        selectedPosts.each(function() {
+            var post = $(this).clone();
+
+            // Add the id to the array.
+            postids.push(post.data('id'));
+
+            //Add the post to the carousel.
+            carousel.append(post);
+        });
+        var postids = postids.filter(self.onlyUnique);
+
+        // Encode id array to json for the hidden input.
+        var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
+        var postidsStr = '';
+        if (postids.length) {
+            postidsStr = JSON.stringify(postids);
+            myconnectevidencejson.val(postidsStr);
+        }
+
+        // Update carousel.
+        self.updateCarousel();
+
+        // Close the selector.
+        self.closeMyConnectSelector();
+    };
+
+    /**
+     * Remove MyConnect post from carousel.
+     *
+     * @method
+     */
+    Mark.prototype.removeMyConnectPost = function (button) {
+        var self = this;
+
+        var post = button.closest('.post');
+        var id = post.data('id');
+
+        // Update the json.
+        var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
+        var postids = JSON.parse(myconnectevidencejson.val());
+        postids = self.removeFromArray(postids, id);
+        var postidsStr = JSON.stringify(postids);
+        myconnectevidencejson.val(postidsStr);
+
+        // Remove the post element.
+        self.rootel.find('.myconnect-carousel .post[data-id="' + id + '"]').remove();
+
+        // Update carousel.
+        self.updateCarousel();
+    };
+
+
+    /**
+     * Update carousel.
+     *
+     * @method
+     */
+    Mark.prototype.updateCarousel = function () {
+        var self = this;
+        var myconnect = self.rootel.find('#myconnect-evidence');
+        myconnect.removeClass('has-posts');
+        var numPosts = myconnect.find('.post').length;
+        if (numPosts) {
+            myconnect.addClass('has-posts');
+        }
+    }
+
+    /**
+     * Unique array helper.
+     *
+     * @method
+     */
+    Mark.prototype.onlyUnique = function (value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
+    /**
+     * Remove element from array by value helper.
+     *
+     * @method
+     */
+    Mark.prototype.removeFromArray = function(array, item) {
+        var index = array.indexOf(item);
+        if (index !== -1) {
+          array.splice(index, 1);
+        }
+        return array;
     };
 
 
