@@ -44,6 +44,7 @@ class task extends persistent {
     const TABLE_TASK_CRITERIONS = 'psgrading_task_criterions';
     const TABLE_GRADES = 'psgrading_grades';
     const TABLE_GRADE_CRITERIONS = 'psgrading_grade_criterions';
+    const TABLE_GRADE_EVIDENCES = 'psgrading_grade_evidences';
 
     /**
      * Return the definition of the properties of this model.
@@ -96,10 +97,6 @@ class task extends persistent {
 
     public static function save_from_data($data) {
         global $DB, $USER;
-
-//echo "<pre>";
-//var_export(json_decode($data->criterionjson));
-//exit;
 
         // Some validation.
         if (empty($data->id)) {
@@ -288,10 +285,28 @@ class task extends persistent {
         $task->evidences = $evidences;
     }
 
+    public static function load_myconnect_grade_evidences(&$task) {
+        global $DB;
+
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_GRADE_EVIDENCES . "}
+                 WHERE taskid = ?
+                   AND evidencetype = 'myconnect_post'";
+        $params = array($task->id);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $evidences = array();
+        foreach ($records as $record) {
+            $evidences[] = $record->refdata;
+        }
+
+        $task->myconnectevidences = $evidences;
+    }
+
 
     public static function save_task_grades_for_student($data) {
         global $DB, $USER;
-
+        
         // Some validation.
         if (empty($data->taskid) || empty($data->userid)) {
             return;
@@ -342,8 +357,9 @@ class task extends persistent {
             $graderec->id = $DB->insert_record(static::TABLE_GRADES, $graderec);
         }
 
-        // Recreate criterion grades.
         if ($graderec->id) {
+
+            // Recreate criterion grades.
             $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
             $criterions = json_decode($data->criterionjson);
             foreach ($criterions as $selection) {
@@ -354,6 +370,22 @@ class task extends persistent {
                 $criterion->gradelevel = $selection->selectedlevel;
                 $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
             }
+
+            // Recreate myconnect links.
+            $DB->delete_records(static::TABLE_GRADE_EVIDENCES, array(
+                'gradeid' => $graderec->id,
+                'evidencetype' => 'myconnect_post',
+            ));
+            $myconnectposts = json_decode($data->myconnectevidencejson);
+            foreach ($myconnectposts as $id) {
+                $evidence = new \stdClass();
+                $evidence->taskid = $data->taskid;
+                $evidence->gradeid = $graderec->id;
+                $evidence->evidencetype = 'myconnect_post';
+                $evidence->refdata = $id;
+                $DB->insert_record(static::TABLE_GRADE_EVIDENCES, $evidence);
+            }
+
         }
 
         return $graderec->id;

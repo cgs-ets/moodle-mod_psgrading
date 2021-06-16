@@ -657,10 +657,16 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin-bottom: 1rem;
   position: relative;
 }
+#page-mod-psgrading-mark #myconnect-evidence .btn-browse {
+  box-shadow: none;
+}
 #page-mod-psgrading-mark #myconnect-evidence.has-posts .btn-browse {
   position: absolute;
-  right: 10px;
-  top: 50px;
+  right: 0;
+  top: 0;
+}
+#page-mod-psgrading-mark #myconnect-evidence.has-posts .myconnect-carousel {
+  display: block;
 }
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
@@ -712,12 +718,15 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   float: left;
 }
 #page-mod-psgrading-mark .myconnect-carousel {
+  display: none;
   overflow: auto;
   white-space: nowrap;
   background-color: #fff;
   margin: 10px 0;
   background-color: #f2f4f6;
   padding: 0 0 0 10px;
+  border: 1px dashed #aaa;
+  border-radius: 2px;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post {
   background-color: #fff;
@@ -730,6 +739,13 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .myconnect-carousel .post:hover .post-header .selector {
   display: block;
   background: #000;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header {
+  padding: 13px 10px;
+  min-height: 0px;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .time {
+  font-size: 85%;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector {
   display: none;
@@ -746,6 +762,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   font-size: 11px;
   text-align: center;
   font-family: monospace;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .album {
+  width: 240px;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-body {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 #page-mod-psgrading-mark .post {
   margin-bottom: 30px;
@@ -988,8 +1012,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   height: 25px;
 }
 #page-mod-psgrading-mark .post .post-comment {
-  padding: 15px 20px 35px;
+  padding: 15px;
   overflow: hidden;
+  white-space: normal;
+  font-size: 85%;
 }
 #page-mod-psgrading-mark .post .post-comment p:last-of-type {
   margin-bottom: 0;

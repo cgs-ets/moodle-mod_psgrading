@@ -67,7 +67,6 @@ class form_mark extends \moodleform {
             $data->task = new \stdClass();
             $data->task->id = -1;
             $data->task->criterions = [];
-            $data->task->evidences = [];
             $data->myconnect = null;
         }
 
@@ -86,7 +85,7 @@ class form_mark extends \moodleform {
         // Evidence.
         $mform->addElement('html', 
             $OUTPUT->render_from_template('mod_psgrading/mark_evidence', array(
-                'evidences' => $data->task->evidences,
+                'task' => $data->task,
                 'myconnect' => $data->myconnect,
             ))
         );

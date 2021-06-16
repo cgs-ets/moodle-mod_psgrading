@@ -31,7 +31,9 @@
         <div class="grid">
             <div class="posts">
                 {{#posts}}
-                    {{>mod_psgrading/myconnect_post}}
+                    <div class="post-wrap">
+                        {{>mod_psgrading/myconnect_post}}
+                    </div>
                 {{/posts}}
                 {{^posts.0}}
                     {{#loggedinuser.isstaff}}{{#loggedinuser.isstudent}}

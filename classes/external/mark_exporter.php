@@ -224,8 +224,14 @@ class mark_exporter extends exporter {
         $baseurl->param('groupid', 0);
         $baseurl->param('view', 'all');
 
-        // Get MyConnect posts for user.
+        // Get MyConnect posts for evidence selector.
         $myconnect = utils::get_myconnect_data($currstudent->username);
+
+        // Get existing MyConnect grade evidences specifically.
+        task::load_myconnect_grade_evidences($task);
+        $task->myconnectevidencejson = json_encode($task->myconnectevidences);
+        $selectedmyconnectposts = utils::get_myconnect_data_for_postids($currstudent->username, $task->myconnectevidences);
+        $task->myconnectevidences = array_values($selectedmyconnectposts->posts);
 
         return array(
             'task' => $task,

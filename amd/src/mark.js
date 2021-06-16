@@ -418,6 +418,8 @@ define(['jquery', 'core/log', 'core/ajax'],
                 columnWidth: 10,
                 horizontalOrder: true
             });
+        } else {
+            self.msnry.layout();
         }
 
         // Preselect posts that have already been added.
@@ -427,7 +429,6 @@ define(['jquery', 'core/log', 'core/ajax'],
             for (i = 0; i < postids.length; i++) {
                 var id = postids[i];
                 self.rootel.find('.myconnect-selector .post[data-id="' + id + '"]').addClass('selected');
-                console.log(id);
             }
         }
         
@@ -524,11 +525,11 @@ define(['jquery', 'core/log', 'core/ajax'],
      */
     Mark.prototype.updateCarousel = function () {
         var self = this;
-        var myconnect = self.rootel.find('#myconnect-evidence');
-        myconnect.removeClass('has-posts');
-        var numPosts = myconnect.find('.post').length;
+        var myconnectevidence = self.rootel.find('#myconnect-evidence');
+        myconnectevidence.removeClass('has-posts');
+        var numPosts = myconnectevidence.find('.post').length;
         if (numPosts) {
-            myconnect.addClass('has-posts');
+            myconnectevidence.addClass('has-posts');
         }
     }
 

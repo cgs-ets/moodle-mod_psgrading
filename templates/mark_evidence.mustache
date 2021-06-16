@@ -25,31 +25,31 @@
 }}
 <div class="marking-evidences">
     <div class="body">
-        {{! <h6>Predefined activties related to this task</h6> }}
         <div class="heading">Predefined evidence</div>
         <table class="table generaltable">
             <tbody>
-                {{#evidences}}
+                {{#task.evidences}}
                     <tr class="evidence" data-id="{{id}}">
                         <td class="cell">
                             <img src="{{icon}}" class="icon" role="presentation" aria-hidden="true"><span class="name">{{name}}</span> <a class="link" target="_blank" href="{{url}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                         </td>
                     </tr>
-                {{/evidences}}
+                {{/task.evidences}}
             </tbody>
         </table>
 
         {{#myconnect.posts.0}}
-            <div id="myconnect-evidence">
-                {{! <h6>MyConnect posts related to this task</h6> }}
+            <div id="myconnect-evidence" class="{{#task.myconnectevidences.0}}has-posts{{/task.myconnectevidences.0}}">
                 <div class="heading">MyConnect posts</div>
-                <a href="#" class="btn-browse btn btn-primary">Browse</a>
+                <a href="#" class="btn-browse btn btn-primary">Select</a>
                 <div class="myconnect-carousel">
+                    {{#task.myconnectevidences}}
+                        {{>mod_psgrading/myconnect_post}}
+                    {{/task.myconnectevidences}}
                 </div>
             </div>
         {{/myconnect.posts.0}}
 
-        {{! <h6>Additional evidence uploads</h6> }}
         <div class="heading">Additional evidence</div>
     </div>
 </div>

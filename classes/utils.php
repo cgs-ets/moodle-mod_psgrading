@@ -529,6 +529,32 @@ class utils {
         return $myconnect;
     }
 
+    public static function get_myconnect_data_for_postids($username, $postids) {
+        global $CFG, $USER, $OUTPUT;
+
+        $myconnect = null;
+
+        if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
+            // Load users through MyConnect.
+            $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
+            $timelineuser = \local_myconnect\utils::get_user_with_extras($username);
+            // Get the posts.
+            $posts = \local_myconnect\persistents\post::get_by_ids($postids);
+            // Export the posts data.
+            $relateds = [
+                'context' => \context_system::instance(),
+                'posts' => $posts,
+                'jump' => 0,
+                'page' => 0,
+                'timelineuser' => $timelineuser,
+                'loggedinuser' => $loggedinuser,
+            ];
+            $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
+            $myconnect = $timeline->export($OUTPUT);
+        }
+
+        return $myconnect;
+    }
 
     public static function get_taskdata_as_xml($data) {
         $xml = "<taskname>{$data->taskname}</taskname>";

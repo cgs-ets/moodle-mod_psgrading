@@ -131,6 +131,8 @@ $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
 
+//echo "<pre>"; var_export($data); exit;
+
 // Add task edit, and overview to nav.
 $PAGE->navbar->add($data->task->taskname, $data->task->editurl);
 $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);

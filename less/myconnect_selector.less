@@ -3,11 +3,17 @@
 	#myconnect-evidence {
 		margin-bottom: 1rem;
 		position: relative;
+		.btn-browse {
+		    box-shadow: none;
+		}
 		&.has-posts {
 			.btn-browse {
 				position: absolute;
-		    	right: 10px;
-		    	top: 50px;
+		    	right: 0;
+		    	top: 0;
+			}
+			.myconnect-carousel {
+				display: block;
 			}
 		}
 	}
@@ -66,12 +72,15 @@
 
 
 	.myconnect-carousel {
+		display: none;
 		overflow: auto;
 		white-space: nowrap;
 	    background-color: #fff;
 	    margin: 10px 0;
 	    background-color: #f2f4f6;
 	    padding: 0 0 0 10px;
+	    border: 1px dashed #aaa;
+    	border-radius: 2px;
 		.post {
 			background-color: #fff;
 			cursor: default;
@@ -79,6 +88,10 @@
 	    	display: inline-block;
 	    	margin: 10px 10px 10px 0px;
 	    	vertical-align: top;
+
+
+
+
 	    	&:hover {
 				.post-header {
 					.selector {
@@ -88,6 +101,11 @@
 				}
 			}
 	    	.post-header  {
+	    		padding: 13px 10px;
+    			min-height: 0px;
+			    .time {
+				    font-size: 85%;
+				}
 		    	.selector {
 		    		display: none;
 		    		right: -8px;
@@ -105,6 +123,14 @@
 			    	}
 		    	}
 	    	}
+			.album {
+				width: 240px;
+			}
+			.post-body {
+			    max-height: 400px;
+    			overflow: hidden;
+    			overflow-y: auto;
+			}
 		}
 	}
 
@@ -366,8 +392,10 @@
 		    }
 		}
 		.post-comment {
-		    padding: 15px 20px 35px;
+		    padding: 15px;
 		    overflow: hidden;
+		    white-space: normal;
+		    font-size: 85%;
 		    p:last-of-type {
 		        margin-bottom: 0;
 		    }
