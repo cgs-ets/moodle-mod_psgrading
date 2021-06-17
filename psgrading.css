@@ -740,19 +740,19 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   display: block;
   background: #000;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post:hover .post-header .sent-to-count {
-  font-size: 10px;
-  margin-left: 0;
-  margin-top: -2px;
-  right: 9px;
-  opacity: 0.8;
-}
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header {
   padding: 13px 10px;
   min-height: 0px;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .time {
   font-size: 85%;
+}
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .sent-to-count {
+  font-size: 10px;
+  margin-left: 0;
+  margin-top: -2px;
+  right: 9px;
+  opacity: 0.8;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector {
   display: none;
