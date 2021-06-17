@@ -157,6 +157,7 @@ if (empty($formdata)) {
         'evidences' => $draftevidence,
         'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
         'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
+        'myconnectevidencejson' => $data->task->myconnectevidencejson,
     ));
 
     // Run get_data again to trigger validation and set errors.
