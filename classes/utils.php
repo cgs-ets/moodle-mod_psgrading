@@ -532,8 +532,11 @@ class utils {
     public static function get_myconnect_data_for_postids($username, $postids) {
         global $CFG, $USER, $OUTPUT;
 
-        $myconnect = null;
+        if (empty($postids)) {
+            return;
+        }
 
+        $myconnect = null;
         if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
             // Load users through MyConnect.
             $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
