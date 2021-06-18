@@ -744,8 +744,13 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 13px 10px;
   min-height: 0px;
 }
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .meta {
+  bottom: 3px;
+  position: absolute;
+  right: 5px;
+}
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .time {
-  font-size: 85%;
+  font-size: 75%;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .sent-to-count {
   font-size: 10px;
