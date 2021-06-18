@@ -797,14 +797,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border: 1px solid #ddd;
 }
 #page-mod-psgrading-mark .post:hover .post-header .selector {
-  background: #c8c8ff;
+  background: #B3D9B3;
 }
 #page-mod-psgrading-mark .post.selected {
   border: 1px solid #ccc;
 }
 #page-mod-psgrading-mark .post.selected .post-header .selector {
-  border: 1px solid blue;
-  background: blue;
+  border: 1px solid green;
+  background: green;
 }
 #page-mod-psgrading-mark .post.selected .post-header .selector:after {
   content: "✓";
