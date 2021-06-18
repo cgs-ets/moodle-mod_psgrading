@@ -381,7 +381,8 @@ define(['jquery', 'core/log', 'core/ajax'],
                 var content = $(html);
                 posts.append(content);
                 if (typeof self.msnry !== 'undefined') {
-                    self.msnry.appended( content );
+                    //self.msnry.appended( content );
+                    self.msnry.layout();
                 }
 
                 // Potentially more.
