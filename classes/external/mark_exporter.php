@@ -224,14 +224,25 @@ class mark_exporter extends exporter {
         $baseurl->param('groupid', 0);
         $baseurl->param('view', 'all');
 
-        // Get MyConnect posts for evidence selector.
-        $myconnect = utils::get_myconnect_data($currstudent->username);
-
         // Get existing MyConnect grade evidences specifically.
         task::load_myconnect_grade_evidences($task);
+        $myconnectpostids = $task->myconnectevidences;
         $task->myconnectevidencejson = json_encode($task->myconnectevidences);
         $selectedmyconnectposts = utils::get_myconnect_data_for_postids($currstudent->username, $task->myconnectevidences);
         $task->myconnectevidences = array_values($selectedmyconnectposts->posts);
+
+        // Get MyConnect posts for evidence selector.
+        $myconnect = utils::get_myconnect_data($currstudent->username, 0, $myconnectpostids);
+
+        // Put the already selected posts at the front.
+        $myconnect->posts = array_merge($task->myconnectevidences, $myconnect->posts);
+
+        //echo "<pre>";
+        //echo "pre selected<hr>";
+        //var_export($task->myconnectevidences); 
+        //echo "everything<hr>";
+        //var_export($myconnect); 
+        //exit;
 
         return array(
             'task' => $task,

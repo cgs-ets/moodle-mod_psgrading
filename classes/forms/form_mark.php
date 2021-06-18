@@ -112,6 +112,8 @@ class form_mark extends \moodleform {
         $mform->setType('action', PARAM_RAW);
 
         // MyConnect evidence.
+        $mform->addElement('hidden', 'selectedmyconnectpostsjson');
+        $mform->setType('selectedmyconnectpostsjson', PARAM_RAW);
         $mform->addElement('hidden', 'myconnectevidencejson');
         $mform->setType('myconnectevidencejson', PARAM_RAW);
         

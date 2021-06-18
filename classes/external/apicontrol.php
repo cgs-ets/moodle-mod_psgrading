@@ -80,7 +80,7 @@ trait apicontrol {
 
         if ($action == 'load_next_myconnect_posts') {
             $data = json_decode($data);
-            $myconnect = utils::get_myconnect_data($data->username, intval($data->page));
+            $myconnect = utils::get_myconnect_data($data->username, intval($data->page), json_decode($data->selectedmyconnectposts));
             $html = '';
             foreach ($myconnect->posts as $post) {
                 $html .= '<div class="post-wrap">' . $OUTPUT->render_from_template('mod_psgrading/myconnect_post', $post) . '</div>';

@@ -502,7 +502,7 @@ class utils {
     }
 
 
-    public static function get_myconnect_data($username, $page = 0) {
+    public static function get_myconnect_data($username, $page = 0, $excludeposts = []) {
         global $CFG, $USER, $OUTPUT;
 
         $myconnect = null;
@@ -524,6 +524,16 @@ class utils {
             ];
             $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
             $myconnect = $timeline->export($OUTPUT);
+            // Take already selected posts out.
+            if (isset($excludeposts) && isset($myconnect->posts)) {
+                foreach ($excludeposts as $expost) {
+                    foreach($myconnect->posts as $j => $post) {
+                        if ($post->id == $expost) {
+                            unset($myconnect->posts[$j]);
+                        }
+                    }
+                }    
+            }
         }
 
         return $myconnect;

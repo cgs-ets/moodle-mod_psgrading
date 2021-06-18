@@ -364,10 +364,12 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.loadingmyconnect = true;
         var page = self.rootel.find('input[name="myconnectnextpage"]');
         var posts = self.rootel.find('.myconnect-selector .posts');
+        var selectedmyconnectposts = self.rootel.find('input[name="selectedmyconnectpostsjson"]');
 
         var data = {
             'username': self.rootel.find('.selected-student').data('username'),
             'page': page.val(),
+            'selectedmyconnectposts': selectedmyconnectposts.val(),
         };
 
         Ajax.call([{
@@ -381,8 +383,11 @@ define(['jquery', 'core/log', 'core/ajax'],
                 var content = $(html);
                 posts.append(content);
                 if (typeof self.msnry !== 'undefined') {
-                    //self.msnry.appended( content );
-                    self.msnry.layout();
+                    self.msnry.appended( content );
+                    // Fix for masonry not correclty laying out images due to images not being loaded.
+                    imagesLoaded( document.querySelector('.myconnect-selector'), function( instance ) {
+                        self.msnry.layout();
+                    });
                 }
 
                 // Potentially more.
