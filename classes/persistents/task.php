@@ -285,14 +285,14 @@ class task extends persistent {
         $task->evidences = $evidences;
     }
 
-    public static function load_myconnect_grade_evidences(&$task) {
+    public static function get_myconnect_grade_evidences($gradeid) {
         global $DB;
 
         $sql = "SELECT *
                   FROM {" . static::TABLE_GRADE_EVIDENCES . "}
-                 WHERE taskid = ?
+                 WHERE gradeid = ?
                    AND evidencetype = 'myconnect_post'";
-        $params = array($task->id);
+        $params = array($gradeid);
 
         $records = $DB->get_records_sql($sql, $params);
         $evidences = array();
@@ -300,7 +300,7 @@ class task extends persistent {
             $evidences[] = $record->refdata;
         }
 
-        $task->myconnectevidences = $evidences;
+        return $evidences;
     }
 
 

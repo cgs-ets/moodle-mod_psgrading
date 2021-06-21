@@ -224,18 +224,31 @@ class mark_exporter extends exporter {
         $baseurl->param('groupid', 0);
         $baseurl->param('view', 'all');
 
-        // Get existing MyConnect grade evidences specifically.
-        task::load_myconnect_grade_evidences($task);
-        $myconnectpostids = $task->myconnectevidences;
-        $task->myconnectevidencejson = json_encode($task->myconnectevidences);
-        $selectedmyconnectposts = utils::get_myconnect_data_for_postids($currstudent->username, $task->myconnectevidences);
-        $task->myconnectevidences = array_values($selectedmyconnectposts->posts);
+        // Get selected MyConnect grade evidences.
+        $task->myconnectevidences = array();
+        $task->myconnectevidencejson = '';
+        if ($gradeinfo) {
+            // Get selected ids
+            $myconnectids = task::get_myconnect_grade_evidences($gradeinfo->id);
+            if ($myconnectids) {
+                // Convert to json.
+                $task->myconnectevidencejson = json_encode($myconnectids);
+            }
+            // Get full post objects for selected ids.
+            $myconnectdata = utils::get_myconnect_data_for_postids($currstudent->username, $myconnectids);
+            if (isset($myconnectdata->posts)) {
+                $task->myconnectevidences = array_values($myconnectdata->posts);
+            }
+        }
+        
 
-        // Get MyConnect posts for evidence selector.
-        $myconnect = utils::get_myconnect_data($currstudent->username, 0, $myconnectpostids);
+        // Get MyConnect posts for evidence selector, passing selected posts to be excluded.
+        $myconnect = utils::get_myconnect_data($currstudent->username, 0, $myconnectids);
 
         // Put the already selected posts at the front.
-        $myconnect->posts = array_merge($task->myconnectevidences, $myconnect->posts);
+        if ($task->myconnectevidences || $myconnect->posts) {
+            $myconnect->posts = array_merge($task->myconnectevidences, $myconnect->posts);
+        }
 
         //echo "<pre>";
         //echo "pre selected<hr>";
