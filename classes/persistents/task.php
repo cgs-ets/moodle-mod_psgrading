@@ -297,7 +297,7 @@ class task extends persistent {
         $records = $DB->get_records_sql($sql, $params);
         $evidences = array();
         foreach ($records as $record) {
-            $evidences[] = $record->refdata;
+            $evidences[] = intval($record->refdata);
         }
 
         return $evidences;
