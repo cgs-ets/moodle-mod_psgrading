@@ -380,13 +380,15 @@ class task extends persistent {
                 'evidencetype' => 'myconnect_post',
             ));
             $myconnectposts = json_decode($data->myconnectevidencejson);
-            foreach ($myconnectposts as $id) {
-                $evidence = new \stdClass();
-                $evidence->taskid = $data->taskid;
-                $evidence->gradeid = $graderec->id;
-                $evidence->evidencetype = 'myconnect_post';
-                $evidence->refdata = $id;
-                $DB->insert_record(static::TABLE_GRADE_EVIDENCES, $evidence);
+            if ($myconnectposts) {
+                foreach ($myconnectposts as $id) {
+                    $evidence = new \stdClass();
+                    $evidence->taskid = $data->taskid;
+                    $evidence->gradeid = $graderec->id;
+                    $evidence->evidencetype = 'myconnect_post';
+                    $evidence->refdata = $id;
+                    $DB->insert_record(static::TABLE_GRADE_EVIDENCES, $evidence);
+                }
             }
 
         }

@@ -1133,6 +1133,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #FFDB00;
 }
 .psgrading-matrix .column.task .cell-engagement[data-engagement="good"] {
+  background-color: #6BB82E;
+  color: #fff;
+}
+.psgrading-matrix .column.task .cell-engagement[data-engagement="verygood"] {
   background-color: #00812F;
   color: #fff;
 }
