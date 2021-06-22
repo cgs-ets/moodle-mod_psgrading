@@ -30,7 +30,7 @@
         </li>
         <li class="tbl-col tbl-col-2">
             <div class="label">Good start</div>
-            <textarea name="level2" class="form-control">{{level2}}</textarea>
+            <textarea name="level4" class="form-control">{{level4}}</textarea>
         </li>
         <li class="tbl-col tbl-col-3">
             <div class="label">Making strides</div>
@@ -38,7 +38,7 @@
         </li>
         <li class="tbl-col tbl-col-4">
             <div class="label">Go run with it</div>
-            <textarea name="level4" class="form-control">{{level4}}</textarea>
+            <textarea name="level2" class="form-control">{{level2}}</textarea>
         </li>
         <li class="tbl-col tbl-col-5 tbl-col-last">
             <div>
@@ -48,13 +48,15 @@
                     {{/subject.options}}
                 </select>
             </div>
-            <div>
-                <select name="weight" class="form-control">
-                    {{#weight.options}}
-                        <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
-                    {{/weight.options}}
-                </select>
-            </div>
+            {{#enableweights}}
+                <div>
+                    <select name="weight" class="form-control">
+                        {{#weight.options}}
+                            <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                        {{/weight.options}}
+                    </select>
+                </div>
+            {{/enableweights}}
             <div>
                 <div class="hidden-control">
                     <input name="hidden" type="checkbox" {{^hidden}}checked="true"{{/hidden}}/>

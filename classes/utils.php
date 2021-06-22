@@ -176,11 +176,11 @@ class utils {
             'minimal' => '&nbsp;',
         ),
         '1' => array (
-            'full' => '1',
+            'full' => '5',
             'minimal' => '&nbsp;',
         ),
         '2' => array (
-            'full' => '2 (GS)',
+            'full' => '4 (GS)',
             'minimal' => 'GS',
         ),
         '3' => array (
@@ -188,11 +188,11 @@ class utils {
             'minimal' => 'MS',
         ),
         '4' => array (
-            'full' => '4 (GRWI)',
+            'full' => '2 (GRWI)',
             'minimal' => 'GRWI',
         ),
         '5' => array (
-            'full' => '5',
+            'full' => '1',
             'minimal' => '&nbsp;',
         ),
     );

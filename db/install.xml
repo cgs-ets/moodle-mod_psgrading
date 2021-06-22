@@ -14,6 +14,7 @@
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp of when the instance was last modified."/>
         <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Activity description."/>
         <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The format of the intro field."/>
+        <FIELD NAME="enableweights" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Enable weights for task critions."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -62,9 +63,9 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="taskid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="level2" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="level3" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="level4" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="level3" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="level2" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="subject" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="weight" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="seq" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

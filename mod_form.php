@@ -50,10 +50,6 @@ class mod_psgrading_mod_form extends moodleform_mod {
                 $courseurl = new moodle_url('/course/view.php', array(
                     'id' => $COURSE->id,
                 ));
-                $modurl = new moodle_url('/mod/psgrading/view.php', array(
-                    'id' => $exists->id,
-                ));
-            see $modurl
                 $notice = get_string("singleinstanceonly", "mod_psgrading");
                 redirect(
                     $courseurl->out(),
@@ -92,7 +88,8 @@ class mod_psgrading_mod_form extends moodleform_mod {
         }
 
         // Custom fields here.
-        // ....
+        $mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
+        $mform->setDefault('enableweights', 0);
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

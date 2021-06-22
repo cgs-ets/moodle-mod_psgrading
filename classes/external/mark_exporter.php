@@ -227,6 +227,7 @@ class mark_exporter extends exporter {
         // Get selected MyConnect grade evidences.
         $task->myconnectevidences = array();
         $task->myconnectevidencejson = '';
+        $myconnectids = array();
         if ($gradeinfo) {
             // Get selected ids
             $myconnectids = task::get_myconnect_grade_evidences($gradeinfo->id);

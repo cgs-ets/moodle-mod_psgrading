@@ -40,9 +40,10 @@ class form_task extends \moodleform {
         global $CFG, $OUTPUT, $USER, $DB;
 
         $mform =& $this->_form;
-        $published = $this->_customdata['published'];
-        $criteriondata = $this->_customdata['criteriondata'];
-        $evidencedata = $this->_customdata['evidencedata'];
+        $published = (isset($this->_customdata['published'])) ? $this->_customdata['published'] : 0;
+        $criteriondata = (isset($this->_customdata['criteriondata'])) ? $this->_customdata['criteriondata'] : [];
+        $evidencedata = (isset($this->_customdata['evidencedata'])) ? $this->_customdata['evidencedata'] : [];
+        $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
 
         /****
         * Notes:
@@ -88,7 +89,7 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         // Render the criterion from json.
-        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array('criterions' => $criteriondata));
+        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array('criterions' => $criteriondata, 'enableweights' => $enableweights));
         $mform->addElement('html', $criterionhtml);
 
         /*----------------------
@@ -151,7 +152,7 @@ class form_task extends \moodleform {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
-                if (empty($criterion->level2)) {
+                if (empty($criterion->level4)) {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
@@ -159,7 +160,7 @@ class form_task extends \moodleform {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
-                if (empty($criterion->level4)) {
+                if (empty($criterion->level2)) {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
@@ -167,10 +168,10 @@ class form_task extends \moodleform {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
-                if (empty($criterion->weight)) {
-                    $errors['criterionjson'] = get_string('required');
-                    break;
-                }
+                //if (empty($criterion->weight)) {
+                //    $errors['criterionjson'] = get_string('required');
+                //    break;
+                //}
             }
         }
 

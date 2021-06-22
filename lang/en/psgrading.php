@@ -73,4 +73,4 @@ $string['notpublishedyet'] = 'Not published yet';
 $string['addcriterion'] = 'Add criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';
 
-
+$string['enableweights'] = 'Enable weights';

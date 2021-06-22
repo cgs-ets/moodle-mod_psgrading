@@ -121,6 +121,9 @@ class task extends persistent {
         foreach ($criterions as &$criterion) {
             $criterion->taskid = $data->id;
             $criterion->seq = $seq;
+            if (!isset($criterion->weight)) {
+                $criterion->weight = 100;
+            }
             // Criterion does not already exist.
             if (!in_array($criterion->id, array_keys($existingcriterions))) {
                 $criterion->id = $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);

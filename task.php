@@ -98,14 +98,10 @@ if ($create) {
 
     // Check whether grades already exist for this task. 
     // A task cannot be edited after marking has begun as it will mess up the criterion grading.
-    
+
 
     // Instantiate the form.
-    $formtask = new form_task(
-        $editurl->out(false), 
-        array('criteriondata' => [], 'evidencedata' => [], 'published' => 0),
-        'post', '', []
-    );
+    $formtask = new form_task($editurl->out(false), array(),'post', '', []);
 
     $formdata = $formtask->get_data();
 
@@ -147,6 +143,7 @@ if ($create) {
                 'criteriondata' => $criteriondata,
                 'evidencedata' => $evidencedata,
                 'published' => $published,
+                'enableweights' => $moduleinstance->enableweights,
             ), 
             'post', '', array('data-form' => 'psgrading-task')
         );
