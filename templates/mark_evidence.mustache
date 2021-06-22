@@ -25,6 +25,7 @@
 }}
 <div class="marking-evidences">
     <div class="body">
+        {{#task.evidences.0}}
         <div class="heading">Predefined evidence</div>
         <table class="table generaltable">
             <tbody>
@@ -37,6 +38,7 @@
                 {{/task.evidences}}
             </tbody>
         </table>
+        {{/task.evidences.0}}
 
         {{#myconnect.posts.0}}
             <div id="myconnect-evidence" class="{{#task.myconnectevidences.0}}has-posts{{/task.myconnectevidences.0}}">
