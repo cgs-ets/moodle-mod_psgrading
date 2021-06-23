@@ -170,6 +170,13 @@ class task extends persistent {
         $task->set('draftjson', $formjson);
         $task->save();
 
+        // Only keep latest draft from this user as they are so frequent.
+        $DB->delete_records(static::TABLE_TASK_LOGS, array(
+            'taskid' => $formdata->id,
+            'username' => $USER->username,
+            'status' => 0,
+        ));
+
         // Add a log entry.
         $log = new \stdClass();
         $log->taskid = $formdata->id;
