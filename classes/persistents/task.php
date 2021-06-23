@@ -156,7 +156,7 @@ class task extends persistent {
         return $data->id;
     }
 
-    public static function save_draft($formjson, $logthis = false) {
+    public static function save_draft($formjson) {
         global $USER, $DB;
 
         // Some validation.
@@ -169,15 +169,14 @@ class task extends persistent {
         $task->set('draftjson', $formjson);
         $task->save();
 
-        if ($logthis) {
-            // Add a log entry.
-            $log = new \stdClass();
-            $log->taskid = $formdata->id;
-            $log->username = $USER->username;
-            $log->logtime = $task->get('timemodified');
-            $log->formjson = $formjson;
-            $DB->insert_record(static::TABLE_TASK_LOGS, $log);
-        }
+        // Add a log entry.
+        $log = new \stdClass();
+        $log->taskid = $formdata->id;
+        $log->username = $USER->username;
+        $log->logtime = $task->get('timemodified');
+        $log->formjson = $formjson;
+        $DB->insert_record(static::TABLE_TASK_LOGS, $log);
+
     }
 
 
