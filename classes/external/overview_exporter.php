@@ -246,7 +246,9 @@ class overview_exporter extends exporter {
         }
 
         $index = count( $tasks ) - 1;
-        $tasks[$index]->islast = true;
+        if (isset($tasks[$index])) {
+            $tasks[$index]->islast = true;
+        }
 
         // Calculate report grades.
         $reportgrades = array();
