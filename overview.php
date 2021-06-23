@@ -121,7 +121,7 @@ $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 if (empty($data->tasks)) {
-    echo "No tasks have been created yet."; exit;
+    echo "TODO: No graded tasks for this user."; exit;
 }
 
 // Add css.
