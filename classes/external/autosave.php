@@ -57,7 +57,7 @@ trait autosave {
      *
      * @param int $query The search query
      */
-    public static function autosave($formjson) {
+    public static function autosave($formjson, $logthis) {
         global $USER;
 
         // Validate params.
