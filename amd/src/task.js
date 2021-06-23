@@ -119,7 +119,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             window.onbeforeunload = null;
             // Force an autosave.
             self.autosaving = false;
-            self.regenerateAndSave(false);
+            self.regenerateAndSave(false, true);
             self.rootel.find('[name="action"]').val('savedraft');
             self.rootel.submit();
         });
@@ -216,12 +216,12 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    Task.prototype.regenerateAndSave = function (async) {
+    Task.prototype.regenerateAndSave = function (async, logthis) {
         var self = this;
 
         self.regenerateEvidenceJSON();
         self.regenerateCriterionJSON();
-        self.autoSave(async);
+        self.autoSave(async, logthis);
     };
 
     /**
@@ -229,7 +229,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      *
      * @method
      */
-    Task.prototype.autoSave = function (async) {
+    Task.prototype.autoSave = function (async, logthis) {
         var self = this;
 
         // Check if saving already in-progress.
@@ -256,9 +256,16 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             async = true;
         }
 
+        if (typeof logthis === "undefined") {
+            logthis = false;
+        }
+
         Ajax.call([{
             methodname: 'mod_psgrading_autosave',
-            args: { formjson: formjson },
+            args: { 
+                formjson: formjson,
+                logthis: logthis
+            },
             done: function() {
                 self.statusSaved();
             },

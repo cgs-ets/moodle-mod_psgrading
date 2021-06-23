@@ -48,6 +48,7 @@ trait autosave {
     public static function autosave_parameters() {
         return new external_function_parameters([
             'formjson' => new external_value(PARAM_RAW, 'Form data'),
+            'logthis' => new external_value(PARAM_BOOL, 'Whether to log the draft'),
         ]);
     }
 
@@ -60,10 +61,10 @@ trait autosave {
         global $USER;
 
         // Validate params.
-        self::validate_parameters(self::autosave_parameters(), compact('formjson'));
+        self::validate_parameters(self::autosave_parameters(), compact('formjson', 'logthis'));
        
         // Save.
-        return task::save_draft($formjson);
+        return task::save_draft($formjson, $logthis);
 
     }
 
