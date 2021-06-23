@@ -84,6 +84,16 @@ class overview_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'isstaff' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
+            'morestudents' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -370,7 +380,7 @@ class overview_exporter extends exporter {
         }
 
         $baseurl->param('groupid', 0);
-        $baseurl->param('view', 'all');
+        $baseurl->param('view', 'all'); 
 
         $out = array(
             'tasks' => $tasks,
@@ -381,6 +391,8 @@ class overview_exporter extends exporter {
             'baseurl' => $baseurl->out(false),
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
+            'isstaff' => $this->related['isstaff'],
+            'morestudents' => (count($students) > 1),
         );
         return $out;
     }

@@ -28,26 +28,34 @@
         <div class="selected-student" data-userid="{{currstudent.id}}">
             <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
         </div>
-        <div class="group-selector">
-            {{#groups.1}}
-                <span class="selector-label">Group</span>
-                <select class="group-select form-control">
-                    <option value="0" data-overviewurl="{{baseurl}}">All groups</option>
-                    {{#groups}}
-                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
-                    {{/groups}}
+
+        {{#isstaff}}
+
+            <div class="group-selector">
+                {{#groups.1}}
+                    <span class="selector-label">Group</span>
+                    <select class="group-select form-control">
+                        <option value="0" data-overviewurl="{{baseurl}}">All groups</option>
+                        {{#groups}}
+                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
+                        {{/groups}}
+                    </select>
+                {{/groups.1}}
+            </div>
+        {{/isstaff}}
+
+        {{#morestudents}}
+            <div class="student-selector">
+                <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                <select class="student-select form-control">
+                    {{#students}}
+                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{fullname}}</option>
+                    {{/students}}
                 </select>
-            {{/groups.1}}
-        </div>
-        <div class="student-selector">
-            <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-            <select class="student-select form-control">
-                {{#students}}
-                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{fullname}}</option>
-                {{/students}}
-            </select>
-            <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
+                <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        {{/morestudents}}
+        
     </div>
     {{>mod_psgrading/overview_matrix}}
 </div>
