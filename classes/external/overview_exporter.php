@@ -139,6 +139,9 @@ class overview_exporter extends exporter {
         foreach ($cmtasks as $task) {
             $taskexporter = new task_exporter($task);
             $task = $taskexporter->export($output);
+            if (!$task->published) {
+                continue;
+            }
 
             // Add details url.
             if ($this->related['isstaff']) {
