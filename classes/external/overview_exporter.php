@@ -184,7 +184,7 @@ class overview_exporter extends exporter {
 
             if (empty($gradeinfo)) {
                 // There is no gradeinfo for this user/task. Skip over the calculations.
-                $tasks[] = $task;
+                //$tasks[] = $task;
                 continue;
             }
 
