@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_mod_psgrading_upgrade($oldversion) {
+function xmldb_psgrading_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
