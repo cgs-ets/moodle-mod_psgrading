@@ -29,8 +29,8 @@ function xmldb_mod_psgrading_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2021062301) {
-        // Add absencesprocessed field.
+    if ($oldversion < 2021062302) {
+        // Add status field.
         $table = new xmldb_table('psgrading_task_logs');
         $status = new xmldb_field('status', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 0, null, 'formjson');
         if (!$dbman->field_exists($table, $status)) {

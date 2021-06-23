@@ -113,6 +113,7 @@ class task extends persistent {
         $log->username = $USER->username;
         $log->logtime = $task->get('timemodified');
         $log->formjson = json_encode($data);
+        $log->status = 1; // published log.
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
         // Create/update criterions.
         $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
@@ -175,6 +176,7 @@ class task extends persistent {
         $log->username = $USER->username;
         $log->logtime = $task->get('timemodified');
         $log->formjson = $formjson;
+        $log->status = 0; // draft log.
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
 
     }
