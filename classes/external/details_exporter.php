@@ -116,6 +116,7 @@ class details_exporter extends exporter {
             'students' => $this->related['students'],
             'userid' => $this->related['userid'],
             'markurl' => $this->related['detailsurl'],
+            'groupid' => 0,
         );      
         $markexporter = new mark_exporter(null, $markrelateds);
         $out = $markexporter->export($output);
