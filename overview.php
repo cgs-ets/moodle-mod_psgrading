@@ -121,19 +121,13 @@ $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 if (empty($data->tasks)) {
-    echo "TODO: No graded tasks for this user."; exit;
+    //echo "TODO: No graded tasks for this user."; exit;
 }
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
 $output = $OUTPUT->header();
-
-//echo "<h3>Render me!</h3>";
-//echo "<pre>";
-//var_export($data);
-//exit;
-
 $output .= $OUTPUT->render_from_template('mod_psgrading/overview', $data);
 
 // Add scripts.

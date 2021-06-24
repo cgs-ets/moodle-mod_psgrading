@@ -67,6 +67,8 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+// Add vendor js.
+$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 
 $output = $OUTPUT->header();
 
@@ -80,6 +82,9 @@ $data = $listexporter->export($OUTPUT);
 
 // Render the announcement list.
 $output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
+
+// Add scripts.
+$PAGE->requires->js_call_amd('mod_psgrading/list', 'init');
 
 // Final outputs.
 $output .= $OUTPUT->footer();

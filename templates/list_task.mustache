@@ -23,7 +23,7 @@
 
     View template.
 }}
-<tr class="task {{^published}}not-published{{/published}} {{#draftjson}}has-draft{{/draftjson}}">
+<tr class="task {{^published}}not-published{{/published}} {{#draftjson}}has-draft{{/draftjson}}" data-id="{{id}}">
     {{#published}}
         <td class="cell c0 c-name">{{taskname}}</td>
         <td class="cell c1 c-pypuoi">{{pypuoi}}</td>
@@ -49,5 +49,9 @@
         {{/published}}
     </td>
     <td class="cell c4 c-lastmod">{{readabletime}}</td>
-    <td class="cell c5 c-actions lastcol"><a class="btn btn-primary" href="{{editurl}}">Edit</a> {{#published}}<a class="btn btn-primary" href="{{markurl}}">Grade</a>{{/published}}</td>
+    <td class="cell c5 c-actions lastcol">
+        <a class="btn btn-primary" href="{{editurl}}">Edit</a> 
+        {{#published}}<a class="btn btn-primary" href="{{markurl}}">Grade</a>{{/published}}
+        <a class="btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
+    </td>
 </tr>

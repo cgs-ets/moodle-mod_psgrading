@@ -389,8 +389,18 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-view .generaltable tbody tr.task .c-outcomes {
   max-width: 270px;
 }
+#page-mod-psgrading-view .generaltable tbody tr.task a.btn-reorder {
+  width: 20px;
+  text-align: center;
+  cursor: pointer;
+  color: #005b94;
+  display: inline-block;
+}
 #page-mod-psgrading-view .tasks {
   margin-top: 25px;
+}
+#page-mod-psgrading-mark #page-navbar {
+  margin-right: 260px;
 }
 #page-mod-psgrading-mark .activity-navigation {
   display: none;
@@ -1086,10 +1096,12 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border-bottom: 1px dashed #ccc;
 }
 .psgrading-matrix .column.y-header .cell-engagement {
-  background: #f2f4f6;
   padding: 6px 6px;
-  border-left: 1px dashed #ccc;
-  border-bottom: 1px dashed #ccc;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+.psgrading-matrix .column.y-header .cell-success {
+  padding: 6px 6px;
 }
 .psgrading-matrix .column.task {
   position: relative;
@@ -1123,7 +1135,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-matrix .column.task .cell-engagement {
   padding: 6px 6px;
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px solid #fff;
 }
 .psgrading-matrix .column.task .cell-engagement[data-engagement="poor"] {
   background-color: #D90617;
@@ -1144,6 +1156,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   box-shadow: 0 0 90px -50px #000;
   box-shadow: 0 0 0px 1px #000;
   z-index: 1;
+}
+.psgrading-matrix .column.task .cell-success {
+  padding: 6px 6px;
 }
 .psgrading-matrix div.column.task.last .subjects div {
   border-right: 1px dashed #ccc;
@@ -1176,11 +1191,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-matrix div.column.report-grades .subjects div:last-of-type {
   border-bottom: 1px dashed #ccc;
 }
+.psgrading-matrix div.column.report-grades .cell-blank {
+  padding: 6px;
+}
 .psgrading-matrix div.column.report-grades .cell-engagement {
   background-color: #f2f4f6;
   padding: 6px 13px;
-  border-bottom: 1px dashed #ccc;
-  border-right: 1px dashed #ccc;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
 }
 .psgrading-matrix div.column.report-grades .cell[data-grade="5"] {
   background-color: #D90617;
@@ -1454,6 +1472,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement {
   margin-top: -1px;
   padding-bottom: 6px !important;
+}
+#page-mod-psgrading-details #page-navbar {
+  margin-right: 260px;
 }
 #page-mod-psgrading-details .activity-navigation {
   display: none;

@@ -55,10 +55,15 @@
 			}
 		}
 		.cell-engagement {
-		    background: #f2f4f6;
 		    padding: 6px 6px;
-		    border-left: @subjectsborder;
-		    border-bottom: @subjectsborder;
+		    border-left: 1px solid #fff;
+		    border-bottom: 1px solid #fff;
+		    //background: #f2f4f6;
+		    //border-left: @subjectsborder;
+		    //border-bottom: @subjectsborder;
+		}
+		.cell-success {
+		    padding: 6px 6px;
 		}
 	}
 	.column.task {
@@ -94,7 +99,8 @@
 		}
 		.cell-engagement {
 			padding: 6px 6px;
-			border-bottom: @subjectsborder;
+			//border-bottom: @subjectsborder;
+			border-bottom: 1px solid #fff;
 			&[data-engagement="poor"] {
 			    background-color: #D90617;
 			    color: #fff;
@@ -115,6 +121,9 @@
 			box-shadow: 0 0 90px -50px #000;
 			box-shadow: 0 0 0px 1px #000;
 		    z-index: 1;
+		}
+		.cell-success {
+		    padding: 6px 6px;
 		}
 	}
 
@@ -157,11 +166,16 @@
 				}
 			}
 		}
+		.cell-blank {
+			padding: 6px;
+		}
 		.cell-engagement {
 			background-color: #f2f4f6;
 			padding: 6px 13px;
-			border-bottom: @subjectsborder;
-			border-right: @subjectsborder;
+			//border-bottom: @subjectsborder;
+			//border-right: @subjectsborder;
+			border-bottom: 1px solid #fff;
+			border-right: 1px solid #fff;
 		}
 		.cell[data-grade="5"] {
 		    background-color: #D90617;

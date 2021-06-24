@@ -88,6 +88,11 @@ trait apicontrol {
             return $html;
         }
 
+        if ($action == 'reorder_tasks') {
+            $taskids = json_decode($data);
+            return task::reorder_all($taskids);
+        }
+
         return 0;
     }
 

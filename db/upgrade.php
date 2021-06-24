@@ -38,5 +38,14 @@ function xmldb_psgrading_upgrade($oldversion) {
         }
     }
 
+    if ($oldversion < 2021062303) {
+        // Add seq field.
+        $table = new xmldb_table('psgrading_tasks');
+        $seq = new xmldb_field('seq', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null, 'draftjson');
+        if (!$dbman->field_exists($table, $seq)) {
+            $dbman->add_field($table, $seq);
+        }
+    }
+
     return true;
 }

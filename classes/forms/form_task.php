@@ -83,7 +83,7 @@ class form_task extends \moodleform {
          *----------------------*/
         // A custom JS driven component.
         // Section title
-        $mform->addElement('header', 'criterionsection', get_string("task:criterion", "mod_psgrading"));
+        $mform->addElement('header', 'criterionsection', get_string("task:criteria", "mod_psgrading"));
         $mform->setExpanded('criterionsection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');

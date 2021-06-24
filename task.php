@@ -72,6 +72,7 @@ if ($create) {
     $data = new \stdClass();
     $data->creatorusername = $USER->username;
     $data->cmid = $cm->id;
+    $data->seq = 99999;
     $task = new task(0, $data);
     $task->save();
 

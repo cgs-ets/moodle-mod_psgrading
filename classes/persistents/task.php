@@ -92,6 +92,10 @@ class task extends persistent {
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
+            "seq" => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
         ];
     }
 
@@ -196,7 +200,7 @@ class task extends persistent {
                   FROM {" . static::TABLE . "}
                  WHERE deleted = 0
                    AND cmid = ?
-              ORDER BY timemodified DESC";
+              ORDER BY seq ASC, timecreated DESC";
         $params = array($cmid);
 
         $records = $DB->get_records_sql($sql, $params);
@@ -497,6 +501,19 @@ class task extends persistent {
             'username' => $USER->username,
         ));
 
+        return 1;
+    }
+
+    public static function reorder_all($taskids) {
+
+        $seq = 0;
+        foreach ($taskids as $id) {
+            $task = new static($id);
+            $task->set('seq', $seq);
+            $task->update();
+            $seq++;
+        }
+        
         return 1;
     }
 
