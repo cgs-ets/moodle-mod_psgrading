@@ -56,11 +56,6 @@ function xmldb_psgrading_upgrade($oldversion) {
             $dbman->add_field($table, $timerelease);
         }
 
-        $releaseprocessed = new xmldb_field('releaseprocessed', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null, 'timerelease');
-        if (!$dbman->field_exists($table, $releaseprocessed)) {
-            $dbman->add_field($table, $releaseprocessed);
-        }
-
         // Define table psgrading_release_posts to be created.
         $table = new xmldb_table('psgrading_release_posts');
 
@@ -79,7 +74,14 @@ function xmldb_psgrading_upgrade($oldversion) {
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
+    }
 
+    if ($oldversion < 2021062305) {
+        $table = new xmldb_table('psgrading_grades');
+        $releaseprocessed = new xmldb_field('releaseprocessed', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null, 'evidences');
+        if (!$dbman->field_exists($table, $releaseprocessed)) {
+            $dbman->add_field($table, $releaseprocessed);
+        }
     }
 
     return true;

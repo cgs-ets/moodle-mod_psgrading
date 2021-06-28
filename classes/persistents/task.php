@@ -530,7 +530,6 @@ class task extends persistent {
     public static function release($taskid) {
         $task = new static($taskid);
         $task->set('timerelease', time());
-        $task->set('releaseprocessed', 0);
         $task->update();
         return 1;
     }
@@ -538,7 +537,6 @@ class task extends persistent {
     public static function unrelease($taskid) {
         $task = new static($taskid);
         $task->set('timerelease', 0);
-        $task->set('releaseprocessed', 0);
         $task->update();
         return 1;
     }
