@@ -93,6 +93,11 @@ trait apicontrol {
             return task::reorder_all($taskids);
         }
 
+        if ($action == 'delete_draft') {
+            $taskid = json_decode($data);
+            return task::delete_draft($taskid);
+        }
+
         if ($action == 'release_task') {
             $taskid = json_decode($data);
             return task::release($taskid);

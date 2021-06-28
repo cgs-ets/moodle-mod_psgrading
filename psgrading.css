@@ -380,51 +380,41 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-success {
+#page-mod-psgrading-view .tasks {
+  margin-top: 25px;
+}
+#page-mod-psgrading-view .tasks table .th {
+  width: 200px;
+  min-width: 200px;
+}
+#page-mod-psgrading-view .tasks table .th.c0 {
+  width: 99%;
+}
+#page-mod-psgrading-view .tasks table tr.task .c-status .badge-success {
   background-color: green;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-info {
+#page-mod-psgrading-view .tasks table tr.task .c-status .badge-info {
   background-color: #17a2b8;
   color: #fff;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-danger {
+#page-mod-psgrading-view .tasks table tr.task .c-status .badge-danger {
   background-color: #dc3545;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-name {
-  max-width: 200px;
+#page-mod-psgrading-view .tasks table tr.task .dropdown {
+  display: inline-block;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-outcomes {
-  max-width: 270px;
-}
-#page-mod-psgrading-view .generaltable tbody tr.task .c-actions {
-  width: 350px;
-  text-align: left;
-}
-#page-mod-psgrading-view .generaltable tbody tr.task a.btn-release .spinner,
-#page-mod-psgrading-view .generaltable tbody tr.task a.btn-undorelease .spinner {
-  display: block;
-  height: 22px;
-  width: 22px;
-}
-#page-mod-psgrading-view .generaltable tbody tr.task a.btn-release .spinner .circle,
-#page-mod-psgrading-view .generaltable tbody tr.task a.btn-undorelease .spinner .circle {
-  border-top-color: #fff;
-  border-left-color: #fff;
-}
-#page-mod-psgrading-view .generaltable tbody tr.task a.btn-reorder {
+#page-mod-psgrading-view .tasks table tr.task a.btn-reorder {
   width: 20px;
   text-align: center;
   cursor: pointer;
   color: #005b94;
   display: inline-block;
+  margin-left: 10px;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task i.fa-check {
+#page-mod-psgrading-view .tasks table tr.task i.fa-check {
   color: green;
   float: right;
   line-height: 36px;
-}
-#page-mod-psgrading-view .tasks {
-  margin-top: 25px;
 }
 #page-mod-psgrading-mark #page-navbar {
   margin-right: 260px;

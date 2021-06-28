@@ -67,13 +67,31 @@
     </td>
 
     <td class="cell c4 c-lastmod">{{readabletime}}</td>
+
     <td class="cell c5 c-actions lastcol">
-        <a class="btn btn-primary" href="{{editurl}}">Edit</a> 
-        {{#published}}
-            <a class="btn btn-primary" href="{{markurl}}">Grade</a>
-            {{^released}}<a class="btn btn-primary btn-release" href="#">Release</a>{{/released}}
-            {{#released}}<a class="btn btn-primary btn-undorelease" href="#">Hide grades</a>{{/released}}
-        {{/published}}
+
+        <div class="dropdown">
+            <button class="btn btn-primary actions-dropdown" type="button" id="actions-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions&nbsp;&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i></button>
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions-dropdown">
+
+                <a class="dropdown-item action-edit" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+
+                {{#published}}
+                    <a class="dropdown-item action-grade" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i> Grade</a>
+                    <div class="dropdown-divider"></div>
+                    {{^released}}<a class="dropdown-item action-release" href="#"><i class="fa fa-eye" aria-hidden="true"></i> Release grades</a>{{/released}}
+                    {{#released}}<a class="dropdown-item action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i> Hide grades</a>{{/released}}
+                {{/published}}
+
+                {{#isdraft}}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i> {{#str}}task:discarddraft, mod_psgrading{{/str}}</a>
+                {{/isdraft}}
+
+            </div>
+        </div>
+        
         <a class="btn-reorder"><i title="Reorder" class="fa fa-arrows-v" aria-hidden="true"></i></a>
     </td>
 </tr>

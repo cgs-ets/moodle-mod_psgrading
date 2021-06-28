@@ -201,6 +201,23 @@ class task extends persistent {
 
     }
 
+    public static function delete_draft($id) {
+        global $USER, $DB;
+
+        $task = new static($id);
+
+        // If already published, remove draftjson.
+        if ($task->get('published')) {
+            $task->set('draftjson', '');
+            $task->save();
+        } else {
+            $task->set('deleted', 1);
+            $task->save();
+        }
+
+        return 1;
+    }
+
 
     public static function get_for_coursemodule($cmid) {
         global $DB;

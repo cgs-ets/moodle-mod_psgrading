@@ -75,6 +75,9 @@ class task_exporter extends persistent_exporter {
             'released' => [
                 'type' => PARAM_BOOL,
             ],
+            'isdraft' => [
+                'type' => PARAM_BOOL,
+            ],
         ];
     }
 
@@ -105,12 +108,19 @@ class task_exporter extends persistent_exporter {
             $released = true;
         }
 
+        // isdraft helper.
+        $isdraft = false;
+        if (!$this->data->published || $this->data->draftjson) {
+            $isdraft = true;
+        }
+
     	return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
 	        'readabletime' => $readabletime,
 	        'draftdata' => $draftdata,
             'released' => $released,
+            'isdraft' => $isdraft,
 	    ];
     }
 

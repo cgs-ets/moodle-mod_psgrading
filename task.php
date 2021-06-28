@@ -173,7 +173,7 @@ if ($create) {
             exit;
         }
 
-        if ($formdata->action == 'discardchanges') {
+        /*if ($formdata->action == 'discardchanges') {
             // If already published, remove draftjson.
             if ($task->get('published')) {
                 $task->set('draftjson', '');
@@ -186,7 +186,7 @@ if ($create) {
             // If not yet publised, delete the task.
             redirect($listurl->out());
             exit;
-        }
+        }*/
 
         if ($formdata->action == 'publish') {
 

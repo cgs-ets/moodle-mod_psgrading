@@ -1,56 +1,48 @@
 #page-mod-psgrading-view {
-	.generaltable tbody tr.task {
-	    //background-color: #d4edda;
-	    &.not-published {
-		    //background: #fff3cd;
-		}
-		.c-status {
-			.badge-success {
-			    background-color: green;
-			}
-			.badge-info {
-				background-color: #17a2b8;
-				color: #fff;
-			}
-			.badge-danger {
-				background-color: #dc3545;
-			}
-		}
-		.c-name {
-			max-width: 200px;
-		}
-		.c-outcomes {
-			max-width: 270px;
-		}
-		.c-actions {
-		    width: 350px;
-		    text-align: left;
-		}
-		a.btn-release, a.btn-undorelease {
-			.spinner {
-			    display: block;
-			    height: 22px;
-			    width: 22px;
-			    .circle {
-			    	border-top-color: #fff;
-    				border-left-color: #fff;
-			    }
-			}
-		}
-		a.btn-reorder {
-		    width: 20px;
-		    text-align: center;
-		    cursor: pointer;
-		    color: #005b94;
-		    display: inline-block;
-		}
-		i.fa-check {
-		    color: green;
-    		float: right;
-    		line-height: 36px;
-		}
-	}
 	.tasks {
 	    margin-top: 25px;
+		table {
+			.th {
+			    width: 200px;
+			    min-width: 200px;
+			}
+			.th.c0 {
+				width: 99%;
+			}
+			tr.task {
+			    //background-color: #d4edda;
+			    &.not-published {
+				    //background: #fff3cd;
+				}
+				.c-status {
+					.badge-success {
+					    background-color: green;
+					}
+					.badge-info {
+						background-color: #17a2b8;
+						color: #fff;
+					}
+					.badge-danger {
+						background-color: #dc3545;
+					}
+				}
+				.dropdown {
+				    display: inline-block;
+				}
+				a.btn-reorder {
+				    width: 20px;
+				    text-align: center;
+				    cursor: pointer;
+				    color: #005b94;
+				    display: inline-block;
+				    margin-left: 10px;
+				}
+				i.fa-check {
+				    color: green;
+		    		float: right;
+		    		line-height: 36px;
+				}
+			}
+		}
 	}
 }

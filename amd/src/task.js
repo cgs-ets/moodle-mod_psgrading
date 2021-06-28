@@ -125,12 +125,12 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         });
 
         // Discard chages clicked.
-        self.rootel.on('click', '#btn-discardchanges', function(e) {
+        /*self.rootel.on('click', '#btn-discardchanges', function(e) {
             e.preventDefault();
             window.onbeforeunload = null;
             self.rootel.find('[name="action"]').val('discardchanges');
             self.rootel.submit();
-        });
+        });*/
 
         // Publish clicked.
         self.rootel.on('click', '#btn-publish', function(e) {

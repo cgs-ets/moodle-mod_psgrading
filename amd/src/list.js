@@ -65,25 +65,24 @@ define(['jquery', 'core/log', 'core/ajax'],
         var self = this;
 
         // Release.
-        self.rootel.on('click', '.btn-release', function(e) {
+        self.rootel.on('click', '.action-release', function(e) {
             e.preventDefault();
             var button = $(this);
-            if (!button.hasClass('submitting')) {
-                button.addClass('submitting');
-                button.html('<div class="spinner"><div class="circle spin"></div></div>');
-                self.releaseTask(button);
-            }
+            self.releaseTask(button);
         });
 
         // Undo release.
-        self.rootel.on('click', '.btn-undorelease', function(e) {
+        self.rootel.on('click', '.action-undorelease', function(e) {
             e.preventDefault();
             var button = $(this);
-            if (!button.hasClass('submitting')) {
-                button.addClass('submitting');
-                button.html('<div class="spinner"><div class="circle spin"></div></div>');
-                self.unreleaseTask(button);
-            }
+            self.unreleaseTask(button);
+        });
+
+        // Delete draft.
+        self.rootel.on('click', '.action-discarddraft', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            self.deleteDraft(button);
         });
 
         // Set up drag reordering of criterions.
@@ -96,6 +95,32 @@ define(['jquery', 'core/log', 'core/ajax'],
                 onEnd: self.SortEnd,
             });
         }
+
+    };
+
+    /**
+     * Delete draft.
+     *
+     * @method
+     */
+    List.prototype.deleteDraft = function (button) {
+        var self = this;
+
+        var task = button.closest('.task');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'delete_draft',
+                data: task.data('id'),
+            },
+            done: function() {
+                window.location.reload(false);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
 
     };
 
@@ -126,7 +151,7 @@ define(['jquery', 'core/log', 'core/ajax'],
     };
 
     /**
-     * Release a task.
+     * Hide task grades.
      *
      * @method
      */
