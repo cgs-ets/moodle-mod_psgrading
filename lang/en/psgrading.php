@@ -65,13 +65,17 @@ $string['mark:savefail'] = 'Failed to save grade data for {$a}';
 $string['mark:resetsuccess'] = 'Grade data was reset for {$a}';
 
 $string['pypuoi:htww'] = 'How the World Works';
-
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
 $string['overview'] = 'Student overview';
-$string['unpublishededits'] = 'Contains unpublished edits';
-$string['notpublishedyet'] = 'Not published yet';
 $string['addcriterion'] = 'Add criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';
 
+// Settings
 $string['enableweights'] = 'Enable weights';
+
+// Statuses
+$string['unpublishededits'] = 'Contains unpublished edits';
+$string['notpublishedyet'] = 'Not published yet';
+$string['gradesreleased'] = 'Grades released';
+$string['readytograde'] = 'Task/grading in progress';

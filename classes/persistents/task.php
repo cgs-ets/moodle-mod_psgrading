@@ -96,6 +96,15 @@ class task extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
+            "timerelease" => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+            "releaseprocessed" => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+
         ];
     }
 
@@ -514,6 +523,23 @@ class task extends persistent {
             $seq++;
         }
         
+        return 1;
+    }
+
+
+    public static function release($taskid) {
+        $task = new static($taskid);
+        $task->set('timerelease', time());
+        $task->set('releaseprocessed', 0);
+        $task->update();
+        return 1;
+    }
+
+    public static function unrelease($taskid) {
+        $task = new static($taskid);
+        $task->set('timerelease', 0);
+        $task->set('releaseprocessed', 0);
+        $task->update();
         return 1;
     }
 

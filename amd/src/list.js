@@ -64,6 +64,28 @@ define(['jquery', 'core/log', 'core/ajax'],
     List.prototype.main = function () {
         var self = this;
 
+        // Release.
+        self.rootel.on('click', '.btn-release', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            if (!button.hasClass('submitting')) {
+                button.addClass('submitting');
+                button.html('<div class="spinner"><div class="circle spin"></div></div>');
+                self.releaseTask(button);
+            }
+        });
+
+        // Undo release.
+        self.rootel.on('click', '.btn-undorelease', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            if (!button.hasClass('submitting')) {
+                button.addClass('submitting');
+                button.html('<div class="spinner"><div class="circle spin"></div></div>');
+                self.unreleaseTask(button);
+            }
+        });
+
         // Set up drag reordering of criterions.
         if (typeof Sortable != 'undefined') {
             var el = document.getElementById('task-list');
@@ -76,6 +98,59 @@ define(['jquery', 'core/log', 'core/ajax'],
         }
 
     };
+
+    /**
+     * Release a task.
+     *
+     * @method
+     */
+    List.prototype.releaseTask = function (button) {
+        var self = this;
+
+        var task = button.closest('.task');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'release_task',
+                data: task.data('id'),
+            },
+            done: function() {
+                window.location.reload(false);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+
+    };
+
+    /**
+     * Release a task.
+     *
+     * @method
+     */
+    List.prototype.unreleaseTask = function (button) {
+        var self = this;
+
+        var task = button.closest('.task');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'unrelease_task',
+                data: task.data('id'),
+            },
+            done: function() {
+                window.location.reload(false);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+
+    };
+
 
     List.prototype.SortEnd = function (e) {
         // Get new order.

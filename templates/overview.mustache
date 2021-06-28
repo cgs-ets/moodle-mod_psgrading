@@ -30,12 +30,11 @@
         </div>
 
         {{#isstaff}}
-
             <div class="group-selector">
                 {{#groups.1}}
                     <span class="selector-label">Group</span>
                     <select class="group-select form-control">
-                        <option value="0" data-overviewurl="{{baseurl}}">All groups</option>
+                        <option value="0" data-overviewurl="{{basenavurl}}">All groups</option>
                         {{#groups}}
                             <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
                         {{/groups}}
@@ -57,5 +56,13 @@
         {{/morestudents}}
         
     </div>
-    {{>mod_psgrading/overview_matrix}}
+    <div class="contents-wrap {{#viewas}}is-viewas{{/viewas}}">
+        {{>mod_psgrading/overview_matrix}}
+        <div class="floating-options">
+            {{#isstaff}}
+                {{#viewas}}<a href="{{baseurl}}" class="viewas viewas-staff">Reset view</a>{{/viewas}}
+                {{^viewas}}<a href="{{baseurl}}&viewas=student" class="viewas viewas-student">View as student/parent</a>{{/viewas}}
+            {{/isstaff}}
+        </div>
+    </div>
 </div>

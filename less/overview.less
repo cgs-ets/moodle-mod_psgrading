@@ -16,8 +16,35 @@
 		    margin: 0;
 		}
 	}
-	.psgrading-overview > .header {
-		margin: -1px 0px 0px 0px;
+	.psgrading-overview {
+		.header {
+			margin: -1px 0px 0px 0px;
+		}
+		.contents-wrap {
+			position: relative;
+			&.is-viewas {
+				background-color: #fff;
+			    background-image:
+			    	radial-gradient(
+			      		circle at top right,
+			      		yellow,
+			      		#fff 170px
+			    	);
+			    background-position: 0px -43px;
+			    background-repeat: no-repeat;
+			}
+			.floating-options {
+				position: absolute;
+			    top: 0;
+			    right: 0;
+			    padding: 10px;
+			    a.viewas {
+				    display: inline-block;
+					font-style: italic;
+				    font-size: 90%;
+				}
+			}
+		}
 	}
 }
 
@@ -133,9 +160,9 @@
 			    border-right: @subjectsborder;
 			}
 		}
-		.cell-engagement {
-			border-right: @subjectsborder;
-		}
+		//.cell-engagement {
+			//border-right: @subjectsborder;
+		//}
 	}
 
 	div.column.report-grades {

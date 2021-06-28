@@ -23,7 +23,7 @@
 
     Overview matrix template.
 }}
-<div class="psgrading-matrix">
+<div class="psgrading-matrix {{#reportgrades.0}}has-reportgrades{{/reportgrades.0}}">
     <div class="column y-header">
         <div class="cell cell-taskname">Task</div>
         <div class="cell">PYP UOI</div>
@@ -41,9 +41,9 @@
         <div class="cell">Details</div>
     </div>{{!
     }}{{#tasks}}<div class="column task{{#islast}} last{{/islast}}">
-            <div class="cell cell-taskname" title="{{taskname}}">{{taskname}}</div>
+            <div class="cell cell-taskname" title="{{taskname}}" data-toggle="tooltip">{{taskname}}</div>
             <div class="cell">{{pypuoi}}</div>
-            <div class="cell"><span title="{{outcomes}}">{{outcomes}}</span></div>
+            <div class="cell" title="{{outcomes}}" data-toggle="tooltip"><span>{{outcomes}}</span></div>
             <div class="subjects">
                 {{#subjectgrades}}
                     <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>

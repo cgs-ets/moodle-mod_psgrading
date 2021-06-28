@@ -74,6 +74,11 @@ class overview_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'basenavurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
             'nextstudenturl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -192,9 +197,34 @@ class overview_exporter extends exporter {
             $task->gradeinfo = $gradeinfo;
             $task->subjectgrades = array();
 
-            if (empty($gradeinfo)) {
-                // There is no gradeinfo for this user/task. Skip over the calculations.
-                //$tasks[] = $task;
+            $showgrades = true;
+            // If task is not released yet do not show grades parents/students.
+            if (!$task->released) {
+                if (!$this->related['isstaff']) {
+                    $showgrades = false;
+                }
+            }
+
+            // Check if there is gradeinfo / whether task is released. 
+            if (empty($gradeinfo) || !$showgrades) {
+                // Skip over the calculations, but define empty structure required by template.
+                foreach (utils::SUBJECTOPTIONS as $subject) {
+                    if ($subject['val']) {
+                        $task->subjectgrades[] = array(
+                            'subject' => $subject['val'],
+                            'subjectsanitised' => str_replace('&', '', $subject['val']),
+                            'grade' => 0,
+                            'gradelang' => '&nbsp;',
+                        );
+                    }
+                    $task->success = array(
+                        'grade' => 0,
+                        'gradelang' => '&nbsp;',
+                    );
+                }
+                unset($task->gradeinfo);
+                unset($task->criterions);
+                $tasks[] = $task;
                 continue;
             }
 
@@ -241,7 +271,6 @@ class overview_exporter extends exporter {
 
             // Ditch some unnecessary data.
             unset($task->criterions);
-
             $tasks[] = $task;
         }
 
@@ -297,30 +326,32 @@ class overview_exporter extends exporter {
             }
             $reportgrades = array_values($reportgrades);
 
-            // Get the engagement accross all tasks.
-            $engagement = array();
-            foreach ($tasks as $task) {
-                if (isset($task->gradeinfo->engagement)) {
-                    $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
+            // Get the average engagement accross all tasks.
+            /*
+                $engagement = array();
+                foreach ($tasks as $task) {
+                    if (isset($task->gradeinfo->engagement)) {
+                        $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
+                    }
                 }
-            }
-            // Round engagement.
-            if (array_sum($engagement)) {
-                $engagement = array_sum($engagement)/count($engagement);
-                $engagement = (int) round($engagement, 0);
-            } else {
-                $engagement = 0;
-            }
-            // Round up to nearest 25.
-            $engagement = ceil($engagement / 25) * 25;
-            // Add to report grades.
-            $reportgrades[] = array(
-                'subject' => 'Engagement',
-                'subjectsanitised' => 'engagement',
-                'grade' => $engagement,
-                'gradelang' => $engagement,
-                'issubject' => false,
-            );
+                // Round engagement.
+                if (array_sum($engagement)) {
+                    $engagement = array_sum($engagement)/count($engagement);
+                    $engagement = (int) round($engagement, 0);
+                } else {
+                    $engagement = 0;
+                }
+                // Round up to nearest 25.
+                $engagement = ceil($engagement / 25) * 25;
+                // Add to report grades.
+                $reportgrades[] = array(
+                    'subject' => 'Engagement',
+                    'subjectsanitised' => 'engagement',
+                    'grade' => $engagement,
+                    'gradelang' => $engagement,
+                    'issubject' => false,
+                );
+            */
         }
 
         // Group navigation.
@@ -381,8 +412,9 @@ class overview_exporter extends exporter {
             $nextstudenturl = $nextstudenturl->out(false);
         }
 
-        $baseurl->param('groupid', 0);
-        $baseurl->param('view', 'all'); 
+        $basenavurl = clone($baseurl);
+        $basenavurl->param('groupid', 0);
+        $basenavurl->param('nav', 'all'); 
 
         $out = array(
             'tasks' => $tasks,
@@ -391,6 +423,7 @@ class overview_exporter extends exporter {
             'students' => $students,
             'currstudent' => $currstudent,
             'baseurl' => $baseurl->out(false),
+            'basenavurl' => $basenavurl->out(false),
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'isstaff' => $this->related['isstaff'],

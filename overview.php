@@ -35,7 +35,8 @@ $cmid = optional_param('cmid', 0, PARAM_INT);
 $p  = optional_param('p', 0, PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
-$view = optional_param('view', '', PARAM_RAW);
+$nav = optional_param('nav', '', PARAM_RAW);
+$viewas = optional_param('viewas', '', PARAM_RAW);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
@@ -55,7 +56,7 @@ $overviewurl = new moodle_url('/mod/psgrading/overview.php', array(
     'cmid' => $cm->id,
     'groupid' => $groupid,
     'userid' => $userid,
-    'view' => $view,
+    'nav' => $nav,
 ));
 $listurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
@@ -77,7 +78,7 @@ $groups = utils::get_course_groups($course->id);
 //}
 
 // If group is not specified, check if preference is set.
-if (empty($groupid) && $view != 'all') {
+if (empty($groupid) && $nav != 'all') {
     $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
     if ($groupid) {
         $overviewurl->param('groupid', $groupid);
@@ -115,13 +116,18 @@ $relateds = array(
     'userid' => $userid,
     'groupid' => $groupid,
     'overviewurl' => $overviewurl,
-    'isstaff' => utils::is_cgs_staff(),
+    'isstaff' => $viewas ? false : utils::is_cgs_staff(),
 );
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 if (empty($data->tasks)) {
     //echo "TODO: No graded tasks for this user."; exit;
+}
+// Make some adjustments if viewing as.
+if ($viewas) {
+    $data->isstaff = utils::is_cgs_staff();
+    $data->viewas = $viewas;
 }
 
 // Add css.

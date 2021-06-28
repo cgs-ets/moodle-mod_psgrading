@@ -380,8 +380,15 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
 }
-#page-mod-psgrading-view .generaltable tbody tr.task .c-published .fa-check-square {
-  color: green;
+#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-success {
+  background-color: green;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task .c-status .badge-danger {
+  background-color: #dc3545;
 }
 #page-mod-psgrading-view .generaltable tbody tr.task .c-name {
   max-width: 200px;
@@ -389,12 +396,32 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-view .generaltable tbody tr.task .c-outcomes {
   max-width: 270px;
 }
+#page-mod-psgrading-view .generaltable tbody tr.task .c-actions {
+  width: 350px;
+  text-align: left;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task a.btn-release .spinner,
+#page-mod-psgrading-view .generaltable tbody tr.task a.btn-undorelease .spinner {
+  display: block;
+  height: 22px;
+  width: 22px;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task a.btn-release .spinner .circle,
+#page-mod-psgrading-view .generaltable tbody tr.task a.btn-undorelease .spinner .circle {
+  border-top-color: #fff;
+  border-left-color: #fff;
+}
 #page-mod-psgrading-view .generaltable tbody tr.task a.btn-reorder {
   width: 20px;
   text-align: center;
   cursor: pointer;
   color: #005b94;
   display: inline-block;
+}
+#page-mod-psgrading-view .generaltable tbody tr.task i.fa-check {
+  color: green;
+  float: right;
+  line-height: 36px;
 }
 #page-mod-psgrading-view .tasks {
   margin-top: 25px;
@@ -1059,8 +1086,28 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-overview #user-notifications .alert {
   margin: 0;
 }
-#page-mod-psgrading-overview .psgrading-overview > .header {
+#page-mod-psgrading-overview .psgrading-overview .header {
   margin: -1px 0px 0px 0px;
+}
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap {
+  position: relative;
+}
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap.is-viewas {
+  background-color: #fff;
+  background-image: radial-gradient(circle at top right, yellow, #fff 170px);
+  background-position: 0px -43px;
+  background-repeat: no-repeat;
+}
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options a.viewas {
+  display: inline-block;
+  font-style: italic;
+  font-size: 90%;
 }
 .psgrading-matrix {
   white-space: nowrap;
@@ -1161,9 +1208,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 6px 6px;
 }
 .psgrading-matrix div.column.task.last .subjects div {
-  border-right: 1px dashed #ccc;
-}
-.psgrading-matrix div.column.task.last .cell-engagement {
   border-right: 1px dashed #ccc;
 }
 .psgrading-matrix div.column.report-grades .cell-report-grade {

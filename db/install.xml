@@ -36,6 +36,8 @@
         <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="draftjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="seq" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0" />
+        <FIELD NAME="timerelease" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="releaseprocessed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
@@ -156,6 +158,19 @@
       </KEYS>
     </TABLE>
 
+    <TABLE NAME="psgrading_release_posts" COMMENT="Posts made upon task/grade release.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="taskid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="gradeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="postid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
+        <KEY NAME="fk_gradeid" TYPE="foreign" FIELDS="gradeid" REFTABLE="psgrading_grades" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
 
   </TABLES>
 </XMLDB>

@@ -72,6 +72,9 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'released' => [
+                'type' => PARAM_BOOL,
+            ],
         ];
     }
 
@@ -96,11 +99,18 @@ class task_exporter extends persistent_exporter {
 
         $draftdata = json_decode($this->data->draftjson);
 
+        // Check if released. Time must be in the past but not 0.
+        $released = false;
+        if ($this->data->timerelease && $this->data->timerelease <= time()) {
+            $released = true;
+        }
+
     	return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
 	        'readabletime' => $readabletime,
 	        'draftdata' => $draftdata,
+            'released' => $released,
 	    ];
     }
 

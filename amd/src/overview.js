@@ -84,7 +84,8 @@ define(['jquery', 'core/log', 'core/ajax'],
         });
 
         // Matrix horizontal highlighting.
-        self.rootel.find('.psgrading-matrix .column.y-header .subjects .cell, .psgrading-matrix .column.y-header .cell-engagement').hover(
+        //self.rootel.find('.psgrading-matrix .column.y-header .subjects .cell, .psgrading-matrix .column.y-header .cell-engagement').hover(
+        self.rootel.find('.psgrading-matrix.has-reportgrades .column.y-header .subjects .cell').hover(
             function() {
                 self.matrix.addClass( 'hover-' + $(this).data('subject') );
             }, function() {

@@ -32,26 +32,48 @@
         <td class="cell c0 c-name">{{draftdata.taskname}}</td>
         <td class="cell c1 c-pypuoi">{{draftdata.pypuoi}}</td>
     {{/published}}
-    <td class="cell c3 c-published">
+    
+    <td class="cell c3 c-status">
         {{#published}}
-            <i class="fa fa-check-square" aria-hidden="true"></i>
+
+            {{! <i class="fa fa-check-square" aria-hidden="true"></i> }}
+
+            {{#released}}
+                <span class="badge badge-success">
+                    {{#str}}gradesreleased, mod_psgrading{{/str}}
+                </span>
+            {{/released}}
+
+            {{^released}}
+                <span class="badge badge-info">
+                    {{#str}}readytograde, mod_psgrading{{/str}}
+                </span>
+            {{/released}}
+
             {{#draftjson}}
-                <span class="badge badge-warning">
+                <span class="badge badge-danger">
                     {{#str}}unpublishededits, mod_psgrading{{/str}}
                 </span>
             {{/draftjson}}
+
         {{/published}}
+
         {{^published}}
-            {{!<i class="fa fa-square-o" aria-hidden="true"></i>}}
             <span class="badge badge-warning">
                 {{#str}}notpublishedyet, mod_psgrading{{/str}}
             </span>
         {{/published}}
+
     </td>
+
     <td class="cell c4 c-lastmod">{{readabletime}}</td>
     <td class="cell c5 c-actions lastcol">
         <a class="btn btn-primary" href="{{editurl}}">Edit</a> 
-        {{#published}}<a class="btn btn-primary" href="{{markurl}}">Grade</a>{{/published}}
-        <a class="btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
+        {{#published}}
+            <a class="btn btn-primary" href="{{markurl}}">Grade</a>
+            {{^released}}<a class="btn btn-primary btn-release" href="#">Release</a>{{/released}}
+            {{#released}}<a class="btn btn-primary btn-undorelease" href="#">Hide grades</a>{{/released}}
+        {{/published}}
+        <a class="btn-reorder"><i title="Reorder" class="fa fa-arrows-v" aria-hidden="true"></i></a>
     </td>
 </tr>

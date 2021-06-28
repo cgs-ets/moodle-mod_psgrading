@@ -39,7 +39,7 @@ $p  = optional_param('p', 0, PARAM_INT);
 $taskid = required_param('taskid', PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
-$view = optional_param('view', '', PARAM_RAW);
+$nav = optional_param('nav', '', PARAM_RAW);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
@@ -89,7 +89,7 @@ if (!$exists || $task->get('deleted')) {
 }
 
 // If group is not specified, check if preference is set.
-if (empty($groupid) && $view != 'all') {
+if (empty($groupid) && $nav != 'all') {
     $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
     if ($groupid) {
         $markurl->param('groupid', $groupid);

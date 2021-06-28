@@ -222,7 +222,7 @@ class mark_exporter extends exporter {
         }
         
         $baseurl->param('groupid', 0);
-        $baseurl->param('view', 'all');
+        $baseurl->param('nav', 'all');
 
         // Get selected MyConnect grade evidences.
         $task->myconnectevidences = array();
