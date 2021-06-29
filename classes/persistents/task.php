@@ -531,7 +531,6 @@ class task extends persistent {
     }
 
     public static function reorder_all($taskids) {
-
         $seq = 0;
         foreach ($taskids as $id) {
             $task = new static($id);
@@ -539,23 +538,26 @@ class task extends persistent {
             $task->update();
             $seq++;
         }
-        
         return 1;
     }
 
-
-    public static function release($taskid) {
-        $task = new static($taskid);
+    public static function release($id) {
+        $task = new static($id);
         $task->set('timerelease', time());
         $task->update();
         return 1;
     }
 
-    public static function unrelease($taskid) {
-        $task = new static($taskid);
+    public static function unrelease($id) {
+        $task = new static($id);
         $task->set('timerelease', 0);
         $task->update();
         return 1;
+    }
+
+    public static function get_diff($id) {
+        $task = new static($id);
+        return utils::diff_versions_quick(utils::get_task_as_json($task), $task->get('draftjson')); 
     }
 
 

@@ -1,0 +1,54 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2020 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/criterion_selector_row_text
+
+    View for diff.
+}}
+<div class="criterions">
+    {{#criterions}}
+        <ul>
+            <li>
+                Description: <span class="description">{{description}}</span>
+            </li>
+            <li>
+                Good start: <span class="level4">{{level4}}</span>
+            </li>
+            <li>
+                Making strides: <span class="level3">{{level3}}</span>
+            </li>
+            <li>
+                Go run with it: <span class="level2">{{level2}}</span>
+            </li>
+            <li>
+                Subject: <span class="subject">{{subject}}</span>
+            </li>
+            {{#enableweights}}
+                <li>
+                    Weight: <span class="weight">{{weight}}</span>
+                </li>
+            {{/enableweights}}
+            <li>
+                Visibility: <span class="visibility">{{#hidden}}Hidden{{/hidden}}{{^hidden}}Visible{{/hidden}}</span>
+            </li>
+        </ul>
+    {{/criterions}}
+</div>

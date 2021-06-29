@@ -75,7 +75,7 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions-dropdown">
 
-                <a class="dropdown-item action-edit" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                <a class="dropdown-item action-edit" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{^isdraft}}Edit{{/isdraft}}{{#isdraft}}Continue editing{{/isdraft}}</a>
 
                 {{#published}}
                     <a class="dropdown-item action-grade" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i> Grade</a>

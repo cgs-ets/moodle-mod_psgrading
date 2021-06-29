@@ -108,6 +108,11 @@ trait apicontrol {
             return task::unrelease($taskid);
         }
 
+        if ($action == 'get_diff') {
+            $taskid = json_decode($data);
+            return task::get_diff($taskid);
+        }
+
         return 0;
     }
 

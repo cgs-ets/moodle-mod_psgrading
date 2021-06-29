@@ -25,8 +25,8 @@
 /**
  * @module mod_psgrading/list
  */
-define(['jquery', 'core/log', 'core/ajax'], 
-    function($, Log, Ajax) {    
+define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_events',], 
+    function($, Log, Ajax, ModalFactory, ModalEvents) {    
     'use strict';
 
     /**
@@ -82,7 +82,7 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.rootel.on('click', '.action-discarddraft', function(e) {
             e.preventDefault();
             var button = $(this);
-            self.deleteDraft(button);
+            self.showDeleteDraft(button);
         });
 
         // Set up drag reordering of criterions.
@@ -96,6 +96,16 @@ define(['jquery', 'core/log', 'core/ajax'],
             });
         }
 
+        // Preload the modals and templates.
+        self.modals = {
+            DIFF: null,
+        };
+        var preloads = [];
+        preloads.push(self.loadModal('DIFF', 'Review draft edits and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
+        $.when.apply($, preloads).then(function() {
+            self.rootel.removeClass('preloading').addClass('preloads-completed');
+        })
+
     };
 
     /**
@@ -103,16 +113,52 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    List.prototype.deleteDraft = function (button) {
+    List.prototype.showDeleteDraft = function (button) {
         var self = this;
 
-        var task = button.closest('.task');
+        if (self.modals.DIFF) {
+            var task = button.closest('.task');
 
+            if (task.hasClass('not-published')) {
+                self.deleteDraft(task.data('id'));
+            } else {
+                // Get the diff.
+                Ajax.call([{
+                    methodname: 'mod_psgrading_apicontrol',
+                    args: { 
+                        action: 'get_diff',
+                        data: task.data('id'),
+                    },
+                    done: function(html) {
+                        self.modals.DIFF.setBody(html);
+                    },
+                    fail: function(reason) {
+                        Log.debug(reason);
+                        return "Failed to load diff."
+                    }
+                }]);
+
+                // Set up the modal cevents.
+                self.modals.DIFF.getModal().addClass('modal-xl');
+                self.modals.DIFF.getRoot().on(ModalEvents.save, {self: self, taskid: task.data('id')}, self.handleDeleteDraft);
+                self.modals.DIFF.show();
+            }
+        }
+    };
+
+    List.prototype.handleDeleteDraft = function (event) {
+        var self = event.data.self;
+        var taskid = event.data.taskid;
+
+        self.deleteDraft(taskid);
+    };
+
+    List.prototype.deleteDraft = function (taskid) {
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
                 action: 'delete_draft',
-                data: task.data('id'),
+                data: taskid,
             },
             done: function() {
                 window.location.reload(false);
@@ -121,7 +167,6 @@ define(['jquery', 'core/log', 'core/ajax'],
                 Log.debug(reason);
             }
         }]);
-
     };
 
     /**
@@ -197,6 +242,29 @@ define(['jquery', 'core/log', 'core/ajax'],
             }
         }]);
     };
+
+    /**
+     * Helper used to preload a modal
+     *
+     * @method loadModal
+     * @param {string} modalkey The property of the global modals variable
+     * @param {string} title The title of the modal
+     * @param {string} title The button text of the modal
+     * @return {object} jQuery promise
+     */
+    List.prototype.loadModal = function (modalkey, title, buttontext, type) {
+        var self = this;
+        return ModalFactory.create({type: type}).then(function(modal) {
+            modal.setTitle(title);
+            if (buttontext) {
+                modal.setSaveButtonText(buttontext);
+            }
+            self.modals[modalkey] = modal;
+            // Preload backgrop.
+            modal.getBackdrop();
+            modal.getRoot().addClass('modal-' + modalkey);
+        });
+    }
 
     return {
         init: init

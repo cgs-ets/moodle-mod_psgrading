@@ -569,13 +569,100 @@ class utils {
         return $myconnect;
     }
 
-    public static function get_taskdata_as_xml($data) {
-        $xml = "<taskname>{$data->taskname}</taskname>";
-        $xml .= "<pypuoi>{$data->pypuoi}</pypuoi>";
-        $xml .= "<outcomes>{$data->outcomes}</outcomes>";
-        $xml .= "<criterionjson>{$data->criterionjson}</criterionjson>";
+    public static function get_task_as_json($task) {
+        $obj = new \stdClass();
+        $obj->id = $task->get('id');
+        $obj->taskname = $task->get('taskname');
+        $obj->pypuoi = $task->get('pypuoi');
+        $obj->outcomes = $task->get('outcomes');
+        $obj->criterionjson = $task->get('criterionjson');
+        $obj->evidencejson = $task->get('evidencejson');
+        return json_encode($obj);
+    }
 
-        return $xml;
+    public static function get_taskdata_as_html($data) {
+        global $OUTPUT;
+
+        $criterions = json_decode($data->criterionjson);
+        $data->criteriahtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector_row_text', ['criterions' => $criterions]);
+
+        $evidences = json_decode($data->evidencejson);
+        $data->evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector_text', ['evidences' => $evidences]);
+
+        $data->outcomes = nl2br($data->outcomes);
+
+        $html = $OUTPUT->render_from_template('mod_psgrading/task_text', $data);
+
+        return $html;
+    }
+
+    /* TODO: Uses mod_wikis diff lib */
+    public static function diff_versions_quick($json1, $json2) {
+        global $DB, $PAGE, $USER;
+
+        $olddata = json_decode($json1);
+        $newdata = json_decode($json2);
+
+        $oldhtml = static::get_taskdata_as_html($olddata);
+        $newhtml = static::get_taskdata_as_html($newdata);
+
+        //list($diff1, $diff2) = ouwiki_diff_html($oldhtml, $newhtml);
+
+        $lines1=ouwiki_diff_html_to_lines($oldhtml);
+        $lines2=ouwiki_diff_html_to_lines($newhtml);
+
+        list($deleted,$added)=ouwiki_diff_words($lines1,$lines2);
+
+        $diff1 = '';
+        if ($deleted) {
+            $diff1 = ouwiki_diff_add_markers($oldhtml,$deleted,'ouw_deleted',
+                '<strong class="accesshide">'.get_string('deletedbegins','wiki').'</strong>',
+                '<strong class="accesshide">'.get_string('deletedends','wiki').'</strong>');
+        }
+        $diff2 = '';
+        if ($added) {
+            $diff2=ouwiki_diff_add_markers($newhtml,$added,'ouw_added',
+                '<strong class="accesshide">'.get_string('addedbegins','wiki').'</strong>',
+                '<strong class="accesshide">'.get_string('addedends','wiki').'</strong>');
+        }
+
+        $diff1 = format_text($diff1, FORMAT_HTML, array('overflowdiv'=>true));
+        $diff2 = format_text($diff2, FORMAT_HTML, array('overflowdiv'=>true));
+
+        // Mock up the data needed by the wiki renderer.
+        // We'll hide a bunch of unnecessary elements using CSS.
+        $wikioutput = $PAGE->get_renderer('mod_wiki');
+        $oldversion = array(
+            'id' => 1,
+            'pageid' => 1,
+            'content' =>'',
+            'contentformat' => 'html',
+            'version' => 1, 
+            'timecreated' => time(),
+            'userid' => $USER->id,
+            'diff' => $diff1,
+            'user' => $USER, // Use editing user.
+        );
+        $newversion = array(
+            'id' => 2, // Use log id.
+            'pageid' => 2,
+            'content' => '',
+            'contentformat' => 'html',
+            'version' => 2, // Use log id.
+            'timecreated' => time(),
+            'userid' => $USER->id,
+            'diff' => $diff2,
+            'user' => $USER, // Use editing user.
+        );
+
+        $html = '';
+        if ($deleted && $added) {
+            $html = '<div class="wiki-diff-container diff-head"><div class="wiki-diff-leftside"><b>Deletions</b></div><div class="wiki-diff-rightside"><b>Additions</b></div></div>';
+        }
+        
+        $html .= $wikioutput->diff(1, (object) $oldversion, (object) $newversion, array('total' => 2));
+        return $html;
+
     }
 
     /* TODO: Uses mod_wikis diff lib */
@@ -595,29 +682,29 @@ class utils {
         // Mock up the data needed by the wiki renderer.
         $wikioutput = $PAGE->get_renderer('mod_wiki');
         $oldversion = array(
-            'id' => 1111, // Use log id.
+            'id' => 1, // Use log id.
             'pageid' => $olddata->id,
             'content' => $oldxml,
             'contentformat' => 'html',
-            'version' => 1111, // Use log id.
+            'version' => 1, // Use log id.
             'timecreated' => 1613693887,
             'userid' => 2,
             'diff' => $diff1,
             'user' => $DB->get_record('user', array('id' => 2)),
         );
         $newversion = array(
-            'id' => 1112, // Use log id.
+            'id' => 2, // Use log id.
             'pageid' => $newdata->id,
             'content' => $newxml,
             'contentformat' => 'html',
-            'version' => 1112, // Use log id.
+            'version' => 2, // Use log id.
             'timecreated' => 1613693887,
             'userid' => 2,
             'diff' => $diff2,
             'user' => $DB->get_record('user', array('id' => 2)),
         );
 
-        echo $wikioutput->diff($newdata->id, (object) $oldversion, (object) $newversion, array('total' => 9999));
+        return $wikioutput->diff($newdata->id, (object) $oldversion, (object) $newversion, array('total' => 2));
 
     }
 
