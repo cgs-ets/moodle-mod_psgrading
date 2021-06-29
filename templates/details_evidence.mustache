@@ -37,5 +37,17 @@
                 {{/task.evidences}}
             </tbody>
         </table>
+
+        {{#task.myconnectevidences.0.HIDE}}
+        <div id="myconnect-evidence" class="{{#task.myconnectevidences.0}}has-posts{{/task.myconnectevidences.0}}">
+            <div class="heading">MyConnect posts</div>
+            <div class="myconnect-carousel">
+                {{#task.myconnectevidences}}
+                    {{>mod_psgrading/myconnect_post}}
+                {{/task.myconnectevidences}}
+            </div>
+        </div>
+        {{/task.myconnectevidences.0.HIDE}}
+
     </div>
 </div>

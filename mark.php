@@ -55,12 +55,19 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$markurl = new moodle_url('/mod/psgrading/mark.php', array(
+$params = array(
     'cmid' => $cm->id,
     'taskid' => $taskid,
     'groupid' => $groupid,
     'userid' => $userid,
-));
+);
+$detailsurl = new moodle_url('/mod/psgrading/details.php', $params);
+if (!utils::is_cgs_staff()) {
+    redirect($detailsurl->out(false));
+    exit;
+}
+
+$markurl = new moodle_url('/mod/psgrading/mark.php', $params);
 $listurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
 ));

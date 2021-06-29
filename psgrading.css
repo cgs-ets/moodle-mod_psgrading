@@ -680,21 +680,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
 }
-#page-mod-psgrading-mark #myconnect-evidence {
-  margin-bottom: 1rem;
-  position: relative;
-}
-#page-mod-psgrading-mark #myconnect-evidence .btn-browse {
-  box-shadow: none;
-}
-#page-mod-psgrading-mark #myconnect-evidence.has-posts .btn-browse {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-#page-mod-psgrading-mark #myconnect-evidence.has-posts .myconnect-carousel {
-  display: block;
-}
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
@@ -744,7 +729,27 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 300px;
   float: left;
 }
-#page-mod-psgrading-mark .myconnect-carousel {
+#page-mod-psgrading-mark #myconnect-evidence,
+#page-mod-psgrading-details #myconnect-evidence {
+  margin-bottom: 1rem;
+  position: relative;
+}
+#page-mod-psgrading-mark #myconnect-evidence .btn-browse,
+#page-mod-psgrading-details #myconnect-evidence .btn-browse {
+  box-shadow: none;
+}
+#page-mod-psgrading-mark #myconnect-evidence.has-posts .btn-browse,
+#page-mod-psgrading-details #myconnect-evidence.has-posts .btn-browse {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#page-mod-psgrading-mark #myconnect-evidence.has-posts .myconnect-carousel,
+#page-mod-psgrading-details #myconnect-evidence.has-posts .myconnect-carousel {
+  display: block;
+}
+#page-mod-psgrading-mark .myconnect-carousel,
+#page-mod-psgrading-details .myconnect-carousel {
   display: none;
   overflow: auto;
   white-space: nowrap;
@@ -755,7 +760,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border: 1px dashed #aaa;
   border-radius: 2px;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post {
+#page-mod-psgrading-mark .myconnect-carousel .post,
+#page-mod-psgrading-details .myconnect-carousel .post {
   background-color: #fff;
   cursor: default;
   width: 270px;
@@ -763,37 +769,44 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin: 10px 10px 10px 0px;
   vertical-align: top;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post:hover .post-header .selector {
+#page-mod-psgrading-mark .myconnect-carousel .post:hover .post-header .selector,
+#page-mod-psgrading-details .myconnect-carousel .post:hover .post-header .selector {
   display: block;
   background: #000;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header {
   padding: 13px 10px;
   min-height: 0px;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header .meta {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .meta,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header .meta {
   bottom: 3px;
   position: absolute;
   right: 5px;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header .time {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .time,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header .time {
   font-size: 75%;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header .sent-to-count {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .sent-to-count,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header .sent-to-count {
   font-size: 10px;
   margin-left: 0;
   margin-top: -2px;
   right: 9px;
   opacity: 0.8;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header .selector {
   display: none;
   right: -8px;
   left: auto;
   border: 1px solid #000;
   background: #000;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector:after {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-header .selector:after,
+#page-mod-psgrading-details .myconnect-carousel .post .post-header .selector:after {
   display: block;
   content: "✕";
   color: #fff;
@@ -802,15 +815,18 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   text-align: center;
   font-family: monospace;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .album {
+#page-mod-psgrading-mark .myconnect-carousel .post .album,
+#page-mod-psgrading-details .myconnect-carousel .post .album {
   width: 240px;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .post-body {
+#page-mod-psgrading-mark .myconnect-carousel .post .post-body,
+#page-mod-psgrading-details .myconnect-carousel .post .post-body {
   max-height: 400px;
   overflow: hidden;
   overflow-y: auto;
 }
-#page-mod-psgrading-mark .post {
+#page-mod-psgrading-mark .post,
+#page-mod-psgrading-details .post {
   margin-bottom: 30px;
   background-color: #f2f4f6;
   color: #000;
@@ -820,20 +836,25 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin: 10px 10px 30px 10px;
   cursor: pointer;
 }
-#page-mod-psgrading-mark .post:hover {
+#page-mod-psgrading-mark .post:hover,
+#page-mod-psgrading-details .post:hover {
   border: 1px solid #ddd;
 }
-#page-mod-psgrading-mark .post:hover .post-header .selector {
+#page-mod-psgrading-mark .post:hover .post-header .selector,
+#page-mod-psgrading-details .post:hover .post-header .selector {
   background: #B3D9B3;
 }
-#page-mod-psgrading-mark .post.selected {
+#page-mod-psgrading-mark .post.selected,
+#page-mod-psgrading-details .post.selected {
   border: 1px solid #ccc;
 }
-#page-mod-psgrading-mark .post.selected .post-header .selector {
+#page-mod-psgrading-mark .post.selected .post-header .selector,
+#page-mod-psgrading-details .post.selected .post-header .selector {
   border: 1px solid green;
   background: green;
 }
-#page-mod-psgrading-mark .post.selected .post-header .selector:after {
+#page-mod-psgrading-mark .post.selected .post-header .selector:after,
+#page-mod-psgrading-details .post.selected .post-header .selector:after {
   content: "✓";
   color: #fff;
   line-height: 18px;
@@ -842,7 +863,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   display: block;
   font-family: monospace;
 }
-#page-mod-psgrading-mark .post .post-header {
+#page-mod-psgrading-mark .post .post-header,
+#page-mod-psgrading-details .post .post-header {
   position: relative;
   width: 100%;
   border-bottom: 1px solid #f6f6f6;
@@ -850,7 +872,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   font-weight: 600;
   min-height: 63px;
 }
-#page-mod-psgrading-mark .post .post-header .selector {
+#page-mod-psgrading-mark .post .post-header .selector,
+#page-mod-psgrading-details .post .post-header .selector {
   border: 1px solid black;
   width: 18px;
   height: 18px;
@@ -863,28 +886,40 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   box-shadow: 2px 2px 7px -2px rgba(0, 0, 0, 0.4);
   transition: background linear 0.1s;
 }
-#page-mod-psgrading-mark .post .post-header .meta {
+#page-mod-psgrading-mark .post .post-header .meta,
+#page-mod-psgrading-details .post .post-header .meta {
   color: #aaa;
   float: right;
   text-align: right;
 }
 #page-mod-psgrading-mark .post .post-header .creator,
+#page-mod-psgrading-details .post .post-header .creator,
 #page-mod-psgrading-mark .post .post-header .seperator,
+#page-mod-psgrading-details .post .post-header .seperator,
 #page-mod-psgrading-mark .post .post-header .recipients,
+#page-mod-psgrading-details .post .post-header .recipients,
 #page-mod-psgrading-mark .post .post-header .recipient,
-#page-mod-psgrading-mark .post .post-header .board {
+#page-mod-psgrading-details .post .post-header .recipient,
+#page-mod-psgrading-mark .post .post-header .board,
+#page-mod-psgrading-details .post .post-header .board {
   display: inline-block;
 }
 #page-mod-psgrading-mark .post .post-header .creator a,
+#page-mod-psgrading-details .post .post-header .creator a,
 #page-mod-psgrading-mark .post .post-header .seperator a,
+#page-mod-psgrading-details .post .post-header .seperator a,
 #page-mod-psgrading-mark .post .post-header .recipients a,
+#page-mod-psgrading-details .post .post-header .recipients a,
 #page-mod-psgrading-mark .post .post-header .recipient a,
-#page-mod-psgrading-mark .post .post-header .board a {
+#page-mod-psgrading-details .post .post-header .recipient a,
+#page-mod-psgrading-mark .post .post-header .board a,
+#page-mod-psgrading-details .post .post-header .board a {
   display: inline-block;
   text-decoration: none;
   color: #000;
 }
-#page-mod-psgrading-mark .post .post-header .sent-to-count {
+#page-mod-psgrading-mark .post .post-header .sent-to-count,
+#page-mod-psgrading-details .post .post-header .sent-to-count {
   font-weight: 400;
   font-size: 12px;
   color: #646464;
@@ -897,37 +932,46 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin-left: 34px;
   font-size: 11px;
 }
-#page-mod-psgrading-mark .post .post-header .recipients.collapsed .recipient {
+#page-mod-psgrading-mark .post .post-header .recipients.collapsed .recipient,
+#page-mod-psgrading-details .post .post-header .recipients.collapsed .recipient {
   display: none;
 }
-#page-mod-psgrading-mark .post .post-header .recipients .expand-recipients {
+#page-mod-psgrading-mark .post .post-header .recipients .expand-recipients,
+#page-mod-psgrading-details .post .post-header .recipients .expand-recipients {
   color: #005b94;
 }
-#page-mod-psgrading-mark .post .post-header .recipients.expanded a {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded a,
+#page-mod-psgrading-details .post .post-header .recipients.expanded a {
   margin-right: 3px;
 }
-#page-mod-psgrading-mark .post .post-header .recipients.expanded .userphoto {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded .userphoto,
+#page-mod-psgrading-details .post .post-header .recipients.expanded .userphoto {
   margin-right: 4px;
   width: 18px;
   height: 18px;
 }
-#page-mod-psgrading-mark .post .post-header .recipients.expanded .fullname {
+#page-mod-psgrading-mark .post .post-header .recipients.expanded .fullname,
+#page-mod-psgrading-details .post .post-header .recipients.expanded .fullname {
   font-size: 13px;
 }
-#page-mod-psgrading-mark .post .post-header .fullname {
+#page-mod-psgrading-mark .post .post-header .fullname,
+#page-mod-psgrading-details .post .post-header .fullname {
   white-space: nowrap;
   overflow: hidden;
 }
-#page-mod-psgrading-mark .post .post-header .recipient:not(:last-of-type) .fullname:after {
+#page-mod-psgrading-mark .post .post-header .recipient:not(:last-of-type) .fullname:after,
+#page-mod-psgrading-details .post .post-header .recipient:not(:last-of-type) .fullname:after {
   content: ", ";
 }
-#page-mod-psgrading-mark .post .post-header.show-both-users .creator .fullname:after {
+#page-mod-psgrading-mark .post .post-header.show-both-users .creator .fullname:after,
+#page-mod-psgrading-details .post .post-header.show-both-users .creator .fullname:after {
   content: "▸";
   margin-left: 10px;
   margin-right: 10px;
   color: #000;
 }
-#page-mod-psgrading-mark .post .post-header .userphoto {
+#page-mod-psgrading-mark .post .post-header .userphoto,
+#page-mod-psgrading-details .post .post-header .userphoto {
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -938,39 +982,49 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border: 0 none;
   background-color: #ccc;
 }
-#page-mod-psgrading-mark .post .post-header .userphoto img {
+#page-mod-psgrading-mark .post .post-header .userphoto img,
+#page-mod-psgrading-details .post .post-header .userphoto img {
   display: block;
   width: 100%;
   height: 100%;
 }
-#page-mod-psgrading-mark .post .attachments {
+#page-mod-psgrading-mark .post .attachments,
+#page-mod-psgrading-details .post .attachments {
   padding: 8px 20px;
   background-color: #fafafa;
 }
-#page-mod-psgrading-mark .post .attachments ul {
+#page-mod-psgrading-mark .post .attachments ul,
+#page-mod-psgrading-details .post .attachments ul {
   list-style: none;
   padding: 0;
   margin-bottom: 0px;
 }
-#page-mod-psgrading-mark .post .attachments ul li {
+#page-mod-psgrading-mark .post .attachments ul li,
+#page-mod-psgrading-details .post .attachments ul li {
   margin-bottom: 3px;
 }
-#page-mod-psgrading-mark .post .cover a {
+#page-mod-psgrading-mark .post .cover a,
+#page-mod-psgrading-details .post .cover a {
   cursor: zoom-in;
 }
-#page-mod-psgrading-mark .post .cover img {
+#page-mod-psgrading-mark .post .cover img,
+#page-mod-psgrading-details .post .cover img {
   display: block;
   width: 100%;
 }
-#page-mod-psgrading-mark .post .album {
+#page-mod-psgrading-mark .post .album,
+#page-mod-psgrading-details .post .album {
   background-color: #fafafa;
   overflow: hidden;
   box-shadow: inset 0 0 20px -5px rgb(0 0 0%);
   width: 100%;
 }
 #page-mod-psgrading-mark .post .album .photo,
+#page-mod-psgrading-details .post .album .photo,
 #page-mod-psgrading-mark .post .album .doc,
-#page-mod-psgrading-mark .post .album .video {
+#page-mod-psgrading-details .post .album .doc,
+#page-mod-psgrading-mark .post .album .video,
+#page-mod-psgrading-details .post .album .video {
   height: 90px;
   background-color: #ccc;
   float: left;
@@ -981,40 +1035,51 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   overflow: hidden;
 }
 #page-mod-psgrading-mark .post .album .photo a,
+#page-mod-psgrading-details .post .album .photo a,
 #page-mod-psgrading-mark .post .album .doc a,
-#page-mod-psgrading-mark .post .album .video a {
+#page-mod-psgrading-details .post .album .doc a,
+#page-mod-psgrading-mark .post .album .video a,
+#page-mod-psgrading-details .post .album .video a {
   cursor: zoom-in;
 }
 #page-mod-psgrading-mark .post .album .photo img,
+#page-mod-psgrading-details .post .album .photo img,
 #page-mod-psgrading-mark .post .album .doc img,
-#page-mod-psgrading-mark .post .album .video img {
+#page-mod-psgrading-details .post .album .doc img,
+#page-mod-psgrading-mark .post .album .video img,
+#page-mod-psgrading-details .post .album .video img {
   height: 100%;
   width: auto;
   display: block;
 }
-#page-mod-psgrading-mark .post .album .doc {
+#page-mod-psgrading-mark .post .album .doc,
+#page-mod-psgrading-details .post .album .doc {
   width: 85px;
   font-size: 11px;
   text-align: center;
   line-height: 11px;
   background: #fafafa;
 }
-#page-mod-psgrading-mark .post .album .doc a {
+#page-mod-psgrading-mark .post .album .doc a,
+#page-mod-psgrading-details .post .album .doc a {
   margin: 7px;
   display: block;
   overflow: hidden;
   height: 76px;
 }
-#page-mod-psgrading-mark .post .album .doc .icon {
+#page-mod-psgrading-mark .post .album .doc .icon,
+#page-mod-psgrading-details .post .album .doc .icon {
   height: 20px;
   margin: 0 auto;
 }
-#page-mod-psgrading-mark .post .album .video video {
+#page-mod-psgrading-mark .post .album .video video,
+#page-mod-psgrading-details .post .album .video video {
   height: 100%;
   width: auto;
   display: block;
 }
-#page-mod-psgrading-mark .post .album .video i {
+#page-mod-psgrading-mark .post .album .video i,
+#page-mod-psgrading-details .post .album .video i {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -1027,10 +1092,12 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   text-align: center;
   font-size: 14px;
 }
-#page-mod-psgrading-mark .post .post-body {
+#page-mod-psgrading-mark .post .post-body,
+#page-mod-psgrading-details .post .post-body {
   position: relative;
 }
-#page-mod-psgrading-mark .post .post-body.has-cover .album {
+#page-mod-psgrading-mark .post .post-body.has-cover .album,
+#page-mod-psgrading-details .post .post-body.has-cover .album {
   box-shadow: none;
   background-color: transparent;
   position: absolute;
@@ -1038,8 +1105,11 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   left: 5px;
 }
 #page-mod-psgrading-mark .post .post-body.has-cover .album .photo,
+#page-mod-psgrading-details .post .post-body.has-cover .album .photo,
 #page-mod-psgrading-mark .post .post-body.has-cover .album .doc,
-#page-mod-psgrading-mark .post .post-body.has-cover .album .video {
+#page-mod-psgrading-details .post .post-body.has-cover .album .doc,
+#page-mod-psgrading-mark .post .post-body.has-cover .album .video,
+#page-mod-psgrading-details .post .post-body.has-cover .album .video {
   height: 35px;
   float: left;
   border: 1px solid #fff;
@@ -1047,22 +1117,32 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   position: relative;
   margin-right: 4px;
 }
-#page-mod-psgrading-mark .post .post-body.has-cover .album .video i {
+#page-mod-psgrading-mark .post .post-body.has-cover .album .video i,
+#page-mod-psgrading-details .post .post-body.has-cover .album .video i {
   padding: 4px 0 4px 4px;
   width: 25px;
   height: 25px;
 }
-#page-mod-psgrading-mark .post .post-comment {
+#page-mod-psgrading-mark .post .post-comment,
+#page-mod-psgrading-details .post .post-comment {
   padding: 15px;
   overflow: hidden;
   white-space: normal;
   font-size: 85%;
 }
-#page-mod-psgrading-mark .post .post-comment p:last-of-type {
+#page-mod-psgrading-mark .post .post-comment p:last-of-type,
+#page-mod-psgrading-details .post .post-comment p:last-of-type {
   margin-bottom: 0;
 }
-#page-mod-psgrading-mark .post .post-comment img {
+#page-mod-psgrading-mark .post .post-comment img,
+#page-mod-psgrading-details .post .post-comment img {
   max-width: 100%;
+}
+#page-mod-psgrading-details .post:hover {
+  border: 1px solid #ededed;
+}
+#page-mod-psgrading-details .post:hover .post-header .selector {
+  display: none !important;
 }
 #page-mod-psgrading-overview .activity-navigation {
   display: none;

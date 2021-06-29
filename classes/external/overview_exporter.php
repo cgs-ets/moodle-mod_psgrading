@@ -94,11 +94,6 @@ class overview_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'morestudents' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],
         ];
     }
 
@@ -427,7 +422,6 @@ class overview_exporter extends exporter {
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'isstaff' => $this->related['isstaff'],
-            'morestudents' => (count($students) > 1),
         );
         return $out;
     }

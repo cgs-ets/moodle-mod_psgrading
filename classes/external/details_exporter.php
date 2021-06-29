@@ -110,52 +110,150 @@ class details_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER, $PAGE, $CFG;
 
-        // Export mark data.
-        $markrelateds = array(
-            'task' => $this->related['task'],
-            'students' => $this->related['students'],
-            'userid' => $this->related['userid'],
-            'markurl' => $this->related['detailsurl'],
-            'groupid' => 0,
-        );      
-        $markexporter = new mark_exporter(null, $markrelateds);
-        $out = $markexporter->export($output);
+        $baseurl = clone($this->related['detailsurl']);
 
-        $out->isstaff = $this->related['isstaff'];
+        $taskexporter = new task_exporter($this->related['task']);
+        $task = $taskexporter->export($output);
 
-        // Add additional evidences for this user.
-        $modulecontext = \context_module::instance($this->related['cmid']);
-        $fs = get_file_storage();
-        $uniqueid = sprintf( "%d%d", $out->task->id, $this->related['userid'] ); // Join the taskid and userid to make a unique itemid.
-        $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
-        if ($files) {
-            foreach ($files as $file) {
-                $filename = $file->get_filename();
-                //$mimetype = $file->get_mimetype();
-                //$iconimage = $output->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon'));
-                $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$modulecontext->id.'/mod_psgrading/evidences/'.$uniqueid.'/'.$filename);
-                //$isimage = in_array($mimetype, array('image/gif', 'image/jpeg', 'image/png')) ? 1 : 0;
-                $out->task->evidences[] = array(
-                    'icon' => $path . '?preview=thumb',
-                    'url' => $path,
-                    'name' => $filename,
-                );
-            }
-        }
+        $isstaff = $this->related['isstaff'];
 
-        // Remove hidden criterions for non-staff.
-        if (!$this->related['isstaff']) {
-            foreach ($out->task->criterions as $i => $criterion) {
-                if ($criterion->hidden) {
-                    unset($out->task->criterions[$i]);
+        // Student navigation.
+        $students = array();
+        foreach ($this->related['students'] as $i => $studentid) {
+            $student = \core_user::get_user($studentid);
+            utils::load_user_display_info($student);
+            $student->iscurrent = false;
+            $student->detailsurl = clone($baseurl);
+            $student->detailsurl->param('userid', $student->id);
+            $student->detailsurl = $student->detailsurl->out(false); // Replace markurl with string val.
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+                'cmid' => $task->cmid,
+                'userid' => $student->id,
+            ));
+            $student->overviewurl = $overviewurl->out(false);
+            if ($this->related['userid'] == $student->id) {
+                $student->iscurrent = true;
+                $currstudent = $student;
+                $len = count($this->related['students']);
+                if ($len > 1) {
+                    // Base url.
+                    $nextstudenturl = clone($baseurl);
+                    $prevstudenturl = clone($baseurl);
+
+                    // Determine next and prev users.
+                    if ($i == 0) {
+                        // if the index is 0, then the prev student loops back to the end of the list.
+                        $prevstudenturl->param('userid', $this->related['students'][$len - 1]);
+                    } else {
+                        $prevstudenturl->param('userid', $this->related['students'][$i - 1]);
+                    }
+
+                    if ($i == $len - 1) {
+                        // if the index is at the end of the list, then the next student is at the begining of the list.
+                        $nextstudenturl->param('userid', $this->related['students'][0]);
+                    } else {
+                        $nextstudenturl->param('userid', $this->related['students'][$i + 1]);
+                    }
                 }
             }
+            $students[] = $student;
         }
-        $out->task->criterions = array_values($out->task->criterions);
-        // Engagement.
-        $out->gradeinfo->engagement = $out->gradeinfo->engagement ? utils::ENGAGEMENTOPTIONS[$out->gradeinfo->engagement] : '';
+        if ($prevstudenturl) {
+            $prevstudenturl = $prevstudenturl->out(false);
+            $nextstudenturl = $nextstudenturl->out(false);
+        }
+        // Load current students other tasks from this activity.
+        $currstudent->othertasks = task::get_cm_user_taskinfo($task->cmid, $this->related['userid'], $task->id);
 
-        return (array) $out;
+        // Get existing marking values for this user and incorporate into task criterion data.
+        $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
+
+        // Load task criterions.
+        task::load_criterions($task);
+        foreach ($task->criterions as $i => $criterion) {
+            if ($criterion->hidden) {
+                unset($task->criterions[$i]);
+                continue;
+            }
+            // Add selections.
+            if (isset($gradeinfo->criterions[$criterion->id]) && $task->released) {
+                // There is a gradelevel chosen for this criterion.
+                $criterion->{'level' . $gradeinfo->criterions[$criterion->id]->gradelevel . 'selected'} = true;
+            }
+        }
+
+        // Zero indexes so templates work.
+        $task->criterions = array_values($task->criterions);
+
+        // Load task evidences (default).
+        task::load_evidences($task);
+        foreach ($task->evidences as &$evidence) {
+            if ($evidence->evidencetype == 'cm') {
+                // get the icon and name.
+                $cm = get_coursemodule_from_id('', $evidence->refdata);
+                $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                $cms = $modinfo->get_cms();
+                $cm = $cms[$evidence->refdata];
+                $evidence->icon = $cm->get_icon_url()->out();
+                $evidence->url = $cm->url;
+                $evidence->name = $cm->name;
+            }
+        }
+
+        if ($task->released) {
+            // Get selected MyConnect grade evidences.
+            $task->myconnectevidences = array();
+            $task->myconnectevidencejson = '';
+            $myconnectids = array();
+            if ($gradeinfo) {
+                // Get selected ids
+                $myconnectids = task::get_myconnect_grade_evidences($gradeinfo->id);
+                if ($myconnectids) {
+                    // Convert to json.
+                    $task->myconnectevidencejson = json_encode($myconnectids);
+                }
+                // Get full post objects for selected ids.
+                $myconnectdata = utils::get_myconnect_data_for_postids($currstudent->username, $myconnectids);
+                if (isset($myconnectdata->posts)) {
+                    $task->myconnectevidences = array_values($myconnectdata->posts);
+                }
+            }
+
+            // Add additional evidences for this user.
+            $modulecontext = \context_module::instance($this->related['cmid']);
+            $fs = get_file_storage();
+            $uniqueid = sprintf( "%d%d", $task->id, $this->related['userid'] ); // Join the taskid and userid to make a unique itemid.
+            $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
+            if ($files) {
+                foreach ($files as $file) {
+                    $filename = $file->get_filename();
+                    //$mimetype = $file->get_mimetype();
+                    //$iconimage = $output->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon'));
+                    $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$modulecontext->id.'/mod_psgrading/evidences/'.$uniqueid.'/'.$filename);
+                    //$isimage = in_array($mimetype, array('image/gif', 'image/jpeg', 'image/png')) ? 1 : 0;
+                    $task->evidences[] = array(
+                        'icon' => $path . '?preview=thumb',
+                        'url' => $path,
+                        'name' => $filename,
+                    );
+                }
+            }
+        } else {
+            // Unset some things.
+            unset($gradeinfo->engagement);
+            unset($gradeinfo->engagementlang);
+        }
+
+        return array(
+            'task' => $task,
+            'students' => $students,
+            'currstudent' => $currstudent,
+            'nextstudenturl' => $nextstudenturl,
+            'prevstudenturl' => $prevstudenturl,
+            'gradeinfo' => $gradeinfo,
+            'isstaff' => $isstaff,
+        );
+
     }
 
 }

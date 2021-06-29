@@ -38,24 +38,26 @@
                     </select>
                 {{/currstudent.othertasks.0}}
             </div>
-            {{#isstaff}}
+            {{#students.1}}
                 <div class="student-selector">
                     <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     <select class="student-select form-control">
                         {{#students}}
-                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{markurl}}">{{fullname}}</option>
+                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{fullname}}</option>
                         {{/students}}
                     </select>
                     <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
-            {{/isstaff}}
+            {{/students.1}}
         </div>
         <div class="contents">
             {{>mod_psgrading/details_criterions}}
-            <div class="details-engagement">
-                <div class="heading">{{#str}}mark:engagement, mod_psgrading{{/str}}</div>
-                {{gradeinfo.engagementlang}}
-            </div>
+            {{#gradeinfo.engagement}}
+                <div class="details-engagement">
+                    <div class="heading">{{#str}}mark:engagement, mod_psgrading{{/str}}</div>
+                    {{gradeinfo.engagementlang}}
+                </div>
+            {{/gradeinfo.engagement}}
             {{>mod_psgrading/details_evidence}}
         </div>
     </div>

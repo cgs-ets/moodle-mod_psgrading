@@ -43,7 +43,7 @@
             </div>
         {{/isstaff}}
 
-        {{#morestudents}}
+        {{#students.1}}
             <div class="student-selector">
                 <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                 <select class="student-select form-control">
@@ -53,7 +53,7 @@
                 </select>
                 <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             </div>
-        {{/morestudents}}
+        {{/students.1}}
         
     </div>
     <div class="contents-wrap {{#viewas}}is-viewas{{/viewas}}">

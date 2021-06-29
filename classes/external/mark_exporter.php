@@ -126,16 +126,18 @@ class mark_exporter extends exporter {
 
         // Group navigation.
         $groups = array();
-        foreach ($this->related['groups'] as $i => $groupid) {
-            $group = utils::get_group_display_info($groupid);
-            $group->markurl = clone($baseurl);
-            $group->markurl->param('groupid', $groupid);
-            $group->markurl = $group->markurl->out(false); // Replace markurl with string val.
-            $group->iscurrent = false;
-            if ($this->related['groupid'] == $group->id) {
-                $group->iscurrent = true;
+        if ($this->related['groups']) {
+            foreach ($this->related['groups'] as $i => $groupid) {
+                $group = utils::get_group_display_info($groupid);
+                $group->markurl = clone($baseurl);
+                $group->markurl->param('groupid', $groupid);
+                $group->markurl = $group->markurl->out(false); // Replace markurl with string val.
+                $group->iscurrent = false;
+                if ($this->related['groupid'] == $group->id) {
+                    $group->iscurrent = true;
+                }
+                $groups[] = $group;
             }
-            $groups[] = $group;
         }
 
         // Student Navigation.
@@ -241,7 +243,6 @@ class mark_exporter extends exporter {
                 $task->myconnectevidences = array_values($myconnectdata->posts);
             }
         }
-        
 
         // Get MyConnect posts for evidence selector, passing selected posts to be excluded.
         $myconnect = utils::get_myconnect_data($currstudent->username, 0, $myconnectids);
