@@ -45,6 +45,7 @@ class task extends persistent {
     const TABLE_GRADES = 'psgrading_grades';
     const TABLE_GRADE_CRITERIONS = 'psgrading_grade_criterions';
     const TABLE_GRADE_EVIDENCES = 'psgrading_grade_evidences';
+    const TABLE_RELEASE_POSTS = 'psgrading_release_posts';
 
     /**
      * Return the definition of the properties of this model.
@@ -557,7 +558,7 @@ class task extends persistent {
 
     public static function get_diff($id) {
         $task = new static($id);
-        return utils::diff_versions_quick(utils::get_task_as_json($task), $task->get('draftjson')); 
+        return utils::diff_versions(utils::get_task_as_json($task), $task->get('draftjson')); 
     }
 
 

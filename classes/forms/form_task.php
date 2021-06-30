@@ -68,7 +68,12 @@ class form_task extends \moodleform {
          *----------------------*/
         $pypuoioptions = array(
             '' => 'Select',
-            'HtWW' => get_string('pypuoi:htww', 'mod_psgrading'),
+            'wwa' => get_string('pypuoi:wwa', 'mod_psgrading'),
+            'wwaipat' => get_string('pypuoi:wwaipat', 'mod_psgrading'),
+            'hweo' => get_string('pypuoi:hweo', 'mod_psgrading'),
+            'htww' => get_string('pypuoi:htww', 'mod_psgrading'),
+            'hwoo' => get_string('pypuoi:hwoo', 'mod_psgrading'),
+            'stp' => get_string('pypuoi:stp', 'mod_psgrading'),
         );
         $mform->addElement('select', 'pypuoi', get_string('task:pypuoi', 'mod_psgrading'), $pypuoioptions);
 

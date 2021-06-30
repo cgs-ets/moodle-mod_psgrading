@@ -200,17 +200,17 @@ class utils {
 
     const ENGAGEMENTOPTIONS = array (
         '' => 'Select',
-        'poor' => 'Poor',
-        'acceptable' => 'Acceptable',
-        'good' => 'Good',
-        'verygood' => 'Very Good',
+        'NI' => ' Needs Improvement',
+        'A' => 'Average',
+        'VG' => 'Very Good',
+        'E' => 'Excellent',
     );
 
     const ENGAGEMENTWEIGHTS = array (
-        'poor' => 25,
-        'acceptable' => 50,
-        'good' => 75,
-        'verygood' => 100,
+        'NI' => 25,
+        'A' => 50,
+        'VG' => 75,
+        'E' => 100,
     );
 
     public static function decorate_subjectdata($criteriondata) {
@@ -591,8 +591,6 @@ class utils {
         $data->evidencehtml = $OUTPUT->render_from_template('mod_psgrading/diff_evidence_text', ['evidences' => $evidences]);
 
         $snip = nl2br($data->outcomes);
-        $snip = str_replace('.', '', $snip); // remove dots
-        $snip = str_replace(' ', '', $snip); // remove spaces
         $snip = str_replace("\t", '', $snip); // remove tabs
         $snip = str_replace("\n", '', $snip); // remove new lines
         $snip = str_replace("\r", '', $snip); // remove carriage returns
@@ -603,7 +601,7 @@ class utils {
         return $html;
     }
 
-    public static function diff_versions_quick($json1, $json2) {
+    public static function diff_versions($json1, $json2) {
 
         $olddata = json_decode($json1);
         $newdata = json_decode($json2);
@@ -611,18 +609,13 @@ class utils {
         $from_text = static::get_taskdata_as_html($olddata);
         $to_text = static::get_taskdata_as_html($newdata);
 
-        //$from_text = mb_convert_encoding($from_text, 'HTML-ENTITIES', 'UTF-8');
-        //$to_text = mb_convert_encoding($to_text, 'HTML-ENTITIES', 'UTF-8');
-
-
-
         $opcodes = \FineDiff::getDiffOpcodes($from_text, $to_text);
         return htmlspecialchars_decode(\FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes));
 
     }
 
     /* TODO: Uses mod_wikis diff lib */
-    public static function diff_versions_quickx($json1, $json2) {
+    public static function diff_versionsx($json1, $json2) {
         global $DB, $PAGE, $USER;
 
         $olddata = json_decode($json1);
@@ -691,50 +684,5 @@ class utils {
         return $html;
 
     }
-
-    /* TODO: Uses mod_wikis diff lib */
-    public static function diff_versions($json1, $json2) {
-        global $DB, $PAGE;
-        $olddata = json_decode($json1);
-        $newdata = json_decode($json2);
-
-        $oldxml = static::get_taskdata_as_xml($olddata);
-        $newxml = static::get_taskdata_as_xml($newdata);
-
-        list($diff1, $diff2) = ouwiki_diff_html($oldxml, $newxml);
-
-        $diff1 = format_text($diff1, FORMAT_HTML, array('overflowdiv'=>true));
-        $diff2 = format_text($diff2, FORMAT_HTML, array('overflowdiv'=>true));
-
-        // Mock up the data needed by the wiki renderer.
-        $wikioutput = $PAGE->get_renderer('mod_wiki');
-        $oldversion = array(
-            'id' => 1, // Use log id.
-            'pageid' => $olddata->id,
-            'content' => $oldxml,
-            'contentformat' => 'html',
-            'version' => 1, // Use log id.
-            'timecreated' => 1613693887,
-            'userid' => 2,
-            'diff' => $diff1,
-            'user' => $DB->get_record('user', array('id' => 2)),
-        );
-        $newversion = array(
-            'id' => 2, // Use log id.
-            'pageid' => $newdata->id,
-            'content' => $newxml,
-            'contentformat' => 'html',
-            'version' => 2, // Use log id.
-            'timecreated' => 1613693887,
-            'userid' => 2,
-            'diff' => $diff2,
-            'user' => $DB->get_record('user', array('id' => 2)),
-        );
-
-        return $wikioutput->diff($newdata->id, (object) $oldversion, (object) $newversion, array('total' => 2));
-
-    }
-
-
 
 }

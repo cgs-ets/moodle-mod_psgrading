@@ -67,8 +67,8 @@ function xmldb_psgrading_upgrade($oldversion) {
        
         // Adding keys to table psgrading_release_posts.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN_UNIQUE, array('taskid'), 'psgrading_tasks', array('id'));
-        $table->add_key('fk_gradeid', XMLDB_KEY_FOREIGN_UNIQUE, array('gradeid'), 'psgrading_grades', array('id'));
+        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, array('taskid'), 'psgrading_tasks', array('id'));
+        $table->add_key('fk_gradeid', XMLDB_KEY_FOREIGN, array('gradeid'), 'psgrading_grades', array('id'));
 
         // Create table psgrading_release_posts.
         if (!$dbman->table_exists($table)) {

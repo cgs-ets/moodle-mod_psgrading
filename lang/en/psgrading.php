@@ -64,7 +64,13 @@ $string['mark:savesuccess'] = 'Grade data was saved for {$a}';
 $string['mark:savefail'] = 'Failed to save grade data for {$a}';
 $string['mark:resetsuccess'] = 'Grade data was reset for {$a}';
 
-$string['pypuoi:htww'] = 'How the World Works';
+$string['pypuoi:wwa'] = 'Who we are';
+$string['pypuoi:wwaipat'] = 'Where we are in place and time';
+$string['pypuoi:hweo'] = 'How we express ourselves';
+$string['pypuoi:htww'] = 'How the world works';
+$string['pypuoi:hwoo'] = 'How we organize ourselves';
+$string['pypuoi:stp'] = 'Sharing the planet';
+
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
 $string['overview'] = 'Student overview';
