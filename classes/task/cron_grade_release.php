@@ -107,16 +107,16 @@ class cron_grade_release extends \core\task\scheduled_task {
 
             $postid = \local_myconnect\persistents\post::save_from_formdata(0, $postdata, $grader);
 
+            // Mark grade as processed.
+            $grade->releaseprocessed = 1;
+            $DB->update_record(task::TABLE_GRADES, $grade);
+
             // Record grade-to-myconnectpost relationship.
             $releasepostrec = new \stdClass();
             $releasepostrec->taskid = $task->id;
             $releasepostrec->gradeid = $grade->id;
             $releasepostrec->postid = $postid;
             $releasepostrec->id = $DB->insert_record(task::TABLE_RELEASE_POSTS, $releasepostrec);
-
-            // Mark grade as processed.
-            $grade->releaseprocessed = 1;
-            //$DB->update_record(task::TABLE_GRADES, $grade);
         }
 
         $this->log_finish("Finished processing grades");
