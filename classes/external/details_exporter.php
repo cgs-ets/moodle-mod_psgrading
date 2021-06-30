@@ -169,7 +169,7 @@ class details_exporter extends exporter {
         $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
 
         // Load task criterions.
-        task::load_criterions($task);
+        $task->criterions = task::get_criterions($task->id);
         foreach ($task->criterions as $i => $criterion) {
             if ($criterion->hidden) {
                 unset($task->criterions[$i]);
@@ -184,21 +184,6 @@ class details_exporter extends exporter {
 
         // Zero indexes so templates work.
         $task->criterions = array_values($task->criterions);
-
-        // Load task evidences (default).
-        task::load_evidences($task);
-        foreach ($task->evidences as &$evidence) {
-            if ($evidence->evidencetype == 'cm') {
-                // get the icon and name.
-                $cm = get_coursemodule_from_id('', $evidence->refdata);
-                $modinfo = get_fast_modinfo($cm->course, $USER->id);
-                $cms = $modinfo->get_cms();
-                $cm = $cms[$evidence->refdata];
-                $evidence->icon = $cm->get_icon_url()->out();
-                $evidence->url = $cm->url;
-                $evidence->name = $cm->name;
-            }
-        }
 
         if ($task->released) {
             // Get selected MyConnect grade evidences.

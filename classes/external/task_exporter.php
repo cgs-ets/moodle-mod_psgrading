@@ -62,6 +62,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'detailsurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
             'readabletime' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -74,10 +79,33 @@ class task_exporter extends persistent_exporter {
             ],
             'released' => [
                 'type' => PARAM_BOOL,
+                'multiple' => false,
+                'optional' => false,
             ],
             'isdraft' => [
                 'type' => PARAM_BOOL,
+                'multiple' => false,
+                'optional' => false,
             ],
+            'evidences' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => true,
+            ],
+        ];
+    }
+
+
+    /**
+    * Returns a list of objects that are related.
+    *
+    * Data needed to generate "other" properties.
+    *
+    * @return array
+    */
+    protected static function define_related() {
+        return [
+            'userid' => 'int?',
         ];
     }
 
@@ -88,6 +116,10 @@ class task_exporter extends persistent_exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
+        global $USER;
+
+        $userid = isset($this->related['userid']) ? $this->related['userid'] : 0;
+        
         $editurl = new \moodle_url('/mod/psgrading/task.php', array(
             'cmid' => $this->data->cmid,
             'edit' => $this->data->id,
@@ -96,6 +128,13 @@ class task_exporter extends persistent_exporter {
         $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
+            'userid' => $userid,
+        ));
+
+        $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
+            'cmid' => $this->data->cmid,
+            'taskid' => $this->data->id,
+            'userid' => $userid,
         ));
 
         $readabletime = date('j M Y, g:ia', $this->data->timemodified);
@@ -114,13 +153,30 @@ class task_exporter extends persistent_exporter {
             $isdraft = true;
         }
 
+        // Load task evidences (default).
+        $evidences = task::get_evidences($this->data->id);
+        foreach ($evidences as &$evidence) {
+            if ($evidence->evidencetype == 'cm') {
+                // get the icon and name.
+                $cm = get_coursemodule_from_id('', $evidence->refdata);
+                $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                $cms = $modinfo->get_cms();
+                $cm = $cms[$evidence->refdata];
+                $evidence->icon = $cm->get_icon_url()->out();
+                $evidence->url = $cm->url;
+                $evidence->name = $cm->name;
+            }
+        }
+
     	return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
+            'detailsurl' => $detailsurl->out(false),
 	        'readabletime' => $readabletime,
 	        'draftdata' => $draftdata,
             'released' => $released,
             'isdraft' => $isdraft,
+            'evidences' => $evidences,
 	    ];
     }
 

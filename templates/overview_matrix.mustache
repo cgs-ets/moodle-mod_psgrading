@@ -59,10 +59,28 @@
                 {{#released}}<a href="#"><i class="fa fa-commenting" aria-hidden="true"></i></a>{{/released}}&nbsp;
             </div>
             <div class="cell">
-                {{#released}}<a href="{{detailsurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>{{/released}}
-                {{^released}}{{#isstaff}}{{^viewas}}
-                    <a href="{{detailsurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-                {{/viewas}}{{/isstaff}}{{/released}}
+                {{#released}}
+                    <a href="
+                        {{#isstaff}}
+                            {{^viewas}}
+                                {{markurl}}
+                            {{/viewas}}
+                            {{#viewas}}
+                                {{detailsurl}}
+                            {{/viewas}}
+                        {{/isstaff}}
+                        {{^isstaff}}
+                            {{detailsurl}}
+                        {{/isstaff}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                {{/released}}
+
+                {{^released}}
+                    {{#isstaff}}
+                        {{^viewas}}
+                            <a href="{{markurl}}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                        {{/viewas}}
+                    {{/isstaff}}
+                {{/released}}
             </div>
         </div>{{/tasks}}{{!
     }}{{#reportgrades.0}}<div class="column report-grades">

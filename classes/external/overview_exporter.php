@@ -147,45 +147,14 @@ class overview_exporter extends exporter {
         }
 
         foreach ($cmtasks as $task) {
-            $taskexporter = new task_exporter($task);
+            $taskexporter = new task_exporter($task, array('userid' => $this->related['userid']));
             $task = $taskexporter->export($output);
             if (!$task->published) {
                 continue;
             }
 
-            // Add details url.
-            if ($this->related['isstaff']) {
-                $detailsurl = new \moodle_url('/mod/psgrading/mark.php', array(
-                    'cmid' => $task->cmid,
-                    'taskid' => $task->id,
-                    'userid' => $this->related['userid'],
-                ));
-            } else {
-                $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
-                    'cmid' => $task->cmid,
-                    'taskid' => $task->id,
-                    'userid' => $this->related['userid'],
-                ));
-            }
-            $task->detailsurl = $detailsurl->out(false);
-
-            // Load task evidences (default).
-            task::load_evidences($task);
-            foreach ($task->evidences as &$evidence) {
-                if ($evidence->evidencetype == 'cm') {
-                    // get the icon and name.
-                    $cm = get_coursemodule_from_id('', $evidence->refdata);
-                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
-                    $cms = $modinfo->get_cms();
-                    $cm = $cms[$evidence->refdata];
-                    $evidence->icon = $cm->get_icon_url()->out();
-                    $evidence->url = $cm->url;
-                    $evidence->name = $cm->name;
-                }
-            }
-
             // Add the task criterion definitions.
-            task::load_criterions($task);
+            $task->criterions = task::get_criterions($task->id);
 
             // Get existing grades for this user.
             $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);

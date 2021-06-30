@@ -307,14 +307,14 @@ class task extends persistent {
         return $taskinfo;
     }
 
-    public static function load_criterions(&$task) {
+    public static function get_criterions($taskid) {
         global $DB;
 
         $sql = "SELECT *
                   FROM {" . static::TABLE_TASK_CRITERIONS . "}
                  WHERE taskid = ?
               ORDER BY seq ASC";
-        $params = array($task->id);
+        $params = array($taskid);
 
         $records = $DB->get_records_sql($sql, $params);
         $criterions = array();
@@ -322,16 +322,16 @@ class task extends persistent {
             $criterions[$record->id] = $record;
         }
 
-        $task->criterions = $criterions;
+        return $criterions;
     }
 
-    public static function load_evidences(&$task) {
+    public static function get_evidences($taskid) {
         global $DB;
 
         $sql = "SELECT *
                   FROM {" . static::TABLE_TASK_EVIDENCES . "}
                  WHERE taskid = ?";
-        $params = array($task->id);
+        $params = array($taskid);
 
         $records = $DB->get_records_sql($sql, $params);
         $evidences = array();
@@ -339,7 +339,7 @@ class task extends persistent {
             $evidences[] = $record;
         }
 
-        $task->evidences = $evidences;
+        return $evidences;
     }
 
     public static function get_myconnect_grade_evidences($gradeid) {

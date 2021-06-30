@@ -97,9 +97,6 @@ if ($create) {
         exit;
     }
 
-echo task::get_diff($task->get('id'));
-exit;
-
     // Instantiate the form.
     $formtask = new form_task($editurl->out(false), array(),'post', '', []);
 
