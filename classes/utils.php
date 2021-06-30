@@ -26,7 +26,8 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
-require_once($CFG->dirroot . '/mod/wiki/diff/difflib.php'); // Use wiki's diff lib.
+//require_once($CFG->dirroot . '/mod/wiki/diff/difflib.php'); // Use wiki's diff lib.     
+require_once(__DIR__.'/vendor/PHP-FineDiff/finediff.php');
 
 /**
  * Provides utility functions for this plugin.
@@ -584,20 +585,44 @@ class utils {
         global $OUTPUT;
 
         $criterions = json_decode($data->criterionjson);
-        $data->criteriahtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector_row_text', ['criterions' => $criterions]);
+        $data->criteriahtml = $OUTPUT->render_from_template('mod_psgrading/diff_criterion_row_text', ['criterions' => $criterions]);
 
         $evidences = json_decode($data->evidencejson);
-        $data->evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector_text', ['evidences' => $evidences]);
+        $data->evidencehtml = $OUTPUT->render_from_template('mod_psgrading/diff_evidence_text', ['evidences' => $evidences]);
 
-        $data->outcomes = nl2br($data->outcomes);
+        $snip = nl2br($data->outcomes);
+        $snip = str_replace('.', '', $snip); // remove dots
+        $snip = str_replace(' ', '', $snip); // remove spaces
+        $snip = str_replace("\t", '', $snip); // remove tabs
+        $snip = str_replace("\n", '', $snip); // remove new lines
+        $snip = str_replace("\r", '', $snip); // remove carriage returns
+        $data->outcomes = $snip;
 
-        $html = $OUTPUT->render_from_template('mod_psgrading/task_text', $data);
+        $html = $OUTPUT->render_from_template('mod_psgrading/diff_task_text', $data);
 
         return $html;
     }
 
-    /* TODO: Uses mod_wikis diff lib */
     public static function diff_versions_quick($json1, $json2) {
+
+        $olddata = json_decode($json1);
+        $newdata = json_decode($json2);
+
+        $from_text = static::get_taskdata_as_html($olddata);
+        $to_text = static::get_taskdata_as_html($newdata);
+
+        //$from_text = mb_convert_encoding($from_text, 'HTML-ENTITIES', 'UTF-8');
+        //$to_text = mb_convert_encoding($to_text, 'HTML-ENTITIES', 'UTF-8');
+
+
+
+        $opcodes = \FineDiff::getDiffOpcodes($from_text, $to_text);
+        return htmlspecialchars_decode(\FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes));
+
+    }
+
+    /* TODO: Uses mod_wikis diff lib */
+    public static function diff_versions_quickx($json1, $json2) {
         global $DB, $PAGE, $USER;
 
         $olddata = json_decode($json1);
@@ -606,12 +631,13 @@ class utils {
         $oldhtml = static::get_taskdata_as_html($olddata);
         $newhtml = static::get_taskdata_as_html($newdata);
 
-        //list($diff1, $diff2) = ouwiki_diff_html($oldhtml, $newhtml);
 
         $lines1=ouwiki_diff_html_to_lines($oldhtml);
         $lines2=ouwiki_diff_html_to_lines($newhtml);
 
-        list($deleted,$added)=ouwiki_diff_words($lines1,$lines2);
+        list($deleted, $added) = ouwiki_diff_words($lines1, $lines2);
+
+        //echo "<pre>"; var_export($deleted); exit;
 
         $diff1 = '';
         if ($deleted) {
@@ -625,6 +651,7 @@ class utils {
                 '<strong class="accesshide">'.get_string('addedbegins','wiki').'</strong>',
                 '<strong class="accesshide">'.get_string('addedends','wiki').'</strong>');
         }
+
 
         $diff1 = format_text($diff1, FORMAT_HTML, array('overflowdiv'=>true));
         $diff2 = format_text($diff2, FORMAT_HTML, array('overflowdiv'=>true));

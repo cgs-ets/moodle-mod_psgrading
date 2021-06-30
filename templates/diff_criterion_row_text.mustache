@@ -19,29 +19,27 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/task_text
+    @template mod_psgrading/diff_criterion_row_text
 
     View for diff.
 }}
-<table class="task-diff">
-    <tr class="taskname">
-        <td><strong>Taskname</strong></td>
-        <td>{{taskname}}</td>
+<table class="criterions">
+    <tr>
+        <th>Description</th>
+        <th>Good start</th>
+        <th>Making strides</th>
+        <th>Go run with it</th>
+        <th>Subject</th>
+        <th>Options</th>
     </tr>
-    <tr class="pypuoi">
-        <td><strong>PYPUOI</strong></td>
-        <td>{{pypuoi}}</td>
-    </tr>
-    <tr class="outcomes">
-        <td><strong>Outcomes</strong></td>
-        <td>{{{outcomes}}}</td>
-    </tr>
-    <tr class="criteria">
-        <td><strong>Criteria</strong></td>
-        <td>{{{criteriahtml}}}</td>
-    </tr>
-    <tr class="evidence">
-        <td><strong>Evidences</strong></td>
-        <td>{{{evidencehtml}}}</td>
-    </tr>
+    {{#criterions}}
+        <tr>
+            <td class="description">{{description}}</td>
+            <td class="level4">{{level4}}</td>
+            <td class="level3">{{level3}}</td>
+            <td class="level2">{{level2}}</td>
+            <td class="subject">{{subject}}</td>
+            <td class="options">{{#enableweights}}{{weight}}, {{/enableweights}} {{#hidden}}Hidden{{/hidden}}{{^hidden}}Visible{{/hidden}}</td>
+        </tr>
+    {{/criterions}}
 </table>

@@ -19,12 +19,12 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/evidence_selector_text
+    @template mod_psgrading/diff_evidence_text
 
     View for diff.
 }}
-<div class="evidences">
+<table class="evidences">
     {{#evidences}}
-        <div class="modid">[{{refdata}}]</div>
+        <tr class="modid">{{evidencetype}} {{refdata}}</tr>
     {{/evidences}}
-</div>
+</table>
