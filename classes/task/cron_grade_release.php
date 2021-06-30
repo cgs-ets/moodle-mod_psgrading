@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use mod_psgrading\persistents\task;
 use mod_psgrading\utils;
 
-class cron_process_new_grade extends \core\task\scheduled_task {
+class cron_grade_release extends \core\task\scheduled_task {
 
     // Use the logging trait to get some nice, juicy, logging.
     use \core\task\logging_trait;
@@ -39,7 +39,7 @@ class cron_process_new_grade extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('cron_process_new_grade', 'mod_psgrading');
+        return get_string('cron_grade_release', 'mod_psgrading');
     }
 
     /**
