@@ -101,7 +101,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             DIFF: null,
         };
         var preloads = [];
-        preloads.push(self.loadModal('DIFF', 'Review draft edits and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
+        preloads.push(self.loadModal('DIFF', 'Review draft changes and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         })
