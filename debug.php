@@ -34,7 +34,7 @@ $PAGE->set_heading('mod_psgrading debugger');
 require_login();
 require_capability('moodle/site:config', $context, $USER->id);
 
-//$task = new \mod_psgrading\task\cron_grade_release;
-//$task->execute();
-//exit;
+$task = new \mod_psgrading\task\cron_grade_release;
+$task->execute();
+exit;
 

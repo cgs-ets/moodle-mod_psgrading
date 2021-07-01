@@ -419,13 +419,15 @@ class task extends persistent {
             // Recreate criterion grades.
             $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
             $criterions = json_decode($data->criterionjson);
-            foreach ($criterions as $selection) {
-                $criterion = new \stdClass();
-                $criterion->taskid = $data->taskid;
-                $criterion->criterionid = $selection->id;
-                $criterion->gradeid = $graderec->id;
-                $criterion->gradelevel = $selection->selectedlevel;
-                $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
+            if ($criterions) {
+                foreach ($criterions as $selection) {
+                    $criterion = new \stdClass();
+                    $criterion->taskid = $data->taskid;
+                    $criterion->criterionid = $selection->id;
+                    $criterion->gradeid = $graderec->id;
+                    $criterion->gradelevel = $selection->selectedlevel;
+                    $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
+                }
             }
 
             // Recreate myconnect links.

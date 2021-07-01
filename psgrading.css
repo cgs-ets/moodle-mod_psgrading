@@ -1258,14 +1258,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #D90617;
   color: #fff;
 }
-.psgrading-matrix .column.task .cell-engagement[data-engagement="acceptable"] {
+.psgrading-matrix .column.task .cell-engagement[data-engagement="A"] {
   background-color: #FFDB00;
 }
-.psgrading-matrix .column.task .cell-engagement[data-engagement="good"] {
+.psgrading-matrix .column.task .cell-engagement[data-engagement="VG"] {
   background-color: #6BB82E;
   color: #fff;
 }
-.psgrading-matrix .column.task .cell-engagement[data-engagement="verygood"] {
+.psgrading-matrix .column.task .cell-engagement[data-engagement="E"] {
   background-color: #00812F;
   color: #fff;
 }

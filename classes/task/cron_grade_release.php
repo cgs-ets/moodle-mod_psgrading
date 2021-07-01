@@ -100,16 +100,51 @@ class cron_grade_release extends \core\task\scheduled_task {
             );
             $detailsurl = new \moodle_url('/mod/psgrading/details.php', $params);
             $postdata->comment = array(
-                'text' => $OUTPUT->render_from_template('mod_psgrading/release_grade_myconnect_new', array('detailsurl' => $detailsurl->out(false))),
+                'text' => $OUTPUT->render_from_template('mod_psgrading/release_grade_myconnect_new', array(
+                    'detailsurl' => $detailsurl->out(false),
+                    'taskname' => $task->taskname,
+                )),
                 'format' => '1',
                 'itemid' => 0,
             );
 
             $postid = \local_myconnect\persistents\post::save_from_formdata(0, $postdata, $grader);
+            $this->log("MyConnect post created " . $postid, 2);
+
+            // Hacky copy & paste evidence to myconnect attachments.
+            $this->log("Copying evidence to MyConnect post.", 2);
+            $modulecontext = \context_module::instance($task->cmid);
+            $fs = get_file_storage();
+            $uniqueid = sprintf( "%d%d", $task->id, $student->id ); // Join the task id and grade student it to make the unique itemid.
+            $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
+            foreach ($files as $storedfile) {
+                // Set up a new file record for the db. Remove the id so that a new record is inserted.
+                $file = $DB->get_record('files', array('id' => $storedfile->get_id()));
+                if (empty($file)) {
+                    $this->log_finish("Weird, the file record was not found for " . $storedfile->get_id());
+                    return;
+                }
+
+                $newfile = clone $file;
+                unset($newfile->id);
+                $newfile->contextid = 1;
+                $newfile->component = 'local_myconnect';
+                $newfile->filearea = 'attachment';
+                $newfile->itemid = $postid;
+                $newfile->pathnamehash = sha1("/$newfile->contextid/$newfile->component/$newfile->filearea/$newfile->itemid/$newfile->filename");
+                
+                $reference = $fs->pack_reference($file); // Setup the reference to original file.
+                $aliasfile = $fs->create_file_from_reference($newfile, 1, $reference); // Create the reference.
+
+                $this->log("Created file reference '" . $aliasfile->get_id() . "'", 2);
+                //$newfileid = $DB->insert_record('files', $newfile);
+            }
+            // Set the display type now that the post has files.
+            \local_myconnect\persistents\post::determine_attachment_display_type($postid);
 
             // Mark grade as processed.
             $grade->releaseprocessed = 1;
-            $DB->update_record(task::TABLE_GRADES, $grade);
+            //$DB->update_record(task::TABLE_GRADES, $grade);
 
             // Record grade-to-myconnectpost relationship.
             $releasepostrec = new \stdClass();

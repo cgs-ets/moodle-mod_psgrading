@@ -153,7 +153,7 @@ class task_exporter extends persistent_exporter {
             $isdraft = true;
         }
 
-        // Load task evidences (default).
+        // Load task evidences (pre-defined evidences).
         $evidences = task::get_evidences($this->data->id);
         foreach ($evidences as &$evidence) {
             if ($evidence->evidencetype == 'cm') {
@@ -163,8 +163,10 @@ class task_exporter extends persistent_exporter {
                 $cms = $modinfo->get_cms();
                 $cm = $cms[$evidence->refdata];
                 $evidence->icon = $cm->get_icon_url()->out();
-                $evidence->url = $cm->url;
                 $evidence->name = $cm->name;
+
+                // Determine the URL depending on the cm type.
+                $evidence->url = $cm->url;
             }
         }
 

@@ -196,7 +196,7 @@ class mark_exporter extends exporter {
         $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
 
         // Load task criterions.
-        $task->criterions = task::get_criterions($taskid);
+        $task->criterions = task::get_criterions($task->id);
         foreach ($task->criterions as $criteron) {
             // add marks to criterion definitions.
             if (isset($gradeinfo->criterions[$criteron->id])) {
