@@ -121,7 +121,7 @@ class mark_exporter extends exporter {
 
         $baseurl = clone($this->related['markurl']);
 
-		$taskexporter = new task_exporter($this->related['task']);
+		$taskexporter = new task_exporter($this->related['task'], array('userid' => $this->related['userid']));
 		$task = $taskexporter->export($output);
 
         // Group navigation.

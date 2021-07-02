@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use core\external\persistent_exporter;
 use renderer_base;
 use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 /**
  * Exporter of a single task
@@ -165,8 +166,50 @@ class task_exporter extends persistent_exporter {
                 $evidence->icon = $cm->get_icon_url()->out();
                 $evidence->name = $cm->name;
 
-                // Determine the URL depending on the cm type.
-                $evidence->url = $cm->url;
+                // Determine the URL depending on the activity, and viewing user's role.
+                $isstaff = utils::is_cgs_staff();
+
+                // Default.
+                $evidence->url = clone($cm->url);
+
+                // Based on activity.
+                switch ($cm->modname) 
+                {
+                    case 'giportfolio':
+                        $evidence->url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                            'id' => $cm->id,
+                            'mentee' => $userid,
+                        ));
+                        break;
+
+                    case 'googledocs':
+                        // 
+                        break;
+
+                    case 'assign':
+                        if ($istaff) {
+                            $evidence->url = new \moodle_url('/mod/assign/view.php', array(
+                                'id' => $cm->id,
+                                'action' => 'grader',
+                                'userid' => $userid,
+                            ));
+                        }
+                        break;
+
+                    case 'quiz':
+                        if ($isstaff) {
+                            $evidence->url = new \moodle_url('/mod/quiz/grade.php', array(
+                                'id' => $cm->id,
+                                'userid' => $userid,
+                            ));
+                        }
+                        break;
+
+                }
+
+                $evidence->url = $evidence->url->out(false);
+
+
             }
         }
 
