@@ -1,48 +1,108 @@
-#page-mod-psgrading-view {
-	.tasks {
-	    margin-top: 25px;
-		table {
-			.th {
-			    width: 200px;
-			    min-width: 200px;
-			}
-			.th.c0 {
-				width: 99%;
-			}
-			tr.task {
-			    //background-color: #d4edda;
-			    &.not-published {
-				    //background: #fff3cd;
-				}
-				.c-status {
-					.badge-success {
-					    background-color: green;
-					}
-					.badge-info {
-						background-color: #17a2b8;
-						color: #fff;
-					}
-					.badge-danger {
-						background-color: #dc3545;
-					}
-				}
-				.dropdown {
-				    display: inline-block;
-				}
-				a.btn-reorder {
-				    width: 20px;
-				    text-align: center;
-				    cursor: pointer;
-				    color: #005b94;
-				    display: inline-block;
-				    margin-left: 10px;
-				}
-				i.fa-check {
-				    color: green;
-		    		float: right;
-		    		line-height: 36px;
-				}
-			}
-		}
+@tableborder: 1px dashed #ccc;
+
+.psgrading-list {
+	white-space: nowrap;
+	overflow: auto;
+	padding: 20px;
+	font-size: 1.125em;
+    .classlist-table {
+        overflow: hidden;
+        position: relative;
+    }
+	.column {
+	    display: inline-block;
+	    vertical-align: top;
+	    line-height: 30px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+	    width: 140px;
+        height: 43px;
+        padding: 6px;
+        border-top: @tableborder;
+        border-left: @tableborder;
 	}
+    .col-empty {
+        border: none !important;
+    }
+    .col-student {
+	    width: 180px;
+        img {
+            height: 28px;
+        }
+    }
+    .col-taskname {
+        // -- Vertical display.
+        //display: inline-block;
+        //white-space: nowrap;
+        //vertical-align: middle;
+        //-webkit-transform: translate(0,100%) rotate(-90deg);
+        //-moz-transform: translate(0,100%) rotate(-90deg);
+        //-ms-transform: translate(0,100%) rotate(-90deg);
+        //-o-transform: translate(0,100%) rotate(-90deg);
+        //transform: translate(0,100%) rotate(-90deg);
+        //transform-origin: -2px 2px;
+        //height: 140px;
+        //width: 140px;
+        //border-top: @tableborder;
+        //border-left: none;
+
+        // -- Horizontal display.
+        display: inline-block;
+        height: 80px;
+        white-space: normal;
+        //padding: 0;
+        .truncate-overflow {
+            display: block;
+            position: relative;
+            line-height: 23px;
+            max-height: 67px;
+            padding-right: 23px; /* space for ellipsis */
+            //margin: 6px;
+            &::before {
+                position: absolute;
+                content: "...";
+                inset-block-end: 0; /* "bottom" */
+                inset-inline-end: 0; /* "right" */
+                //bottom: 6px;
+            }
+            &::after {
+                content: "";
+                position: absolute;
+                inset-inline-end: 0; /* "right" */
+                width: 23px;
+                height: 23px;
+                background: white;
+                top: 0;
+            }
+        }
+	    
+    }
+    .col-taskcreatecol {
+        height: 100%;
+        position: absolute;
+        white-space: pre-wrap;
+        border-top: none;
+        &:hover {
+            background-color: #f2f4f6;
+            transition: background linear 0.1s;
+        }
+    }
+    .column[data-grade="5"] {
+        background-color: #D90617;
+        color: #fff;
+    }
+    .column[data-grade="4"] {
+        background-color: #F97D01;
+    }
+    .column[data-grade="3"] {
+        background-color: #FFDB00;
+    }
+    .column[data-grade="2"] {
+        background-color: #6BB82E;
+    }
+    .column[data-grade="1"] {
+        background-color: #00812F;
+        color: #fff;
+    }
 }

@@ -269,8 +269,9 @@ class task extends persistent {
 
         if ($gradeinfo) {
             $gradeinfo->criterions = static::get_grade_criterion_selections($gradeinfo->id);
-            if ($gradeinfo->engagement) {
-                $gradeinfo->engagementlang = utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement];
+            $gradeinfo->engagementlang = '&nbsp;';
+            if ($gradeinfo->engagement && isset(utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement])) {
+                $gradeinfo->engagementlang =  utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement];
             }
             return $gradeinfo;
         }

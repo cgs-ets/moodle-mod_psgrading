@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides the mod_psgrading/list module
+ * Provides the mod_psgrading/manage module
  *
  * @package   mod_psgrading
  * @category  output
@@ -23,27 +23,27 @@
  */
 
 /**
- * @module mod_psgrading/list
+ * @module mod_psgrading/manage
  */
 define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_events',], 
     function($, Log, Ajax, ModalFactory, ModalEvents) {    
     'use strict';
 
     /**
-     * Initializes the list component.
+     * Initializes the manage component.
      */
     function init() {
-        Log.debug('mod_psgrading/list: initializing');
+        Log.debug('mod_psgrading/manage: initializing');
 
         var rootel = $('#page-mod-psgrading-view');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/list: #page-mod-psgrading-view not found!');
+            Log.error('mod_psgrading/manage: #page-mod-psgrading-view not found!');
             return;
         }
 
-        var list = new List(rootel);
-        list.main();
+        var manage = new Manage(rootel);
+        manage.main();
     }
 
     /**
@@ -52,7 +52,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @constructor
      * @param {jQuery} rootel
      */
-    function List(rootel) {
+    function Manage(rootel) {
         var self = this;
         self.rootel = rootel;
     }
@@ -61,7 +61,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * Run the Audience Selector.
      *
      */
-    List.prototype.main = function () {
+    Manage.prototype.main = function () {
         var self = this;
 
         // Release.
@@ -113,7 +113,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.showDeleteDraft = function (button) {
+    Manage.prototype.showDeleteDraft = function (button) {
         var self = this;
 
         if (self.modals.DIFF) {
@@ -146,14 +146,14 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         }
     };
 
-    List.prototype.handleDeleteDraft = function (event) {
+    Manage.prototype.handleDeleteDraft = function (event) {
         var self = event.data.self;
         var taskid = event.data.taskid;
 
         self.deleteDraft(taskid);
     };
 
-    List.prototype.deleteDraft = function (taskid) {
+    Manage.prototype.deleteDraft = function (taskid) {
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
@@ -174,7 +174,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.releaseTask = function (button) {
+    Manage.prototype.releaseTask = function (button) {
         var self = this;
 
         var task = button.closest('.task');
@@ -200,7 +200,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.unreleaseTask = function (button) {
+    Manage.prototype.unreleaseTask = function (button) {
         var self = this;
 
         var task = button.closest('.task');
@@ -222,7 +222,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     };
 
 
-    List.prototype.SortEnd = function (e) {
+    Manage.prototype.SortEnd = function (e) {
         // Get new order.
         var tasks = new Array();
         $('#task-list .task').each(function() {
@@ -252,7 +252,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @param {string} title The button text of the modal
      * @return {object} jQuery promise
      */
-    List.prototype.loadModal = function (modalkey, title, buttontext, type) {
+    Manage.prototype.loadModal = function (modalkey, title, buttontext, type) {
         var self = this;
         return ModalFactory.create({type: type}).then(function(modal) {
             modal.setTitle(title);

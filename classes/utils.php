@@ -288,11 +288,14 @@ class utils {
                 continue;
             }
             $cmrec = $cm->get_course_module_record(true);
-            if ($cmrec->deletioninprogress) { // Don't include deleted activities.
+            
+            // Don't include deleted activities.
+            if ($cmrec->deletioninprogress) {
                 continue;
             }
+    
             // Don't include self, and resources.
-            if (in_array($cmrec->modname, array(
+            /*if (in_array($cmrec->modname, array(
                     'psgrading', 
                     'resource', 
                     'folder', 
@@ -305,9 +308,19 @@ class utils {
                     'zoom',
                 ))) {
                 continue;
+            }*/
+
+            // Only include supported activities.
+            if (!in_array($cmrec->modname, array(
+                    'giportfolio',
+                    'googledocs',
+                    'assign',
+                    'quiz',
+                ))) {
+                continue;
             }
-            //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
-            $cmrec->icon = $cm->get_icon_url()->out();
+            
+            $cmrec->icon = $cm->get_icon_url()->out(); //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
             $cmrec->url = $cm->url;
             if (in_array($cmrec->id, $selectedcms)) {
                 $cmrec->sel = true;
@@ -338,7 +351,7 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students($courseid, $accessuserid) {
+    public static function get_filtered_students($courseid, $accessuserid = 0) {
         global $USER;
 
         $students = static::get_enrolled_students($courseid);
@@ -415,7 +428,7 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students_by_group($courseid, $groupid, $accessuserid) {
+    public static function get_filtered_students_by_group($courseid, $groupid = 0, $accessuserid = 0) {
         global $DB;
 
         $students = static::get_filtered_students($courseid, $accessuserid);
@@ -611,77 +624,6 @@ class utils {
 
         $opcodes = \FineDiff::getDiffOpcodes($from_text, $to_text);
         return htmlspecialchars_decode(\FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes));
-
-    }
-
-    /* TODO: Uses mod_wikis diff lib */
-    public static function diff_versionsx($json1, $json2) {
-        global $DB, $PAGE, $USER;
-
-        $olddata = json_decode($json1);
-        $newdata = json_decode($json2);
-
-        $oldhtml = static::get_taskdata_as_html($olddata);
-        $newhtml = static::get_taskdata_as_html($newdata);
-
-
-        $lines1=ouwiki_diff_html_to_lines($oldhtml);
-        $lines2=ouwiki_diff_html_to_lines($newhtml);
-
-        list($deleted, $added) = ouwiki_diff_words($lines1, $lines2);
-
-        //echo "<pre>"; var_export($deleted); exit;
-
-        $diff1 = '';
-        if ($deleted) {
-            $diff1 = ouwiki_diff_add_markers($oldhtml,$deleted,'ouw_deleted',
-                '<strong class="accesshide">'.get_string('deletedbegins','wiki').'</strong>',
-                '<strong class="accesshide">'.get_string('deletedends','wiki').'</strong>');
-        }
-        $diff2 = '';
-        if ($added) {
-            $diff2=ouwiki_diff_add_markers($newhtml,$added,'ouw_added',
-                '<strong class="accesshide">'.get_string('addedbegins','wiki').'</strong>',
-                '<strong class="accesshide">'.get_string('addedends','wiki').'</strong>');
-        }
-
-
-        $diff1 = format_text($diff1, FORMAT_HTML, array('overflowdiv'=>true));
-        $diff2 = format_text($diff2, FORMAT_HTML, array('overflowdiv'=>true));
-
-        // Mock up the data needed by the wiki renderer.
-        // We'll hide a bunch of unnecessary elements using CSS.
-        $wikioutput = $PAGE->get_renderer('mod_wiki');
-        $oldversion = array(
-            'id' => 1,
-            'pageid' => 1,
-            'content' =>'',
-            'contentformat' => 'html',
-            'version' => 1, 
-            'timecreated' => time(),
-            'userid' => $USER->id,
-            'diff' => $diff1,
-            'user' => $USER, // Use editing user.
-        );
-        $newversion = array(
-            'id' => 2, // Use log id.
-            'pageid' => 2,
-            'content' => '',
-            'contentformat' => 'html',
-            'version' => 2, // Use log id.
-            'timecreated' => time(),
-            'userid' => $USER->id,
-            'diff' => $diff2,
-            'user' => $USER, // Use editing user.
-        );
-
-        $html = '';
-        if ($deleted && $added) {
-            $html = '<div class="wiki-diff-container diff-head"><div class="wiki-diff-leftside"><b>Deletions</b></div><div class="wiki-diff-rightside"><b>Additions</b></div></div>';
-        }
-        
-        $html .= $wikioutput->diff(1, (object) $oldversion, (object) $newversion, array('total' => 2));
-        return $html;
 
     }
 

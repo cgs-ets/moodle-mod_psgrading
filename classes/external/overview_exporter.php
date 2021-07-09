@@ -111,7 +111,6 @@ class overview_exporter extends exporter {
             'students' => 'int[]?',
             'userid' => 'int',
             'groupid' => 'int',
-            'overviewurl' => 'moodle_url',
             'isstaff' => 'bool',
         ];
     }
@@ -136,7 +135,10 @@ class overview_exporter extends exporter {
             'prevstudenturl' => null,
         );
 
-        $baseurl = clone($this->related['overviewurl']);
+        $baseurl = new \moodle_url('/mod/psgrading/overview.php', array(
+            'cmid' => $this->related['cmid'],
+            'userid' => $this->related['userid'],
+        ));
 
         // Get all tasks for this course module.
         $tasks = array();
@@ -225,8 +227,11 @@ class overview_exporter extends exporter {
             }
 
             // Calculate success.
-            $success = array_sum($subjectgrades)/count($subjectgrades);
-            $success = (int) round($success, 0);
+            $success = 0;
+            if (count($subjectgrades)) {
+                $success = array_sum($subjectgrades)/count($subjectgrades);
+                $success = (int) round($success, 0);
+            }
             $gradelang = utils::GRADELANG[$success];
             $task->success = array(
                 'grade' => $success,

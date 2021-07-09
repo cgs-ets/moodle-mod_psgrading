@@ -26,7 +26,7 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use mod_psgrading\persistents\task;
-use mod_psgrading\external\list_exporter;
+use mod_psgrading\external\manage_exporter;
 use mod_psgrading\utils;
 
 // Course_module ID, or
@@ -34,10 +34,6 @@ $id = optional_param('id', 0, PARAM_INT);
 
 // ... module instance id.
 $p  = optional_param('p', 0, PARAM_INT);
-
-// Custom params.
-$groupid = optional_param('groupid', 0, PARAM_INT);
-$nav = optional_param('nav', '', PARAM_RAW);
 
 if ($id) {
     $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
@@ -59,82 +55,36 @@ if (!$isstaff) {
 	exit;
 } 
 
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
-    'id' => $cm->id,
-    'groupid' => $groupid,
-    'nav' => $nav,
-));
-
 $coursecontext = context_course::instance($course->id);
 $modulecontext = context_module::instance($cm->id);
 
 require_login($course, true, $cm);
 require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
 
-$PAGE->set_url($viewurl);
+$PAGE->set_url('/mod/psgrading/manage.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
-
-// Get groups in the course.
-$groups = utils::get_course_groups($course->id);
-// If group is not specified, check if preference is set.
-if (empty($groupid) && $nav != 'all') {
-    $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
-    if ($groupid) {
-        $viewurl->param('groupid', $groupid);
-        $PAGE->set_url($viewurl);
-    }
-} else {
-    set_user_preference('mod_psgrading_groupid', $groupid);
-}
-
-
-// Get the students in the course.
-if (empty($groupid)) {
-    // Groupid = 0, get all students in course.
-    $students = utils::get_filtered_students($course->id);
-} else {
-    // Get by group.
-    $students = utils::get_filtered_students_by_group($course->id, $groupid);
-}
-if (empty($students)) {
-    redirect($listurl->out(false));
-    exit;
-}
-
-// Get the tasks.
-$taskdata = task::get_for_coursemodule($cm->id);
-$relateds = array(
-    'cmid' => (int) $cm->id,
-    'groups' => $groups,
-    'groupid' => $groupid,
-    'students' => $students,
-	'tasks' => $taskdata,
-);
-$listexporter = new list_exporter(null, $relateds);
-$output = $PAGE->get_renderer('core');
-$data = $listexporter->export($output);
-
-//echo "<pre>"; var_export($data); exit;
-
-
-
-
-
-
-// Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+// Add vendor js.
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 
 $output = $OUTPUT->header();
 
-// Render the announcement list.
-$output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
+$taskdata = task::get_for_coursemodule($cm->id);
+$relateds = array(
+    'cmid' => $cm->id,
+	'tasks' => $taskdata,
+);
+$manageexporter = new manage_exporter(null, $relateds);
+$data = $manageexporter->export($OUTPUT);
+
+// Render the task list.
+$output .= $OUTPUT->render_from_template('mod_psgrading/manage', $data);
 
 // Add scripts.
-//$PAGE->requires->js_call_amd('mod_psgrading/list', 'init');
+$PAGE->requires->js_call_amd('mod_psgrading/manage', 'init');
 
 // Final outputs.
 $output .= $OUTPUT->footer();

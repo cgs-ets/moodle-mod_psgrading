@@ -21,33 +21,32 @@
 {{!
     @template mod_psgrading/list
 
-    List template.
+    Class list template.
 }}
 
-<div class="mod_psgrading">
-    <div>
-        <a id="btn-overview" class="btn btn-primary" href="{{overviewurl}}">{{#str}}overview, mod_psgrading{{/str}}</a>
-    </div>
-    <div class="tasks">
-        <table class="table generaltable">
-            <thead>
-                <tr>
-                    <th class="th c0" scope="col">Name</th>
-                    <th class="th c1" style="" scope="col">PYP UOI</th>
-                    <th class="th c3" style="" scope="col">Status</th>
-                    <th class="th c4" style="" scope="col">Last modified</th>
-                    <th class="th c5 lastcol" style="" scope="col"></th>
-                </tr>
-            </thead>
-            <tbody id="task-list">
-                {{#tasks}}
-                    {{>mod_psgrading/list_task}}
-                {{/tasks}}
-            </tbody>
-        </table>
-        {{^tasks.0}}{{#str}} list:notasks, mod_psgrading {{/str}}{{/tasks.0}}
-    </div>
-    <div>
-        <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}">{{#str}}createtask, mod_psgrading{{/str}}</a>
-    </div>
+<div class="psgrading-list">
+        <div class="classlist-table">
+            {{! Task names across the top }}
+            <div class="classlist-header">
+                {{#studentoverviews.0}}
+                    <div class="column col-empty col-student">&nbsp;</div>{{!
+                    
+                    }}{{#tasks}}<div class="column col-taskname"><span class="truncate-overflow">{{taskname}}</span></div>{{/tasks}}
+                    
+                    <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
+                        <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}createtask, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    </div>
+                {{/studentoverviews.0}}
+            </div>
+
+            {{! Student rows }}
+            {{#studentoverviews}}
+                {{>mod_psgrading/list_row}}
+            {{/studentoverviews}}
+
+        </div>
+
 </div>
+
+ 
+  

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Provides {@link mod_psgrading\external\list_exporter} class.
+ * Provides {@link mod_psgrading\external\manage_exporter} class.
  *
  * @package   mod_psgrading
  * @copyright 2021 Michael Vangelovski
@@ -29,12 +29,12 @@ use renderer_base;
 use core\external\exporter;
 
 /**
- * Exporter of a single task
+ * Exporter manage tasks interface data.
  */
-class list_exporter extends exporter {
+class manage_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
+    * Return the manage of additional properties.
     *
     * Calculated values or properties generated on the fly based on standard properties and related data.
     *
@@ -42,8 +42,8 @@ class list_exporter extends exporter {
     */
     protected static function define_other_properties() {
         return [
-            'studentoverviews' => [
-                'type' => overview_exporter::read_properties_definition(),
+            'tasks' => [
+                'type' => task_exporter::read_properties_definition(),
                 'multiple' => true,
                 'optional' => false,
             ],
@@ -52,11 +52,16 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'overviewurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
     /**
-    * Returns a list of objects that are related.
+    * Returns a manage of objects that are related.
     *
     * Data needed to generate "other" properties.
     *
@@ -64,10 +69,7 @@ class list_exporter extends exporter {
     */
     protected static function define_related() {
         return [
-            'cmid' => 'int',
-            'groups' => 'int[]?',
-            'students' => 'int[]?',
-            'groupid' => 'int',
+            'cmid' => 'string',
             'tasks' => 'mod_psgrading\persistents\task[]',
         ];
     }
@@ -79,31 +81,27 @@ class list_exporter extends exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
-        $studentoverviews = array();
-        foreach ($this->related['students'] as $studentid) {
-            // Export the overview for the student.
-            $relateds = array(
-                'cmid' => $this->related['cmid'],
-                'groups' => $this->related['groups'],
-                'students' => $this->related['students'],
-                'userid' => $studentid,
-                'groupid' => $this->related['groupid'],
-                'isstaff' => true, // Only staff can view the class list page.
-            );
-            $overviewexporter = new overview_exporter(null, $relateds);
-            $studentoverviews[] = $overviewexporter->export($output);
-        }
+
+        $tasks = array();
+		foreach ($this->related['tasks'] as $task) {
+			$taskexporter = new task_exporter($task);
+			$tasks[] = $taskexporter->export($output);
+		}
 
         $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
             'cmid' => $this->related['cmid'],
             'create' => 1,
         ));
 
-        return array(
-            'studentoverviews' => $studentoverviews,
-            'taskcreateurl' => $taskcreateurl->out(false),
-        );
+        $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+            'cmid' => $this->related['cmid'],
+        ));
 
+        return array(
+            'tasks' => $tasks,
+            'taskcreateurl' => $taskcreateurl->out(false),
+            'overviewurl' => $overviewurl->out(false),
+        );
     }
 
 }

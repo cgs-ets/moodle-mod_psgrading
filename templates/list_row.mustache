@@ -1,0 +1,34 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2021 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/list_row
+
+    Single row for the list template.
+}}
+
+<div class="classlist-row">
+    <div class="column col-student" data-userid="{{currstudent.id}}">
+        <a href="{{currstudent.overviewurl}}" target="_blank"><img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span></a>
+    </div>{{!
+    }}{{#tasks}}<div class="column col-success" data-grade="{{success.grade}}">
+        {{{success.gradelang}}}
+    </div>{{/tasks}}
+</div>

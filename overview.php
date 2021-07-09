@@ -115,7 +115,6 @@ $relateds = array(
     'students' => $students,
     'userid' => $userid,
     'groupid' => $groupid,
-    'overviewurl' => $overviewurl,
     'isstaff' => $viewas ? false : utils::is_cgs_staff(),
 );
 $overviewexporter = new overview_exporter(null, $relateds);

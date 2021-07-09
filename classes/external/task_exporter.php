@@ -176,18 +176,21 @@ class task_exporter extends persistent_exporter {
                 switch ($cm->modname) 
                 {
                     case 'giportfolio':
-                        $evidence->url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                        // Custom URL for all users.
+                        $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', array(
                             'id' => $cm->id,
-                            'mentee' => $userid,
+                            'userid' => $userid,
                         ));
                         break;
 
                     case 'googledocs':
-                        // 
+                        // Use default view page for all users.
                         break;
 
                     case 'assign':
+                        // Use default view page for students/parents.
                         if ($istaff) {
+                            // Custom URL for staff.
                             $evidence->url = new \moodle_url('/mod/assign/view.php', array(
                                 'id' => $cm->id,
                                 'action' => 'grader',
@@ -197,19 +200,18 @@ class task_exporter extends persistent_exporter {
                         break;
 
                     case 'quiz':
+                        // Use default view page for students/parents.
                         if ($isstaff) {
+                            // Custom URL for staff.
                             $evidence->url = new \moodle_url('/mod/quiz/grade.php', array(
                                 'id' => $cm->id,
                                 'userid' => $userid,
                             ));
                         }
                         break;
-
                 }
 
                 $evidence->url = $evidence->url->out(false);
-
-
             }
         }
 
