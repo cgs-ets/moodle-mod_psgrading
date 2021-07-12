@@ -112,6 +112,7 @@ class overview_exporter extends exporter {
             'userid' => 'int',
             'groupid' => 'int',
             'isstaff' => 'bool',
+            'includedrafttasks' => 'bool?',
         ];
     }
 
@@ -151,7 +152,7 @@ class overview_exporter extends exporter {
         foreach ($cmtasks as $task) {
             $taskexporter = new task_exporter($task, array('userid' => $this->related['userid']));
             $task = $taskexporter->export($output);
-            if (!$task->published) {
+            if (!$task->published && !$this->related['includedrafttasks']) {
                 continue;
             }
 

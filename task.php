@@ -32,8 +32,7 @@ use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
-$cmid = optional_param('cmid', 0, PARAM_INT);
-$p  = optional_param('p', 0, PARAM_INT);
+$cmid = required_param('cmid', PARAM_INT);
 
 $create = optional_param('create', 0, PARAM_INT);
 $edit = optional_param('edit', 0, PARAM_INT);
@@ -42,12 +41,6 @@ if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
     $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
-    $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
-} else {
-    print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
 
 require_login($course, true, $cm);
@@ -169,7 +162,7 @@ if ($create) {
             exit;
         }
 
-        /*if ($formdata->action == 'discardchanges') {
+        if ($formdata->action == 'discardchanges') {
             // If already published, remove draftjson.
             if ($task->get('published')) {
                 $task->set('draftjson', '');
@@ -182,7 +175,7 @@ if ($create) {
             // If not yet publised, delete the task.
             redirect($listurl->out());
             exit;
-        }*/
+        }
 
         if ($formdata->action == 'publish') {
 

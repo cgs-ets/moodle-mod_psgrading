@@ -1,4 +1,4 @@
-@tableborder: 1px dashed #ccc;
+@tableborder: 1px solid #ccc;
 
 .psgrading-list {
 	white-space: nowrap;
@@ -8,6 +8,11 @@
     .classlist-table {
         overflow: hidden;
         position: relative;
+        div.classlist-row:last-child {
+            .column {
+                border-bottom: @tableborder;
+            }
+        }
     }
 	.column {
 	    display: inline-block;
@@ -21,6 +26,9 @@
         padding: 6px;
         border-top: @tableborder;
         border-left: @tableborder;
+        &.not-published {
+	        width: 100px;
+        }
 	}
     .col-empty {
         border: none !important;
@@ -33,60 +41,62 @@
     }
     .col-taskname {
         // -- Vertical display.
-        //display: inline-block;
-        //white-space: nowrap;
-        //vertical-align: middle;
-        //-webkit-transform: translate(0,100%) rotate(-90deg);
-        //-moz-transform: translate(0,100%) rotate(-90deg);
-        //-ms-transform: translate(0,100%) rotate(-90deg);
-        //-o-transform: translate(0,100%) rotate(-90deg);
-        //transform: translate(0,100%) rotate(-90deg);
-        //transform-origin: -2px 2px;
-        //height: 140px;
-        //width: 140px;
-        //border-top: @tableborder;
-        //border-left: none;
+        height: 190px;
+        width: 140px;
+        border-top: @tableborder;
+        border-left: @tableborder;
+        position: relative;
+        .text {
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-transform: translate(0,100%) rotate(-90deg);
+            -moz-transform: translate(0,100%) rotate(-90deg);
+            -ms-transform: translate(0,100%) rotate(-90deg);
+            -o-transform: translate(0,100%) rotate(-90deg);
+            transform: translate(0,100%) rotate(-90deg);
+            transform-origin: 69px 73px;
+            width: 175px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         // -- Horizontal display.
-        display: inline-block;
-        height: 80px;
+        /*display: inline-block;
+        height: 104px;
         white-space: normal;
-        //padding: 0;
-        .truncate-overflow {
-            display: block;
+        .text {
+            display: inline-block;
             position: relative;
             line-height: 23px;
-            max-height: 67px;
-            padding-right: 23px; /* space for ellipsis */
-            //margin: 6px;
-            &::before {
-                position: absolute;
-                content: "...";
-                inset-block-end: 0; /* "bottom" */
-                inset-inline-end: 0; /* "right" */
-                //bottom: 6px;
+            max-height: 92px;
+            word-break: break-word;
+            &:before {
+                content:'';
+                width:100%;
+                height:100%;    
+                position:absolute;
+                left:0;
+                top:0;
+                background:linear-gradient(transparent 69px, #fff);
             }
-            &::after {
-                content: "";
-                position: absolute;
-                inset-inline-end: 0; /* "right" */
-                width: 23px;
-                height: 23px;
-                background: white;
-                top: 0;
-            }
+        }*/
+        .actions {
+            top: 0;
+            position: absolute;
+            right: 7px;
+            width: 22px;
+            white-space: normal;
+            text-align: center;
         }
-	    
     }
     .col-taskcreatecol {
         height: 100%;
         position: absolute;
-        white-space: pre-wrap;
         border-top: none;
-        &:hover {
-            background-color: #f2f4f6;
-            transition: background linear 0.1s;
-        }
+        padding: 3px 0 0 5px;
+        width: 80px;
+        transition: all ease 0.3s;
     }
     .column[data-grade="5"] {
         background-color: #D90617;

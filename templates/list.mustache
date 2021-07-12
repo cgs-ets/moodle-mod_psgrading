@@ -24,27 +24,65 @@
     Class list template.
 }}
 
+<div class="group-selector">
+    {{#groups.1}}
+        <span class="selector-label">Group</span>
+        <select class="group-select form-control">
+            <option value="0" data-viewurl="{{basenavurl}}">All groups</option>
+            {{#groups}}
+                <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+            {{/groups}}
+        </select>
+    {{/groups.1}}
+</div>
 <div class="psgrading-list">
-        <div class="classlist-table">
-            {{! Task names across the top }}
-            <div class="classlist-header">
-                {{#studentoverviews.0}}
-                    <div class="column col-empty col-student">&nbsp;</div>{{!
-                    
-                    }}{{#tasks}}<div class="column col-taskname"><span class="truncate-overflow">{{taskname}}</span></div>{{/tasks}}
-                    
-                    <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
-                        <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}createtask, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                    </div>
-                {{/studentoverviews.0}}
-            </div>
+    <div class="classlist-table">
+        {{! Task names across the top }}
+        <div class="classlist-header">
+            {{#studentoverviews.0}}
+                <div class="column col-empty col-student">&nbsp;</div>{{!
+                
+                }}{{#tasks}}<div class="column col-taskname {{^published}}not-published{{/published}}">
 
-            {{! Student rows }}
-            {{#studentoverviews}}
-                {{>mod_psgrading/list_row}}
-            {{/studentoverviews}}
+                    {{#published}}
+                        <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
+                    {{/published}}
+                    {{^published}}
+                        <span class="text" data-toggle="tooltip" title="{{draftdata.taskname}}">{{draftdata.taskname}}</span>
+                    {{/published}}
 
+                        <div class="actions">
+
+                            <span data-toggle="tooltip" data-placement="right" title="{{#published}}{{#released}}{{#str}}gradesreleased, mod_psgrading{{/str}}{{/released}}{{^released}}{{#str}}readytograde, mod_psgrading{{/str}}{{/released}}{{#draftjson}}{{#str}}unpublishededits, mod_psgrading{{/str}}{{/draftjson}}{{/published}}{{^published}}{{#str}}notpublishedyet, mod_psgrading{{/str}}{{/published}}"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+
+                            <a data-toggle="tooltip" data-placement="right" title="{{^isdraft}}Edit{{/isdraft}}{{#isdraft}}Continue editing{{/isdraft}}" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+                            {{#published}}
+                                <a data-toggle="tooltip" data-placement="right" title="Grade" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>
+                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release grades" class="action-release" href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>{{/released}}
+                                {{#released}}<a data-toggle="tooltip" data-placement="right" title="Hide grades" class="action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>{{/released}}
+                            {{/published}}
+
+                            {{#isdraft}}
+                                <a data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            {{/isdraft}}
+
+                            <a data-toggle="tooltip" data-placement="right" title="Reorder" class="btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
+                        </div>
+                </div>{{/tasks}}
+                
+                <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
+                    <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}createtask, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                </div>
+            {{/studentoverviews.0}}
         </div>
+
+        {{! Student rows }}
+        {{#studentoverviews}}
+            {{>mod_psgrading/list_row}}
+        {{/studentoverviews}}
+
+    </div>
 
 </div>
 

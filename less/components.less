@@ -6,36 +6,36 @@
         padding: 20px;
         margin: -1px -20px 30px -20px;
         box-shadow: 1px 0 12px -3px black;
-        .selected-student {
-            float: left;
+    }
+    .selected-student {
+        float: left;
+    }
+    .task-selector, .group-selector {
+        position: absolute;
+        top: -70px;
+        right: 35px;
+        width: 200px;
+        select {
+            width: auto;
+            min-width: 200px;
+            max-width: 100%;
         }
-        .task-selector, .group-selector {
-            position: absolute;
-            top: -70px;
-            right: 35px;
-            width: 200px;
-            select {
-                width: auto;
-                min-width: 200px;
-                max-width: 100%;
-            }
+    }
+    .student-selector {
+        float: right;
+        select {
+            display: inline-block;
+            width: 230px;
+            margin: 0 6px;
         }
-        .student-selector {
-            float: right;
-            select {
-                display: inline-block;
-                width: 230px;
-                margin: 0 6px;
-            }
-            a {
-                cursor: pointer;
-            }
+        a {
+            cursor: pointer;
         }
-        .selector-label {
-            position: absolute;
-            left: -51px;
-            font-size: 85%;
-            padding-top: 9px;
-        }
+    }
+    .selector-label {
+        position: absolute;
+        left: -51px;
+        font-size: 85%;
+        padding-top: 9px;
     }
 }

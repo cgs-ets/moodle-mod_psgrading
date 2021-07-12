@@ -56,34 +56,34 @@
   margin: -1px -20px 30px -20px;
   box-shadow: 1px 0 12px -3px black;
 }
-.path-mod-psgrading .header .selected-student {
+.path-mod-psgrading .selected-student {
   float: left;
 }
-.path-mod-psgrading .header .task-selector,
-.path-mod-psgrading .header .group-selector {
+.path-mod-psgrading .task-selector,
+.path-mod-psgrading .group-selector {
   position: absolute;
   top: -70px;
   right: 35px;
   width: 200px;
 }
-.path-mod-psgrading .header .task-selector select,
-.path-mod-psgrading .header .group-selector select {
+.path-mod-psgrading .task-selector select,
+.path-mod-psgrading .group-selector select {
   width: auto;
   min-width: 200px;
   max-width: 100%;
 }
-.path-mod-psgrading .header .student-selector {
+.path-mod-psgrading .student-selector {
   float: right;
 }
-.path-mod-psgrading .header .student-selector select {
+.path-mod-psgrading .student-selector select {
   display: inline-block;
   width: 230px;
   margin: 0 6px;
 }
-.path-mod-psgrading .header .student-selector a {
+.path-mod-psgrading .student-selector a {
   cursor: pointer;
 }
-.path-mod-psgrading .header .selector-label {
+.path-mod-psgrading .selector-label {
   position: absolute;
   left: -51px;
   font-size: 85%;
@@ -426,6 +426,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   overflow: hidden;
   position: relative;
 }
+.psgrading-list .classlist-table div.classlist-row:last-child .column {
+  border-bottom: 1px solid #ccc;
+}
 .psgrading-list .column {
   display: inline-block;
   vertical-align: top;
@@ -436,8 +439,11 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 140px;
   height: 43px;
   padding: 6px;
-  border-top: 1px dashed #ccc;
-  border-left: 1px dashed #ccc;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.psgrading-list .column.not-published {
+  width: 100px;
 }
 .psgrading-list .col-empty {
   border: none !important;
@@ -449,45 +455,60 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   height: 28px;
 }
 .psgrading-list .col-taskname {
-  display: inline-block;
-  height: 80px;
-  white-space: normal;
-}
-.psgrading-list .col-taskname .truncate-overflow {
-  display: block;
+  height: 190px;
+  width: 140px;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   position: relative;
-  line-height: 23px;
-  max-height: 67px;
-  padding-right: 23px;
-  /* space for ellipsis */
+  /*display: inline-block;
+        height: 104px;
+        white-space: normal;
+        .text {
+            display: inline-block;
+            position: relative;
+            line-height: 23px;
+            max-height: 92px;
+            word-break: break-word;
+            &:before {
+                content:'';
+                width:100%;
+                height:100%;    
+                position:absolute;
+                left:0;
+                top:0;
+                background:linear-gradient(transparent 69px, #fff);
+            }
+        }*/
 }
-.psgrading-list .col-taskname .truncate-overflow::before {
-  position: absolute;
-  content: "...";
-  inset-block-end: 0;
-  /* "bottom" */
-  inset-inline-end: 0;
-  /* "right" */
+.psgrading-list .col-taskname .text {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-transform: translate(0, 100%) rotate(-90deg);
+  -moz-transform: translate(0, 100%) rotate(-90deg);
+  -ms-transform: translate(0, 100%) rotate(-90deg);
+  -o-transform: translate(0, 100%) rotate(-90deg);
+  transform: translate(0, 100%) rotate(-90deg);
+  transform-origin: 69px 73px;
+  width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.psgrading-list .col-taskname .truncate-overflow::after {
-  content: "";
-  position: absolute;
-  inset-inline-end: 0;
-  /* "right" */
-  width: 23px;
-  height: 23px;
-  background: white;
+.psgrading-list .col-taskname .actions {
   top: 0;
+  position: absolute;
+  right: 7px;
+  width: 22px;
+  white-space: normal;
+  text-align: center;
 }
 .psgrading-list .col-taskcreatecol {
   height: 100%;
   position: absolute;
-  white-space: pre-wrap;
   border-top: none;
-}
-.psgrading-list .col-taskcreatecol:hover {
-  background-color: #f2f4f6;
-  transition: background linear 0.1s;
+  padding: 3px 0 0 5px;
+  width: 80px;
+  transition: all ease 0.3s;
 }
 .psgrading-list .column[data-grade="5"] {
   background-color: #D90617;

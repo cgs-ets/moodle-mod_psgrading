@@ -81,6 +81,7 @@ $PAGE->set_context($modulecontext);
 $groups = utils::get_course_groups($course->id);
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
+    // TODO: Create custom pref db as the pref needs to be per cm instance...
     $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
     if ($groupid) {
         $viewurl->param('groupid', $groupid);
@@ -89,7 +90,6 @@ if (empty($groupid) && $nav != 'all') {
 } else {
     set_user_preference('mod_psgrading_groupid', $groupid);
 }
-
 
 // Get the students in the course.
 if (empty($groupid)) {
@@ -100,7 +100,13 @@ if (empty($groupid)) {
     $students = utils::get_filtered_students_by_group($course->id, $groupid);
 }
 if (empty($students)) {
-    redirect($listurl->out(false));
+    if ($groupid) {
+        // Try redirecting to top.
+        $viewurl->param('groupid', 0);
+        $viewurl->param('nav', 'all'); 
+        redirect($viewurl->out(false));
+    }
+    echo "No students in course";
     exit;
 }
 
@@ -134,7 +140,7 @@ $output = $OUTPUT->header();
 $output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
 
 // Add scripts.
-//$PAGE->requires->js_call_amd('mod_psgrading/list', 'init');
+$PAGE->requires->js_call_amd('mod_psgrading/list', 'init');
 
 // Final outputs.
 $output .= $OUTPUT->footer();

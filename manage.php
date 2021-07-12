@@ -29,23 +29,12 @@ use mod_psgrading\persistents\task;
 use mod_psgrading\external\manage_exporter;
 use mod_psgrading\utils;
 
-// Course_module ID, or
-$id = optional_param('id', 0, PARAM_INT);
+// Course_module ID
+$cmid = required_param('cmid', PARAM_INT);
 
-// ... module instance id.
-$p  = optional_param('p', 0, PARAM_INT);
-
-if ($id) {
-    $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
-    $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
-} else {
-    print_error(get_string('missingidandcmid', 'mod_psgrading'));
-}
+$cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
+$course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+$moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
 
 // If a non-staff, redirect them to the overview page instead.
 $isstaff = utils::is_cgs_staff();

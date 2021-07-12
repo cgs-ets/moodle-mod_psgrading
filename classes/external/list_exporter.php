@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
+use \mod_psgrading\utils;
 
 /**
  * Exporter of a single task
@@ -48,6 +49,16 @@ class list_exporter extends exporter {
                 'optional' => false,
             ],
             'taskcreateurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
+            'groups' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
+            'basenavurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -79,6 +90,27 @@ class list_exporter extends exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
+
+        // Group navigation. TODO: take grade exporting out of overview exporter so that we don't export group nav for every student overview.
+        $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
+            'id' => $this->related['cmid']
+        ));
+        $groups = array();
+        foreach ($this->related['groups'] as $i => $groupid) {
+            $group = utils::get_group_display_info($groupid);
+            $group->viewurl = clone($baseurl);
+            $group->viewurl->param('groupid', $groupid);
+            $group->viewurl = $group->viewurl->out(false); // Replace viewurl with string val.
+            $group->iscurrent = false;
+            if ($this->related['groupid'] == $group->id) {
+                $group->iscurrent = true;
+            }
+            $groups[] = $group;
+        }
+        $basenavurl = clone($baseurl);
+        $basenavurl->param('groupid', 0);
+        $basenavurl->param('nav', 'all'); 
+
         $studentoverviews = array();
         foreach ($this->related['students'] as $studentid) {
             // Export the overview for the student.
@@ -89,6 +121,7 @@ class list_exporter extends exporter {
                 'userid' => $studentid,
                 'groupid' => $this->related['groupid'],
                 'isstaff' => true, // Only staff can view the class list page.
+                'includedrafttasks' => true,
             );
             $overviewexporter = new overview_exporter(null, $relateds);
             $studentoverviews[] = $overviewexporter->export($output);
@@ -102,6 +135,8 @@ class list_exporter extends exporter {
         return array(
             'studentoverviews' => $studentoverviews,
             'taskcreateurl' => $taskcreateurl->out(false),
+            'groups' => $groups,
+            'basenavurl' => $basenavurl->out(false),
         );
 
     }
