@@ -68,6 +68,7 @@ class form_mark extends \moodleform {
             $data->task->id = -1;
             $data->task->criterions = [];
             $data->myconnect = null;
+            $data->currstudent = null;
         }
 
         /****
@@ -87,6 +88,7 @@ class form_mark extends \moodleform {
             $OUTPUT->render_from_template('mod_psgrading/mark_evidence', array(
                 'task' => $data->task,
                 'myconnect' => $data->myconnect,
+                'currstudent' => $data->currstudent,
             ))
         );
         // Evidences filemanager.
