@@ -62,9 +62,9 @@ $string['mark:engagement'] = 'Engagement';
 $string['mark:save'] = 'Save and return';
 $string['mark:saveshownext'] = 'Save and show next';
 $string['mark:reset'] = 'Reset';
-$string['mark:savesuccess'] = 'Grade data was saved for {$a}';
-$string['mark:savefail'] = 'Failed to save grade data for {$a}';
-$string['mark:resetsuccess'] = 'Grade data was reset for {$a}';
+$string['mark:savesuccess'] = 'Feedback was saved for {$a}';
+$string['mark:savefail'] = 'Failed to save feedback for {$a}';
+$string['mark:resetsuccess'] = 'Feedback was reset for {$a}';
 
 $string['pypuoi:wwa'] = 'Who we are';
 $string['pypuoi:wwaipat'] = 'Where we are in place and time';
@@ -86,6 +86,7 @@ $string['enableweights'] = 'Enable weights';
 // Statuses
 $string['unpublishededits'] = 'Task has unpublished edits';
 $string['notpublishedyet'] = 'Task not published yet';
-$string['gradesreleased'] = 'Grades released';
+$string['gradesreleased'] = 'Feedback released';
 $string['readytograde'] = 'Task/grading in progress';
-$string['gradesnotreleased'] = 'Grades not released';
+$string['gradesnotreleased'] = 'Feedback hidden';
+$string['dragtoreorder'] = 'Drag to reorder';

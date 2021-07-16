@@ -77,8 +77,8 @@
                 {{#published}}
                     <a class="dropdown-item action-grade" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i> Grade</a>
                     <div class="dropdown-divider"></div>
-                    {{^released}}<a class="dropdown-item action-release" href="#"><i class="fa fa-eye" aria-hidden="true"></i> Release grades</a>{{/released}}
-                    {{#released}}<a class="dropdown-item action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i> Hide grades</a>{{/released}}
+                    {{^released}}<a class="dropdown-item action-release" href="#"><i class="fa fa-eye" aria-hidden="true"></i> Release feedback</a>{{/released}}
+                    {{#released}}<a class="dropdown-item action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i> Hide feedback</a>{{/released}}
                 {{/published}}
 
                 {{#isdraft}}
@@ -89,6 +89,6 @@
             </div>
         </div>
         
-        <a class="btn-reorder"><i title="Reorder" class="fa fa-arrows-v" aria-hidden="true"></i></a>
+        <a class="btn-reorder"><i title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="fa fa-arrows-v" aria-hidden="true"></i></a>
     </td>
 </tr>
