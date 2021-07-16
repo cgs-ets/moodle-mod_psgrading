@@ -38,11 +38,11 @@
 <div class="psgrading-list">
     <div class="classlist-table">
         {{! Task names across the top }}
-        <div class="classlist-header">
+        <div id="task-list" class="classlist-header">
             {{#studentoverviews.0}}
                 <div class="column col-empty col-student">&nbsp;</div>{{!
                 
-                }}{{#tasks}}<div class="column col-taskname {{^published}}not-published{{/published}}">
+                }}{{#tasks}}<div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
 
                     {{#published}}
                         <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
@@ -53,9 +53,28 @@
 
                         <div class="actions">
 
-                            <span data-toggle="tooltip" data-placement="right" title="{{#published}}{{#released}}{{#str}}gradesreleased, mod_psgrading{{/str}}{{/released}}{{^released}}{{#str}}readytograde, mod_psgrading{{/str}}{{/released}}{{#draftjson}}{{#str}}unpublishededits, mod_psgrading{{/str}}{{/draftjson}}{{/published}}{{^published}}{{#str}}notpublishedyet, mod_psgrading{{/str}}{{/published}}"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
-
+                            <span class="status" data-toggle="tooltip" data-placement="right" title="
+                                {{#published}}
+                                    {{#released}}
+                                        {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                    {{/released}}
+                                    {{^released}} 
+                                        {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
+                                    {{/released}}
+                                    {{#draftjson}}
+                                        {{#str}}unpublishededits, mod_psgrading{{/str}}.
+                                    {{/draftjson}}
+                                {{/published}}
+                                {{^published}} 
+                                    {{#str}}notpublishedyet, mod_psgrading{{/str}}.
+                                {{/published}}">
+                                <i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                            
                             <a data-toggle="tooltip" data-placement="right" title="{{^isdraft}}Edit{{/isdraft}}{{#isdraft}}Continue editing{{/isdraft}}" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+                            {{#isdraft}}
+                                <a data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            {{/isdraft}}
 
                             {{#published}}
                                 <a data-toggle="tooltip" data-placement="right" title="Grade" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>
@@ -63,16 +82,13 @@
                                 {{#released}}<a data-toggle="tooltip" data-placement="right" title="Hide grades" class="action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>{{/released}}
                             {{/published}}
 
-                            {{#isdraft}}
-                                <a data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                            {{/isdraft}}
-
-                            <a data-toggle="tooltip" data-placement="right" title="Reorder" class="btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
+                            <a data-toggle="tooltip" data-placement="right" title="Reorder" class="btn-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
                         </div>
                 </div>{{/tasks}}
                 
                 <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
                     <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}createtask, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <a class="btn btn-secondary" href="{{manageurl}}">{{#str}}managetasks, mod_psgrading{{/str}}</a>
                 </div>
             {{/studentoverviews.0}}
         </div>

@@ -52,7 +52,7 @@ class manage_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'overviewurl' => [
+            'viewurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -93,14 +93,14 @@ class manage_exporter extends exporter {
             'create' => 1,
         ));
 
-        $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
-            'cmid' => $this->related['cmid'],
+        $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
+            'id' => $this->related['cmid'],
         ));
 
         return array(
             'tasks' => $tasks,
             'taskcreateurl' => $taskcreateurl->out(false),
-            'overviewurl' => $overviewurl->out(false),
+            'viewurl' => $viewurl->out(false),
         );
     }
 

@@ -429,6 +429,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-list .classlist-table div.classlist-row:last-child .column {
   border-bottom: 1px solid #ccc;
 }
+.psgrading-list .classlist-table.reordering .classlist-row {
+  opacity: 0.5;
+}
 .psgrading-list .column {
   display: inline-block;
   vertical-align: top;
@@ -443,7 +446,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border-left: 1px solid #ccc;
 }
 .psgrading-list .column.not-published {
-  width: 100px;
+  background-color: #f9f9f9;
+}
+.psgrading-list .column.not-released {
+  background-color: #f9f9f9;
 }
 .psgrading-list .col-empty {
   border: none !important;
@@ -460,6 +466,20 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   position: relative;
+  /*.text {
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-transform: translate(0,100%) rotate(-90deg);
+            -moz-transform: translate(0,100%) rotate(-90deg);
+            -ms-transform: translate(0,100%) rotate(-90deg);
+            -o-transform: translate(0,100%) rotate(-90deg);
+            transform: translate(0,100%) rotate(-90deg);
+            transform-origin: 69px 73px;
+            width: 175px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }*/
   /*display: inline-block;
         height: 104px;
         white-space: normal;
@@ -482,15 +502,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname .text {
   display: inline-block;
-  white-space: nowrap;
+  white-space: normal;
   vertical-align: middle;
-  -webkit-transform: translate(0, 100%) rotate(-90deg);
-  -moz-transform: translate(0, 100%) rotate(-90deg);
-  -ms-transform: translate(0, 100%) rotate(-90deg);
-  -o-transform: translate(0, 100%) rotate(-90deg);
-  transform: translate(0, 100%) rotate(-90deg);
-  transform-origin: 69px 73px;
-  width: 175px;
+  width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -502,12 +516,25 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   white-space: normal;
   text-align: center;
 }
+.psgrading-list .col-taskname .btn-reorder {
+  cursor: grab;
+}
+.psgrading-list .col-taskname .spinner {
+  display: block;
+  height: 22px;
+  width: 22px;
+  margin-top: 5px;
+}
+.psgrading-list .col-taskname.reordering {
+  background-color: #cce5ff;
+  box-shadow: 0 0 2px 0px #004085;
+}
 .psgrading-list .col-taskcreatecol {
   height: 100%;
   position: absolute;
   border-top: none;
   padding: 3px 0 0 5px;
-  width: 80px;
+  width: 180px;
   transition: all ease 0.3s;
 }
 .psgrading-list .column[data-grade="5"] {

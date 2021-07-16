@@ -13,6 +13,11 @@
                 border-bottom: @tableborder;
             }
         }
+        &.reordering {
+            .classlist-row {
+                opacity: 0.5;
+            }
+        }
     }
 	.column {
 	    display: inline-block;
@@ -27,7 +32,10 @@
         border-top: @tableborder;
         border-left: @tableborder;
         &.not-published {
-	        width: 100px;
+            background-color: #f9f9f9;
+        }
+        &.not-released {
+            background-color: #f9f9f9;
         }
 	}
     .col-empty {
@@ -46,7 +54,7 @@
         border-top: @tableborder;
         border-left: @tableborder;
         position: relative;
-        .text {
+        /*.text {
             display: inline-block;
             white-space: nowrap;
             vertical-align: middle;
@@ -59,9 +67,9 @@
             width: 175px;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
+        }*/
 
-        // -- Horizontal display.
+        // -- Horizontal display v1.
         /*display: inline-block;
         height: 104px;
         white-space: normal;
@@ -81,6 +89,15 @@
                 background:linear-gradient(transparent 69px, #fff);
             }
         }*/
+        // -- Horizontal display v2.
+        .text {
+            display: inline-block;
+            white-space: normal;
+            vertical-align: middle;
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .actions {
             top: 0;
             position: absolute;
@@ -89,13 +106,26 @@
             white-space: normal;
             text-align: center;
         }
+        .btn-reorder {
+            cursor: grab;
+        }
+        .spinner {
+            display: block;
+            height: 22px;
+            width: 22px;
+            margin-top: 5px;
+        }
+		&.reordering {
+		    background-color: #cce5ff;
+		    box-shadow: 0 0 2px 0px #004085;
+		}
     }
     .col-taskcreatecol {
         height: 100%;
         position: absolute;
         border-top: none;
         padding: 3px 0 0 5px;
-        width: 80px;
+        width: 180px;
         transition: all ease 0.3s;
     }
     .column[data-grade="5"] {

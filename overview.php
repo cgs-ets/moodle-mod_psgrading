@@ -79,13 +79,13 @@ $groups = utils::get_course_groups($course->id);
 
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
-    $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
+    $groupid = intval(utils::get_user_preferences($cm->id, 'mod_psgrading_groupid', 0));
     if ($groupid) {
         $overviewurl->param('groupid', $groupid);
         $PAGE->set_url($overviewurl);
     }
 } else {
-    set_user_preference('mod_psgrading_groupid', $groupid);
+    utils::set_user_preference($cm->id, 'mod_psgrading_groupid', $groupid);
 }
 
 // Get the students in the course.

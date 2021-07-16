@@ -35,9 +35,6 @@
     
     <td class="cell c3 c-status">
         {{#published}}
-
-            {{! <i class="fa fa-check-square" aria-hidden="true"></i> }}
-
             {{#released}}
                 <span class="badge badge-success">
                     {{#str}}gradesreleased, mod_psgrading{{/str}}
@@ -46,7 +43,7 @@
 
             {{^released}}
                 <span class="badge badge-info">
-                    {{#str}}readytograde, mod_psgrading{{/str}}
+                    {{#str}}gradesnotreleased, mod_psgrading{{/str}}
                 </span>
             {{/released}}
 

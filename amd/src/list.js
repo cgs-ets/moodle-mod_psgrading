@@ -98,6 +98,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         if (typeof Sortable != 'undefined') {
             var el = document.getElementById('task-list');
             var sortable = new Sortable(el, {
+	            draggable: ".col-taskname",
                 handle: '.btn-reorder',
                 animation: 150,
                 ghostClass: 'reordering',
@@ -126,7 +127,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         var self = this;
 
         if (self.modals.DIFF) {
-            var task = button.closest('.task');
+            var task = button.closest('.col-taskname');
 
             if (task.hasClass('not-published')) {
                 self.deleteDraft(task.data('id'));
@@ -163,6 +164,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     };
 
     List.prototype.deleteDraft = function (taskid) {
+        var self = this;
+
+        self.rootel.find('.col-taskname[data-id="' + taskid + '"] .action-discarddraft').replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
@@ -186,7 +191,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     List.prototype.releaseTask = function (button) {
         var self = this;
 
-        var task = button.closest('.task');
+        var task = button.closest('.col-taskname');
 
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
@@ -212,7 +217,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     List.prototype.unreleaseTask = function (button) {
         var self = this;
 
-        var task = button.closest('.task');
+        var task = button.closest('.col-taskname');
 
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
@@ -232,9 +237,14 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
 
     List.prototype.SortEnd = function (e) {
+        var button = $(e.item);  // dragged HTMLElement
+        button.find('.btn-reorder').replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+
+        $('.classlist-table').addClass('reordering');
+
         // Get new order.
         var tasks = new Array();
-        $('#task-list .task').each(function() {
+        $('#task-list .col-taskname').each(function() {
             tasks.push($(this).data('id'));
         });
 
@@ -245,7 +255,9 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 action: 'reorder_tasks',
                 data: JSON.stringify(tasks),
             },
-            done: function() {},
+            done: function() {
+                window.location.reload(false);
+            },
             fail: function(reason) {
                 Log.debug(reason);
             }

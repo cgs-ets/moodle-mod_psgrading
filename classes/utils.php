@@ -627,4 +627,38 @@ class utils {
 
     }
 
+    public static function get_user_preferences($cmid, $name, $default) {
+        global $DB, $USER;
+
+        $value = $DB->get_field('psgrading_userprefs', 'value', array(
+            'cmid' => $cmid,
+            'userid' => $USER->id,
+            'name' => $name,
+        ));
+
+        return $value ? $value : $default;
+    }
+
+    public static function set_user_preference($cmid, $name, $value) {
+        global $DB, $USER;
+
+        $preference = $DB->get_record('psgrading_userprefs', array(
+            'cmid' => $cmid,
+            'userid' => $USER->id,
+            'name' => $name,
+        ));
+
+        if ($preference) {
+            $preference->value = $value;
+            $DB->update_record('psgrading_userprefs', $preference);
+        } else {
+            $object = new \stdClass();
+            $object->cmid = $cmid;
+            $object->userid = $USER->id;
+            $object->name = $name;
+            $object->value = $value;
+            $DB->insert_record('psgrading_userprefs', $object);
+        }
+    }
+
 }

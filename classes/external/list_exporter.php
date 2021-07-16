@@ -53,6 +53,11 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'manageurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
             'groups' => [
                 'type' => PARAM_RAW,
                 'multiple' => true,
@@ -132,9 +137,14 @@ class list_exporter extends exporter {
             'create' => 1,
         ));
 
+        $manageurl = new \moodle_url('/mod/psgrading/manage.php', array(
+            'cmid' => $this->related['cmid']
+        ));
+
         return array(
             'studentoverviews' => $studentoverviews,
             'taskcreateurl' => $taskcreateurl->out(false),
+            'manageurl' => $manageurl->out(false),
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
         );

@@ -81,14 +81,14 @@ $PAGE->set_context($modulecontext);
 $groups = utils::get_course_groups($course->id);
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
-    // TODO: Create custom pref db as the pref needs to be per cm instance...
-    $groupid = intval(get_user_preferences('mod_psgrading_groupid', 0));
+    // custom pref db as the pref needs to be per cm instance.
+    $groupid = intval(utils::get_user_preferences($cm->id, 'mod_psgrading_groupid', 0));
     if ($groupid) {
         $viewurl->param('groupid', $groupid);
         $PAGE->set_url($viewurl);
     }
 } else {
-    set_user_preference('mod_psgrading_groupid', $groupid);
+    utils::set_user_preference($cm->id, 'mod_psgrading_groupid', $groupid);
 }
 
 // Get the students in the course.
@@ -122,13 +122,6 @@ $relateds = array(
 $listexporter = new list_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $listexporter->export($output);
-
-//echo "<pre>"; var_export($data); exit;
-
-
-
-
-
 
 // Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));

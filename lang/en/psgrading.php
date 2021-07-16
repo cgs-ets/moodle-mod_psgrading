@@ -75,6 +75,7 @@ $string['pypuoi:stp'] = 'Sharing the planet';
 
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
+$string['managetasks'] = 'Manage tasks';
 $string['overview'] = 'Student overview';
 $string['addcriterion'] = 'Add criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';
@@ -83,7 +84,8 @@ $string['addevidence'] = 'Select any course activities that form part of this ta
 $string['enableweights'] = 'Enable weights';
 
 // Statuses
-$string['unpublishededits'] = 'Contains unpublished edits';
-$string['notpublishedyet'] = 'Not published yet';
+$string['unpublishededits'] = 'Task has unpublished edits';
+$string['notpublishedyet'] = 'Task not published yet';
 $string['gradesreleased'] = 'Grades released';
 $string['readytograde'] = 'Task/grading in progress';
+$string['gradesnotreleased'] = 'Grades not released';
