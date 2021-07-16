@@ -237,6 +237,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
 
     List.prototype.SortEnd = function (e) {
+
+        // Don't reorder if moving to same index.
+        if (e.oldIndex == e.newIndex) {
+            return;
+        }
+
         var button = $(e.item);  // dragged HTMLElement
         button.find('.btn-reorder').replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
 

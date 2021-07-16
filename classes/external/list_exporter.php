@@ -96,7 +96,8 @@ class list_exporter extends exporter {
      */
     protected function get_other_values(renderer_base $output) {
 
-        // Group navigation. TODO: take grade exporting out of overview exporter so that we don't export group nav for every student overview.
+        // Group navigation. 
+        // TODO: take grade exporting out of overview exporter so that we don't export group nav for every student overview.
         $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
             'id' => $this->related['cmid']
         ));
@@ -118,7 +119,19 @@ class list_exporter extends exporter {
 
         $studentoverviews = array();
         foreach ($this->related['students'] as $studentid) {
+
+            $relateds = array(
+                'cmid' => $this->related['cmid'],
+                'userid' => $studentid,
+                'isstaff' => true, // Only staff can view the class list page.
+                'includedrafttasks' => true,
+            );
+            $gradeexporter = new grade_exporter(null, $relateds);
+            $gradedata = $gradeexporter->export($output);
+            $studentoverviews[] = $gradedata;
+    
             // Export the overview for the student.
+            /*
             $relateds = array(
                 'cmid' => $this->related['cmid'],
                 'groups' => $this->related['groups'],
@@ -130,6 +143,7 @@ class list_exporter extends exporter {
             );
             $overviewexporter = new overview_exporter(null, $relateds);
             $studentoverviews[] = $overviewexporter->export($output);
+            */
         }
 
         $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
