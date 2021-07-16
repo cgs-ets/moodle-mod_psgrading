@@ -19,6 +19,12 @@
             }
         }
     }
+    .classlist-header {
+        font-size: 0; // Ignore white space hack. Font-size is set in child el.
+    }
+    .classlist-row {
+        font-size: 0; // Ignore white space hack. Font-size is set in child el.
+    }
 	.column {
 	    display: inline-block;
 	    vertical-align: top;
@@ -32,6 +38,7 @@
         padding: 6px;
         border-top: @tableborder;
         border-left: @tableborder;
+        font-size: 17px;
         &.not-published {
             background-color: #f9f9f9;
         }

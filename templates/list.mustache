@@ -40,19 +40,20 @@
         {{! Task names across the top }}
         <div id="task-list" class="classlist-header">
             {{#studentoverviews.0}}
-                <div class="column col-empty col-student">&nbsp;</div>{{!
+                <div class="column col-empty col-student">&nbsp;</div>
                 
-                }}{{#tasks}}<div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
+                {{#tasks}}
+                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
 
-                    {{#published}}
-                        <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
-                    {{/published}}
-                    {{^published}}
-                        <span class="text" data-toggle="tooltip" title="{{draftdata.taskname}}">{{draftdata.taskname}}</span>
-                    {{/published}}
+                        {{#published}}
+                            <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
+                        {{/published}}
+
+                        {{^published}}
+                            <span class="text" data-toggle="tooltip" title="{{draftdata.taskname}}">{{draftdata.taskname}}</span>
+                        {{/published}}
 
                         <div class="actions">
-
                             <span class="status" data-toggle="tooltip" data-placement="right" title="
                                 {{#published}}
                                     {{#released}}
@@ -68,7 +69,8 @@
                                 {{^published}} 
                                     {{#str}}notpublishedyet, mod_psgrading{{/str}}.
                                 {{/published}}">
-                                <i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            </span>
                             
                             <a data-toggle="tooltip" data-placement="right" title="{{^isdraft}}Edit{{/isdraft}}{{#isdraft}}Continue editing{{/isdraft}}" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
@@ -84,7 +86,8 @@
 
                             <a data-toggle="tooltip" data-placement="right" title="Reorder" class="btn-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
                         </div>
-                </div>{{/tasks}}
+                    </div>
+                {{/tasks}}
                 
                 <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
                     <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}createtask, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>

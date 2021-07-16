@@ -27,8 +27,11 @@
 <div class="classlist-row">
     <div class="column col-student" data-userid="{{currstudent.id}}">
         <a href="{{currstudent.overviewurl}}" target="_blank"><img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span></a>
-    </div>{{!
-    }}{{#tasks}}<div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-grade="{{success.grade}}">
-        {{{success.gradelang}}}
-    </div>{{/tasks}}
+    </div>
+    
+    {{#tasks}}
+        <div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-grade="{{success.grade}}">
+            {{{success.gradelang}}}
+        </div>
+    {{/tasks}}
 </div>

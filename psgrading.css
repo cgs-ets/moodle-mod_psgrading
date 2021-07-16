@@ -432,6 +432,12 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-list .classlist-table.reordering .classlist-row {
   opacity: 0.5;
 }
+.psgrading-list .classlist-header {
+  font-size: 0;
+}
+.psgrading-list .classlist-row {
+  font-size: 0;
+}
 .psgrading-list .column {
   display: inline-block;
   vertical-align: top;
@@ -444,6 +450,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 6px;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
+  font-size: 17px;
 }
 .psgrading-list .column.not-published {
   background-color: #f9f9f9;
