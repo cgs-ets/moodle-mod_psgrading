@@ -439,7 +439,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 140px;
+  width: 108px;
   height: 43px;
   padding: 6px;
   border-top: 1px solid #ccc;
@@ -462,24 +462,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname {
   height: 190px;
-  width: 140px;
+  width: 108px;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   position: relative;
-  /*.text {
-            display: inline-block;
-            white-space: nowrap;
-            vertical-align: middle;
-            -webkit-transform: translate(0,100%) rotate(-90deg);
-            -moz-transform: translate(0,100%) rotate(-90deg);
-            -ms-transform: translate(0,100%) rotate(-90deg);
-            -o-transform: translate(0,100%) rotate(-90deg);
-            transform: translate(0,100%) rotate(-90deg);
-            transform-origin: 69px 73px;
-            width: 175px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }*/
   /*display: inline-block;
         height: 104px;
         white-space: normal;
@@ -499,12 +485,26 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
                 background:linear-gradient(transparent 69px, #fff);
             }
         }*/
+  /*.text {
+            display: inline-block;
+            white-space: normal;
+            vertical-align: middle;
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }*/
 }
 .psgrading-list .col-taskname .text {
   display: inline-block;
-  white-space: normal;
+  white-space: nowrap;
   vertical-align: middle;
-  width: 100px;
+  -webkit-transform: translate(0, 100%) rotate(-90deg);
+  -moz-transform: translate(0, 100%) rotate(-90deg);
+  -ms-transform: translate(0, 100%) rotate(-90deg);
+  -o-transform: translate(0, 100%) rotate(-90deg);
+  transform: translate(0, 100%) rotate(-90deg);
+  transform-origin: 69px 73px;
+  width: 175px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -515,6 +515,15 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 22px;
   white-space: normal;
   text-align: center;
+}
+.psgrading-list .col-taskname .actions a {
+  color: #000;
+}
+.psgrading-list .col-taskname .actions a:hover {
+  color: #005b94;
+}
+.psgrading-list .col-taskname .actions .status {
+  color: #008196;
 }
 .psgrading-list .col-taskname .btn-reorder {
   cursor: grab;

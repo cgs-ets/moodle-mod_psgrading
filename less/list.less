@@ -26,7 +26,8 @@
 	    overflow: hidden;
 	    white-space: nowrap;
 	    text-overflow: ellipsis;
-	    width: 140px;
+	    //width: 140px;
+	    width: 108px;
         height: 43px;
         padding: 6px;
         border-top: @tableborder;
@@ -48,13 +49,15 @@
         }
     }
     .col-taskname {
-        // -- Vertical display.
         height: 190px;
-        width: 140px;
+        //width: 140px;
+        width: 108px;
         border-top: @tableborder;
         border-left: @tableborder;
         position: relative;
-        /*.text {
+
+        // -- Vertical display.
+        .text {
             display: inline-block;
             white-space: nowrap;
             vertical-align: middle;
@@ -67,7 +70,7 @@
             width: 175px;
             overflow: hidden;
             text-overflow: ellipsis;
-        }*/
+        }
 
         // -- Horizontal display v1.
         /*display: inline-block;
@@ -89,15 +92,19 @@
                 background:linear-gradient(transparent 69px, #fff);
             }
         }*/
+
         // -- Horizontal display v2.
-        .text {
+        /*.text {
             display: inline-block;
             white-space: normal;
             vertical-align: middle;
             width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
+        }*/
+
+
+
         .actions {
             top: 0;
             position: absolute;
@@ -105,6 +112,15 @@
             width: 22px;
             white-space: normal;
             text-align: center;
+            a {
+                color: #000;
+                &:hover { 
+                    color: #005b94;
+                }
+            }
+            .status {
+                color: #008196;
+            }
         }
         .btn-reorder {
             cursor: grab;
