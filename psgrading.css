@@ -431,8 +431,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   font-size: 1.125em;
 }
 .psgrading-list .classlist-table {
-  overflow: hidden;
   position: relative;
+  overflow: auto;
 }
 .psgrading-list .classlist-table div.classlist-row:last-child .column {
   border-bottom: 1px solid #ccc;

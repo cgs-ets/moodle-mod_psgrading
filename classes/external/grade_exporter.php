@@ -207,6 +207,11 @@ class grade_exporter extends exporter {
             $tasks[] = $task;
         }
 
+        // TEST: Duplicate tasks for scroll testing.
+        //$tasks = array_merge($tasks, $tasks);
+        //$tasks = array_merge($tasks, $tasks);
+        //$tasks = array_merge($tasks, $tasks);
+
         $index = count( $tasks ) - 1;
         if (isset($tasks[$index])) {
             $tasks[$index]->islast = true;
