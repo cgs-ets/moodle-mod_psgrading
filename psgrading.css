@@ -48,6 +48,14 @@
     transform: rotate(360deg);
   }
 }
+.path-mod-psgrading .tooltip-inner {
+  background-color: #000;
+  border: 2px solid #000;
+  color: #fff;
+  border-radius: 1px;
+  font-size: 15px;
+  opacity: 1;
+}
 /* Helpers */
 .path-mod-psgrading .header {
   background-color: #f5f5f5;
