@@ -144,12 +144,12 @@ class grade_exporter extends exporter {
                             'subject' => $subject['val'],
                             'subjectsanitised' => str_replace('&', '', $subject['val']),
                             'grade' => 0,
-                            'gradelang' => '&nbsp;',
+                            'gradelang' => '',
                         );
                     }
                     $task->success = array(
                         'grade' => 0,
-                        'gradelang' => '&nbsp;',
+                        'gradelang' => '',
                     );
                 }
                 unset($task->gradeinfo);

@@ -46,11 +46,11 @@
             <div class="cell" title="{{outcomes}}" data-toggle="tooltip"><span>{{outcomes}}</span></div>
             <div class="subjects">
                 {{#subjectgrades}}
-                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
                 {{/subjectgrades}}
             </div>
             <div class="cell cell-success" data-grade="{{success.grade}}">
-                {{{success.gradelang}}}
+                {{success.gradelang}}&nbsp;
             </div>
             <div class="cell cell-engagement" data-engagement="{{{gradeinfo.engagement}}}">
                 {{gradeinfo.engagementlang}}&nbsp;
@@ -89,12 +89,12 @@
         <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
         <div class="subjects">
             {{#reportgrades}}{{#issubject}}
-                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
             {{/issubject}}{{/reportgrades}}
         </div>
         <div class="cell cell-blank">&nbsp;</div>
         {{#reportgrades}}{{^issubject}}
-            <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{{gradelang}}}</div>
+            <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
         {{/issubject}}{{/reportgrades}}
     </div>{{/reportgrades.0}}
 </div>

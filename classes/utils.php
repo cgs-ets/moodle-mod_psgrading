@@ -173,12 +173,12 @@ class utils {
 
     const GRADELANG = array (
         '0' => array (
-            'full' => '&nbsp;',
-            'minimal' => '&nbsp;',
+            'full' => '',
+            'minimal' => '',
         ),
         '5' => array (
             'full' => '5',
-            'minimal' => '&nbsp;',
+            'minimal' => '',
         ),
         '4' => array (
             'full' => '4 (GS)',
@@ -194,7 +194,7 @@ class utils {
         ),
         '1' => array (
             'full' => '1',
-            'minimal' => '&nbsp;',
+            'minimal' => '',
         ),
     );
 
