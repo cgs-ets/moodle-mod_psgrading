@@ -106,15 +106,11 @@ class grade_exporter extends exporter {
 
         // If a staff member viewing, get cached version of grades to speed things up.
         if ($this->related['isstaff']) {
-            $tasks = task::get_cached_subject_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks']);
-            $reportgrades = task::get_cached_report_grades($this->related['cmid'], $this->related['userid']);
-            // If no cache then we are forced to compute on the fly.
-            if (empty($reportgrades)) {
-                $reportgrades = task::compute_report_grades($tasks, true);
-            }
+            $tasks = task::get_cached_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks']);
+            $reportgrades = task::get_cached_report_grades($this->related['cmid'], $this->related['userid'], $tasks);
         } else {
-            $tasks = task::compute_subject_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks'], false);
-            $reportgrades = task::compute_report_grades($tasks, false);
+            $reportgrades = array(); // Not visible to students/parents.
+            $tasks = task::compute_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks'], false);
         }
 
         // TEST: Duplicate tasks for scroll testing.
