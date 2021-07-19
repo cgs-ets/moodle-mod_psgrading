@@ -452,10 +452,16 @@ class task extends persistent {
         }
 
         $tasks = static::compute_grades($task->get('cmid'), $data->userid, true, true);
-        static::cache_grades($task->get('cmid'), $data->userid, $tasks);
+        //static::cache_grades($task->get('cmid'), $data->userid, $tasks);
 
         $reportgrades = static::compute_report_grades($tasks, true);
-        static::cache_report_grades($task->get('cmid'), $data->userid, $reportgrades);
+        //static::cache_report_grades($task->get('cmid'), $data->userid, $reportgrades);
+
+        // Invalidate cached list page.
+        $sql = "DELETE 
+                  FROM {" . static::TABLE_GRADES_CACHE . "}
+                 WHERE " . $DB->sql_like('name', ':name');
+        $DB->execute($sql, array('name' => 'list-%'));
 
         return $graderec->id;
     }
@@ -655,7 +661,7 @@ class task extends persistent {
         return $reportgrades;
     }
 
-    public static function cache_grades($cmid, $userid, $data) {
+    /*public static function cache_grades($cmid, $userid, $data) {
         global $DB;
 
         // Delete existing cached grades for user.
@@ -856,6 +862,7 @@ class task extends persistent {
         return $tasks;
     }
 
+
     // $tasks. Used when no cache found to recalculate.
     public static function get_cached_report_grades($cmid, $userid, $tasks = array()) {
         global $DB, $OUTPUT;
@@ -879,6 +886,9 @@ class task extends persistent {
 
         return $reportgrades;
     }
+
+    */
+
 
     public static function reset_task_grades_for_student($data) {
         global $DB, $USER;

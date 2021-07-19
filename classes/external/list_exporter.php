@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use renderer_base;
 use core\external\exporter;
 use \mod_psgrading\utils;
+use \mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -43,11 +44,16 @@ class list_exporter extends exporter {
     */
     protected static function define_other_properties() {
         return [
-            'studentoverviews' => [
-                'type' => overview_exporter::read_properties_definition(),
-                'multiple' => true,
+            'listhtml' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
                 'optional' => false,
             ],
+            //'studentoverviews' => [
+            //    'type' => overview_exporter::read_properties_definition(),
+            //    'multiple' => true,
+            //    'optional' => false,
+            //],
             'taskcreateurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -95,6 +101,7 @@ class list_exporter extends exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
+        global $DB;
 
         // Group navigation. 
         $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
@@ -114,21 +121,41 @@ class list_exporter extends exporter {
         }
         $basenavurl = clone($baseurl);
         $basenavurl->param('groupid', 0);
-        $basenavurl->param('nav', 'all'); 
+        $basenavurl->param('nav', 'all');
 
-        // Get the student grades.
-        $studentoverviews = array();
-        foreach ($this->related['students'] as $studentid) {
-
-            $relateds = array(
-                'cmid' => $this->related['cmid'],
-                'userid' => $studentid,
-                'isstaff' => true, // Only staff can view the class list page.
-                'includedrafttasks' => true,
-            );
-            $gradeexporter = new grade_exporter(null, $relateds);
-            $gradedata = $gradeexporter->export($output);
-            $studentoverviews[] = $gradedata;
+        // Check if there is a cached version of the student rows.
+        $listhtml = '';
+        $cache = $DB->get_record(task::TABLE_GRADES_CACHE, array(
+            'cmid' => $this->related['cmid'],
+            'name' => 'list-' . $this->related['groupid'],
+        ));
+        if ($cache) {
+            $listhtml = $cache->value;
+        } else {
+            $studentoverviews = array();
+            // Export the grade overviews afresh.
+            foreach ($this->related['students'] as $studentid) {
+                $relateds = array(
+                    'cmid' => $this->related['cmid'],
+                    'userid' => $studentid,
+                    'isstaff' => true, // Only staff can view the class list page.
+                    'includedrafttasks' => true,
+                );
+                $gradeexporter = new grade_exporter(null, $relateds);
+                $gradedata = $gradeexporter->export($output);
+                $studentoverviews[] = $gradedata;
+            }
+            // Prerender and cache it.
+            $listhtml = $output->render_from_template('mod_psgrading/list_table', array(
+                'studentoverviews' => $studentoverviews,
+            ));
+            if ($listhtml) {
+                $DB->insert_record(task::TABLE_GRADES_CACHE, array(
+                    'cmid' => $this->related['cmid'],
+                    'name' => 'list-' . $this->related['groupid'],
+                    'value' => $listhtml,
+                ));
+            }
         }
 
         $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
@@ -141,7 +168,7 @@ class list_exporter extends exporter {
         ));
 
         return array(
-            'studentoverviews' => $studentoverviews,
+            'listhtml' => $listhtml,
             'taskcreateurl' => $taskcreateurl->out(false),
             'manageurl' => $manageurl->out(false),
             'groups' => $groups,

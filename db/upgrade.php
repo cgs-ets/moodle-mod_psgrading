@@ -108,7 +108,7 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021063001, 'psgrading');
     }
 
-    if ($oldversion < 2021063005) {
+    if ($oldversion < 2021063006) {
 
         // Define table psgrading_grades_cache to be created.
         $table = new xmldb_table('psgrading_grades_cache');
@@ -116,13 +116,8 @@ function xmldb_psgrading_upgrade($oldversion) {
         // Adding fields to table psgrading_grades_cache.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('cmid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('taskid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('subject', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('subjectsanitised', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('grade', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('gradelang', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('type', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('value', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
 
         // Adding keys to table psgrading_grades_cache.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -133,7 +128,7 @@ function xmldb_psgrading_upgrade($oldversion) {
         }
 
         // Psgrading savepoint reached.
-        upgrade_mod_savepoint(true, 2021063005, 'psgrading');
+        upgrade_mod_savepoint(true, 2021063006, 'psgrading');
     }
 
     return true;
