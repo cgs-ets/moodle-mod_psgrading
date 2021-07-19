@@ -104,107 +104,17 @@ class grade_exporter extends exporter {
         $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
         $currstudent->iscurrent = true;
 
-        // Get all tasks for this course module.
-        $tasks = array();
-        $cmtasks = task::get_for_coursemodule($this->related['cmid']);
-
-        if (empty($cmtasks)) {
-            return $out;
-        }
-
-        foreach ($cmtasks as $task) {
-            $taskexporter = new task_exporter($task, array('userid' => $this->related['userid']));
-            $task = $taskexporter->export($output);
-            if (!$task->published && !$this->related['includedrafttasks']) {
-                continue;
+        // If a staff member viewing, get cached version of grades to speed things up.
+        if ($this->related['isstaff']) {
+            $tasks = task::get_cached_subject_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks']);
+            $reportgrades = task::get_cached_report_grades($this->related['cmid'], $this->related['userid']);
+            // If no cache then we are forced to compute on the fly.
+            if (empty($reportgrades)) {
+                $reportgrades = task::compute_report_grades($tasks, true);
             }
-
-            // Add the task criterion definitions.
-            $task->criterions = task::get_criterions($task->id);
-
-            // Get existing grades for this user.
-            $gradeinfo = task::get_task_user_gradeinfo($task->id, $this->related['userid']);
-            $task->gradeinfo = $gradeinfo;
-            $task->subjectgrades = array();
-
-            $showgrades = true;
-            // If task is not released yet do not show grades parents/students.
-            if (!$task->released) {
-                if (!$this->related['isstaff']) {
-                    $showgrades = false;
-                }
-            }
-
-            // Check if there is gradeinfo / whether task is released. 
-            if (empty($gradeinfo) || !$showgrades) {
-                // Skip over the calculations, but define empty structure required by template.
-                foreach (utils::SUBJECTOPTIONS as $subject) {
-                    if ($subject['val']) {
-                        $task->subjectgrades[] = array(
-                            'subject' => $subject['val'],
-                            'subjectsanitised' => str_replace('&', '', $subject['val']),
-                            'grade' => 0,
-                            'gradelang' => '',
-                        );
-                    }
-                    $task->success = array(
-                        'grade' => 0,
-                        'gradelang' => '',
-                    );
-                }
-                unset($task->gradeinfo);
-                unset($task->criterions);
-                $tasks[] = $task;
-                continue;
-            }
-
-            // Extract subject grades from criterion grades.
-            $subjectgrades = array();
-            foreach ($gradeinfo->criterions as $criteriongrade) {
-                $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
-                if (!isset($subjectgrades[$criterionsubject])) {
-                    $subjectgrades[$criterionsubject] = array();
-                }
-                $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
-            }
-        
-            // Flatten to rounded averages.
-            foreach ($subjectgrades as &$subjectgrade) {
-                $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
-                $subjectgrade = (int) round($subjectgrade, 0);
-            }
-            // Rebuild into mustache friendly array.
-            foreach (utils::SUBJECTOPTIONS as $subject) {
-                if ($subject['val']) {
-                    $grade = 0;
-                    if (isset($subjectgrades[$subject['val']])) {
-                        $grade = $subjectgrades[$subject['val']];
-                    }
-                    $gradelang = utils::GRADELANG[$grade];
-                    $task->subjectgrades[] = array(
-                        'subject' => $subject['val'],
-                        'subjectsanitised' => str_replace('&', '', $subject['val']),
-                        'grade' => $grade,
-                        'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
-                    );
-                }
-            }
-
-            // Calculate success.
-            $success = 0;
-            if (count($subjectgrades)) {
-                $success = array_sum($subjectgrades)/count($subjectgrades);
-                $success = (int) round($success, 0);
-            }
-            $gradelang = utils::GRADELANG[$success];
-            $task->success = array(
-                'grade' => $success,
-                'gradelang' => $this->related['isstaff'] ? $gradelang['full'] : $gradelang['minimal'],
-            );
-
-            // Ditch some unnecessary data.
-            unset($task->criterions);
-            $tasks[] = $task;
+        } else {
+            $tasks = task::compute_subject_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks'], false);
+            $reportgrades = task::compute_report_grades($tasks, false);
         }
 
         // TEST: Duplicate tasks for scroll testing.
@@ -215,81 +125,6 @@ class grade_exporter extends exporter {
         $index = count( $tasks ) - 1;
         if (isset($tasks[$index])) {
             $tasks[$index]->islast = true;
-        }
-
-        // Calculate report grades.
-        $reportgrades = array();
-        if ($this->related['isstaff']) {
-            foreach (utils::SUBJECTOPTIONS as $subject) {
-                $subject = $subject['val'];
-                if (!$subject) {
-                    continue;
-                }
-                // Get all the grades for this subject accross all of the tasks.
-                foreach ($tasks as $task) {
-                    if (empty($task->subjectgrades)) {
-                        continue;
-                    }
-                    foreach ($task->subjectgrades as $subjectgrade) {
-                        if ($subjectgrade['subject'] == $subject) {
-                            if (!isset($reportgrades[$subject])) {
-                                $reportgrades[$subject] = array();
-                            }
-                            if ($subjectgrade['grade']) {
-                                $reportgrades[$subject][] = $subjectgrade['grade'];
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Flatten to rounded averages.
-            foreach ($reportgrades as &$reportgrade) {
-                if (array_sum($reportgrade)) {
-                    $reportgrade = array_sum($reportgrade)/count($reportgrade);
-                    $reportgrade = (int) round($reportgrade, 0);
-                } else {
-                    $reportgrade = 0;
-                }
-            }
-            // Rebuild into mustache friendly array.
-            foreach ($reportgrades as $key => $grade) {
-                $reportgrades[$key] = array(
-                    'subject' => $key,
-                    'subjectsanitised' => str_replace('&', '', $key),
-                    'grade' => $grade,
-                    'gradelang' => utils::GRADELANG[$grade]['full'],
-                    'issubject' => true,
-                );
-            }
-            $reportgrades = array_values($reportgrades);
-
-            // Get the average engagement accross all tasks.
-            /*
-                $engagement = array();
-                foreach ($tasks as $task) {
-                    if (isset($task->gradeinfo->engagement)) {
-                        $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
-                    }
-                }
-                // Round engagement.
-                if (array_sum($engagement)) {
-                    $engagement = array_sum($engagement)/count($engagement);
-                    $engagement = (int) round($engagement, 0);
-                } else {
-                    $engagement = 0;
-                }
-                // Round up to nearest 25.
-                $engagement = ceil($engagement / 25) * 25;
-                // Add to report grades.
-                $reportgrades[] = array(
-                    'subject' => 'Engagement',
-                    'subjectsanitised' => 'engagement',
-                    'grade' => $engagement,
-                    'gradelang' => $engagement,
-                    'issubject' => false,
-                );
-            */
         }
 
         return array(

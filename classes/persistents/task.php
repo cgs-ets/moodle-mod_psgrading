@@ -31,6 +31,7 @@ use \core_user;
 use \context_user;
 use \context_course;
 use \mod_psgrading\forms\form_mark;
+use \mod_psgrading\external\task_exporter;
 
 /**
  * Persistent model representing a single task.
@@ -46,6 +47,7 @@ class task extends persistent {
     const TABLE_GRADE_CRITERIONS = 'psgrading_grade_criterions';
     const TABLE_GRADE_EVIDENCES = 'psgrading_grade_evidences';
     const TABLE_RELEASE_POSTS = 'psgrading_release_posts';
+    const TABLE_GRADES_CACHE = 'psgrading_grades_cache';
 
     /**
      * Return the definition of the properties of this model.
@@ -416,7 +418,6 @@ class task extends persistent {
         }
 
         if ($graderec->id) {
-
             // Recreate criterion grades.
             $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
             $criterions = json_decode($data->criterionjson);
@@ -450,7 +451,364 @@ class task extends persistent {
 
         }
 
+        $tasks = static::compute_subject_grades($task->get('cmid'), $data->userid, true, true);
+        static::cache_subject_grades($task->get('cmid'), $data->userid, $tasks);
+
+        $reportgrades = static::compute_report_grades($tasks, true);
+        static::cache_report_grades($task->get('cmid'), $data->userid, $reportgrades);
+
         return $graderec->id;
+    }
+
+    public static function compute_subject_grades($cmid, $userid, $includedrafttasks, $isstaff) {
+        global $OUTPUT;
+
+        // Get all tasks for this course module.
+        $tasks = array();
+        $cmtasks = static::get_for_coursemodule($cmid);
+
+        if (empty($cmtasks)) {
+            return $out;
+        }
+
+        foreach ($cmtasks as $task) {
+            $taskexporter = new task_exporter($task, array('userid' => $userid));
+            $task = $taskexporter->export($OUTPUT);
+            if (!$task->published && !$includedrafttasks) {
+                continue;
+            }
+
+            $task = static::compute_grades_for_task($task, $userid, $isstaff);
+
+            // Ditch some unnecessary data.
+            unset($task->criterions);
+            $tasks[] = $task;
+        }
+
+        return $tasks;
+    }
+
+    public static function compute_grades_for_task($task, $userid, $isstaff) {
+        global $OUTPUT;
+
+        // Add the task criterion definitions.
+        $task->criterions = static::get_criterions($task->id);
+
+        // Get existing grades for this user.
+        $gradeinfo = static::get_task_user_gradeinfo($task->id, $userid);
+        $task->gradeinfo = $gradeinfo;
+        $task->subjectgrades = array();
+
+        $showgrades = true;
+        // If task is not released yet do not show grades parents/students.
+        if (!$task->released) {
+            if (!$isstaff) {
+                $showgrades = false;
+            }
+        }
+
+        // Check if there is gradeinfo / whether task is released. 
+        if (empty($gradeinfo)) {
+            // Skip over the calculations, but define empty structure required by template.
+            foreach (utils::SUBJECTOPTIONS as $subject) {
+                if ($subject['val']) {
+                    $task->subjectgrades[] = array(
+                        'subject' => $subject['val'],
+                        'subjectsanitised' => str_replace('&', '', $subject['val']),
+                        'grade' => 0,
+                        'gradelang' => '',
+                    );
+                }
+                $task->success = array(
+                    'grade' => 0,
+                    'gradelang' => '',
+                );
+            }
+            unset($task->gradeinfo);
+            unset($task->criterions);
+            return $task;
+        }
+
+        // Extract subject grades from criterion grades.
+        $subjectgrades = array();
+        foreach ($gradeinfo->criterions as $criteriongrade) {
+            $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
+            if (!isset($subjectgrades[$criterionsubject])) {
+                $subjectgrades[$criterionsubject] = array();
+            }
+            $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
+        }
+    
+        // Flatten to rounded averages.
+        foreach ($subjectgrades as &$subjectgrade) {
+            $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
+            $subjectgrade = (int) round($subjectgrade, 0);
+        }
+        // Rebuild into mustache friendly array.
+        foreach (utils::SUBJECTOPTIONS as $subject) {
+            if ($subject['val']) {
+                $grade = 0;
+                if (isset($subjectgrades[$subject['val']])) {
+                    $grade = $subjectgrades[$subject['val']];
+                }
+                $gradelang = utils::GRADELANG[$grade];
+                $task->subjectgrades[] = array(
+                    'subject' => $subject['val'],
+                    'subjectsanitised' => str_replace('&', '', $subject['val']),
+                    'grade' => $grade,
+                    'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
+                );
+            }
+        }
+
+        // Calculate success.
+        $success = 0;
+        if (count($subjectgrades)) {
+            $success = array_sum($subjectgrades)/count($subjectgrades);
+            $success = (int) round($success, 0);
+        }
+        $gradelang = utils::GRADELANG[$success];
+        $task->success = array(
+            'grade' => $success,
+            'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
+        );
+
+        // Ditch some unnecessary data.
+        unset($task->criterions);
+        return $task;
+    }
+
+    public static function compute_report_grades($tasks, $isstaff) {
+        $reportgrades = array();
+        if ($isstaff) {
+            foreach (utils::SUBJECTOPTIONS as $subject) {
+                $subject = $subject['val'];
+                if (!$subject) {
+                    continue;
+                }
+                // Get all the grades for this subject accross all of the tasks.
+                foreach ($tasks as $task) {
+                    if (empty($task->subjectgrades)) {
+                        continue;
+                    }
+                    foreach ($task->subjectgrades as $subjectgrade) {
+                        $subjectgrade = (array) $subjectgrade;
+                        if ($subjectgrade['subject'] == $subject) {
+                            if (!isset($reportgrades[$subject])) {
+                                $reportgrades[$subject] = array();
+                            }
+                            if ($subjectgrade['grade']) {
+                                $reportgrades[$subject][] = $subjectgrade['grade'];
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Flatten to rounded averages.
+            foreach ($reportgrades as &$reportgrade) {
+                if (array_sum($reportgrade)) {
+                    $reportgrade = array_sum($reportgrade)/count($reportgrade);
+                    $reportgrade = (int) round($reportgrade, 0);
+                } else {
+                    $reportgrade = 0;
+                }
+            }
+            // Rebuild into mustache friendly array.
+            foreach ($reportgrades as $key => $grade) {
+                $reportgrades[$key] = array(
+                    'subject' => $key,
+                    'subjectsanitised' => str_replace('&', '', $key),
+                    'grade' => $grade,
+                    'gradelang' => utils::GRADELANG[$grade]['full'],
+                    'issubject' => true,
+                );
+            }
+            $reportgrades = array_values($reportgrades);
+
+            // Get the average engagement accross all tasks.
+            /*
+                $engagement = array();
+                foreach ($tasks as $task) {
+                    if (isset($task->gradeinfo->engagement)) {
+                        $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
+                    }
+                }
+                // Round engagement.
+                if (array_sum($engagement)) {
+                    $engagement = array_sum($engagement)/count($engagement);
+                    $engagement = (int) round($engagement, 0);
+                } else {
+                    $engagement = 0;
+                }
+                // Round up to nearest 25.
+                $engagement = ceil($engagement / 25) * 25;
+                // Add to report grades.
+                $reportgrades[] = array(
+                    'subject' => 'Engagement',
+                    'subjectsanitised' => 'engagement',
+                    'grade' => $engagement,
+                    'gradelang' => $engagement,
+                    'issubject' => false,
+                );
+            */
+        }
+
+        return $reportgrades;
+
+    }
+
+    public static function cache_subject_grades($cmid, $userid, $data) {
+        global $DB;
+
+        // Delete existing cached grades for user.
+        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
+            'cmid' => $cmid,
+            'userid' => $userid,
+            'type' => 'subjectgrade',
+        ));
+
+        // Generate new ones.
+        $subjectgrades = array();
+        foreach($data as $task) {
+            foreach($task->subjectgrades as $subjectgrade) {
+                $subjectgrades[] = array(
+                    'cmid' => $cmid,
+                    'taskid' => $task->id,
+                    'userid' => $userid,
+                    'subject' => $subjectgrade['subject'],
+                    'subjectsanitised' => $subjectgrade['subjectsanitised'],
+                    'grade' => $subjectgrade['grade'],
+                    'gradelang' => $subjectgrade['gradelang'],
+                    'type' => 'subjectgrade'
+                );
+            }
+        }
+
+        $DB->insert_records(static::TABLE_GRADES_CACHE, $subjectgrades);
+
+        // Delete existing cached success for user.
+        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
+            'cmid' => $cmid,
+            'userid' => $userid,
+            'type' => 'success',
+        ));
+
+        // Calculate success.
+        $successgrades = array();
+        foreach($data as $task) {
+            $success = 0;
+            $grades = array();
+            foreach ($subjectgrades as $subjectgrade) {
+                if ($subjectgrade['grade']) {
+                    $grades[] = $subjectgrade['grade'];
+                }
+            }
+            if (count($grades)) {
+                $success = array_sum($grades)/count($grades);
+                $success = (int) round($success, 0);
+            }
+            $gradelang = utils::GRADELANG[$success];
+            $successgrades[] = array(
+                'cmid' => $cmid,
+                'taskid' => $task->id,
+                'userid' => $userid,
+                'grade' => $success,
+                'gradelang' => $gradelang['full'],
+                'subject' => '',
+                'subjectsanitised' => '',
+                'type' => 'success'
+            );
+        }
+        $DB->insert_records(static::TABLE_GRADES_CACHE, $successgrades);
+
+    }
+
+    public static function cache_report_grades($cmid, $userid, $data) {
+        global $DB;
+
+        // Delete existing cached grades for user.
+        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
+            'cmid' => $cmid,
+            'userid' => $userid,
+            'type' => 'reportgrade',
+        ));
+
+        // Generate new ones.
+        $reportgrades = array();
+        foreach($data as $reportgrade) {
+            $reportgrades[] = array(
+                'cmid' => $cmid,
+                'taskid' => -1,
+                'userid' => $userid,
+                'subject' => $reportgrade['subject'],
+                'subjectsanitised' => $reportgrade['subjectsanitised'],
+                'grade' => $reportgrade['grade'],
+                'gradelang' => $reportgrade['gradelang'],
+                'type' => 'reportgrade'
+            );
+        }
+
+        $DB->insert_records(static::TABLE_GRADES_CACHE, $reportgrades);
+    }
+
+    public static function get_cached_subject_grades($cmid, $userid, $includedrafttasks) {
+        global $DB, $OUTPUT;
+
+        // Get all tasks for this course module.
+        $tasks = array();
+        $cmtasks = static::get_for_coursemodule($cmid);
+
+        if (empty($cmtasks)) {
+            return $out;
+        }
+
+        foreach ($cmtasks as $task) {
+            $taskexporter = new task_exporter($task, array('userid' => $userid));
+            $task = $taskexporter->export($OUTPUT);
+
+            if (!$task->published && !$includedrafttasks) {
+                continue;
+            }
+
+            $task->subjectgrades = array_values($DB->get_records(static::TABLE_GRADES_CACHE, array(
+                'cmid' => $cmid,
+                'taskid' => $task->id,
+                'userid' => $userid,
+                'type' => 'subjectgrade',
+            )));
+            $task->success = $DB->get_record(static::TABLE_GRADES_CACHE, array(
+                'cmid' => $cmid,
+                'taskid' => $task->id,
+                'userid' => $userid,
+                'type' => 'success',
+            ));
+            // If no cache then we are forced to compute on the fly.
+            if (empty($task->subjectgrades)) {
+                $task = static::compute_grades_for_task($task, $userid, true);
+            }
+
+            $tasks[] = $task;
+        }
+
+        return $tasks;
+    }
+
+    public static function get_cached_report_grades($cmid, $userid) {
+        global $DB, $OUTPUT;
+
+        $reportgrades = array_values($DB->get_records(static::TABLE_GRADES_CACHE, array(
+            'cmid' => $cmid,
+            'userid' => $userid,
+            'type' => 'reportgrade',
+        ), '', 'subject, subjectsanitised, grade, gradelang'));
+        // Add issubject for template.
+        $reportgrades = array_map(function ($reportgrade) { 
+            $reportgrade->issubject = true;
+            return $reportgrade;
+        }, $reportgrades);
+
+        return $reportgrades;
     }
 
     public static function reset_task_grades_for_student($data) {

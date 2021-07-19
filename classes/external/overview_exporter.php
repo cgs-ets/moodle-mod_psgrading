@@ -152,6 +152,8 @@ class overview_exporter extends exporter {
         $tasks = $gradedata->tasks;
         $reportgrades = $gradedata->reportgrades;
 
+        //echo "<pre>"; var_export($gradedata); exit;
+
         // Group navigation.
         $groups = array();
         foreach ($this->related['groups'] as $i => $groupid) {
