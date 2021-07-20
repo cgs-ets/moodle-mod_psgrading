@@ -38,6 +38,7 @@ $p  = optional_param('p', 0, PARAM_INT);
 // Custom params.
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
+$refresh = optional_param('refresh', 0, PARAM_INT);
 
 if ($id) {
     $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
@@ -70,6 +71,12 @@ $modulecontext = context_module::instance($cm->id);
 
 require_login($course, true, $cm);
 require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
+
+if ($refresh) {
+    utils::invalidate_cache($cm->id, 'list-' . $groupid);
+	redirect($viewurl->out(false));
+	exit;
+}
 
 $PAGE->set_url($viewurl);
 $PAGE->set_title(format_string($moduleinstance->name));

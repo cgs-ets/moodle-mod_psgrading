@@ -124,11 +124,8 @@ class list_exporter extends exporter {
         $basenavurl->param('nav', 'all');
 
         // Check if there is a cached version of the student rows.
-        $listhtml = '';
-        $cache = $DB->get_record(task::TABLE_GRADES_CACHE, array(
-            'cmid' => $this->related['cmid'],
-            'name' => 'list-' . $this->related['groupid'],
-        ));
+        $listhtml = null;
+        $cache = utils::get_cache($this->related['cmid'], 'list-' . $this->related['groupid']);
         if ($cache) {
             $listhtml = $cache->value;
         } else {
@@ -150,11 +147,7 @@ class list_exporter extends exporter {
                 'studentoverviews' => $studentoverviews,
             ));
             if ($listhtml) {
-                $DB->insert_record(task::TABLE_GRADES_CACHE, array(
-                    'cmid' => $this->related['cmid'],
-                    'name' => 'list-' . $this->related['groupid'],
-                    'value' => $listhtml,
-                ));
+                utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
             }
         }
 

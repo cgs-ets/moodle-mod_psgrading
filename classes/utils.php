@@ -24,9 +24,10 @@ namespace mod_psgrading;
 
 defined('MOODLE_INTERNAL') || die();
 
+use \mod_psgrading\persistents\task;
+
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
-//require_once($CFG->dirroot . '/mod/wiki/diff/difflib.php'); // Use wiki's diff lib.     
 require_once(__DIR__.'/vendor/PHP-FineDiff/finediff.php');
 
 /**
@@ -658,6 +659,36 @@ class utils {
             $object->name = $name;
             $object->value = $value;
             $DB->insert_record('psgrading_userprefs', $object);
+        }
+    }
+
+    public static function invalidate_cache($cmid, $name) {
+        global $DB;
+        if ($name) {
+            $sql = "DELETE 
+                      FROM {" . task::TABLE_GRADES_CACHE . "}
+                     WHERE " . $DB->sql_like('name', ':name') . "
+                       AND cmid = :cmid";
+            $DB->execute($sql, array('name' => $name, 'cmid' => $cmid));
+        }
+    }
+
+    public static function get_cache($cmid, $name) {
+        global $DB;
+        return $DB->get_record(task::TABLE_GRADES_CACHE, array(
+            'cmid' => $cmid,
+            'name' => $name,
+        ));
+    }
+
+    public static function save_cache($cmid, $name, $value) {
+        global $DB;
+        if ($name) {
+            $DB->insert_record(task::TABLE_GRADES_CACHE, array(
+                'cmid' => $cmid,
+                'name' => $name,
+                'value' => $value,
+            ));
         }
     }
 

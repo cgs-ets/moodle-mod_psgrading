@@ -458,10 +458,7 @@ class task extends persistent {
         //static::cache_report_grades($task->get('cmid'), $data->userid, $reportgrades);
 
         // Invalidate cached list page.
-        $sql = "DELETE 
-                  FROM {" . static::TABLE_GRADES_CACHE . "}
-                 WHERE " . $DB->sql_like('name', ':name');
-        $DB->execute($sql, array('name' => 'list-%'));
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
 
         return $graderec->id;
     }
