@@ -170,6 +170,9 @@ class task extends persistent {
             }
         }
 
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
         return $data->id;
     }
 
@@ -201,6 +204,9 @@ class task extends persistent {
         $log->formjson = $formjson;
         $log->status = 0; // draft log.
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
 
     }
 

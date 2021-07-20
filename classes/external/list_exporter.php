@@ -49,16 +49,16 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            //'studentoverviews' => [
-            //    'type' => overview_exporter::read_properties_definition(),
-            //    'multiple' => true,
-            //    'optional' => false,
-            //],
+            /*'studentoverviews' => [
+                'type' => overview_exporter::read_properties_definition(),
+                'multiple' => true,
+                'optional' => false,
+            ],
             'taskcreateurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
-            ],
+            ],*/
             'manageurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -123,6 +123,15 @@ class list_exporter extends exporter {
         $basenavurl->param('groupid', 0);
         $basenavurl->param('nav', 'all');
 
+        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
+            'cmid' => $this->related['cmid'],
+            'create' => 1,
+        ));
+
+        $manageurl = new \moodle_url('/mod/psgrading/manage.php', array(
+            'cmid' => $this->related['cmid']
+        ));
+
         // Check if there is a cached version of the student rows.
         $listhtml = null;
         $cache = utils::get_cache($this->related['cmid'], 'list-' . $this->related['groupid']);
@@ -145,24 +154,17 @@ class list_exporter extends exporter {
             // Prerender and cache it.
             $listhtml = $output->render_from_template('mod_psgrading/list_table', array(
                 'studentoverviews' => $studentoverviews,
+                'taskcreateurl' => $taskcreateurl->out(false),
             ));
             if ($listhtml) {
                 utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
             }
         }
 
-        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
-            'cmid' => $this->related['cmid'],
-            'create' => 1,
-        ));
 
-        $manageurl = new \moodle_url('/mod/psgrading/manage.php', array(
-            'cmid' => $this->related['cmid']
-        ));
 
         return array(
             'listhtml' => $listhtml,
-            'taskcreateurl' => $taskcreateurl->out(false),
             'manageurl' => $manageurl->out(false),
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),

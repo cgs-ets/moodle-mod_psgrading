@@ -68,6 +68,9 @@ if ($create) {
     $data->seq = 99999;
     $task = new task(0, $data);
     $task->save();
+    
+    // Invalidate list html cache.
+    utils::invalidate_cache($cm->id, 'list-%');
 
     // Redirect to edit.
     $editurl->param('edit', $task->get('id'));
