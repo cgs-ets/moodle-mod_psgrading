@@ -985,6 +985,10 @@ class task extends persistent {
             $task->update();
             $seq++;
         }
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
         return 1;
     }
 
@@ -992,6 +996,10 @@ class task extends persistent {
         $task = new static($id);
         $task->set('timerelease', time());
         $task->update();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
         return 1;
     }
 
@@ -999,6 +1007,10 @@ class task extends persistent {
         $task = new static($id);
         $task->set('timerelease', 0);
         $task->update();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
         return 1;
     }
 
