@@ -224,6 +224,9 @@ class task extends persistent {
             $task->save();
         }
 
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
         return 1;
     }
 

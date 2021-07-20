@@ -160,20 +160,13 @@ if ($create) {
     } else {
 
         // The form was submitted.
-        if ($formdata->action == 'savedraft') {
+        if ($formdata->action == 'savedraft' || $formdata->action == 'exitedit') {
             redirect($listurl->out());
             exit;
         }
 
         if ($formdata->action == 'discardchanges') {
-            // If already published, remove draftjson.
-            if ($task->get('published')) {
-                $task->set('draftjson', '');
-                $task->save();
-            } else {
-                $task->set('deleted', 1);
-                $task->save();
-            }
+            task::delete_draft($edit);
 
             // If not yet publised, delete the task.
             redirect($listurl->out());
@@ -181,7 +174,6 @@ if ($create) {
         }
 
         if ($formdata->action == 'publish') {
-
             $data = new \stdClass();
             $data->id = $edit;
             $data->published = 1;
