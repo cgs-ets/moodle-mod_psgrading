@@ -357,7 +357,7 @@ class utils {
 
         $students = static::get_enrolled_students($courseid);
 
-        $isstaff = static::is_cgs_staff();
+        $isstaff = static::is_grader();
         if (!$isstaff) {
             $vars = array(
                 'userid' => $USER->id,
@@ -444,7 +444,7 @@ class utils {
         return $students;
     }
 
-    public static function is_cgs_staff() {
+    public static function is_staff_profile() {
         global $USER;
         
         profile_load_custom_fields($USER);
@@ -453,6 +453,16 @@ class utils {
             return true;
         }
 
+        return false;
+    }
+
+    public static function is_grader() {
+        global $COURSE;
+
+        $context = \context_course::instance($COURSE->id);
+        if (has_capability('moodle/grade:manage', $context)) {
+            return true;
+        }
         return false;
     }
 

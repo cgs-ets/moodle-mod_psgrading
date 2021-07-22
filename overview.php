@@ -115,7 +115,7 @@ $relateds = array(
     'students' => $students,
     'userid' => $userid,
     'groupid' => $groupid,
-    'isstaff' => $viewas ? false : utils::is_cgs_staff(),
+    'isstaff' => $viewas ? false : utils::is_grader(),
 );
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
@@ -125,7 +125,7 @@ if (empty($data->tasks)) {
 }
 // Make some adjustments if viewing as.
 if ($viewas) {
-    $data->isstaff = utils::is_cgs_staff();
+    $data->isstaff = utils::is_grader();
     $data->viewas = $viewas;
 }
 

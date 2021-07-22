@@ -506,10 +506,22 @@ class task extends persistent {
         // Add the task criterion definitions.
         $task->criterions = static::get_criterions($task->id);
 
+        // Setup details url.
+        $detailsurl = new \moodle_url('/mod/psgrading/mark.php', array(
+            'cmid' => $task->cmid,
+            'taskid' => $task->id,
+            'userid' => $userid,
+        ));
+
         // Get existing grades for this user.
         $gradeinfo = static::get_task_user_gradeinfo($task->id, $userid);
         $task->gradeinfo = $gradeinfo;
         $task->subjectgrades = array();
+        $task->success = array(
+            'grade' => 0,
+            'gradelang' => '',
+            'detailsurl' => $detailsurl->out(false),
+        );
 
         $showgrades = true;
         // If task is not released yet do not show grades parents/students.
@@ -531,10 +543,6 @@ class task extends persistent {
                         'gradelang' => '',
                     );
                 }
-                $task->success = array(
-                    'grade' => 0,
-                    'gradelang' => '',
-                );
             }
             unset($task->gradeinfo);
             unset($task->criterions);
@@ -580,10 +588,8 @@ class task extends persistent {
             $success = (int) round($success, 0);
         }
         $gradelang = utils::GRADELANG[$success];
-        $task->success = array(
-            'grade' => $success,
-            'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
-        );
+        $task->success['grade'] = $success;
+        $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
 
         // Ditch some unnecessary data.
         unset($task->criterions);

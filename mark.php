@@ -62,7 +62,7 @@ $params = array(
     'userid' => $userid,
 );
 $detailsurl = new moodle_url('/mod/psgrading/details.php', $params);
-if (!utils::is_cgs_staff()) {
+if (!utils::is_grader()) {
     redirect($detailsurl->out(false));
     exit;
 }

@@ -104,12 +104,7 @@ class grade_exporter extends exporter {
         $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
         $currstudent->iscurrent = true;
 
-        // If a staff member viewing, get cached version of grades to speed things up.
         $tasks = task::compute_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks'], $this->related['isstaff']);
-        // TEST: Duplicate tasks for scroll testing.
-        //$tasks = array_merge($tasks, $tasks);
-        //$tasks = array_merge($tasks, $tasks);
-        //$tasks = array_merge($tasks, $tasks);
 
         $index = count( $tasks ) - 1;
         if (isset($tasks[$index])) {

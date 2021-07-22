@@ -37,7 +37,7 @@ $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUS
 $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
 
 // If a non-staff, redirect them to the overview page instead.
-$isstaff = utils::is_cgs_staff();
+$isstaff = utils::is_grader();
 if (!$isstaff) {
 	$url = new moodle_url('/mod/psgrading/overview.php', array('cmid' => $cm->id));
 	redirect($url->out(false));

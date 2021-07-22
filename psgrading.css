@@ -453,7 +453,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 108px;
+  width: 90px;
   height: 43px;
   padding: 6px;
   border-top: 1px solid #ccc;
@@ -477,7 +477,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname {
   height: 190px;
-  width: 108px;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   position: relative;
@@ -560,6 +559,20 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 3px 0 0 5px;
   width: 180px;
   transition: all ease 0.3s;
+}
+.psgrading-list .col-success {
+  padding: 0;
+}
+.psgrading-list .col-success a {
+  width: 100%;
+  display: inline-block;
+  text-decoration: none;
+  padding: 6px;
+  color: #000;
+  transition: background ease 0.2s;
+}
+.psgrading-list .col-success a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 .psgrading-list .column[data-grade="5"] {
   background-color: #D90617;

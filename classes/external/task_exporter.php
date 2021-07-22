@@ -167,7 +167,7 @@ class task_exporter extends persistent_exporter {
                 $evidence->name = $cm->name;
 
                 // Determine the URL depending on the activity, and viewing user's role.
-                $isstaff = utils::is_cgs_staff();
+                $isstaff = utils::is_grader();
 
                 // Default.
                 $evidence->url = clone($cm->url);

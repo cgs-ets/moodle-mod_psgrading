@@ -53,7 +53,7 @@ if ($id) {
 }
 
 // If a non-staff, redirect them to the overview page instead.
-$isstaff = utils::is_cgs_staff();
+$isstaff = utils::is_grader();
 if (!$isstaff) {
 	$url = new moodle_url('/mod/psgrading/overview.php', array('cmid' => $cm->id));
 	redirect($url->out(false));

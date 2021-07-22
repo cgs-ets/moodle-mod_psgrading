@@ -98,7 +98,7 @@ $relateds = array(
     'students' => $students,
     'userid' => $userid,
     'detailsurl' => $detailsurl,
-    'isstaff' => utils::is_cgs_staff(),
+    'isstaff' => utils::is_grader(),
 );
 $detailsexporter = new details_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
