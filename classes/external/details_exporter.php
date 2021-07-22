@@ -118,6 +118,7 @@ class details_exporter extends exporter {
         $isstaff = $this->related['isstaff'];
 
         // Student navigation.
+        $prevstudenturl = $nextstudenturl = null;
         $students = array();
         foreach ($this->related['students'] as $i => $studentid) {
             $student = \core_user::get_user($studentid);
