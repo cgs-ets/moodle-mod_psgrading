@@ -430,6 +430,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 20px;
   font-size: 1.125em;
 }
+.psgrading-list .btn-refresh {
+  float: right;
+  margin-right: 50px;
+  font-size: 22px;
+  position: absolute;
+  right: 32px;
+  top: 12px;
+}
 .psgrading-list .classlist-table {
   position: relative;
   overflow: auto;

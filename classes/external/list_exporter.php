@@ -49,16 +49,6 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            /*'studentoverviews' => [
-                'type' => overview_exporter::read_properties_definition(),
-                'multiple' => true,
-                'optional' => false,
-            ],
-            'taskcreateurl' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],*/
             'manageurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -70,6 +60,11 @@ class list_exporter extends exporter {
                 'optional' => false,
             ],
             'basenavurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
+            'baseurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -168,6 +163,7 @@ class list_exporter extends exporter {
             'manageurl' => $manageurl->out(false),
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
+            'baseurl' => $baseurl->out(false),
         );
 
     }
