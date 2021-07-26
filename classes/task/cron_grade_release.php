@@ -111,7 +111,6 @@ class cron_grade_release extends \core\task\scheduled_task {
             $postid = \local_myconnect\persistents\post::save_from_formdata(0, $postdata, $grader);
             $this->log("MyConnect post created " . $postid, 2);
 
-            // Hacky copy & paste evidence to myconnect attachments.
             $this->log("Copying evidence to MyConnect post.", 2);
             $modulecontext = \context_module::instance($task->cmid);
             $fs = get_file_storage();
@@ -144,7 +143,7 @@ class cron_grade_release extends \core\task\scheduled_task {
 
             // Mark grade as processed.
             $grade->releaseprocessed = 1;
-            //$DB->update_record(task::TABLE_GRADES, $grade);
+            $DB->update_record(task::TABLE_GRADES, $grade);
 
             // Record grade-to-myconnectpost relationship.
             $releasepostrec = new \stdClass();
