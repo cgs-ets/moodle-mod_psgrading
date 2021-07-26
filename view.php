@@ -52,6 +52,11 @@ if ($id) {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
 
+$coursecontext = context_course::instance($course->id);
+$modulecontext = context_module::instance($cm->id);
+require_login($course, true, $cm);
+require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
+
 // If a non-staff, redirect them to the overview page instead.
 $isstaff = utils::is_grader();
 if (!$isstaff) {
@@ -65,12 +70,6 @@ $viewurl = new moodle_url('/mod/psgrading/view.php', array(
     'groupid' => $groupid,
     'nav' => $nav,
 ));
-
-$coursecontext = context_course::instance($course->id);
-$modulecontext = context_module::instance($cm->id);
-
-require_login($course, true, $cm);
-require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
 
 if ($refresh) {
     utils::invalidate_cache($cm->id, 'list-' . $groupid);

@@ -36,6 +36,11 @@ $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EX
 $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
 
+$coursecontext = context_course::instance($course->id);
+$modulecontext = context_module::instance($cm->id);
+require_login($course, true, $cm);
+require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
+
 // If a non-staff, redirect them to the overview page instead.
 $isstaff = utils::is_grader();
 if (!$isstaff) {
@@ -43,12 +48,6 @@ if (!$isstaff) {
 	redirect($url->out(false));
 	exit;
 } 
-
-$coursecontext = context_course::instance($course->id);
-$modulecontext = context_module::instance($cm->id);
-
-require_login($course, true, $cm);
-require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
 
 $PAGE->set_url('/mod/psgrading/manage.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($moduleinstance->name));
