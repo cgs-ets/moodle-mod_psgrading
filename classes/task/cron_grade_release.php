@@ -133,7 +133,7 @@ class cron_grade_release extends \core\task\scheduled_task {
                 $newfile->pathnamehash = sha1("/$newfile->contextid/$newfile->component/$newfile->filearea/$newfile->itemid/$newfile->filename");
                 
                 $reference = $fs->pack_reference($file); // Setup the reference to original file.
-                $aliasfile = $fs->create_file_from_reference($newfile, 1, $reference); // Create the reference.
+                $aliasfile = $fs->create_file_from_reference($newfile, 2, $reference); // Create the reference. Use "local" repository.
 
                 $this->log("Created file reference '" . $aliasfile->get_id() . "'", 2);
                 //$newfileid = $DB->insert_record('files', $newfile);
