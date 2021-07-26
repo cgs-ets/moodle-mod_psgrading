@@ -134,9 +134,7 @@ class cron_grade_release extends \core\task\scheduled_task {
                 
                 $reference = $fs->pack_reference($file); // Setup the reference to original file.
                 $aliasfile = $fs->create_file_from_reference($newfile, 2, $reference); // Create the reference. Use "local" repository.
-
                 $this->log("Created file reference '" . $aliasfile->get_id() . "'", 2);
-                $newfileid = $DB->insert_record('files', $newfile);
             }
             // Set the display type now that the post has files.
             \local_myconnect\persistents\post::determine_attachment_display_type($postid);
