@@ -50,6 +50,8 @@ class form_task extends \moodleform {
         * - Can't use client validation when using custom action buttons. Validation is done on server in task.php.
         ****/
 
+        //Some students have already been graded. Changing the rubric may require tasks to be regraded.
+
         // Page title.
         $mform->addElement('header', 'general', '');
         $mform->setExpanded('general', true, true);

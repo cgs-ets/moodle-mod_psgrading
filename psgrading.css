@@ -539,10 +539,59 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   text-align: center;
 }
 .psgrading-list .col-taskname .actions a {
+  display: block;
   color: #000;
 }
 .psgrading-list .col-taskname .actions a:hover {
   color: #005b94;
+}
+.psgrading-list .col-taskname .actions a.action-undorelease {
+  position: relative;
+}
+.psgrading-list .col-taskname .actions a.action-undorelease:hover:before {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+  -webkit-transform: skewY(-33deg);
+  -moz-transform: skewY(-33deg);
+  transform: skewY(-33deg);
+}
+.psgrading-list .col-taskname .actions a.action-release {
+  position: relative;
+}
+.psgrading-list .col-taskname .actions a.action-release:before {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+  -webkit-transform: skewY(-33deg);
+  -moz-transform: skewY(-33deg);
+  transform: skewY(-33deg);
+}
+.psgrading-list .col-taskname .actions a.action-release:hover:before {
+  display: none;
+}
+.psgrading-list .col-taskname .actions span.action-publish {
+  position: relative;
+}
+.psgrading-list .col-taskname .actions span.action-publish:before {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+  -webkit-transform: skewY(-33deg);
+  -moz-transform: skewY(-33deg);
+  transform: skewY(-33deg);
 }
 .psgrading-list .col-taskname .actions .status {
   color: #008196;

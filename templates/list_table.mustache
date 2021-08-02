@@ -67,8 +67,12 @@
 
                             {{#published}}
                                 <a data-toggle="tooltip" data-placement="right" title="Grade task" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>
-                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>{{/released}}
-                                {{#released}}<a data-toggle="tooltip" data-placement="right" title="Hide feedback" class="action-undorelease" href="#"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>{{/released}}
+                                {{^released}}{{#HIDE}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>{{/HIDE}}{{/released}}
+                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>{{/released}}
+                                {{#released}}<a data-toggle="tooltip" data-placement="right" title="Hide feedback" class="action-undorelease" href="#"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>{{/released}}
+                            {{/published}}
+                            {{^published}}
+                                <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="action-publish"><i class="fa fa-eye" aria-hidden="true"></i></span>
                             {{/published}}
 
                             <a data-toggle="tooltip" data-placement="right" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="btn-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>

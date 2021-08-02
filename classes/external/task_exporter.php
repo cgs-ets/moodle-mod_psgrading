@@ -93,6 +93,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => true,
                 'optional' => true,
             ],
+            'evidences' => [
+                'type' => PARAM_BOOL,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -215,6 +220,9 @@ class task_exporter extends persistent_exporter {
             }
         }
 
+        // Check if this task has grades.
+        $hasgrades = task::has_grades($this->data->id);
+
     	return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
@@ -224,6 +232,7 @@ class task_exporter extends persistent_exporter {
             'released' => $released,
             'isdraft' => $isdraft,
             'evidences' => $evidences,
+            'hasgrades' => $hasgrades,
 	    ];
     }
 
