@@ -84,7 +84,7 @@ class mark_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'myconnect' => [
+            'myconnectattachments' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
                 'optional' => false,
@@ -212,7 +212,7 @@ class mark_exporter extends exporter {
         $baseurl->param('nav', 'all');
 
         // Get selected MyConnect grade evidences.
-        $task->myconnectevidences = array();
+        /*$task->myconnectevidences = array();
         $task->myconnectevidencejson = '';
         $myconnectids = array();
         if ($gradeinfo) {
@@ -235,6 +235,30 @@ class mark_exporter extends exporter {
         // Put the already selected posts at the front.
         if ($task->myconnectevidences || $myconnect->posts) {
             $myconnect->posts = array_merge($task->myconnectevidences, $myconnect->posts);
+        }*/
+
+
+        // Get selected MyConnect grade evidences.
+        $task->myconnectevidences = array();
+        $task->myconnectevidencejson = '';
+        $myconnectfileids = array();
+        if ($gradeinfo) {
+            // Get selected ids
+            $myconnectfileids = task::get_myconnect_grade_evidences($gradeinfo->id);
+            if ($myconnectfileids) {
+                // Convert to json.
+                $task->myconnectevidencejson = json_encode($myconnectfileids);
+            }
+            // Get formatted attachment for selected fileids.
+            $task->myconnectevidences = utils::get_myconnect_data_for_attachments($currstudent->username, $myconnectfileids);
+        }
+
+        // Get MyConnect attachments for evidence selector, passing selected attachments to be excluded.
+        $myconnectattachments = utils::get_myconnect_data($currstudent->username, 0, $myconnectfileids);
+
+        // Put the already selected attachments at the front.
+        if ($task->myconnectevidences || $myconnectattachments) {
+            $myconnectattachments = array_merge($task->myconnectevidences, $myconnectattachments);
         }
 
         //echo "<pre>";
@@ -253,7 +277,7 @@ class mark_exporter extends exporter {
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'gradeinfo' => $gradeinfo,
-            'myconnect' => $myconnect,
+            'myconnectattachments' => $myconnectattachments,
         );
     }
 

@@ -65,6 +65,7 @@ $string['mark:reset'] = 'Reset';
 $string['mark:savesuccess'] = 'Feedback was saved for {$a}';
 $string['mark:savefail'] = 'Failed to save feedback for {$a}';
 $string['mark:resetsuccess'] = 'Feedback was reset for {$a}';
+$string['mark:myconnectattachments'] = 'MyConnect attachments';
 
 $string['pypuoi:wwa'] = 'Who we are';
 $string['pypuoi:wwaipat'] = 'Where we are in place and time';

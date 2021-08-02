@@ -165,7 +165,7 @@ if (empty($formdata)) {
         'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
         'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
         'myconnectevidencejson' => $data->task->myconnectevidencejson,
-        'selectedmyconnectpostsjson' => $data->task->myconnectevidencejson,
+        'selectedmyconnectjson' => $data->task->myconnectevidencejson,
     ));
 
     // Run get_data again to trigger validation and set errors.
@@ -221,9 +221,9 @@ $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.cs
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/masonry.pkgd.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/imagesloaded.pkgd.min.js'), true );
 
-echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', $data->myconnect);
-
 echo $OUTPUT->header();
+
+echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', array('formattedattachments' => $data->myconnectattachments));
 
 echo $OUTPUT->render_from_template('mod_psgrading/mark_header', $data);
 

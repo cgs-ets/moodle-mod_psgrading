@@ -364,12 +364,12 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.loadingmyconnect = true;
         var page = self.rootel.find('input[name="myconnectnextpage"]');
         var posts = self.rootel.find('.myconnect-selector .posts');
-        var selectedmyconnectposts = self.rootel.find('input[name="selectedmyconnectpostsjson"]');
+        var selectedmyconnectfiles = self.rootel.find('input[name="selectedmyconnectjson"]');
 
         var data = {
             'username': self.rootel.find('.selected-student').data('username'),
             'page': page.val(),
-            'selectedmyconnectposts': selectedmyconnectposts.val(),
+            'selectedmyconnectfiles': selectedmyconnectfiles.val(),
         };
 
         Ajax.call([{
@@ -431,9 +431,9 @@ define(['jquery', 'core/log', 'core/ajax'],
         // Preselect posts that have already been added.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
         if (myconnectevidencejson.val()) {
-            var postids = JSON.parse(myconnectevidencejson.val());
-            for (i = 0; i < postids.length; i++) {
-                var id = postids[i];
+            var ids = JSON.parse(myconnectevidencejson.val());
+            for (i = 0; i < ids.length; i++) {
+                var id = ids[i];
                 self.rootel.find('.myconnect-selector .post[data-id="' + id + '"]').addClass('selected');
             }
         }
@@ -450,6 +450,8 @@ define(['jquery', 'core/log', 'core/ajax'],
         self.rootel.find('.myconnect-selector').hide();
         $('body').css("overflow", "");
         document.getElementById("myconnect-evidence").scrollIntoView();
+        // Clear preselected.
+        self.rootel.find('.myconnect-selector .post').removeClass('selected');
     };
 
     /**
@@ -511,10 +513,10 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Update the json.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
-        var postids = JSON.parse(myconnectevidencejson.val());
-        postids = self.removeFromArray(postids, id);
-        var postidsStr = JSON.stringify(postids);
-        myconnectevidencejson.val(postidsStr);
+        var ids = JSON.parse(myconnectevidencejson.val());
+        ids = self.removeFromArray(ids, id);
+        var idsStr = JSON.stringify(ids);
+        myconnectevidencejson.val(idsStr);
 
         // Remove the post element.
         self.rootel.find('.myconnect-carousel .post[data-id="' + id + '"]').remove();

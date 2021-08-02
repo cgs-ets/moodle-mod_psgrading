@@ -905,11 +905,9 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   margin-right: 3px;
 }
 #page-mod-psgrading-mark .myconnect-selector .actions .btn-exit {
-  padding: 10px;
   height: 36px;
 }
 #page-mod-psgrading-mark .myconnect-selector .post-wrap {
-  width: 300px;
   float: left;
 }
 #page-mod-psgrading-mark #myconnect-evidence,
@@ -935,10 +933,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-details .myconnect-carousel {
   display: none;
   overflow: auto;
-  white-space: nowrap;
-  background-color: #fff;
   margin: 10px 0;
-  background-color: #f2f4f6;
   padding: 0 0 0 10px;
   border: 1px dashed #aaa;
   border-radius: 2px;
@@ -947,7 +942,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-details .myconnect-carousel .post {
   background-color: #fff;
   cursor: default;
-  width: 270px;
   display: inline-block;
   margin: 10px 10px 10px 0px;
   vertical-align: top;
@@ -959,7 +953,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header,
 #page-mod-psgrading-details .myconnect-carousel .post .post-header {
-  padding: 13px 10px;
   min-height: 0px;
 }
 #page-mod-psgrading-mark .myconnect-carousel .post .post-header .meta,
@@ -998,10 +991,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   text-align: center;
   font-family: monospace;
 }
-#page-mod-psgrading-mark .myconnect-carousel .post .album,
-#page-mod-psgrading-details .myconnect-carousel .post .album {
-  width: 240px;
-}
 #page-mod-psgrading-mark .myconnect-carousel .post .post-body,
 #page-mod-psgrading-details .myconnect-carousel .post .post-body {
   max-height: 400px;
@@ -1011,25 +1000,14 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .post,
 #page-mod-psgrading-details .post {
   margin-bottom: 30px;
-  background-color: #f2f4f6;
   color: #000;
   position: relative;
-  border: 1px solid #ededed;
-  border-radius: 8px;
   margin: 10px 10px 30px 10px;
   cursor: pointer;
-}
-#page-mod-psgrading-mark .post:hover,
-#page-mod-psgrading-details .post:hover {
-  border: 1px solid #ddd;
 }
 #page-mod-psgrading-mark .post:hover .post-header .selector,
 #page-mod-psgrading-details .post:hover .post-header .selector {
   background: #B3D9B3;
-}
-#page-mod-psgrading-mark .post.selected,
-#page-mod-psgrading-details .post.selected {
-  border: 1px solid #ccc;
 }
 #page-mod-psgrading-mark .post.selected .post-header .selector,
 #page-mod-psgrading-details .post.selected .post-header .selector {
@@ -1050,10 +1028,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-details .post .post-header {
   position: relative;
   width: 100%;
-  border-bottom: 1px solid #f6f6f6;
-  padding: 20px 15px;
   font-weight: 600;
-  min-height: 63px;
 }
 #page-mod-psgrading-mark .post .post-header .selector,
 #page-mod-psgrading-details .post .post-header .selector {
@@ -1068,6 +1043,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   cursor: pointer;
   box-shadow: 2px 2px 7px -2px rgba(0, 0, 0, 0.4);
   transition: background linear 0.1s;
+  z-index: 10;
 }
 #page-mod-psgrading-mark .post .post-header .meta,
 #page-mod-psgrading-details .post .post-header .meta {
@@ -1241,7 +1217,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   font-size: 11px;
   text-align: center;
   line-height: 11px;
-  background: #fafafa;
+  background: #e2e4e6;
 }
 #page-mod-psgrading-mark .post .album .doc a,
 #page-mod-psgrading-details .post .album .doc a {
@@ -1252,8 +1228,8 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .post .album .doc .icon,
 #page-mod-psgrading-details .post .album .doc .icon {
-  height: 20px;
-  margin: 0 auto;
+  height: 30px;
+  margin: 6px auto;
 }
 #page-mod-psgrading-mark .post .album .video video,
 #page-mod-psgrading-details .post .album .video video {

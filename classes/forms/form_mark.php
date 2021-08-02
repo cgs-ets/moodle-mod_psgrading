@@ -67,7 +67,7 @@ class form_mark extends \moodleform {
             $data->task = new \stdClass();
             $data->task->id = -1;
             $data->task->criterions = [];
-            $data->myconnect = null;
+            $data->myconnectattachments = null;
             $data->currstudent = null;
         }
 
@@ -87,7 +87,7 @@ class form_mark extends \moodleform {
         $mform->addElement('html', 
             $OUTPUT->render_from_template('mod_psgrading/mark_evidence', array(
                 'task' => $data->task,
-                'myconnect' => $data->myconnect,
+                'myconnectattachments' => $data->myconnectattachments,
                 'currstudent' => $data->currstudent,
             ))
         );
@@ -114,8 +114,8 @@ class form_mark extends \moodleform {
         $mform->setType('action', PARAM_RAW);
 
         // MyConnect evidence.
-        $mform->addElement('hidden', 'selectedmyconnectpostsjson');
-        $mform->setType('selectedmyconnectpostsjson', PARAM_RAW);
+        $mform->addElement('hidden', 'selectedmyconnectjson');
+        $mform->setType('selectedmyconnectjson', PARAM_RAW);
         $mform->addElement('hidden', 'myconnectevidencejson');
         $mform->setType('myconnectevidencejson', PARAM_RAW);
         

@@ -30,16 +30,11 @@
         <h5>MyConnect Selector</h5>
         <div class="grid">
             <div class="posts">
-                {{#posts}}
+                {{#formattedattachments}}
                     <div class="post-wrap">
-                        {{>mod_psgrading/myconnect_post}}
+                        {{>mod_psgrading/myconnect_post_attachments}}
                     </div>
-                {{/posts}}
-                {{^posts.0}}
-                    {{#loggedinuser.isstaff}}{{#loggedinuser.isstudent}}
-                    {{#str}} list:noposts, mod_psgrading {{/str}}
-                    {{/loggedinuser.isstudent}}{{/loggedinuser.isstaff}}     
-                {{/posts.0}}
+                {{/formattedattachments}}
             </div>
         </div>
         <input name="myconnectnextpage" type="hidden" value="1"/>

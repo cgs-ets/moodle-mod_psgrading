@@ -42,20 +42,20 @@
 
 
         <div id="myconnect-evidence" class="{{#task.myconnectevidences.0}}has-posts{{/task.myconnectevidences.0}}">
-            <div class="heading">MyConnect posts</div>
-            {{#myconnect.posts.0}}
+            <div class="heading">{{#str}} mark:myconnectattachments, mod_psgrading {{/str}}</div>
+            {{#myconnectattachments.0}}
                 <a href="#" class="btn-browse btn btn-primary">Select</a>
                 <div class="myconnect-carousel">
                     {{#task.myconnectevidences}}
-                        {{>mod_psgrading/myconnect_post}}
+                        {{>mod_psgrading/myconnect_post_attachments}}
                     {{/task.myconnectevidences}}
                 </div>
-            {{/myconnect.posts.0}}
-            {{^myconnect.posts.0}}
+            {{/myconnectattachments.0}}
+            {{^myconnectattachments.0}}
                 <div class="myconnect-empty">
                     {{currstudent.fullname}} does not have any MyConnect posts.
                 </div>
-            {{/myconnect.posts.0}}
+            {{/myconnectattachments.0}}
         </div>
 
         <div class="heading">Additional evidence</div>

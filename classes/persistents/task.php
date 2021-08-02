@@ -360,7 +360,7 @@ class task extends persistent {
         $sql = "SELECT *
                   FROM {" . static::TABLE_GRADE_EVIDENCES . "}
                  WHERE gradeid = ?
-                   AND evidencetype = 'myconnect_post'";
+                   AND evidencetype = 'myconnect_attachment'";
         $params = array($gradeid);
 
         $records = $DB->get_records_sql($sql, $params);
@@ -444,15 +444,15 @@ class task extends persistent {
             // Recreate myconnect links.
             $DB->delete_records(static::TABLE_GRADE_EVIDENCES, array(
                 'gradeid' => $graderec->id,
-                'evidencetype' => 'myconnect_post',
+                'evidencetype' => 'myconnect_attachment',
             ));
-            $myconnectposts = json_decode($data->myconnectevidencejson);
-            if ($myconnectposts) {
-                foreach ($myconnectposts as $id) {
+            $myconnectfiles = json_decode($data->myconnectevidencejson);
+            if ($myconnectfiles) {
+                foreach ($myconnectfiles as $id) {
                     $evidence = new \stdClass();
                     $evidence->taskid = $data->taskid;
                     $evidence->gradeid = $graderec->id;
-                    $evidence->evidencetype = 'myconnect_post';
+                    $evidence->evidencetype = 'myconnect_attachment';
                     $evidence->refdata = $id;
                     $DB->insert_record(static::TABLE_GRADE_EVIDENCES, $evidence);
                 }
@@ -461,10 +461,8 @@ class task extends persistent {
         }
 
         $tasks = static::compute_grades($task->get('cmid'), $data->userid, true, true);
-        //static::cache_grades($task->get('cmid'), $data->userid, $tasks);
 
         $reportgrades = static::compute_report_grades($tasks, true);
-        //static::cache_report_grades($task->get('cmid'), $data->userid, $reportgrades);
 
         // Invalidate cached list page.
         utils::invalidate_cache($task->get('cmid'), 'list-%');

@@ -109,46 +109,56 @@ class cron_grade_release extends \core\task\scheduled_task {
             );
 
             $postid = \local_myconnect\persistents\post::save_from_formdata(0, $postdata, $grader);
-            $this->log("MyConnect post created " . $postid, 2);
+            if ($postid) {
+                $this->log("MyConnect post created " . $postid, 2);
 
-            $this->log("Copying evidence to MyConnect post.", 2);
-            $modulecontext = \context_module::instance($task->cmid);
-            $fs = get_file_storage();
-            $uniqueid = sprintf( "%d%d", $task->id, $student->id ); // Join the task id and grade student it to make the unique itemid.
-            $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
-            foreach ($files as $storedfile) {
-                // Set up a new file record for the db. Remove the id so that a new record is inserted.
-                $file = $DB->get_record('files', array('id' => $storedfile->get_id()));
-                if (empty($file)) {
-                    $this->log_finish("Weird, the file record was not found for " . $storedfile->get_id());
-                    return;
+                // Record grade-to-myconnectpost relationship.
+                $releasepostrec = new \stdClass();
+                $releasepostrec->taskid = $task->id;
+                $releasepostrec->gradeid = $grade->id;
+                $releasepostrec->postid = $postid;
+                $releasepostrec->id = $DB->insert_record(task::TABLE_RELEASE_POSTS, $releasepostrec);
+
+                // Copy evidence to MyConnect post.
+                $this->log("Copying evidence to MyConnect post.", 2);
+                $modulecontext = \context_module::instance($task->cmid);
+                $fs = get_file_storage();
+                $uniqueid = sprintf( "%d%d", $task->id, $student->id ); // Join the task id and grade student it to make the unique itemid.
+                $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
+                foreach ($files as $storedfile) {
+                    $newid = utils::create_myconnect_file_reference($postid, $storedfile->get_id());
+                    if ($newid) {
+                        $this->log("Created file reference '" . $newid . "'", 3);
+                    } else {
+                        $this->log_finish("Weird, the file record was not found for " . $storedfile->get_id(), 3);
+                    }
                 }
 
-                $newfile = clone $file;
-                unset($newfile->id);
-                $newfile->contextid = 1;
-                $newfile->component = 'local_myconnect';
-                $newfile->filearea = 'attachment';
-                $newfile->itemid = $postid;
-                $newfile->pathnamehash = sha1("/$newfile->contextid/$newfile->component/$newfile->filearea/$newfile->itemid/$newfile->filename");
+                // Get MyConnect evidence references and copy them back into MyConnect post.
+                $this->log("Copying MyConnect evidence to MyConnect post.", 2);
+                $myconnectevidences = task::get_myconnect_grade_evidences($grade->id);
+                if ($myconnectevidences) {
+                    foreach ($myconnectevidences as $fileid) {
+                        $newid = utils::create_myconnect_file_reference($postid, $fileid);
+                        if ($newid) {
+                            $this->log("Created file reference '" . $newid . "'", 3);
+                        } else {
+                            $this->log_finish("Weird, the file record was not found for " . $fileid, 3);
+                        }
+                    }
+                }
                 
-                $reference = $fs->pack_reference($file); // Setup the reference to original file.
-                $aliasfile = $fs->create_file_from_reference($newfile, 2, $reference); // Create the reference. Use "local" repository.
-                $this->log("Created file reference '" . $aliasfile->get_id() . "'", 2);
+                // Set the display type now that the post has files.
+                \local_myconnect\persistents\post::determine_attachment_display_type($postid);
+
+            } else {
+                $this->log("Failed to create MyConnect post", 2);
             }
-            // Set the display type now that the post has files.
-            \local_myconnect\persistents\post::determine_attachment_display_type($postid);
 
             // Mark grade as processed.
             $grade->releaseprocessed = 1;
             $DB->update_record(task::TABLE_GRADES, $grade);
 
-            // Record grade-to-myconnectpost relationship.
-            $releasepostrec = new \stdClass();
-            $releasepostrec->taskid = $task->id;
-            $releasepostrec->gradeid = $grade->id;
-            $releasepostrec->postid = $postid;
-            $releasepostrec->id = $DB->insert_record(task::TABLE_RELEASE_POSTS, $releasepostrec);
         }
 
         $this->log_finish("Finished processing grades");

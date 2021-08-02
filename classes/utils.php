@@ -527,10 +527,10 @@ class utils {
     }
 
 
-    public static function get_myconnect_data($username, $page = 0, $excludeposts = []) {
+    public static function get_myconnect_data($username, $page = 0, $excludeattachments = []) {
         global $CFG, $USER, $OUTPUT;
 
-        $myconnect = null;
+        $attachments = [];
 
         if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
             // Load users through MyConnect.
@@ -549,49 +549,93 @@ class utils {
             ];
             $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
             $myconnect = $timeline->export($OUTPUT);
-            // Take already selected posts out.
-            if (isset($excludeposts) && isset($myconnect->posts)) {
-                foreach ($excludeposts as $expost) {
-                    foreach($myconnect->posts as $j => $post) {
-                        if ($post->id == $expost) {
-                            unset($myconnect->posts[$j]);
+
+            // Convert posts to attachments array.
+            $attachments = array();
+            if (isset($myconnect->posts)) {
+                foreach ($myconnect->posts as $post) {
+                    $attachments = array_merge($attachments, $post->formattedattachments);
+                }
+            }
+
+            // Take already selected attachments out.
+            if ($attachments && $excludeattachments) {
+                foreach ($excludeattachments as $exattt) {
+                    foreach($attachments as $i => $attachment) {
+                        if ($attachment->id == $exattt) {
+                            unset($attachments[$i]);
                         }
                     }
                 }    
             }
         }
 
-        return $myconnect;
+        return $attachments;
     }
 
-    public static function get_myconnect_data_for_postids($username, $postids) {
-        global $CFG, $USER, $OUTPUT;
+    public static function get_myconnect_data_for_attachments($username, $attachmentids) {
+        global $CFG, $OUTPUT;
 
-        if (empty($postids)) {
-            return;
+		$attachments = [];
+        $context = \context_system::instance();
+        $fs = get_file_storage();
+        foreach($attachmentids as $attachmentid) {
+            // Get the file.
+            $file = $fs->get_file_by_id($attachmentid);
+            if ($file) {
+                $filename = $file->get_filename();
+                $mimetype = $file->get_mimetype();
+                $iconimage = new \pix_icon(file_file_icon($file), get_mimetype_description($file));
+                $iconimage = $iconimage->export_for_template($OUTPUT);
+                $iconimage = $iconimage['attributes'][2]['value']; // src attribute.
+
+                $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$context->id.'/local_myconnect/attachment/'.$file->get_itemid().'/'.$filename);
+
+                $isimage = strpos($mimetype, 'image') !== false ? 1 : 0;
+                $isvideo = strpos($mimetype, 'video') !== false ? 1 : 0;
+                $canpreview = ($isimage || strpos($mimetype, 'mp4') !== false) ? 1 : 0;
+
+                $attachment = [
+                    'id' => $file->get_id(),
+                    'postid' => $file->get_itemid(),
+                    'filename' => $filename,
+                    'formattedfilename' => format_text($filename, FORMAT_HTML, array('context'=>$context)),
+                    'mimetype' => $mimetype,
+                    'iconimage' => $iconimage,
+                    'path' => $path,
+                    'canpreview' => $canpreview,
+                    'isimage' => $isimage,
+                    'isvideo' => $isvideo,
+                    'contenthash' => $file->get_contenthash(),
+                ];
+                $attachments[] = (object) $attachment;
+            }
         }
 
-        $myconnect = null;
-        if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
-            // Load users through MyConnect.
-            $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
-            $timelineuser = \local_myconnect\utils::get_user_with_extras($username);
-            // Get the posts.
-            $posts = \local_myconnect\persistents\post::get_by_ids($postids);
-            // Export the posts data.
-            $relateds = [
-                'context' => \context_system::instance(),
-                'posts' => $posts,
-                'jump' => 0,
-                'page' => 0,
-                'timelineuser' => $timelineuser,
-                'loggedinuser' => $loggedinuser,
-            ];
-            $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
-            $myconnect = $timeline->export($OUTPUT);
+        return $attachments;
+    }
+
+    public static function create_myconnect_file_reference($postid, $fileid) {
+        global $DB;
+
+        // Set up a new file record for the db. Remove the id so that a new record is inserted.
+        $file = $DB->get_record('files', array('id' => $fileid));
+        if (empty($file)) {
+            return 0;
         }
 
-        return $myconnect;
+        $newfile = clone $file;
+        unset($newfile->id);
+        $newfile->contextid = 1;
+        $newfile->component = 'local_myconnect';
+        $newfile->filearea = 'attachment';
+        $newfile->itemid = $postid;
+        $newfile->pathnamehash = sha1("/$newfile->contextid/$newfile->component/$newfile->filearea/$newfile->itemid/$newfile->filename");
+        
+        $fs = get_file_storage();
+        $reference = $fs->pack_reference($file); // Setup the reference to original file.
+        $aliasfile = $fs->create_file_from_reference($newfile, 2, $reference); // Create the reference. Use "local" repository.
+        return $aliasfile->get_id();
     }
 
     public static function get_task_as_json($task) {
