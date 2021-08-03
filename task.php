@@ -30,6 +30,7 @@ require_once(__DIR__.'/lib.php');
 use \mod_psgrading\forms\form_task;
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
+use \mod_psgrading\external\task_exporter;
 
 // Course_module ID, or module instance id.
 $cmid = required_param('cmid', PARAM_INT);
@@ -91,6 +92,15 @@ if ($create) {
     if (!$exists || $task->get('deleted')) {
         redirect($listurl->out(false));
         exit;
+    }
+
+    // Export the task.
+    $taskexporter = new task_exporter($task);
+    $output = $PAGE->get_renderer('core');
+	$exported = $taskexporter->export($output);
+    if ($exported->hasgrades) {
+        $message = get_string('taskalreadygraded', 'mod_psgrading');
+        \core\notification::error($message);
     }
 
     // Instantiate the form.
@@ -224,6 +234,3 @@ if ($create) {
 
 }
 exit;
-
-
-

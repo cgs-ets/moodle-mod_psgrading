@@ -93,7 +93,7 @@ class task_exporter extends persistent_exporter {
                 'multiple' => true,
                 'optional' => true,
             ],
-            'evidences' => [
+            'hasgrades' => [
                 'type' => PARAM_BOOL,
                 'multiple' => false,
                 'optional' => false,

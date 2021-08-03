@@ -270,7 +270,7 @@ class task extends persistent {
     public static function has_grades($taskid) {
         global $DB;
 
-        return $DB->record_exists(static::TABLE_GRADES, array(taskid => $taskid));
+        return $DB->record_exists(static::TABLE_GRADES, array('taskid' => $taskid));
     }
 
     public static function get_task_user_gradeinfo($taskid, $userid) {

@@ -35,7 +35,7 @@
                 {{/subjectgrades}}
             {{/tasks.0}}
         </div>
-        <div class="cell cell-success">Success</div>
+        {{#isstaff}}{{^viewas}}<div class="cell cell-success">Success</div>{{/viewas}}{{/isstaff}}
         <div class="cell cell-engagement" data-subject="engagement">Engagement</div>
         <div class="cell">Comments</div>
         <div class="cell">Details</div>
@@ -50,9 +50,9 @@
                     <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
                 {{/subjectgrades}}
             </div>
-            <div class="cell cell-success" data-grade="{{success.grade}}">
+            {{#isstaff}}{{^viewas}}<div class="cell cell-success" data-grade="{{success.grade}}">
                 {{success.gradelang}}&nbsp;
-            </div>
+            </div>{{/viewas}}{{/isstaff}}
             <div class="cell cell-engagement" data-engagement="{{{gradeinfo.engagement}}}">
                 {{gradeinfo.engagementlang}}&nbsp;
             </div>

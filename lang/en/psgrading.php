@@ -66,6 +66,7 @@ $string['mark:savesuccess'] = 'Feedback was saved for {$a}';
 $string['mark:savefail'] = 'Failed to save feedback for {$a}';
 $string['mark:resetsuccess'] = 'Feedback was reset for {$a}';
 $string['mark:myconnectattachments'] = 'MyConnect attachments';
+$string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
 
 $string['pypuoi:wwa'] = 'Who we are';
 $string['pypuoi:wwaipat'] = 'Where we are in place and time';

@@ -55,7 +55,6 @@ if ($id) {
 $coursecontext = context_course::instance($course->id);
 $modulecontext = context_module::instance($cm->id);
 require_login($course, true, $cm);
-require_capability('mod/psgrading:addinstance', $coursecontext, $USER->id); 
 
 // If a non-staff, redirect them to the overview page instead.
 $isstaff = utils::is_grader();
