@@ -39,12 +39,10 @@
 		    	margin-right: 3px;
 		    }
 		    .btn-exit {
-		    	//padding: 10px;
 	    		height: 36px;
 		    }
 		}
-		.post-wrap {
-			//width: 300px;
+		.attachment-wrap {
 			float: left;
 		}
 	}
@@ -57,7 +55,7 @@
 		.btn-browse {
 		    box-shadow: none;
 		}
-		&.has-posts {
+		&.has-attachments {
 			.btn-browse {
 				position: absolute;
 		    	right: 0;
@@ -76,39 +74,22 @@
 	    padding: 0 0 0 10px;
 	    border: 1px dashed #aaa;
     	border-radius: 2px;
-		.post {
+		.attachment {
 			background-color: #fff;
 			cursor: default;
-	    	//width: 270px;
 	    	display: inline-block;
 	    	margin: 10px 10px 10px 0px;
 	    	vertical-align: top;
 	    	&:hover {
-				.post-header {
+				.attachment-header {
 					.selector {
 		    			display: block;
 						background: #000;
 					}
 				}
 			}
-	    	.post-header  {
-	    		//padding: 13px 10px;
+	    	.attachment-header  {
     			min-height: 0px;
-    			.meta {
-				    bottom: 3px;
-				    position: absolute;
-				    right: 5px;
-    			}
-			    .time {
-				    font-size: 75%;
-				}
-				.sent-to-count {
-					    font-size: 10px;
-					    margin-left: 0;
-					    margin-top: -2px;
-					    right: 9px;
-					    opacity: 0.8;
-				}
 		    	.selector {
 		    		display: none;
 		    		right: -8px;
@@ -126,10 +107,7 @@
 			    	}
 		    	}
 	    	}
-			.album {
-				//width: 240px;
-			}
-			.post-body {
+			.attachment-body {
 			    max-height: 400px;
     			overflow: hidden;
     			overflow-y: auto;
@@ -138,26 +116,21 @@
 	}
 
 
-	.post {
+	.attachment {
 		margin-bottom: 30px;
-		//background-color: #f2f4f6;
 		color: #000;
 		position: relative;
-		//border: 1px solid #ededed;
-		//border-radius: 8px;
 		margin: 10px 10px 30px 10px;
 		cursor: pointer;
 		&:hover {
-			//border: 1px solid #ddd;
-			.post-header {
+			.attachment-header {
 				.selector {
 					background: #B3D9B3;
 				}	
 			}
 		}
 		&.selected {
-			//border: 1px solid #ccc;
-			.post-header {
+			.attachment-header {
 				.selector {
 			    	border: 1px solid green;
 			    	background: green;
@@ -173,13 +146,10 @@
 			    }
 			}
 		}
-		.post-header {
+		.attachment-header {
 		    position: relative;
 		    width: 100%;
-		    //border-bottom: 1px solid #f6f6f6;
-		    //padding: 20px 15px;
 		    font-weight: 600;
-		    //min-height: 63px;
 		    .selector {
 			    border: 1px solid black;
 			    width: 18px;
@@ -194,228 +164,93 @@
 			    transition: background linear 0.1s;
 				z-index: 10;
 			}
-		    .meta {
-		        color: #aaa;
-		        float: right;
-		        text-align: right;
-		    }
-
-		    .creator,
-		    .seperator,
-		    .recipients,
-		    .recipient,
-		    .board {
-		        display: inline-block;
-		        a {
-		            display: inline-block;
-		            text-decoration: none;
-		            color: #000;
-		        }
-		    }
-
-		    .sent-to-count {
-		        font-weight: 400;
-		        font-size: 12px;
-		        color: #646464;
-		        margin-left: 10px;
-		        background-color: #ddd;
-		        padding: 0px 6px 0px;
-		        border-radius: 8px;
-    			position: absolute;
-    			display: block;
-    			margin-left: 34px;
-    			font-size: 11px;
-		    }
-
-		    .recipients {
-		        &.collapsed {
-		            .recipient {
-		                display: none;
-		            }
-		        }
-		        .expand-recipients {
-		            color: #005b94;
-		        }
-		        &.expanded {
-		            a {
-		                margin-right: 3px;
-		            }
-		            .userphoto {
-		                margin-right: 4px;
-		                width: 18px;
-		                height: 18px;
-		            }
-		            .fullname {
-		                font-size: 13px;
-		            }
-		        }
-		    }
-
-		    .fullname {
-		        white-space: nowrap;
-		        overflow: hidden;
-		    }
-
-		    .recipient:not(:last-of-type) .fullname:after {
-		        content: ", ";
-		    }
-
-		    &.show-both-users {
-		        .creator {
-		            .fullname:after {
-		                content: "▸";
-		                margin-left: 10px;
-		                margin-right: 10px;
-		                color: #000;
-		            }
-		        }
-		    }
-
-		    .userphoto {
-		        position: relative;
-		        border-radius: 50%;
-		        overflow: hidden;
-		        float: left;
-		        margin-right: 10px;
-		        width: 25px;
-		        height: 25px;
-		        border: 0 none;
-		        background-color: #ccc;
-		        img {
-		            display: block;
-		            width: 100%;
-		            height: 100%;
-		        }
-		    }
-
 		}
-		.attachments {
-		    padding: 8px 20px;
-		    background-color: #fafafa;
-		    ul {
-		        list-style: none;
-		        padding: 0;
-		        margin-bottom: 0px;
-		        li {
-		            margin-bottom: 3px;
-		        }
-		    }
+		.photo, .doc, .video {
+			height: 90px;
+			background-color: #ccc;
+			float: left;
+			border-right: 1px solid #fff;
+			border-bottom: 1px solid #fff;
+			min-width: 20px;
+			position: relative;
+			overflow: hidden;
+			a {
+				cursor: zoom-in;
+			}
+			img {
+				height: 100%;
+				width: auto;
+				display: block;
+			}
 		}
-		.cover {
-		    a {
-		        cursor: zoom-in;
-		    }
-		    img {
-		        display: block;
-		        width: 100%;
-		    }
+		.doc {
+			width: 85px;
+			font-size: 11px;
+			text-align: center;
+			line-height: 11px;
+			background: #e2e4e6;
+			a {
+				margin: 7px;
+				display: block;
+				overflow: hidden;
+				height: 76px;
+			}
+			.icon {
+				height: 30px;
+				margin: 6px auto;
+			}
 		}
-		.album {
-		    background-color: #fafafa;
-		    overflow: hidden;
-		    box-shadow: inset 0 0 20px -5px rgb(0 0 0 / 10%);
-		    width: 100%;
-		    .photo, .doc, .video {
-		        height: 90px;
-		        background-color: #ccc;
-		        float: left;
-		        border-right: 1px solid #fff;
-		        border-bottom: 1px solid #fff;
-		        min-width: 20px;
-		        position: relative;
-		        overflow: hidden;
-		        a {
-		            cursor: zoom-in;
-		        }
-		        img {
-		            height: 100%;
-		            width: auto;
-		            display: block;
-		        }
-		    }
-		    .doc {
-		        width: 85px;
-		        font-size: 11px;
-		        text-align: center;
-		        line-height: 11px;
-		        background: #e2e4e6;
-		        a {
-		            margin: 7px;
-		            display: block;
-		            overflow: hidden;
-		            height: 76px;
-		        }
-		        .icon {
-					height: 30px;
-    				margin: 6px auto;
-		        }
-		    }
-		    .video {
-		        video {
-		            height: 100%;
-		            width: auto;
-		            display: block;
-		        }
-		        i {
-		            position: absolute;
-		            top: 10px;
-		            left: 10px;
-		            color: white;
-		            border: 2px solid #fff;
-		            padding: 10px;
-		            border-radius: 50%;
-		            width: 38px;
-		            height: 38px;
-		            text-align: center;
-		            font-size: 14px;
-		        }
-		    }
+		.video {
+			video {
+				height: 100%;
+				width: auto;
+				display: block;
+			}
+			i {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				color: white;
+				border: 2px solid #fff;
+				padding: 10px;
+				border-radius: 50%;
+				width: 38px;
+				height: 38px;
+				text-align: center;
+				font-size: 14px;
+			}
 		}
-		.post-body {
+		.attachment-body {
 		    position: relative;
 		    &.has-cover{
-		        .album {
-		            box-shadow: none;
-		            background-color: transparent;
-		            position: absolute;
-		            top: 5px;
-		            left: 5px;
-		            .photo, .doc, .video {
-		                height: 35px;
-		                float: left;
-		                border: 1px solid #fff;
-		                min-width: 20px;
-		                position: relative;
-		                margin-right: 4px;
-		            }
-		            .video i {
-		                padding: 4px 0 4px 4px;
-		                width: 25px;
-		                height: 25px;
-		            }
-		        }
-		    }
-		}
-		.post-comment {
-		    padding: 15px;
-		    overflow: hidden;
-		    white-space: normal;
-		    font-size: 85%;
-		    p:last-of-type {
-		        margin-bottom: 0;
-		    }
-		    img {
-		        max-width: 100%;
+				box-shadow: none;
+				background-color: transparent;
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				.photo, .doc, .video {
+					height: 35px;
+					float: left;
+					border: 1px solid #fff;
+					min-width: 20px;
+					position: relative;
+					margin-right: 4px;
+				}
+				.video i {
+					padding: 4px 0 4px 4px;
+					width: 25px;
+					height: 25px;
+				}
 		    }
 		}
 	}
 }
 
 #page-mod-psgrading-details {
-	.post {
+	.attachment {
 		&:hover {
 			border: 1px solid #ededed;
-			.post-header {
+			.attachment-header {
 				.selector {
 					display: none !important;
 				}	

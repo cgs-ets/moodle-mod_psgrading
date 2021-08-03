@@ -198,10 +198,10 @@ class details_exporter extends exporter {
                     // Convert to json.
                     $task->myconnectevidencejson = json_encode($myconnectids);
                 }
-                // Get full post objects for selected ids.
-                $myconnectdata = utils::get_myconnect_data_for_postids($currstudent->username, $myconnectids);
-                if (isset($myconnectdata->posts)) {
-                    $task->myconnectevidences = array_values($myconnectdata->posts);
+                // Get data for selected ids.
+                $myconnectdata = utils::get_myconnect_data_for_attachmentids($currstudent->username, $myconnectids);
+                if (isset($myconnectdata->attachments)) {
+                    $task->myconnectevidences = array_values($myconnectdata->attachments);
                 }
             }
 

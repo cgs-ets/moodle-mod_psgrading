@@ -159,7 +159,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.deleteComment(button);
         });
         
-        // Handle infinite load for myconnect posts.
+        // Handle infinite load for myconnect attachments.
         var scrolltimer;
         var frame = self.rootel.find('.myconnect-selector .frame');
         frame.scroll(function() {
@@ -167,7 +167,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             clearTimeout(scrolltimer);
             scrolltimer = setTimeout(function () {
                 if(el.scrollTop() + el.innerHeight() >= el[0].scrollHeight) {
-                    self.loadNextMyConnectPosts();
+                    self.loadNextMyConnectAttachments();
                 }
             }, 500);
         });
@@ -180,7 +180,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             var nextPage = self.rootel.find('input[name="myconnectnextpage"]').val();
             if (windowHeight > contentHeight && nextPage > 0) {
                 // There is room for more.
-                self.loadNextMyConnectPosts();
+                self.loadNextMyConnectAttachments();
             } else {
                 clearTimeout(myconnecttimer);
             }
@@ -198,37 +198,37 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.openMyConnectSelector();
         });
 
-        // Select posts.
-        self.rootel.on('mousedown', '.myconnect-selector .post', function(e) {
-            var post = $(this);
+        // Select attachment.
+        self.rootel.on('mousedown', '.myconnect-selector .attachment', function(e) {
+            var attachment = $(this);
 
-            if (post.hasClass('selected')) {
-                post.removeClass('selected');
+            if (attachment.hasClass('selected')) {
+                attachment.removeClass('selected');
             } else {
-                post.addClass('selected');
+                attachment.addClass('selected');
             }
 
             var btnAdd = self.rootel.find('.myconnect-selector .btn-add');
             btnAdd.addClass('disabled');
 
-            var numSelected = self.rootel.find('.myconnect-selector .post.selected').length;
+            var numSelected = self.rootel.find('.myconnect-selector .attachment.selected').length;
             if (numSelected) {
                 btnAdd.removeClass('disabled');
             }
 
         });
 
-        // Add posts as evidence.
+        // Add attachments as evidence.
         self.rootel.on('click', '.myconnect-selector .btn-add', function(e) {
             e.preventDefault();
-            self.addMyConnectPosts();
+            self.addMyConnectAttachments();
         });
 
         // Save comment to bank.
         self.rootel.on('click', '.myconnect-carousel .selector', function(e) {
             e.preventDefault();
             var button = $(this);
-            self.removeMyConnectPost(button);
+            self.removeMyConnectAttachment(button);
         });
 
     };
@@ -354,7 +354,7 @@ define(['jquery', 'core/log', 'core/ajax'],
      *
      * @method
      */
-    Mark.prototype.loadNextMyConnectPosts = function () {
+    Mark.prototype.loadNextMyConnectAttachments = function () {
         var self = this;
 
         if (self.loadingmyconnect) {
@@ -363,7 +363,7 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         self.loadingmyconnect = true;
         var page = self.rootel.find('input[name="myconnectnextpage"]');
-        var posts = self.rootel.find('.myconnect-selector .posts');
+        var attachments = self.rootel.find('.myconnect-selector .attachments');
         var selectedmyconnectfiles = self.rootel.find('input[name="selectedmyconnectjson"]');
 
         var data = {
@@ -375,13 +375,13 @@ define(['jquery', 'core/log', 'core/ajax'],
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
-                action: 'load_next_myconnect_posts',
+                action: 'load_next_myconnect_attachments',
                 data: JSON.stringify(data),
             },
             done: function(html) {
-                // Append the posts and update Masonry.
+                // Append the attachments and update Masonry.
                 var content = $(html);
-                posts.append(content);
+                attachments.append(content);
                 if (typeof self.msnry !== 'undefined') {
                     self.msnry.appended( content );
                     // Fix for masonry not correclty laying out images due to images not being loaded.
@@ -419,8 +419,8 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Initialise masonry.
         if(typeof Masonry !== 'undefined' && typeof self.msnry === 'undefined') {
-            self.msnry = new Masonry( '.myconnect-selector .posts', {
-                itemSelector: '.post-wrap',
+            self.msnry = new Masonry( '.myconnect-selector .attachments', {
+                itemSelector: '.attachment-wrap',
                 columnWidth: 10,
                 horizontalOrder: true
             });
@@ -428,13 +428,13 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.msnry.layout();
         }
 
-        // Preselect posts that have already been added.
+        // Preselect attachments that have already been added.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
         if (myconnectevidencejson.val()) {
             var ids = JSON.parse(myconnectevidencejson.val());
             for (i = 0; i < ids.length; i++) {
                 var id = ids[i];
-                self.rootel.find('.myconnect-selector .post[data-id="' + id + '"]').addClass('selected');
+                self.rootel.find('.myconnect-selector .attachment[data-id="' + id + '"]').addClass('selected');
             }
         }
         
@@ -451,46 +451,46 @@ define(['jquery', 'core/log', 'core/ajax'],
         $('body').css("overflow", "");
         document.getElementById("myconnect-evidence").scrollIntoView();
         // Clear preselected.
-        self.rootel.find('.myconnect-selector .post').removeClass('selected');
+        self.rootel.find('.myconnect-selector .attachment').removeClass('selected');
     };
 
     /**
-     * Add MyConnect post to carousel.
+     * Add MyConnect attachment to carousel.
      *
      * @method
      */
-    Mark.prototype.addMyConnectPosts = function () {
+    Mark.prototype.addMyConnectAttachments = function () {
         var self = this;
 
-        // Get selected posts.
-        var selectedPosts = self.rootel.find('.myconnect-selector .post.selected');
+        // Get selected attachments.
+        var selectedattachments = self.rootel.find('.myconnect-selector .attachment.selected');
 
         // Clear selected.
-        selectedPosts.removeClass('selected');
+        selectedattachments.removeClass('selected');
 
-        // Get the carousel for selected posts and clear it.
+        // Get the carousel for selected attachments and clear it.
         var carousel = self.rootel.find('.myconnect-carousel');
         carousel.html('');
 
-        // Loop through the selected posts.
-        var postids = new Array();
-        selectedPosts.each(function() {
-            var post = $(this).clone();
+        // Loop through the selected attachments.
+        var attids = new Array();
+        selectedattachments.each(function() {
+            var attachment = $(this).clone();
 
             // Add the id to the array.
-            postids.push(post.data('id'));
+            attids.push(attachment.data('id'));
 
-            //Add the post to the carousel.
-            carousel.append(post);
+            //Add the attachment to the carousel.
+            carousel.append(attachment);
         });
-        var postids = postids.filter(self.onlyUnique);
+        var attids = attids.filter(self.onlyUnique);
 
         // Encode id array to json for the hidden input.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
-        var postidsStr = '';
-        if (postids.length) {
-            postidsStr = JSON.stringify(postids);
-            myconnectevidencejson.val(postidsStr);
+        var attidsStr = '';
+        if (attids.length) {
+            attidsStr = JSON.stringify(attids);
+            myconnectevidencejson.val(attidsStr);
         }
 
         // Update carousel.
@@ -501,15 +501,15 @@ define(['jquery', 'core/log', 'core/ajax'],
     };
 
     /**
-     * Remove MyConnect post from carousel.
+     * Remove MyConnect attachment from carousel.
      *
      * @method
      */
-    Mark.prototype.removeMyConnectPost = function (button) {
+    Mark.prototype.removeMyConnectAttachment = function (button) {
         var self = this;
 
-        var post = button.closest('.post');
-        var id = post.data('id');
+        var attachment = button.closest('.attachment');
+        var id = attachment.data('id');
 
         // Update the json.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
@@ -518,8 +518,8 @@ define(['jquery', 'core/log', 'core/ajax'],
         var idsStr = JSON.stringify(ids);
         myconnectevidencejson.val(idsStr);
 
-        // Remove the post element.
-        self.rootel.find('.myconnect-carousel .post[data-id="' + id + '"]').remove();
+        // Remove the attachment element.
+        self.rootel.find('.myconnect-carousel .attachment[data-id="' + id + '"]').remove();
 
         // Update carousel.
         self.updateCarousel();
@@ -534,10 +534,10 @@ define(['jquery', 'core/log', 'core/ajax'],
     Mark.prototype.updateCarousel = function () {
         var self = this;
         var myconnectevidence = self.rootel.find('#myconnect-evidence');
-        myconnectevidence.removeClass('has-posts');
-        var numPosts = myconnectevidence.find('.post').length;
-        if (numPosts) {
-            myconnectevidence.addClass('has-posts');
+        myconnectevidence.removeClass('has-attachments');
+        var numattachments = myconnectevidence.find('.attachment').length;
+        if (numattachments) {
+            myconnectevidence.addClass('has-attachments');
         }
     }
 

@@ -78,13 +78,13 @@ trait apicontrol {
             return task::delete_comment($commentid);
         }
 
-        if ($action == 'load_next_myconnect_posts') {
+        if ($action == 'load_next_myconnect_attachments') {
             $data = json_decode($data);
 
             $myconnectattachments = utils::get_myconnect_data($data->username, intval($data->page), json_decode($data->selectedmyconnectfiles));
             $html = '';
             foreach ($myconnectattachments as $attachment) {
-                $html .= '<div class="post-wrap">' . $OUTPUT->render_from_template('mod_psgrading/myconnect_post_attachments', $attachment) . '</div>';
+                $html .= '<div class="attachment-wrap">' . $OUTPUT->render_from_template('mod_psgrading/myconnect_post_attachments', $attachment) . '</div>';
             }
             return $html;
         }

@@ -23,38 +23,36 @@
 
     Renders a single post attachment.
 }}
-<div class="post" data-id="{{id}}" data-postid="{{postid}}">
-    <div class="post-header">
+<div class="attachment" data-id="{{id}}" data-postid="{{postid}}">
+    <div class="attachment-header">
         <div class="selector"></div>
     </div>
-    <div class="post-body">
-        <div class="album">
-            {{#canpreview}}
-                {{#isimage}}
-                    <div class="photo">
-                        <span class="slide-trigger" data-isimage="1">
-                            <img src="{{path}}?preview=thumb">
-                        </span>
-                    </div>
-                {{/isimage}}
-                {{#isvideo}}
-                    <div class="video">
-                        <span class="slide-trigger" data-isvideo="1" data-mimetype="{{mimetype}}">
-                            <video>
-                                <source src="{{path}}" type="{{mimetype}}">
-                            </video>
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                {{/isvideo}}
-            {{/canpreview}}
-            {{^canpreview}}
-                <div class="doc">
-                    <span class="slide-trigger" data-isdoc="1" data-iconimage="{{iconimage}}" data-filename="{{formattedfilename}}">
-                        <img class="icon" src="{{iconimage}}"> {{formattedfilename}}
+    <div class="attachment-body">
+        {{#canpreview}}
+            {{#isimage}}
+                <div class="photo">
+                    <span class="slide-trigger" data-isimage="1">
+                        <img src="{{path}}?preview=thumb">
                     </span>
                 </div>
-            {{/canpreview}}
-        </div>
+            {{/isimage}}
+            {{#isvideo}}
+                <div class="video">
+                    <span class="slide-trigger" data-isvideo="1" data-mimetype="{{mimetype}}">
+                        <video>
+                            <source src="{{path}}" type="{{mimetype}}">
+                        </video>
+                        <i class="fa fa-play" aria-hidden="true"></i>
+                    </span>
+                </div>
+            {{/isvideo}}
+        {{/canpreview}}
+        {{^canpreview}}
+            <div class="doc">
+                <span class="slide-trigger" data-isdoc="1" data-iconimage="{{iconimage}}" data-filename="{{formattedfilename}}">
+                    <img class="icon" src="{{iconimage}}"> {{formattedfilename}}
+                </span>
+            </div>
+        {{/canpreview}}
     </div>
 </div>
