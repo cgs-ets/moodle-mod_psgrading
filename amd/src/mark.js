@@ -430,7 +430,7 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Preselect attachments that have already been added.
         var myconnectevidencejson = self.rootel.find('input[name="myconnectevidencejson"]');
-        if (myconnectevidencejson.val()) {
+        if (myconnectevidencejson.val() && myconnectevidencejson.val() != '[""]') {
             var ids = JSON.parse(myconnectevidencejson.val());
             for (i = 0; i < ids.length; i++) {
                 var id = ids[i];
