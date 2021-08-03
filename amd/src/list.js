@@ -99,7 +99,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             var el = document.getElementById('task-list');
             var sortable = new Sortable(el, {
 	            draggable: ".col-taskname",
-                handle: '.btn-reorder',
+                handle: '.action-reorder',
                 animation: 150,
                 ghostClass: 'reordering',
                 onEnd: self.SortEnd,

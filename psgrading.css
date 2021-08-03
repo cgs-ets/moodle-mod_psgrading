@@ -538,6 +538,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 22px;
   white-space: normal;
   text-align: center;
+  height: 100%;
 }
 .psgrading-list .col-taskname .actions a {
   display: block;
@@ -545,6 +546,18 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname .actions a:hover {
   color: #005b94;
+}
+.psgrading-list .col-taskname .actions a.action-delete {
+  position: absolute;
+  color: red;
+  bottom: 25px;
+  right: 4px;
+}
+.psgrading-list .col-taskname .actions a.action-reorder {
+  position: absolute;
+  bottom: 0px;
+  right: 2px;
+  cursor: grab;
 }
 .psgrading-list .col-taskname .actions a.action-undorelease {
   position: relative;
@@ -596,9 +609,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname .actions .status {
   color: #008196;
-}
-.psgrading-list .col-taskname .btn-reorder {
-  cursor: grab;
 }
 .psgrading-list .col-taskname .spinner {
   display: block;

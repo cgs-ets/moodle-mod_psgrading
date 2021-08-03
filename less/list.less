@@ -124,12 +124,25 @@
             width: 22px;
             white-space: normal;
             text-align: center;
+            height: 100%;
             a {
                 display: block;
                 color: #000;
                 &:hover { 
                     color: #005b94;
                 }
+            }
+            a.action-delete {
+                position: absolute;
+                color: red;
+                bottom: 25px;
+                right: 4px;
+            }
+            a.action-reorder {
+                position: absolute;
+                bottom: 0px;
+                right: 2px;
+                cursor: grab;
             }
             a.action-undorelease {
                 position: relative;
@@ -187,9 +200,6 @@
             .status {
                 color: #008196;
             }
-        }
-        .btn-reorder {
-            cursor: grab;
         }
         .spinner {
             display: block;
