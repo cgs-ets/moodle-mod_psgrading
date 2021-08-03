@@ -63,13 +63,6 @@
                             <a data-toggle="tooltip" data-placement="right" title="{{^isdraft}}Edit task{{/isdraft}}{{#isdraft}}Continue editing task{{/isdraft}}" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
 
-                            {{#isdraft}}
-                                <a class="action-delete" data-toggle="tooltip" data-placement="left" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                            {{/isdraft}}
-
-
-                            <a data-toggle="tooltip" data-placement="right" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
-
                             {{#published}}<a data-toggle="tooltip" data-placement="right" title="Grade task" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>{{/published}}
 
                             {{#published}}
@@ -81,10 +74,12 @@
                                 <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="action-publish"><i class="fa fa-eye" aria-hidden="true"></i></span>
                             {{/published}}
 
+                            {{#isdraft}}
+                                <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            {{/isdraft}}
 
 
-
-
+                            <a data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
 
 
                         </div>
