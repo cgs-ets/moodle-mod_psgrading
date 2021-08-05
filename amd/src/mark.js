@@ -172,20 +172,6 @@ define(['jquery', 'core/log', 'core/ajax'],
             }, 500);
         });
 
-        // If page is bigger than content and there is potentially more, go ahead and load.
-        var myconnecttimer = setInterval(function() {
-            var el = self.rootel.find('.myconnect-selector .frame');
-            var windowHeight = el.innerHeight();
-            var contentHeight = el[0].scrollHeight;
-            var nextPage = self.rootel.find('input[name="myconnectnextpage"]').val();
-            if (windowHeight > contentHeight && nextPage > 0) {
-                // There is room for more.
-                self.loadNextMyConnectAttachments();
-            } else {
-                clearTimeout(myconnecttimer);
-            }
-        }, 3000);
-
         // MyConnect Selector events.
         self.rootel.on('click', '.myconnect-selector .btn-exit', function(e) {
             e.preventDefault();
@@ -393,10 +379,11 @@ define(['jquery', 'core/log', 'core/ajax'],
                 // Potentially more.
                 if (html) {
                     page.val(page.val() + 1);
-                    self.loadingmyconnect = false;
                 } else {
                     page.val(-1);
                 }
+
+                self.loadingmyconnect = false;
             },
             fail: function(reason) {
                 Log.debug(reason);
@@ -437,6 +424,21 @@ define(['jquery', 'core/log', 'core/ajax'],
                 self.rootel.find('.myconnect-selector .attachment[data-id="' + id + '"]').addClass('selected');
             }
         }
+
+        // If page is bigger than content and there is potentially more, go ahead and load.
+        var myconnectinterval = setInterval(function() {
+            var el = self.rootel.find('.myconnect-selector .frame');
+            var windowHeight = el.innerHeight();
+            var contentHeight = el[0].scrollHeight;
+            var nextPage = self.rootel.find('input[name="myconnectnextpage"]').val();
+            if (windowHeight > contentHeight && nextPage > 0) {
+                // There is room for more.
+                Log.debug('mod_psgrading/mark: checking for more myconnect posts.');
+                self.loadNextMyConnectAttachments();
+            } else {
+                clearInterval(myconnectinterval);
+            }
+        }, 3000);
         
     };
 

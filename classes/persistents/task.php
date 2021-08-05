@@ -378,6 +378,23 @@ class task extends persistent {
         return $evidences;
     }
 
+    public static function get_grade_release_posts($gradeid) {
+        global $DB;
+
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_RELEASE_POSTS . "}
+                 WHERE gradeid = ?";
+        $params = array($gradeid);
+
+        $records = $DB->get_records_sql($sql, $params);
+        $postids = array();
+        foreach ($records as $record) {
+            $postids[] = intval($record->postid);
+        }
+        return [];
+        return $postids;
+    }
+
 
     public static function save_task_grades_for_student($data) {
         global $DB, $USER;

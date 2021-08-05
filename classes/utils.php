@@ -527,7 +527,7 @@ class utils {
     }
 
 
-    public static function get_myconnect_data($username, $page = 0, $excludeattachments = []) {
+    public static function get_myconnect_data($username, $gradeid, $page = 0, $excludeattachments = []) {
         global $CFG, $USER, $OUTPUT;
 
         $attachments = [];
@@ -549,11 +549,17 @@ class utils {
             ];
             $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
             $myconnect = $timeline->export($OUTPUT);
+            
+            $releasepostids = task::get_grade_release_posts($gradeid);
 
             // Convert posts to attachments array.
             $attachments = array();
             if (isset($myconnect->posts)) {
                 foreach ($myconnect->posts as $post) {
+                    // Don't include attachments from posts that were created by this system as they are already available in other posts.
+                    if (in_array($post->id, $releasepostids)) {
+                        continue;
+                    }
                     $attachments = array_merge($attachments, $post->formattedattachments);
                 }
             }
