@@ -125,17 +125,6 @@ class overview_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER;
 
-        $out = array(
-            'tasks' => null,
-            'reportgrades' => null,
-            'groups' => null,
-            'students' => null,
-            'currstudent' => null,
-            'baseurl' => null,
-            'nextstudenturl' => null,
-            'prevstudenturl' => null,
-        );
-
         $baseurl = new \moodle_url('/mod/psgrading/overview.php', array(
             'cmid' => $this->related['cmid'],
             'userid' => $this->related['userid'],

@@ -176,26 +176,32 @@ class utils {
         '0' => array (
             'full' => '',
             'minimal' => '',
+            'tip' => '',
         ),
         '5' => array (
             'full' => '5',
             'minimal' => '',
+            'tip' => '',
         ),
         '4' => array (
             'full' => '4 (GS)',
             'minimal' => 'GS',
+            'tip' => 'Good Start',
         ),
         '3' => array (
             'full' => '3 (MS)',
             'minimal' => 'MS',
+            'tip' => 'Making Strides',
         ),
         '2' => array (
             'full' => '2 (GRWI)',
             'minimal' => 'GRWI',
+            'tip' => 'Go Run With It',
         ),
         '1' => array (
             'full' => '1',
             'minimal' => '',
+            'tip' => '',
         ),
     );
 
@@ -213,6 +219,17 @@ class utils {
         'VG' => 75,
         'E' => 100,
     );
+
+    const PYPUOIOPTIONS = array(
+        '' => 'Select',
+        'wwa' => 'Who we are',
+        'wwaipat' => 'Where we are in place and time',
+        'hweo' => 'How we express ourselves',
+        'htww' => 'How the world works',
+        'hwoo' => 'How we organize ourselves',
+        'stp' => 'Sharing the planet',
+    );
+
 
     public static function decorate_subjectdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {

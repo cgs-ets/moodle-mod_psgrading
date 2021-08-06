@@ -75,7 +75,7 @@ class form_task extends \moodleform {
             'hwoo' => get_string('pypuoi:hwoo', 'mod_psgrading'),
             'stp' => get_string('pypuoi:stp', 'mod_psgrading'),
         );
-        $mform->addElement('select', 'pypuoi', get_string('task:pypuoi', 'mod_psgrading'), $pypuoioptions);
+        $mform->addElement('select', 'pypuoi', get_string('task:pypuoi', 'mod_psgrading'), utils::PYPUOIOPTIONS);
 
         /*----------------------
          *   Outcomes

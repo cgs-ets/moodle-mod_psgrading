@@ -43,14 +43,14 @@
     
     }}{{#tasks}}<div class="column task{{#islast}} last{{/islast}}">
             <div class="cell cell-taskname" title="{{taskname}}" data-toggle="tooltip">{{taskname}}</div>
-            <div class="cell">{{pypuoi}}</div>
+            <div class="cell" title="{{pypuoilang}}" data-toggle="tooltip">{{pypuoi}}</div>
             <div class="cell" title="{{outcomes}}" data-toggle="tooltip"><span>{{outcomes}}</span></div>
             <div class="subjects">
                 {{#subjectgrades}}
-                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
+                    <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}" title="{{gradetip}}" data-toggle="tooltip">{{gradelang}}&nbsp;</div>
                 {{/subjectgrades}}
             </div>
-            {{#isstaff}}{{^viewas}}<div class="cell cell-success" data-grade="{{success.grade}}">
+            {{#isstaff}}{{^viewas}}<div class="cell cell-success" data-grade="{{success.grade}}" title="{{success.gradetip}}" data-toggle="tooltip">
                 {{success.gradelang}}&nbsp;
             </div>{{/viewas}}{{/isstaff}}
             <div class="cell cell-engagement" data-engagement="{{{gradeinfo.engagement}}}">
@@ -91,12 +91,12 @@
         <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
         <div class="subjects">
             {{#reportgrades}}{{#issubject}}
-                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
+                <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}" title="{{gradetip}}" data-toggle="tooltip">{{gradelang}}&nbsp;</div>
             {{/issubject}}{{/reportgrades}}
         </div>
         <div class="cell cell-blank">&nbsp;</div>
         {{#reportgrades}}{{^issubject}}
-            <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}">{{gradelang}}&nbsp;</div>
+            <div class="cell cell-{{subjectsanitised}}" data-grade="{{grade}}" title="{{gradetip}}" data-toggle="tooltip">{{gradelang}}&nbsp;</div>
         {{/issubject}}{{/reportgrades}}
     </div>{{/reportgrades.0}}
 </div>

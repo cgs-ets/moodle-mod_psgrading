@@ -103,6 +103,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'pypuoilang' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => true,
+            ],
         ];
     }
 
@@ -236,6 +241,7 @@ class task_exporter extends persistent_exporter {
             'isdraft' => $isdraft,
             'evidences' => $evidences,
             'hasgrades' => $hasgrades,
+            'pypuoilang' => utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)],
 	    ];
     }
 

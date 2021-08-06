@@ -69,13 +69,6 @@ $string['mark:resetsuccess'] = 'Feedback was reset for {$a}';
 $string['mark:myconnectattachments'] = 'MyConnect attachments';
 $string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
 
-$string['pypuoi:wwa'] = 'Who we are';
-$string['pypuoi:wwaipat'] = 'Where we are in place and time';
-$string['pypuoi:hweo'] = 'How we express ourselves';
-$string['pypuoi:htww'] = 'How the world works';
-$string['pypuoi:hwoo'] = 'How we organize ourselves';
-$string['pypuoi:stp'] = 'Sharing the planet';
-
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
 $string['managetasks'] = 'Manage tasks';

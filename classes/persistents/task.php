@@ -607,6 +607,7 @@ class task extends persistent {
                     'subjectsanitised' => str_replace('&', '', $subject['val']),
                     'grade' => $grade,
                     'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
+                    'gradetip' => $gradelang['tip'],
                 );
             }
         }
@@ -620,6 +621,7 @@ class task extends persistent {
         $gradelang = utils::GRADELANG[$success];
         $task->success['grade'] = $success;
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
+        $task->success['gradetip'] = $gradelang['tip'];
 
         // Ditch some unnecessary data.
         unset($task->criterions);
@@ -668,36 +670,38 @@ class task extends persistent {
                 'subjectsanitised' => str_replace('&', '', $key),
                 'grade' => $grade,
                 'gradelang' => utils::GRADELANG[$grade]['full'],
+                'gradetip' => utils::GRADELANG[$grade]['tip'],
                 'issubject' => true,
             );
         }
         $reportgrades = array_values($reportgrades);
 
+        // NO LONGER CALCULATING ENGAGEMENT REPORT GRADE.
         // Get the average engagement accross all tasks.
         /*
-            $engagement = array();
-            foreach ($tasks as $task) {
-                if (isset($task->gradeinfo->engagement)) {
-                    $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
-                }
+        $engagement = array();
+        foreach ($tasks as $task) {
+            if (isset($task->gradeinfo->engagement)) {
+                $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
             }
-            // Round engagement.
-            if (array_sum($engagement)) {
-                $engagement = array_sum($engagement)/count($engagement);
-                $engagement = (int) round($engagement, 0);
-            } else {
-                $engagement = 0;
-            }
-            // Round up to nearest 25.
-            $engagement = ceil($engagement / 25) * 25;
-            // Add to report grades.
-            $reportgrades[] = array(
-                'subject' => 'Engagement',
-                'subjectsanitised' => 'engagement',
-                'grade' => $engagement,
-                'gradelang' => $engagement,
-                'issubject' => false,
-            );
+        }
+        // Round engagement.
+        if (array_sum($engagement)) {
+            $engagement = array_sum($engagement)/count($engagement);
+            $engagement = (int) round($engagement, 0);
+        } else {
+            $engagement = 0;
+        }
+        // Round up to nearest 25.
+        $engagement = ceil($engagement / 25) * 25;
+        // Add to report grades.
+        $reportgrades[] = array(
+            'subject' => 'Engagement',
+            'subjectsanitised' => 'engagement',
+            'grade' => $engagement,
+            'gradelang' => $engagement,
+            'issubject' => false,
+        );
         */
 
         return $reportgrades;
