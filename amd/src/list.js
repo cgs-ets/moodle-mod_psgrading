@@ -63,6 +63,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      */
     List.prototype.main = function () {
         var self = this;
+        
+        self.checkCountdowns();
 
         // Change group.
         self.rootel.on('change', '.group-select', function(e) {
@@ -105,6 +107,11 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 onEnd: self.SortEnd,
             });
         }
+
+        // Update countdowns every so often.
+        setInterval(function() { 
+            self.checkCountdowns();
+        }, 9000); // Check every 9 seconds. Somewhat random.
 
         // Preload the modals and templates.
         self.modals = {
@@ -241,6 +248,33 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             }
         }]);
 
+    };
+
+    List.prototype.checkCountdowns = function () {
+        var self = this;
+
+        self.rootel.find('.action-undorelease').each(function() {
+            var action = $(this);
+            var task = action.closest('.col-taskname');
+            Ajax.call([{
+                methodname: 'mod_psgrading_apicontrol',
+                args: { 
+                    action: 'get_countdown',
+                    data: task.data('id'),
+                },
+                done: function(response) {
+                    Log.debug(response);
+                    if (response) {
+                        action.attr('data-original-title', response);
+                    } else {
+                        window.location.reload(false);
+                    }
+                },
+                fail: function(reason) {
+                    Log.debug(reason);
+                }
+            }]);
+        });
     };
 
 

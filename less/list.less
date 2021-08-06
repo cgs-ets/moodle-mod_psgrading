@@ -127,10 +127,10 @@
             height: 100%;
             a {
                 display: block;
-                color: #000;
-                &:hover { 
-                    color: #005b94;
-                }
+                //color: #000;
+                //&:hover { 
+                //    color: #005b94;
+                //}
             }
             a.action-delete {
                 position: absolute;
@@ -146,13 +146,16 @@
             }
             a.action-undorelease {
                 position: relative;
+                i {
+                    animation-duration: 0.8s;
+                }
                 &:hover {
                     &:before {
                         position: absolute;
                         content: '';
-                        left: 0;
-                        top: 50%;
-                        right: 0;
+                        top: 14px;
+                        left: 1px;
+                        right: 0px;
                         border-top: 1px solid;
                         border-color: inherit;
                         -webkit-transform: skewY(-33deg);
@@ -161,27 +164,11 @@
                     }
                 }
             }
-            a.action-release {
-                position: relative;
-                &:before {
-                    position: absolute;
-                    content: '';
-                    left: 0;
-                    top: 50%;
-                    right: 0;
-                    border-top: 1px solid;
-                    border-color: inherit;
-                    -webkit-transform: skewY(-33deg);
-                    -moz-transform: skewY(-33deg);
-                    transform: skewY(-33deg);
-                }
-                &:hover {
-                    &:before {
-                        display: none;
-                    }
-                }
+            span.status-released {
+                color: #aaa;
             }
-            span.action-publish {
+            span.status-unpublished {
+                color: #aaa;
                 position: relative;
                 &:before {
                     position: absolute;
@@ -198,7 +185,7 @@
             }
 
             .status {
-                color: #008196;
+                //color: #008196;
             }
         }
         .spinner {

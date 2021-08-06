@@ -733,6 +733,19 @@ class utils {
         }
     }
 
+    public static function invalidate_cache_by_taskid($taskid, $name) {
+        global $DB;
+        if ($name) {
+            $sql = "DELETE c
+                      FROM {" . task::TABLE_GRADES_CACHE . "} c,
+                           {" . task::TABLE . "} t
+                     WHERE t.id = :taskid
+                       AND c.cmid = t.cmid
+                       AND " . $DB->sql_like('c.name', ':name');
+            $DB->execute($sql, array('name' => $name, 'taskid' => $taskid));
+        }
+    }
+
     public static function get_cache($cmid, $name) {
         global $DB;
         return $DB->get_record(task::TABLE_GRADES_CACHE, array(

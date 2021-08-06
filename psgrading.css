@@ -20,12 +20,12 @@
   margin: 0 auto;
 }
 .path-mod-psgrading .spin {
-  -webkit-animation: lgsspin 0.4s linear 0s infinite;
-  -moz-animation: lgsspin 0.4s linear 0s infinite;
-  -o-animation: lgsspin 0.4s linear 0s infinite;
-  animation: lgsspin 0.4s linear 0s infinite;
+  -webkit-animation: spin 0.4s linear 0s infinite;
+  -moz-animation: spin 0.4s linear 0s infinite;
+  -o-animation: spin 0.4s linear 0s infinite;
+  animation: spin 0.4s linear 0s infinite;
 }
-@-webkit-keyframes lgsspin {
+@-webkit-keyframes spin {
   from {
     -webkit-transform: rotate(0deg);
   }
@@ -33,7 +33,7 @@
     -webkit-transform: rotate(360deg);
   }
 }
-@-moz-keyframes lgsspin {
+@-moz-keyframes spin {
   from {
     -moz-transform: rotate(0deg);
   }
@@ -41,7 +41,7 @@
     -moz-transform: rotate(360deg);
   }
 }
-@keyframes lgsspin {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }
@@ -542,10 +542,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .col-taskname .actions a {
   display: block;
-  color: #000;
-}
-.psgrading-list .col-taskname .actions a:hover {
-  color: #005b94;
 }
 .psgrading-list .col-taskname .actions a.action-delete {
   position: absolute;
@@ -562,22 +558,29 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-list .col-taskname .actions a.action-undorelease {
   position: relative;
 }
+.psgrading-list .col-taskname .actions a.action-undorelease i {
+  animation-duration: 0.8s;
+}
 .psgrading-list .col-taskname .actions a.action-undorelease:hover:before {
   position: absolute;
   content: '';
-  left: 0;
-  top: 50%;
-  right: 0;
+  top: 14px;
+  left: 1px;
+  right: 0px;
   border-top: 1px solid;
   border-color: inherit;
   -webkit-transform: skewY(-33deg);
   -moz-transform: skewY(-33deg);
   transform: skewY(-33deg);
 }
-.psgrading-list .col-taskname .actions a.action-release {
+.psgrading-list .col-taskname .actions span.status-released {
+  color: #aaa;
+}
+.psgrading-list .col-taskname .actions span.status-unpublished {
+  color: #aaa;
   position: relative;
 }
-.psgrading-list .col-taskname .actions a.action-release:before {
+.psgrading-list .col-taskname .actions span.status-unpublished:before {
   position: absolute;
   content: '';
   left: 0;
@@ -588,27 +591,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   -webkit-transform: skewY(-33deg);
   -moz-transform: skewY(-33deg);
   transform: skewY(-33deg);
-}
-.psgrading-list .col-taskname .actions a.action-release:hover:before {
-  display: none;
-}
-.psgrading-list .col-taskname .actions span.action-publish {
-  position: relative;
-}
-.psgrading-list .col-taskname .actions span.action-publish:before {
-  position: absolute;
-  content: '';
-  left: 0;
-  top: 50%;
-  right: 0;
-  border-top: 1px solid;
-  border-color: inherit;
-  -webkit-transform: skewY(-33deg);
-  -moz-transform: skewY(-33deg);
-  transform: skewY(-33deg);
-}
-.psgrading-list .col-taskname .actions .status {
-  color: #008196;
 }
 .psgrading-list .col-taskname .spinner {
   display: block;

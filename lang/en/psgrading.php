@@ -90,6 +90,7 @@ $string['enableweights'] = 'Enable weights';
 $string['unpublishededits'] = 'Task has unpublished edits';
 $string['notpublishedyet'] = 'Task not published yet';
 $string['gradesreleased'] = 'Feedback released';
+$string['gradesreleasing'] = 'Releasing grades';
 $string['readytograde'] = 'Task/grading in progress';
 $string['gradesnotreleased'] = 'Feedback hidden';
 $string['dragtoreorder'] = 'Drag to reorder';

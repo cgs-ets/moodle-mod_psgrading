@@ -114,6 +114,19 @@ trait apicontrol {
             return task::get_diff($taskid);
         }
 
+        if ($action == 'get_countdown') {
+            $taskid = json_decode($data);
+            list($released, $releasecountdown) = task::get_release_info($taskid);
+
+            // If countdown is done invalidate the cache because the page will be refreshed.
+            if (empty($releasecountdown)) {
+                utils::invalidate_cache_by_taskid($taskid, 'list-%');
+                return "";
+            }
+
+            return "Feedback will be released in {$releasecountdown}. Click to cancel.";
+        }
+
         return 0;
     }
 

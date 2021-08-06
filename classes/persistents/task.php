@@ -1030,7 +1030,8 @@ class task extends persistent {
 
     public static function release($id) {
         $task = new static($id);
-        $task->set('timerelease', time());
+        $timeplus15mins = time() + (15 * 60);
+        $task->set('timerelease', $timeplus15mins); // Release in 15 minutes.
         $task->update();
 
         // Invalidate list html cache.
@@ -1053,6 +1054,29 @@ class task extends persistent {
     public static function get_diff($id) {
         $task = new static($id);
         return utils::diff_versions(utils::get_task_as_json($task), $task->get('draftjson')); 
+    }
+
+    public static function get_release_info($id) {
+        $task = new static($id);
+
+        // Check if released. Time must be in the past but not 0.
+        $released = false;
+        $now = time();
+        $nowplus15mins = $now + (15 * 60); // Release in 15 minutes.
+        if ($task->get('timerelease') && $task->get('timerelease') <= $nowplus15mins) {
+            $released = true;
+        }
+
+        // Calculate countdown.
+        $releasecountdown = 0;
+        if ($task->get('timerelease') && $now <= $task->get('timerelease')) {
+            $releasecountdown = $task->get('timerelease') - $now;
+            $minutes = floor(($releasecountdown / 60) % 60);
+            $seconds = $releasecountdown % 60;
+            $releasecountdown = "$minutes minutes $seconds seconds"; // To minutes.
+        }
+
+        return array($released, $releasecountdown);
     }
 
 

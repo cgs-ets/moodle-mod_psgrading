@@ -44,7 +44,12 @@
                             <span class="status" data-toggle="tooltip" data-placement="right" title="
                                 {{#published}}
                                     {{#released}}
-                                        {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                        {{#releasecountdown}}
+                                            {{#str}}gradesreleasing, mod_psgrading{{/str}}.
+                                        {{/releasecountdown}}
+                                        {{^releasecountdown}}
+                                            {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                        {{/releasecountdown}}
                                     {{/released}}
                                     {{^released}} 
                                         {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
@@ -66,12 +71,18 @@
                             {{#published}}<a data-toggle="tooltip" data-placement="right" title="Grade task" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>{{/published}}
 
                             {{#published}}
-                                {{^released}}{{#HIDE}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>{{/HIDE}}{{/released}}
-                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>{{/released}}
-                                {{#released}}<a data-toggle="tooltip" data-placement="right" title="Hide feedback" class="action-undorelease" href="#"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>{{/released}}
+                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>{{/released}}
+                                {{#released}}
+                                    {{#releasecountdown}}
+                                        <a data-toggle="tooltip" data-placement="right" title="Feedback will be released shortly. Click to cancel." class="action-undorelease" href="#"><i class="fa fa-spinner spin" aria-hidden="true"></i></a>
+                                    {{/releasecountdown}}
+                                    {{^releasecountdown}}
+                                        <span data-toggle="tooltip" data-placement="right" title="Feedback released" class="status-released"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                                    {{/releasecountdown}}
+                                {{/released}}
                             {{/published}}
                             {{^published}}
-                                <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="action-publish"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                                <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="status-unpublished"><i class="fa fa-eye" aria-hidden="true"></i></span>
                             {{/published}}
 
 
@@ -83,7 +94,7 @@
                             {{/hasgrades}}{{/isdraft}}
 
 
-                            <a data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
+                            <a href="" data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
 
 
                         </div>
