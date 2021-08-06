@@ -222,8 +222,10 @@ class task extends persistent {
         } else {
             // Task is publised, has no unpublished edits - delete it.
             if (empty($task->get('draftjson'))) {
-                $task->set('deleted', 1);
-                $task->save();
+                if (!static::has_grades($id)) {
+                    $task->set('deleted', 1);
+                    $task->save();
+                }
             } else {
                 // Task is publised, has some unpublished edits - delete the draft edits only.
                 $task->set('draftjson', '');
