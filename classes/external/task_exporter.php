@@ -194,7 +194,7 @@ class task_exporter extends persistent_exporter {
 
                     case 'assign':
                         // Use default view page for students/parents.
-                        if ($istaff) {
+                        if ($isstaff) {
                             // Custom URL for staff.
                             $evidence->url = new \moodle_url('/mod/assign/view.php', array(
                                 'id' => $cm->id,

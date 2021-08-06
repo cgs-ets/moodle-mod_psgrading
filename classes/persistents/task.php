@@ -215,13 +215,20 @@ class task extends persistent {
 
         $task = new static($id);
 
-        // If already published, remove draftjson.
-        if ($task->get('published')) {
-            $task->set('draftjson', '');
-            $task->save();
-        } else {
+        // Task is still a draft - delete it.
+        if (!$task->get('published')) {
             $task->set('deleted', 1);
             $task->save();
+        } else {
+            // Task is publised, has no unpublished edits - delete it.
+            if (empty($task->get('draftjson'))) {
+                $task->set('deleted', 1);
+                $task->save();
+            } else {
+                // Task is publised, has some unpublished edits - delete the draft edits only.
+                $task->set('draftjson', '');
+                $task->save();
+            }
         }
 
         // Invalidate list html cache.

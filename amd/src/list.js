@@ -88,7 +88,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         });
 
         // Delete draft.
-        self.rootel.on('click', '.action-discarddraft', function(e) {
+        self.rootel.on('click', '.action-delete', function(e) {
             e.preventDefault();
             var button = $(this);
             self.showDeleteDraft(button);
@@ -125,34 +125,42 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      */
     List.prototype.showDeleteDraft = function (button) {
         var self = this;
+        var task = button.closest('.col-taskname');
 
+        // Task is still a draft - delete it.
+        if (task.hasClass('not-published')) {
+            self.deleteDraft(task.data('id'));
+            return;
+        }
+
+        // Task is publised, has no unpublished edits - delete it.
+        if ( ! task.hasClass('is-draft')) {
+            self.deleteDraft(task.data('id'));
+            return;
+        }
+
+        // Task is publised, has some unpublished edits - show diff.
         if (self.modals.DIFF) {
-            var task = button.closest('.col-taskname');
+            // Get the diff.
+            Ajax.call([{
+                methodname: 'mod_psgrading_apicontrol',
+                args: { 
+                    action: 'get_diff',
+                    data: task.data('id'),
+                },
+                done: function(html) {
+                    self.modals.DIFF.setBody(html);
+                },
+                fail: function(reason) {
+                    Log.debug(reason);
+                    return "Failed to load diff."
+                }
+            }]);
 
-            if (task.hasClass('not-published')) {
-                self.deleteDraft(task.data('id'));
-            } else {
-                // Get the diff.
-                Ajax.call([{
-                    methodname: 'mod_psgrading_apicontrol',
-                    args: { 
-                        action: 'get_diff',
-                        data: task.data('id'),
-                    },
-                    done: function(html) {
-                        self.modals.DIFF.setBody(html);
-                    },
-                    fail: function(reason) {
-                        Log.debug(reason);
-                        return "Failed to load diff."
-                    }
-                }]);
-
-                // Set up the modal cevents.
-                self.modals.DIFF.getModal().addClass('modal-xl');
-                self.modals.DIFF.getRoot().on(ModalEvents.save, {self: self, taskid: task.data('id')}, self.handleDeleteDraft);
-                self.modals.DIFF.show();
-            }
+            // Set up the modal cevents.
+            self.modals.DIFF.getModal().addClass('modal-xl');
+            self.modals.DIFF.getRoot().on(ModalEvents.save, {self: self, taskid: task.data('id')}, self.handleDeleteDraft);
+            self.modals.DIFF.show();
         }
     };
 

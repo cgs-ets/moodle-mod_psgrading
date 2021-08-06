@@ -56,6 +56,7 @@ $string['task:savedraft'] = 'Save draft';
 $string['task:discardchanges'] = 'Discard changes';
 $string['task:discarddraft'] = 'Discard draft';
 $string['task:deletedraft'] = 'Delete draft';
+$string['task:deletetask'] = 'Delete task';
 $string['task:exitedit'] = 'Cancel';
 $string['mark:comment'] = 'Comment';
 $string['mark:engagement'] = 'Engagement';

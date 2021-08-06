@@ -433,7 +433,6 @@ define(['jquery', 'core/log', 'core/ajax'],
             var nextPage = self.rootel.find('input[name="myconnectnextpage"]').val();
             if (windowHeight > contentHeight && nextPage > 0) {
                 // There is room for more.
-                Log.debug('mod_psgrading/mark: checking for more myconnect posts.');
                 self.loadNextMyConnectAttachments();
             } else {
                 clearInterval(myconnectinterval);

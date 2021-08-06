@@ -30,7 +30,7 @@
                 <div class="column col-empty col-student">&nbsp;</div>
                 
                 {{#tasks}}
-                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
+                    <div class="column col-taskname {{#isdraft}}is-draft{{/isdraft}} {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
 
                         {{#published}}
                             <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
@@ -74,9 +74,13 @@
                                 <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="action-publish"><i class="fa fa-eye" aria-hidden="true"></i></span>
                             {{/published}}
 
+
                             {{#isdraft}}
-                                <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" class="action-discarddraft" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             {{/isdraft}}
+                            {{^isdraft}}{{^hasgrades}}
+                                <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:deletetask, mod_psgrading{{/str}}" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            {{/hasgrades}}{{/isdraft}}
 
 
                             <a data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>

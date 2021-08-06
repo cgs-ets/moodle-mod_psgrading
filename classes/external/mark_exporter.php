@@ -215,6 +215,7 @@ class mark_exporter extends exporter {
         $task->myconnectevidences = array();
         $task->myconnectevidencejson = '';
         $myconnectfileids = array();
+        $excludegradeposts = 0;
         if ($gradeinfo) {
             // Get selected ids
             $myconnectfileids = task::get_myconnect_grade_evidences($gradeinfo->id);
@@ -224,10 +225,12 @@ class mark_exporter extends exporter {
             }
             // Get formatted attachment for selected fileids.
             $task->myconnectevidences = utils::get_myconnect_data_for_attachments($currstudent->username, $myconnectfileids);
+
+            $excludegradeposts = $gradeinfo->id;
         }
 
         // Get MyConnect attachments for evidence selector, passing selected attachments and posts to be excluded.
-        $myconnectattachments = utils::get_myconnect_data($currstudent->username, $gradeinfo->id, 0, $myconnectfileids);
+        $myconnectattachments = utils::get_myconnect_data($currstudent->username, $excludegradeposts, 0, $myconnectfileids);
 
         // Put the already selected attachments at the front.
         if ($task->myconnectevidences || $myconnectattachments) {
