@@ -97,8 +97,6 @@ class form_mark extends \moodleform {
         // Engagement.
         $mform->addElement('select', 'engagement', get_string("mark:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
         $mform->setType('engagement', PARAM_RAW);
-        $mform->addRule('engagement', get_string('required'), 'required', null, 'client');
-
 
         // Comment.
         $mform->addElement('textarea', 'comment', get_string("mark:comment", "mod_psgrading") . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
@@ -118,8 +116,5 @@ class form_mark extends \moodleform {
         $mform->setType('selectedmyconnectjson', PARAM_RAW);
         $mform->addElement('hidden', 'myconnectevidencejson');
         $mform->setType('myconnectevidencejson', PARAM_RAW);
-        
     }
-
-
 }
