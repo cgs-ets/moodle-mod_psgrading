@@ -94,9 +94,19 @@ trait apicontrol {
             return task::reorder_all($taskids);
         }
 
-        if ($action == 'delete_draft') {
+        if ($action == 'delete_task') {
             $taskid = json_decode($data);
-            return task::delete_draft($taskid);
+            return task::soft_delete($taskid);
+        }
+
+        if ($action == 'publish_task') {
+            $taskid = json_decode($data);
+            return task::publish($taskid);
+        }
+
+        if ($action == 'unpublish_task') {
+            $taskid = json_decode($data);
+            return task::unpublish($taskid);
         }
 
         if ($action == 'release_task') {

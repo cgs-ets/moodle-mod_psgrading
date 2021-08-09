@@ -39,7 +39,7 @@ use external_api;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class api extends external_api {
-	use autosave;
+	//use autosave;
 	use apicontrol;
     
 }

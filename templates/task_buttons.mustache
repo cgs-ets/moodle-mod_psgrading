@@ -19,19 +19,14 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/task_autosave
+    @template mod_psgrading/task_buttons
 
     View for the evidence selector component.
 }}
 <div class="custom-footer-buttons">
-    {{#published}}
-        <input type="submit" class="btn btn-primary" name="publish" id="btn-publish" value="{{#str}}task:publishchanges, mod_psgrading{{/str}}">
-        <input type="submit" class="btn btn-secondary" name="savedraft" id="btn-savedraft" value="{{#str}}task:savedraft, mod_psgrading{{/str}}">
-        <input type="submit" class="btn btn-secondary" name="exitedit" id="btn-exitedit" value="{{#str}}task:exitedit, mod_psgrading{{/str}}">
-    {{/published}}
-    {{^published}}
-        <input type="submit" class="btn btn-primary" name="publish" id="btn-publish" value="{{#str}}task:publish, mod_psgrading{{/str}}">
-        <input type="submit" class="btn btn-secondary" name="savedraft" id="btn-savedraft" value="{{#str}}task:savedraft, mod_psgrading{{/str}}">
-        <input type="submit" class="btn btn-secondary" name="discardchanges" id="btn-discardchanges" value="{{#str}}task:discardchanges, mod_psgrading{{/str}}">
-    {{/published}}
+    <input type="submit" class="btn btn-primary" name="save" id="btn-save" value="{{#str}}task:save, mod_psgrading{{/str}}">
+    <input type="submit" class="btn btn-secondary" name="save" id="btn-cancel" value="{{#str}}task:cancel, mod_psgrading{{/str}}">
+    {{^hasgrades}}
+        <input type="submit" class="btn btn-danger" name="save" id="btn-delete" value="{{#str}}task:delete, mod_psgrading{{/str}}">
+    {{/hasgrades}}
 </div>

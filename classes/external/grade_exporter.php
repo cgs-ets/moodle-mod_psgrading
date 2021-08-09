@@ -74,7 +74,7 @@ class grade_exporter extends exporter {
             'cmid' => 'int',
             'userid' => 'int',
             'isstaff' => 'bool',
-            'includedrafttasks' => 'bool?',
+            'includehiddentasks' => 'bool?',
         ];
     }
 
@@ -104,7 +104,7 @@ class grade_exporter extends exporter {
         $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
         $currstudent->iscurrent = true;
 
-        $tasks = task::compute_grades($this->related['cmid'], $this->related['userid'], $this->related['includedrafttasks'], $this->related['isstaff']);
+        $tasks = task::compute_grades($this->related['cmid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
 
         $index = count( $tasks ) - 1;
         if (isset($tasks[$index])) {

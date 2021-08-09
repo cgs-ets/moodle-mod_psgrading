@@ -155,6 +155,14 @@ form[data-form="psgrading-task"] .custom-footer-buttons {
   padding: 25px 0 30px;
   text-align: center;
 }
+form[data-form="psgrading-task"] .custom-footer-buttons #btn-save,
+form[data-form="psgrading-task"] .custom-footer-buttons #btn-cancel {
+  float: left;
+  margin-right: 7px;
+}
+form[data-form="psgrading-task"] .custom-footer-buttons #btn-delete {
+  float: right;
+}
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
 #page-mod-psgrading-task #fitem_id_criterionjson {
   display: none;
@@ -389,42 +397,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
 }
-#page-mod-psgrading-manage .tasks {
-  margin-top: 25px;
-}
-#page-mod-psgrading-manage .tasks table .th {
-  width: 200px;
-  min-width: 200px;
-}
-#page-mod-psgrading-manage .tasks table .th.c0 {
-  width: 99%;
-}
-#page-mod-psgrading-manage .tasks table tr.task .c-status .badge-success {
-  background-color: green;
-}
-#page-mod-psgrading-manage .tasks table tr.task .c-status .badge-info {
-  background-color: #17a2b8;
-  color: #fff;
-}
-#page-mod-psgrading-manage .tasks table tr.task .c-status .badge-danger {
-  background-color: #dc3545;
-}
-#page-mod-psgrading-manage .tasks table tr.task .dropdown {
-  display: inline-block;
-}
-#page-mod-psgrading-manage .tasks table tr.task a.btn-reorder {
-  width: 20px;
-  text-align: center;
-  cursor: pointer;
-  color: #005b94;
-  display: inline-block;
-  margin-left: 10px;
-}
-#page-mod-psgrading-manage .tasks table tr.task i.fa-check {
-  color: green;
-  float: right;
-  line-height: 36px;
-}
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
@@ -576,11 +548,11 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-list .col-taskname .actions span.status-released {
   color: #aaa;
 }
-.psgrading-list .col-taskname .actions span.status-unpublished {
+.psgrading-list .col-taskname .actions a.action-publish {
   color: #aaa;
   position: relative;
 }
-.psgrading-list .col-taskname .actions span.status-unpublished:before {
+.psgrading-list .col-taskname .actions a.action-publish:before {
   position: absolute;
   content: '';
   left: 0;
@@ -591,6 +563,12 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   -webkit-transform: skewY(-33deg);
   -moz-transform: skewY(-33deg);
   transform: skewY(-33deg);
+}
+.psgrading-list .col-taskname .actions a.action-publish:hover {
+  color: #002c48;
+}
+.psgrading-list .col-taskname .actions a.action-publish:hover:before {
+  display: none;
 }
 .psgrading-list .col-taskname .spinner {
   display: block;

@@ -167,7 +167,7 @@
             span.status-released {
                 color: #aaa;
             }
-            span.status-unpublished {
+            a.action-publish {
                 color: #aaa;
                 position: relative;
                 &:before {
@@ -181,6 +181,12 @@
                     -webkit-transform: skewY(-33deg);
                     -moz-transform: skewY(-33deg);
                     transform: skewY(-33deg);
+                }
+                &:hover {
+                    color: #002c48;
+                    &:before {
+                        display: none;
+                    }
                 }
             }
 

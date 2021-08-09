@@ -112,7 +112,7 @@ class overview_exporter extends exporter {
             'userid' => 'int',
             'groupid' => 'int',
             'isstaff' => 'bool',
-            'includedrafttasks' => 'bool?',
+            'includehiddentasks' => 'bool?',
         ];
     }
 

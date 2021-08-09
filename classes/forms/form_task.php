@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 
 use \mod_psgrading\utils;
+use \mod_psgrading\persistents\task;
 
 class form_task extends \moodleform {
 
@@ -40,7 +41,7 @@ class form_task extends \moodleform {
         global $CFG, $OUTPUT, $USER, $DB;
 
         $mform =& $this->_form;
-        $published = (isset($this->_customdata['published'])) ? $this->_customdata['published'] : 0;
+        $edit = (isset($this->_customdata['edit'])) ? $this->_customdata['edit'] : 0;
         $criteriondata = (isset($this->_customdata['criteriondata'])) ? $this->_customdata['criteriondata'] : [];
         $evidencedata = (isset($this->_customdata['evidencedata'])) ? $this->_customdata['evidencedata'] : [];
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
@@ -55,7 +56,7 @@ class form_task extends \moodleform {
         $mform->setExpanded('general', true, true);
 
         // Autosave.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_autosave', []));
+        //$mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_autosave', []));
 
         /*----------------------
          *   Name.
@@ -66,15 +67,6 @@ class form_task extends \moodleform {
         /*----------------------
          *   PYP UOI.
          *----------------------*/
-        $pypuoioptions = array(
-            '' => 'Select',
-            'wwa' => get_string('pypuoi:wwa', 'mod_psgrading'),
-            'wwaipat' => get_string('pypuoi:wwaipat', 'mod_psgrading'),
-            'hweo' => get_string('pypuoi:hweo', 'mod_psgrading'),
-            'htww' => get_string('pypuoi:htww', 'mod_psgrading'),
-            'hwoo' => get_string('pypuoi:hwoo', 'mod_psgrading'),
-            'stp' => get_string('pypuoi:stp', 'mod_psgrading'),
-        );
         $mform->addElement('select', 'pypuoi', get_string('task:pypuoi', 'mod_psgrading'), utils::PYPUOIOPTIONS);
 
         /*----------------------
@@ -82,6 +74,21 @@ class form_task extends \moodleform {
          *----------------------*/
         $mform->addElement('textarea', 'outcomes', get_string("task:outcomes", "mod_psgrading"), 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('outcomes', PARAM_RAW);
+
+        /*----------------------
+        *   Visible
+        *----------------------*/
+        $type = 'advcheckbox';
+        $name = 'published';
+        $label = get_string("task:visibility", "mod_psgrading");
+        $desc = get_string("task:visibledesc", "mod_psgrading");
+        $options = array('');
+        list($released, $countdown) = task::get_release_info($edit);
+        if ($released) {
+            $options = array('disabled' => 'disabled');
+        }
+        $values = array(0, 1);
+        $mform->addElement($type, $name, $label, $desc, $options, $values);
 
         /*----------------------
          *   Criterion
@@ -116,15 +123,13 @@ class form_task extends \moodleform {
         // Buttons.
         $mform->addElement('header', 'actions', '');
         $mform->setExpanded('actions', true, true);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('published' => $published)));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('hasgrades' => task::has_grades($edit))));
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');
         $mform->setType('edit', PARAM_INT);
         $mform->addElement('hidden', 'action');
         $mform->setType('action', PARAM_RAW);
-
-
     }
 
 

@@ -67,6 +67,7 @@ if ($create) {
     $data->creatorusername = $USER->username;
     $data->cmid = $cm->id;
     $data->seq = 99999;
+    $data->publishd = 0;
     $task = new task(0, $data);
     $task->save();
     
@@ -94,23 +95,23 @@ if ($create) {
         exit;
     }
 
-    // Export the task.
-    $taskexporter = new task_exporter($task);
-    $output = $PAGE->get_renderer('core');
-	$exported = $taskexporter->export($output);
-    if ($exported->hasgrades) {
-        $message = get_string('taskalreadygraded', 'mod_psgrading');
-        \core\notification::error($message);
-    }
-
     // Instantiate the form.
     $formtask = new form_task($editurl->out(false), array(),'post', '', []);
 
     $formdata = $formtask->get_data();
 
     // Check whether loading page or submitting page.
-    if (empty($formdata)) {
-        // Editing (not submitted).
+    if (empty($formdata)) { // Editing (not submitted).
+
+        // Export the task.
+        $taskexporter = new task_exporter($task);
+        $output = $PAGE->get_renderer('core');
+        $exported = $taskexporter->export($output);
+        if ($exported->hasgrades) {
+            $message = get_string('taskalreadygraded', 'mod_psgrading');
+            \core\notification::error($message);
+        }
+
         // Get existing task data.
         $taskname = $task->get('taskname');
         $pypuoi = $task->get('pypuoi');
@@ -118,16 +119,6 @@ if ($create) {
         $criterionjson = $task->get('criterionjson');
         $evidencejson = $task->get('evidencejson');
         $published = $task->get('published');
-
-        // Override with draft data if it is present.
-        if ($draft = $task->get('draftjson')) {
-            $draft = json_decode($draft);
-            $taskname = $draft->taskname ? $draft->taskname : $taskname;
-            $pypuoi = $draft->pypuoi ? $draft->pypuoi : $pypuoi;
-            $outcomes = $draft->outcomes ? $draft->outcomes : $outcomes;
-            $criterionjson = $draft->criterionjson ? $draft->criterionjson : $criterionjson;
-            $evidencejson = $draft->evidencejson ? $draft->evidencejson : $evidencejson;
-        }
 
         // Course activities that can be selected as evidence.
         $evidencedata = utils::get_evidencedata($course, $evidencejson);
@@ -143,6 +134,7 @@ if ($create) {
         // Reinstantiate the form with needed data.
         $formtask = new form_task($editurl->out(false), 
             array(
+                'edit' => $edit,
                 'criteriondata' => $criteriondata,
                 'evidencedata' => $evidencedata,
                 'published' => $published,
@@ -159,6 +151,7 @@ if ($create) {
                 'taskname' => $taskname,
                 'pypuoi' => $pypuoi,
                 'outcomes' => $outcomes,
+                'published' => $published,
                 'criterionjson' => $criterionjson,
                 'evidencejson' => $evidencejson,
             )
@@ -169,25 +162,24 @@ if ($create) {
 
     } else {
 
-        // The form was submitted.
-        if ($formdata->action == 'savedraft' || $formdata->action == 'exitedit') {
+        if ($formdata->action == 'cancel') {
             redirect($listurl->out());
             exit;
         }
 
-        if ($formdata->action == 'discardchanges') {
-            task::delete_draft($edit);
-
-            // If not yet publised, delete the task.
+        if ($formdata->action == 'delete') {
+            task::soft_delete($edit);
             redirect($listurl->out());
             exit;
         }
 
-        if ($formdata->action == 'publish') {
+        if ($formdata->action == 'save') {
             $data = new \stdClass();
             $data->id = $edit;
-            $data->published = 1;
-            $data->draftjson = '';
+            list($released, $countdown) = task::get_release_info($edit);
+            if ($formdata->published == 1 || !$released) { // can only hide until grades released.
+                $data->published = $formdata->published;
+            }
             $data->taskname = $formdata->taskname;
             $data->pypuoi = $formdata->pypuoi;
             $data->outcomes = $formdata->outcomes;
@@ -196,7 +188,7 @@ if ($create) {
 
             $result = task::save_from_data($data);
             if ($result) {
-                $notice = get_string("task:publishsuccess", "mod_psgrading");
+                $notice = get_string("task:savesuccess", "mod_psgrading");
                 redirect(
                     $listurl->out(),
                     '<p>'.$notice.'</p>',
@@ -204,7 +196,7 @@ if ($create) {
                     \core\output\notification::NOTIFY_SUCCESS
                 );
             } else {
-                $notice = get_string("task:createfail", "mod_psgrading");
+                $notice = get_string("task:savefail", "mod_psgrading");
                 redirect(
                     $listurl->out(),
                     '<p>'.$notice.'</p>',

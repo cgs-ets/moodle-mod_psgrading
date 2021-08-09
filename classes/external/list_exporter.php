@@ -49,11 +49,6 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'manageurl' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],
             'groups' => [
                 'type' => PARAM_RAW,
                 'multiple' => true,
@@ -123,10 +118,6 @@ class list_exporter extends exporter {
             'create' => 1,
         ));
 
-        $manageurl = new \moodle_url('/mod/psgrading/manage.php', array(
-            'cmid' => $this->related['cmid']
-        ));
-
         // Check if there is a cached version of the student rows.
         $listhtml = null;
         $cache = utils::get_cache($this->related['cmid'], 'list-' . $this->related['groupid']);
@@ -140,7 +131,7 @@ class list_exporter extends exporter {
                     'cmid' => $this->related['cmid'],
                     'userid' => $studentid,
                     'isstaff' => true, // Only staff can view the class list page.
-                    'includedrafttasks' => true,
+                    'includehiddentasks' => true,
                 );
                 $gradeexporter = new grade_exporter(null, $relateds);
                 $gradedata = $gradeexporter->export($output);
@@ -160,7 +151,6 @@ class list_exporter extends exporter {
 
         return array(
             'listhtml' => $listhtml,
-            'manageurl' => $manageurl->out(false),
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),

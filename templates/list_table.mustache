@@ -30,7 +30,7 @@
                 <div class="column col-empty col-student">&nbsp;</div>
                 
                 {{#tasks}}
-                    <div class="column col-taskname {{#isdraft}}is-draft{{/isdraft}} {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
+                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
 
                         {{#published}}
                             <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
@@ -43,55 +43,55 @@
                         <div class="actions">
                             <span class="status" data-toggle="tooltip" data-placement="right" title="
                                 {{#published}}
-                                    {{#released}}
-                                        {{#releasecountdown}}
-                                            {{#str}}gradesreleasing, mod_psgrading{{/str}}.
-                                        {{/releasecountdown}}
-                                        {{^releasecountdown}}
-                                            {{#str}}gradesreleased, mod_psgrading{{/str}}.
-                                        {{/releasecountdown}}
-                                    {{/released}}
-                                    {{^released}} 
-                                        {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
-                                    {{/released}}
-                                    {{#draftjson}}
-                                        {{#str}}unpublishededits, mod_psgrading{{/str}}.
-                                    {{/draftjson}}
+                                    {{#str}}taskvisible, mod_psgrading{{/str}}.
+                                    {{#hasgrades}} 
+                                        {{#str}}hasgrades, mod_psgrading{{/str}}.
+                                        {{#released}}
+                                            {{#releasecountdown}}
+                                                {{#str}}gradesreleasing, mod_psgrading{{/str}}.
+                                            {{/releasecountdown}}
+                                            {{^releasecountdown}}
+                                                {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                            {{/releasecountdown}}
+                                        {{/released}}
+                                        {{^released}} 
+                                            {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
+                                        {{/released}}
+                                    {{/hasgrades}}
+                                    {{^hasgrades}}
+                                        {{#str}}gradingnotstarted, mod_psgrading{{/str}}.
+                                    {{/hasgrades}}
                                 {{/published}}
                                 {{^published}} 
-                                    {{#str}}notpublishedyet, mod_psgrading{{/str}}.
+                                    {{#str}}taskhidden, mod_psgrading{{/str}}.
                                 {{/published}}">
                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                             </span>
-                            
 
                             <a data-toggle="tooltip" data-placement="right" title="{{^isdraft}}Edit task{{/isdraft}}{{#isdraft}}Continue editing task{{/isdraft}}" href="{{editurl}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-
 
                             {{#published}}<a data-toggle="tooltip" data-placement="right" title="Grade task" href="{{markurl}}"><i class="fa fa-table" aria-hidden="true"></i></a>{{/published}}
 
                             {{#published}}
-                                {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>{{/released}}
-                                {{#released}}
-                                    {{#releasecountdown}}
-                                        <a data-toggle="tooltip" data-placement="right" title="Feedback will be released after a 15 minute delay. Click to cancel." class="action-undorelease" href="#"><i class="fa fa-spinner spin" aria-hidden="true"></i></a>
-                                    {{/releasecountdown}}
-                                    {{^releasecountdown}}
-                                        <span data-toggle="tooltip" data-placement="right" title="Feedback released" class="status-released"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-                                    {{/releasecountdown}}
-                                {{/released}}
+                                {{#hasgrades}}
+                                    {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>{{/released}}
+                                    {{#released}}
+                                        {{#releasecountdown}}
+                                            <a data-toggle="tooltip" data-placement="right" title="Feedback will be released after a 15 minute delay. Click to cancel." class="action-undorelease" href="#"><i class="fa fa-spinner spin" aria-hidden="true"></i></a>
+                                        {{/releasecountdown}}
+                                        {{^releasecountdown}}
+                                            <span data-toggle="tooltip" data-placement="right" title="Feedback released" class="status-released"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                                        {{/releasecountdown}}
+                                    {{/released}}
+                                {{/hasgrades}}
                             {{/published}}
                             {{^published}}
-                                <span data-toggle="tooltip" data-placement="right" title="Unpublished (hidden)" class="status-unpublished"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                                <a href="#" data-toggle="tooltip" data-placement="right" title="{{#str}}taskhiddenmakevisible, mod_psgrading{{/str}}" class="action-publish"><i class="fa fa-eye" aria-hidden="true"></i></span>
                             {{/published}}
 
-
-                            {{#isdraft}}
-                                <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:discarddraft, mod_psgrading{{/str}}" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                            {{/isdraft}}
-                            {{^isdraft}}{{^hasgrades}}
+                            {{^hasgrades}}
                                 <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:deletetask, mod_psgrading{{/str}}" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                            {{/hasgrades}}{{/isdraft}}
+                            {{/hasgrades}}
 
 
                             <a href="" data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>

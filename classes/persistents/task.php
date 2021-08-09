@@ -91,10 +91,6 @@ class task extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
-            "draftjson" => [
-                'type' => PARAM_RAW,
-                'default' => '',
-            ],
             "seq" => [
                 'type' => PARAM_INT,
                 'default' => 0,
@@ -131,6 +127,7 @@ class task extends persistent {
         $log->formjson = json_encode($data);
         $log->status = 1; // published log.
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
+        
         // Create/update criterions.
         $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
         $criterions = json_decode($data->criterionjson);
@@ -176,7 +173,7 @@ class task extends persistent {
         return $data->id;
     }
 
-    public static function save_draft($formjson) {
+    /*public static function save_draft($formjson) {
         global $USER, $DB;
 
         // Some validation.
@@ -207,10 +204,22 @@ class task extends persistent {
 
         // Invalidate list html cache.
         utils::invalidate_cache($task->get('cmid'), 'list-%');
+    }*/
 
+    public static function soft_delete($id) {
+        global $USER, $DB;
+
+        $task = new static($id);
+        $task->set('deleted', 1);
+        $task->save();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
+        return 1;
     }
 
-    public static function delete_draft($id) {
+    /*public static function delete_draft($id) {
         global $USER, $DB;
 
         $task = new static($id);
@@ -237,7 +246,7 @@ class task extends persistent {
         utils::invalidate_cache($task->get('cmid'), 'list-%');
 
         return 1;
-    }
+    }*/
 
 
     public static function get_for_coursemodule($cmid) {
@@ -502,7 +511,7 @@ class task extends persistent {
         return $graderec->id;
     }
 
-    public static function compute_grades($cmid, $userid, $includedrafttasks, $isstaff) {
+    public static function compute_grades($cmid, $userid, $includehiddentasks, $isstaff) {
         global $OUTPUT;
 
         // Get all tasks for this course module.
@@ -516,7 +525,7 @@ class task extends persistent {
         foreach ($cmtasks as $task) {
             $taskexporter = new task_exporter($task, array('userid' => $userid));
             $task = $taskexporter->export($OUTPUT);
-            if (!$task->published && !$includedrafttasks) {
+            if (!$task->published && !$includehiddentasks) {
                 continue;
             }
 
@@ -1032,6 +1041,28 @@ class task extends persistent {
         return 1;
     }
 
+    public static function publish($id) {
+        $task = new static($id);
+        $task->set('published', 1);
+        $task->update();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
+        return 1;
+    }
+
+    public static function unpublish($id) {
+        $task = new static($id);
+        $task->set('published', 0);
+        $task->update();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
+        return 1;
+    }
+
     public static function release($id) {
         $task = new static($id);
         $timeplus15mins = time() + (15 * 60);
@@ -1055,10 +1086,10 @@ class task extends persistent {
         return 1;
     }
 
-    public static function get_diff($id) {
+    /*public static function get_diff($id) {
         $task = new static($id);
         return utils::diff_versions(utils::get_task_as_json($task), $task->get('draftjson')); 
-    }
+    }*/
 
     public static function get_release_info($id) {
         $task = new static($id);

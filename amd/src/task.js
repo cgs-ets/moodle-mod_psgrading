@@ -55,14 +55,14 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     function Task(rootel, stubcriterion) {
         var self = this;
         self.rootel = rootel;
-        self.autosaving = false;
-        self.savestatus = self.rootel.find('#savestatus');
+        //self.autosaving = false;
+        //self.savestatus = self.rootel.find('#savestatus');
         self.stubcriterion = stubcriterion;
 
         // Setup initial json.
         self.regenerateEvidenceJSON();
         self.regenerateCriterionJSON();
-        self.formjson = self.getFormJSON();
+        //self.formjson = self.getFormJSON();
     }
 
     /**
@@ -72,27 +72,31 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
    Task.prototype.main = function () {
         var self = this;
 
-        // Auto-save when leaving a field.
-        self.rootel.on('blur', 'input[type="text"], select, textarea', function(e) {
-            var input = $(this);
-            var isCriterionInput = !!input.closest('.criterions').length;
-            if (isCriterionInput) {
-                self.regenerateCriterionJSON();
-            }
-            self.autoSave();
+        // Cancel edit.
+        self.rootel.on('click', '#btn-cancel', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('cancel');
+            self.rootel.submit();
         });
 
-        // Auto-save on evidence selection.
-        self.rootel.on('change', '.evidence-selector .cmid', function() {
+        // Delete task.
+        self.rootel.on('click', '#btn-delete', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('delete');
+            self.rootel.submit();
+        });
+
+        // Save.
+        self.rootel.on('click', '#btn-save', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('save');
             self.regenerateEvidenceJSON();
-            self.autosaving = false; // Force an autosave.
-            self.autoSave();
+            self.regenerateCriterionJSON();
+            self.rootel.submit();
         });
-
-        // Auto-save every 15 seconds.
-        setInterval(function() {
-            self.regenerateAndSave();
-        }, 15000);
 
         // Add criterion.
         self.rootel.on('click', '#btn-addcriterion', function(e) {
@@ -111,41 +115,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             e.preventDefault();
             var button = $(this);
             self.deleteCriterion(button);
-        });
-
-        // Save draft clicked.
-        self.rootel.on('click', '#btn-savedraft', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
-            // Force an autosave.
-            self.autosaving = false;
-            self.regenerateAndSave(false);
-            self.rootel.find('[name="action"]').val('savedraft');
-            self.rootel.submit();
-        });
-
-        // Discard chages clicked.
-        self.rootel.on('click', '#btn-discardchanges', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
-            self.rootel.find('[name="action"]').val('discardchanges');
-            self.rootel.submit();
-        });
-
-        // Exit edit.
-        self.rootel.on('click', '#btn-exitedit', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
-            self.rootel.find('[name="action"]').val('exitedit');
-            self.rootel.submit();
-        });
-
-        // Publish clicked.
-        self.rootel.on('click', '#btn-publish', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
-            self.rootel.find('[name="action"]').val('publish');
-            self.rootel.submit();
         });
 
         // Styling the criterion selects based on selected option.
@@ -170,7 +139,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             self.rootel.addClass('preloads-completed');
         })
 
-
         // Set up drag reordering of criterions.
         if(typeof Sortable != 'undefined') {
             var el = document.getElementById('task-criterions');
@@ -181,100 +149,11 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
                 //onEnd: self.SortEnd
             });
         }
-
     };
 
     Task.prototype.SortEnd = function (e) {
         self = this;
-        console.log(e);
-    };
-
-
-    /**
-     * Generate json from form fields.
-     *
-     * @method
-     */
-    Task.prototype.getFormJSON = function () {
-        var self = this;
-
-        var id = $('input[name="edit"]').val();
-        var taskname = $('input[name="taskname"]').val();
-        var pypuoi = $('select[name="pypuoi"]').val();
-        var outcomes = $('textarea[name="outcomes"]').val();
-        var criterionjson = $('input[name="criterionjson"]').val();
-        var evidencejson = $('input[name="evidencejson"]').val();
-
-        var formdata = {
-            id: id,
-            taskname: taskname,
-            pypuoi: pypuoi,
-            outcomes: outcomes,
-            criterionjson: criterionjson,
-            evidencejson: evidencejson,
-        };
-
-        var formjson = JSON.stringify(formdata);
-
-        return formjson;
-    };
-
-    /**
-     * Regenerate json and autosave.
-     *
-     * @method
-     */
-    Task.prototype.regenerateAndSave = function (async) {
-        var self = this;
-
-        self.regenerateEvidenceJSON();
-        self.regenerateCriterionJSON();
-        self.autoSave(async);
-    };
-
-    /**
-     * Autosave progress.
-     *
-     * @method
-     */
-    Task.prototype.autoSave = function (async) {
-        var self = this;
-
-        // Check if saving already in-progress.
-        if (self.autosaving) {
-            return;
-        }
-
-        var formjson = self.getFormJSON();
-
-        // Do not autosave if nothing is entered yet. Empty formjson is 205 chars.
-        if (formjson.length <= 205) {
-            return;
-        }
-
-        // Check if form data has changed.
-        if (self.formjson == formjson) {
-            return;
-        }
-
-        self.formjson = formjson;
-        self.statusSaving();
-
-        if (typeof async === "undefined") {
-            async = true;
-        }
-
-        Ajax.call([{
-            methodname: 'mod_psgrading_autosave',
-            args: { formjson: formjson },
-            done: function() {
-                self.statusSaved();
-            },
-            fail: function(reason) {
-                Log.debug(reason);
-                self.statusSaveFailed();
-            }
-        }], async);
+        //console.log(e);
     };
 
     /**
@@ -320,13 +199,17 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
 
         self.rootel.find('.criterions .tbl-tr').each(function() {
             var row = $(this);
+            var subject = row.find('[name=subject]').val();
+            if (subject == null){
+                subject = '';
+            }
             var criterion = {
                 id: row.data('id'),
                 description: row.find('[name=description]').val(),
                 level4: row.find('[name=level4]').val(),
                 level3: row.find('[name=level3]').val(),
                 level2: row.find('[name=level2]').val(),
-                subject: row.find('[name=subject]').val(),
+                subject: subject,
                 weight: row.find('[name=weight]').val(),
                 hidden: row.find('[name=hidden]').is(":checked") ? 0 : 1,
             };
@@ -382,8 +265,6 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             tbltr.removeClass('criterion-hidden');
             desc.html('Visible');
         }
-        self.autosaving = false; // Force an autosave.
-        self.regenerateAndSave(); 
     };
 
     /**
@@ -397,50 +278,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var tbltr = button.closest('.tbl-tr');
         tbltr.fadeOut(200, function() {
             $(this).remove();
-            self.autosaving = false; // Force an autosave.
-            self.regenerateAndSave();
         });
     };
-
-    /**
-     * Set status to autosaving.
-     *
-     */
-    Task.prototype.statusSaving = function () {
-        var self = this;
-        self.autosaving = true;
-        self.savestatus.html('<div class="badge badge-secondary"><div class="spinner"><div class="circle spin"></div></div> Auto saving</div>');
-        // Add the before unload alert back in. The text returned is ignored by browsers but there as a fallback.
-        window.onbeforeunload = function() {
-            return "Are you sure?";
-        };
-    }
-
-    /**
-     * Set status to autosaved.
-     *
-     */
-    Task.prototype.statusSaved = function () {
-        var self = this;
-        self.autosaving = false;
-        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-check" aria-hidden="true"></i> Draft saved</div>');
-
-        window.onbeforeunload = null;
-    }    
-
-    /**
-     * Set status to save failed.
-     *
-     */
-    Task.prototype.statusSaveFailed = function () {
-        var self = this;
-        self.autosaving = false;
-        self.savestatus.html('<div class="badge badge-secondary"><i class="fa fa-cross" aria-hidden="true"></i> Changes unsaved</div>');
-        // Add the before unload alert back in. The text returned is ignored by browsers but there as a fallback.
-        window.onbeforeunload = function() {
-            return "Are you sure?";
-        };
-    }
 
     /**
      * Helper used to preload a template

@@ -82,6 +82,20 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.releaseTask(button);
         });
 
+        // Publish.
+        self.rootel.on('click', '.action-publish', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            self.publishTask(button);
+        });
+
+        // Unpublish.
+        self.rootel.on('click', '.action-unpublish', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            self.unpublishTask(button);
+        });
+
         // Undo release.
         self.rootel.on('click', '.action-undorelease', function(e) {
             e.preventDefault();
@@ -89,11 +103,11 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.unreleaseTask(button);
         });
 
-        // Delete draft.
+        // Delete task.
         self.rootel.on('click', '.action-delete', function(e) {
             e.preventDefault();
             var button = $(this);
-            self.showDeleteDraft(button);
+            self.deleteTask(button);
         });
 
         // Set up drag reordering of criterions.
@@ -118,76 +132,81 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             DIFF: null,
         };
         var preloads = [];
-        preloads.push(self.loadModal('DIFF', 'Review draft changes and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
+        //preloads.push(self.loadModal('DIFF', 'Review draft changes and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         })
 
     };
 
-    /**
-     * Delete draft.
-     *
-     * @method
-     */
-    List.prototype.showDeleteDraft = function (button) {
+    List.prototype.deleteTask = function (button) {
         var self = this;
+
         var task = button.closest('.col-taskname');
 
-        // Task is still a draft - delete it.
-        if (task.hasClass('not-published')) {
-            self.deleteDraft(task.data('id'));
-            return;
-        }
-
-        // Task is publised, has no unpublished edits - delete it.
-        if ( ! task.hasClass('is-draft')) {
-            self.deleteDraft(task.data('id'));
-            return;
-        }
-
-        // Task is publised, has some unpublished edits - show diff.
-        if (self.modals.DIFF) {
-            // Get the diff.
-            Ajax.call([{
-                methodname: 'mod_psgrading_apicontrol',
-                args: { 
-                    action: 'get_diff',
-                    data: task.data('id'),
-                },
-                done: function(html) {
-                    self.modals.DIFF.setBody(html);
-                },
-                fail: function(reason) {
-                    Log.debug(reason);
-                    return "Failed to load diff."
-                }
-            }]);
-
-            // Set up the modal cevents.
-            self.modals.DIFF.getModal().addClass('modal-xl');
-            self.modals.DIFF.getRoot().on(ModalEvents.save, {self: self, taskid: task.data('id')}, self.handleDeleteDraft);
-            self.modals.DIFF.show();
-        }
-    };
-
-    List.prototype.handleDeleteDraft = function (event) {
-        var self = event.data.self;
-        var taskid = event.data.taskid;
-
-        self.deleteDraft(taskid);
-    };
-
-    List.prototype.deleteDraft = function (taskid) {
-        var self = this;
-
-        self.rootel.find('.col-taskname[data-id="' + taskid + '"] .action-discarddraft').replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
 
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
-                action: 'delete_draft',
-                data: taskid,
+                action: 'delete_task',
+                data: task.data('id'),
+            },
+            done: function() {
+                window.location.reload(false);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+    };
+
+
+    /**
+     * Publish a task.
+     *
+     * @method
+     */
+    List.prototype.publishTask = function (button) {
+        var self = this;
+        
+        var task = button.closest('.col-taskname');
+
+        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'publish_task',
+                data: task.data('id'),
+            },
+            done: function() {
+                window.location.reload(false);
+            },
+            fail: function(reason) {
+                Log.debug(reason);
+            }
+        }]);
+    };
+
+    
+    /**
+     * Unpublish a task.
+     *
+     * @method
+     */
+     List.prototype.unpublishTask = function (button) {
+        var self = this;
+
+        var task = button.closest('.col-taskname');
+
+        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+
+        Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'unpublish_task',
+                data: task.data('id'),
             },
             done: function() {
                 window.location.reload(false);
@@ -208,6 +227,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
         var task = button.closest('.col-taskname');
 
+        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
             args: { 
@@ -221,7 +242,6 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 Log.debug(reason);
             }
         }]);
-
     };
 
     /**
@@ -233,6 +253,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         var self = this;
 
         var task = button.closest('.col-taskname');
+
+        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
 
         Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
@@ -247,7 +269,6 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 Log.debug(reason);
             }
         }]);
-
     };
 
     List.prototype.checkCountdowns = function () {

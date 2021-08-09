@@ -131,5 +131,20 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021063006, 'psgrading');
     }
 
+    if ($oldversion < 2021063007) {
+
+        // Define field draftjson to be dropped from psgrading_tasks.
+        $table = new xmldb_table('psgrading_tasks');
+        $field = new xmldb_field('draftjson');
+
+        // Conditionally launch drop field draftjson.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2021063007, 'psgrading');
+    }
+
     return true;
 }

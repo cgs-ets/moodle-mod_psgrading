@@ -73,11 +73,6 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
-            'draftdata' => [
-                'type' => PARAM_RAW,
-                'multiple' => false,
-                'optional' => false,
-            ],
             'released' => [
                 'type' => PARAM_BOOL,
                 'multiple' => false,
@@ -85,11 +80,6 @@ class task_exporter extends persistent_exporter {
             ],
             'releasecountdown' => [
                 'type' => PARAM_INT,
-                'multiple' => false,
-                'optional' => false,
-            ],
-            'isdraft' => [
-                'type' => PARAM_BOOL,
                 'multiple' => false,
                 'optional' => false,
             ],
@@ -155,16 +145,8 @@ class task_exporter extends persistent_exporter {
 
         $readabletime = date('j M Y, g:ia', $this->data->timemodified);
 
-        $draftdata = json_decode($this->data->draftjson);
-
         // Check if released. Time must be in the past but not 0.
         list($released, $releasecountdown) = task::get_release_info($this->data->id);
-
-        // isdraft helper.
-        $isdraft = false;
-        if (!$this->data->published || $this->data->draftjson) {
-            $isdraft = true;
-        }
 
         // Load task evidences (pre-defined evidences).
         $evidences = task::get_evidences($this->data->id);
@@ -235,10 +217,8 @@ class task_exporter extends persistent_exporter {
             'markurl' => $markurl->out(false),
             'detailsurl' => $detailsurl->out(false),
 	        'readabletime' => $readabletime,
-	        'draftdata' => $draftdata,
             'released' => $released,
             'releasecountdown' => $releasecountdown,
-            'isdraft' => $isdraft,
             'evidences' => $evidences,
             'hasgrades' => $hasgrades,
             'pypuoilang' => utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)],

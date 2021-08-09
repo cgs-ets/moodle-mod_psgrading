@@ -25,8 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
 $string['pluginname'] = 'Primary School Grading';
 $string['pluginname_desc'] = 'A continuous grading system.';
 $string['modulename'] = 'Primary School Grading';
@@ -42,22 +40,19 @@ $string['psgrading:task'] = 'Create a new task';
 $string['privacy:metadata'] = 'Primary School Grading does not store any personal data.';
 
 $string['task:create'] = 'Create a new task';
-$string['task:editsuccess'] = 'Task was successfully edited.';
-$string['task:publishsuccess'] = 'Task was successfully published.';
-$string['task:createfail'] = 'Failed to create task.';
+$string['task:savesuccess'] = 'Task was successfully saved.';
+$string['task:savefail'] = 'Failed to save task.';
 $string['task:name'] = 'Name';
 $string['task:pypuoi'] = 'PYP UOI';
 $string['task:outcomes'] = 'Outcomes';
 $string['task:criteria'] = 'Criteria';
 $string['task:evidence'] = 'Evidence';
-$string['task:publish'] = 'Publish';
-$string['task:publishchanges'] = 'Publish changes';
-$string['task:savedraft'] = 'Save draft';
-$string['task:discardchanges'] = 'Discard changes';
-$string['task:discarddraft'] = 'Discard draft';
-$string['task:deletedraft'] = 'Delete draft';
+$string['task:visibility'] = 'Visibility';
+$string['task:visibledesc'] = 'Make task visible to students and parents.';
+$string['task:save'] = 'Save';
+$string['task:delete'] = 'Delete';
+$string['task:cancel'] = 'Cancel';
 $string['task:deletetask'] = 'Delete task';
-$string['task:exitedit'] = 'Cancel';
 $string['mark:comment'] = 'Comment';
 $string['mark:engagement'] = 'Engagement';
 $string['mark:save'] = 'Save and return';
@@ -71,7 +66,6 @@ $string['taskalreadygraded'] = 'Some students have already been graded. Changing
 
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['createtask'] = 'Create a new task';
-$string['managetasks'] = 'Manage tasks';
 $string['overview'] = 'Student overview';
 $string['addcriterion'] = 'Add criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';
@@ -80,10 +74,12 @@ $string['addevidence'] = 'Select any course activities that form part of this ta
 $string['enableweights'] = 'Enable weights';
 
 // Statuses
-$string['unpublishededits'] = 'Task has unpublished edits';
-$string['notpublishedyet'] = 'Task not published yet';
-$string['gradesreleased'] = 'Feedback released';
+$string['taskvisible'] = 'Task is visible';
+$string['taskhidden'] = 'Task is hidden';
+$string['hasgrades'] = 'Task has grades';
+$string['gradingnotstarted'] = 'Grading has not started';
+$string['gradesreleased'] = 'Feedback has been released';
+$string['gradesnotreleased'] = 'Feedback is hidden';
 $string['gradesreleasing'] = 'Releasing grades';
-$string['readytograde'] = 'Task/grading in progress';
-$string['gradesnotreleased'] = 'Feedback hidden';
+$string['taskhiddenmakevisible'] = 'Task is hidden. Click to make visible.';
 $string['dragtoreorder'] = 'Drag to reorder';
