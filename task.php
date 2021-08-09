@@ -67,7 +67,7 @@ if ($create) {
     $data->creatorusername = $USER->username;
     $data->cmid = $cm->id;
     $data->seq = 99999;
-    $data->publishd = 0;
+    $data->published = 0;
     $task = new task(0, $data);
     $task->save();
     
