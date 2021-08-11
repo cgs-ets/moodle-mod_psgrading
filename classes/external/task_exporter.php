@@ -212,6 +212,8 @@ class task_exporter extends persistent_exporter {
         // Check if this task has grades.
         $hasgrades = task::has_grades($this->data->id);
 
+        $pypuoilang = utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)] == 'Select' ? '' : utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)];
+
     	return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
@@ -221,7 +223,7 @@ class task_exporter extends persistent_exporter {
             'releasecountdown' => $releasecountdown,
             'evidences' => $evidences,
             'hasgrades' => $hasgrades,
-            'pypuoilang' => utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)],
+            'pypuoilang' => $pypuoilang,
 	    ];
     }
 
