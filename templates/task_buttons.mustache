@@ -26,7 +26,7 @@
 <div class="custom-footer-buttons">
     <input type="submit" class="btn btn-primary" name="save" id="btn-save" value="{{#str}}task:save, mod_psgrading{{/str}}">
     <input type="submit" class="btn btn-secondary" name="save" id="btn-cancel" value="{{#str}}task:cancel, mod_psgrading{{/str}}">
-    {{^hasgrades}}
+    {{^hasgrades}}{{#edit}}
         <input type="submit" class="btn btn-danger" name="save" id="btn-delete" value="{{#str}}task:delete, mod_psgrading{{/str}}">
-    {{/hasgrades}}
+    {{/edit}}{{/hasgrades}}
 </div>

@@ -123,7 +123,7 @@ class form_task extends \moodleform {
         // Buttons.
         $mform->addElement('header', 'actions', '');
         $mform->setExpanded('actions', true, true);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('hasgrades' => task::has_grades($edit))));
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('hasgrades' => task::has_grades($edit), 'edit' => $edit)));
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');
