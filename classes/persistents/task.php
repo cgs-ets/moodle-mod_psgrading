@@ -107,21 +107,56 @@ class task extends persistent {
         ];
     }
 
-    public static function save_from_data($data) {
+    public static function save_from_data($id, $cmid, $formdata) {
         global $DB, $USER;
 
-        // Some validation.
-        if (empty($data->id)) {
-            return;
+        // Take what we need from formdata.
+        $data = new \stdClass();
+        $data->taskname = $formdata->taskname;
+        $data->pypuoi = $formdata->pypuoi;
+        $data->outcomes = $formdata->outcomes;
+        $data->published = intval($formdata->published);
+        $data->criterionjson = $formdata->criterionjson;
+        $data->evidencejson = $formdata->evidencejson;
+
+        $editing = false;
+        if ($id > 0) {
+            // Make sure the record actually exists.
+            if (!static::record_exists($id)) {
+                return false;
+            }
+            $editing = true;
         }
 
-        // Update the task.
-        $task = new static($data->id, $data);
+        // Load or create new instance, depending on $id.
+        $task = new static($id);
+
+        // Set/update the data.
+        $timenow = time();
+        $task->set('taskname', $data->taskname);
+        $task->set('pypuoi', $data->pypuoi);
+        $task->set('outcomes', $data->outcomes);
+        $task->set('criterionjson', $data->criterionjson);
+        $task->set('evidencejson', $data->evidencejson);
+        if ($editing) {
+            // Editing.
+            list($released, $countdown) = static::get_release_info($id);
+            if ($data->published == 1 || !$released) { // can only hide until grades released.
+                $task->set('published', $data->published);
+            }
+        } else {
+            // Creating.
+            $task->set('cmid', $cmid);
+            $task->set('creatorusername', $USER->username);
+            $task->set('deleted', 0);
+            $task->set('published', $data->published);
+        }
         $task->save();
+        $id = $task->get('id');
 
         // Add a log entry.
         $log = new \stdClass();
-        $log->taskid = $data->id;
+        $log->taskid = $id;
         $log->username = $USER->username;
         $log->logtime = $task->get('timemodified');
         $log->formjson = json_encode($data);
@@ -129,11 +164,11 @@ class task extends persistent {
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
         
         // Create/update criterions.
-        $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $data->id));
+        $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $id));
         $criterions = json_decode($data->criterionjson);
         $seq = 0;
         foreach ($criterions as &$criterion) {
-            $criterion->taskid = $data->id;
+            $criterion->taskid = $id;
             $criterion->seq = $seq;
             if (!isset($criterion->weight)) {
                 $criterion->weight = 100;
@@ -158,11 +193,11 @@ class task extends persistent {
         }
 
         // Create evidences.
-        $DB->delete_records(static::TABLE_TASK_EVIDENCES, array('taskid' => $data->id));
+        $DB->delete_records(static::TABLE_TASK_EVIDENCES, array('taskid' => $id));
         $evidences = json_decode($data->evidencejson);
         if ($evidences) {
             foreach ($evidences as $evidence) {
-                $evidence->taskid = $data->id;
+                $evidence->taskid = $id;
                 $DB->insert_record(static::TABLE_TASK_EVIDENCES, $evidence);
             }
         }
@@ -170,7 +205,7 @@ class task extends persistent {
         // Invalidate list html cache.
         utils::invalidate_cache($task->get('cmid'), 'list-%');
 
-        return $data->id;
+        return $id;
     }
 
     /*public static function save_draft($formjson) {

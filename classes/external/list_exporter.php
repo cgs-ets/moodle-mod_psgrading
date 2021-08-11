@@ -115,7 +115,7 @@ class list_exporter extends exporter {
 
         $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
             'cmid' => $this->related['cmid'],
-            'create' => 1,
+            'edit' => 0,
         ));
 
         // Check if there is a cached version of the student rows.

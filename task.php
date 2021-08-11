@@ -35,7 +35,7 @@ use \mod_psgrading\external\task_exporter;
 // Course_module ID, or module instance id.
 $cmid = required_param('cmid', PARAM_INT);
 
-$create = optional_param('create', 0, PARAM_INT);
+//$create = optional_param('create', 0, PARAM_INT);
 $edit = optional_param('edit', 0, PARAM_INT);
 
 if ($cmid) {
@@ -57,172 +57,139 @@ $listurl = new moodle_url('/mod/psgrading/view.php', array(
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
 $PAGE->set_url($editurl);
-$PAGE->set_title(format_string($moduleinstance->name));
-$PAGE->set_heading(format_string($course->fullname));
+$title = get_string('tasksetup', 'mod_psgrading');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-// Determine if creating new / editing / or viewing list.
-if ($create) {
-    // Create a new empty task.
-    $data = new \stdClass();
-    $data->creatorusername = $USER->username;
-    $data->cmid = $cm->id;
-    $data->seq = 99999;
-    $data->published = 0;
-    $task = new task(0, $data);
-    $task->save();
-    
-    // Invalidate list html cache.
-    utils::invalidate_cache($cm->id, 'list-%');
+$task = new task($edit);
 
-    // Redirect to edit.
-    $editurl->param('edit', $task->get('id'));
-    redirect($editurl->out(false));
-    exit;
-
-} elseif ($edit) {
-    $title = get_string('tasksetup', 'mod_psgrading');
-    $PAGE->set_title($title);
-    $PAGE->set_heading($title);
-
-    // Load existing task.
+// Check task exists.
+if (!empty($edit)) { 
     $exists = task::record_exists($edit);
-    if ($exists) {
-        $task = new task($edit);
-    }
-
     if (!$exists || $task->get('deleted')) {
         redirect($listurl->out(false));
         exit;
     }
-
-    // Instantiate the form.
-    $formtask = new form_task($editurl->out(false), array(),'post', '', []);
-
-    $formdata = $formtask->get_data();
-
-    // Check whether loading page or submitting page.
-    if (empty($formdata)) { // Editing (not submitted).
-
-        // Export the task.
-        $taskexporter = new task_exporter($task);
-        $output = $PAGE->get_renderer('core');
-        $exported = $taskexporter->export($output);
-        if ($exported->hasgrades) {
-            $message = get_string('taskalreadygraded', 'mod_psgrading');
-            \core\notification::error($message);
-        }
-
-        // Get existing task data.
-        $taskname = $task->get('taskname');
-        $pypuoi = $task->get('pypuoi');
-        $outcomes = $task->get('outcomes');
-        $criterionjson = $task->get('criterionjson');
-        $evidencejson = $task->get('evidencejson');
-        $published = $task->get('published');
-
-        // Course activities that can be selected as evidence.
-        $evidencedata = utils::get_evidencedata($course, $evidencejson);
-
-        // Get and decorate criterion data.
-        $criteriondata = json_decode($criterionjson);
-        if (empty($criteriondata)) {
-            $criteriondata = array(utils::get_stub_criterion()); // Add a default empty criterion.
-        }
-        $criteriondata = utils::decorate_subjectdata($criteriondata);
-        $criteriondata = utils::decorate_weightdata($criteriondata);
-
-        // Reinstantiate the form with needed data.
-        $formtask = new form_task($editurl->out(false), 
-            array(
-                'edit' => $edit,
-                'criteriondata' => $criteriondata,
-                'evidencedata' => $evidencedata,
-                'published' => $published,
-                'enableweights' => $moduleinstance->enableweights,
-            ), 
-            'post', '', array('data-form' => 'psgrading-task')
-        );
-
-        // Set the form values.
-        $formtask->set_data(
-            array(
-                'general' => get_string('task:create', 'mod_psgrading'),
-                'edit' => $edit,
-                'taskname' => $taskname,
-                'pypuoi' => $pypuoi,
-                'outcomes' => $outcomes,
-                'published' => $published,
-                'criterionjson' => $criterionjson,
-                'evidencejson' => $evidencejson,
-            )
-        );
-
-        // Run get_data again to trigger validation and set errors.
-        $formdata = $formtask->get_data();
-
-    } else {
-
-        if ($formdata->action == 'cancel') {
-            redirect($listurl->out());
-            exit;
-        }
-
-        if ($formdata->action == 'delete') {
-            task::soft_delete($edit);
-            redirect($listurl->out());
-            exit;
-        }
-
-        if ($formdata->action == 'save') {
-            $data = new \stdClass();
-            $data->id = $edit;
-            list($released, $countdown) = task::get_release_info($edit);
-            if ($formdata->published == 1 || !$released) { // can only hide until grades released.
-                $data->published = $formdata->published;
-            }
-            $data->taskname = $formdata->taskname;
-            $data->pypuoi = $formdata->pypuoi;
-            $data->outcomes = $formdata->outcomes;
-            $data->criterionjson = $formdata->criterionjson;
-            $data->evidencejson = $formdata->evidencejson;
-
-            $result = task::save_from_data($data);
-            if ($result) {
-                $notice = get_string("task:savesuccess", "mod_psgrading");
-                redirect(
-                    $listurl->out(),
-                    '<p>'.$notice.'</p>',
-                    null,
-                    \core\output\notification::NOTIFY_SUCCESS
-                );
-            } else {
-                $notice = get_string("task:savefail", "mod_psgrading");
-                redirect(
-                    $listurl->out(),
-                    '<p>'.$notice.'</p>',
-                    null,
-                    \core\output\notification::NOTIFY_ERROR
-                );
-            }
-        }
+}
         
+// Instantiate the form.
+$formtask = new form_task($editurl->out(false), array(),'post', '', []);
+
+$formdata = $formtask->get_data();
+
+// Check whether loading page or submitting page.
+if (empty($formdata)) { // loading page for edit (not submitted).
+
+    // Export the task.
+    $taskexporter = new task_exporter($task);
+    $output = $PAGE->get_renderer('core');
+    $exported = $taskexporter->export($output);
+    if ($exported->hasgrades) {
+        $message = get_string('taskalreadygraded', 'mod_psgrading');
+        \core\notification::error($message);
     }
 
-    // Add css.
-    $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
-    // Add vendor js.
-    $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+    // Get existing task data.
+    $taskname = $task->get('taskname');
+    $pypuoi = $task->get('pypuoi');
+    $outcomes = $task->get('outcomes');
+    $criterionjson = $task->get('criterionjson');
+    $evidencejson = $task->get('evidencejson');
+    $published = $task->get('published');
 
-    echo $OUTPUT->header();
+    // Course activities that can be selected as evidence.
+    $evidencedata = utils::get_evidencedata($course, $evidencejson);
 
-    $formtask->display();
+    // Get and decorate criterion data.
+    $criteriondata = json_decode($criterionjson);
+    if (empty($criteriondata)) {
+        $criteriondata = array(utils::get_stub_criterion()); // Add a default empty criterion.
+    }
+    $criteriondata = utils::decorate_subjectdata($criteriondata);
+    $criteriondata = utils::decorate_weightdata($criteriondata);
 
-    // Add scripts.
-    $PAGE->requires->js_call_amd('mod_psgrading/task', 'init', array(
-        'stubcriterion' => utils::get_stub_criterion(),
-    ));
+    // Reinstantiate the form with needed data.
+    $formtask = new form_task($editurl->out(false), 
+        array(
+            'edit' => $edit,
+            'criteriondata' => $criteriondata,
+            'evidencedata' => $evidencedata,
+            'published' => $published,
+            'enableweights' => $moduleinstance->enableweights,
+        ), 
+        'post', '', array('data-form' => 'psgrading-task')
+    );
 
-    echo $OUTPUT->footer();
+    // Set the form values.
+    $formtask->set_data(
+        array(
+            'general' => get_string('task:create', 'mod_psgrading'),
+            'edit' => $edit,
+            'taskname' => $taskname,
+            'pypuoi' => $pypuoi,
+            'outcomes' => $outcomes,
+            'published' => $published,
+            'criterionjson' => $criterionjson,
+            'evidencejson' => $evidencejson,
+        )
+    );
 
+    // Run get_data again to trigger validation and set errors.
+    $formdata = $formtask->get_data();
+
+} else {
+    // Invalidate list html cache.
+    utils::invalidate_cache($cm->id, 'list-%');
+
+    if ($formdata->action == 'cancel') {
+        redirect($listurl->out());
+        exit;
+    }
+
+    if ($formdata->action == 'delete') {
+        task::soft_delete($edit);
+        redirect($listurl->out());
+        exit;
+    }
+
+    if ($formdata->action == 'save') {
+        $result = task::save_from_data($edit, $cm->id, $formdata);
+        if ($result) {
+            $notice = get_string("task:savesuccess", "mod_psgrading");
+            redirect(
+                $listurl->out(),
+                '<p>'.$notice.'</p>',
+                null,
+                \core\output\notification::NOTIFY_SUCCESS
+            );
+        } else {
+            $notice = get_string("task:savefail", "mod_psgrading");
+            redirect(
+                $listurl->out(),
+                '<p>'.$notice.'</p>',
+                null,
+                \core\output\notification::NOTIFY_ERROR
+            );
+        }
+    }
+    
 }
+
+// Add css.
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+// Add vendor js.
+$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+
+echo $OUTPUT->header();
+
+$formtask->display();
+
+// Add scripts.
+$PAGE->requires->js_call_amd('mod_psgrading/task', 'init', array(
+    'stubcriterion' => utils::get_stub_criterion(),
+));
+
+echo $OUTPUT->footer();
+
+
 exit;
