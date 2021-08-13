@@ -31,7 +31,12 @@
     
     {{#tasks}}
         <div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-grade="{{success.grade}}">
-            <a href="{{success.detailsurl}}" title="{{success.gradetip}}" data-toggle="tooltip">{{success.gradelang}}&nbsp;</a>
+            {{#published}}
+                <a href="{{success.detailsurl}}" title="{{success.gradetip}}" data-toggle="tooltip">{{success.gradelang}}&nbsp;</a>
+            {{/published}}
+            {{^published}}
+                <span title="{{success.gradetip}}" data-toggle="tooltip">{{success.gradelang}}&nbsp;</span>
+            {{/published}}
         </div>
     {{/tasks}}
 </div>

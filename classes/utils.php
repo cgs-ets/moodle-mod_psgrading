@@ -233,6 +233,7 @@ class utils {
 
     public static function decorate_subjectdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {
+            $criteriondata[$i]->selectedsubject = $row->subject;
             $criteriondata[$i]->subject = array(
                 'value' => $row->subject,
                 'options' => static::get_subject_options_with_selected($row->subject),
@@ -260,6 +261,7 @@ class utils {
                 'value' => $weight,
                 'options' => static::get_weight_options_with_selected($weight),
             );
+            $criteriondata[$i]->selectedweight = $weight;
         }
         return $criteriondata;
     }

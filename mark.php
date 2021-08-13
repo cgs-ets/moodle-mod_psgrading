@@ -138,6 +138,18 @@ $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
 
+
+if ( ! $data->task->published) {
+    $message = get_string('taskhidden', 'mod_psgrading');
+    $notice = \core\notification::error($message);
+    redirect(
+        $listurl->out(),
+        $notice,
+        null,
+        \core\output\notification::NOTIFY_ERROR
+    );
+}
+
 //echo "<pre>"; var_export($data); exit;
 
 // Add task edit, and overview to nav.

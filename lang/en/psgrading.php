@@ -36,10 +36,10 @@ $string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\'
 $string['cron_grade_release'] = 'PS Grading grade release processing.';
 
 $string['tasksetup'] = 'Task setup';
-$string['psgrading:task'] = 'Create a new task';
 $string['privacy:metadata'] = 'Primary School Grading does not store any personal data.';
 
 $string['task:create'] = 'Create a new task';
+$string['task:edit'] = 'Edit task';
 $string['task:savesuccess'] = 'Task was successfully saved.';
 $string['task:savefail'] = 'Failed to save task.';
 $string['task:name'] = 'Name';
@@ -65,7 +65,6 @@ $string['mark:myconnectattachments'] = 'MyConnect attachments';
 $string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
 
 $string['list:notasks'] = 'There are no tasks yet.';
-$string['createtask'] = 'Create a new task';
 $string['overview'] = 'Student overview';
 $string['addcriterion'] = 'Add criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';

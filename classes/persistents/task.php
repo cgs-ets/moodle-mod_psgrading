@@ -320,6 +320,15 @@ class task extends persistent {
         return $criterions;
     }
 
+    public static function get_printurl($taskid) {
+        $task = new static($taskid);
+        $printurl = new \moodle_url('/mod/psgrading/print.php', array(
+            'cmid' => $task->get('cmid'),
+            'taskid' => $taskid,
+        ));
+        return $printurl->out();
+    }
+
     public static function has_grades($taskid) {
         global $DB;
         if ($taskid) {

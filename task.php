@@ -123,7 +123,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     // Set the form values.
     $formtask->set_data(
         array(
-            'general' => get_string('task:create', 'mod_psgrading'),
+            'general' => '',//$edit ? get_string('task:edit', 'mod_psgrading') : get_string('task:create', 'mod_psgrading'),
             'edit' => $edit,
             'taskname' => $taskname,
             'pypuoi' => $pypuoi,

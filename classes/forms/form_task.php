@@ -55,8 +55,8 @@ class form_task extends \moodleform {
         $mform->addElement('header', 'general', '');
         $mform->setExpanded('general', true, true);
 
-        // Autosave.
-        //$mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_autosave', []));
+        // Print preview.
+        $mform->addElement('html', '<a class="btn-print" data-toggle="tooltip" data-placement="right" title="Print preview" href="' . task::get_printurl($edit) . '"><i class="fa fa-print" aria-hidden="true"></i></a>');
 
         /*----------------------
          *   Name.
