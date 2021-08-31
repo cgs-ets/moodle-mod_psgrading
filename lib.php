@@ -68,8 +68,8 @@ function mod_psgrading_pluginfile($course, $cm, $context, $filearea, $args, $for
  */
 function psgrading_supports($feature) {
     switch ($feature) {
-        case FEATURE_MOD_INTRO:
-            return true;
+        case FEATURE_MOD_INTRO: return true;
+        case FEATURE_BACKUP_MOODLE2:  return true;
         default:
             return null;
     }
