@@ -456,6 +456,23 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-list .col-empty {
   border: none !important;
 }
+.psgrading-list .col-hidden {
+  display: none !important;
+}
+.psgrading-list .col-empty.col-student {
+  vertical-align: bottom;
+  font-size: 12px;
+  line-height: 1;
+  height: auto;
+  padding: 6px 0px;
+}
+.psgrading-list .col-empty.col-student .sort {
+  display: block;
+  padding: 3px 7px;
+  text-align: right;
+  color: #005b94;
+  cursor: pointer;
+}
 .psgrading-list .col-student {
   width: 180px;
 }

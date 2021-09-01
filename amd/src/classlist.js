@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides the mod_psgrading/list module
+ * Provides the mod_psgrading/classlist module
  *
  * @package   mod_psgrading
  * @category  output
@@ -23,27 +23,27 @@
  */
 
 /**
- * @module mod_psgrading/list
+ * @module mod_psgrading/classlist
  */
 define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_events',], 
     function($, Log, Ajax, ModalFactory, ModalEvents) {    
     'use strict';
 
     /**
-     * Initializes the list component.
+     * Initializes the classlist component.
      */
     function init() {
-        Log.debug('mod_psgrading/list: initializing');
+        Log.debug('mod_psgrading/classlist: initializing');
 
         var rootel = $('#page-mod-psgrading-view');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/list: #page-mod-psgrading-view not found!');
+            Log.error('mod_psgrading/classlist: #page-mod-psgrading-view not found!');
             return;
         }
 
-        var list = new List(rootel);
-        list.main();
+        var classlist = new ClassList(rootel);
+        classlist.main();
     }
 
     /**
@@ -52,7 +52,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @constructor
      * @param {jQuery} rootel
      */
-    function List(rootel) {
+    function ClassList(rootel) {
         var self = this;
         self.rootel = rootel;
     }
@@ -61,9 +61,9 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * Run the Audience Selector.
      *
      */
-    List.prototype.main = function () {
+     ClassList.prototype.main = function () {
         var self = this;
-        
+
         self.checkCountdowns();
 
         // Change group.
@@ -122,6 +122,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             });
         }
 
+        // Initialise listjs sorting.
+        var options = {
+            valueNames: [ 'col-firstname', 'col-lastname' ]
+        };
+        var studentlist = new List('class-list', options);
+
         // Update countdowns every so often.
         setInterval(function() { 
             self.checkCountdowns();
@@ -139,7 +145,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
     };
 
-    List.prototype.deleteTask = function (button) {
+    ClassList.prototype.deleteTask = function (button) {
         var self = this;
 
         var task = button.closest('.col-taskname');
@@ -167,7 +173,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.publishTask = function (button) {
+     ClassList.prototype.publishTask = function (button) {
         var self = this;
         
         var task = button.closest('.col-taskname');
@@ -195,7 +201,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-     List.prototype.unpublishTask = function (button) {
+     ClassList.prototype.unpublishTask = function (button) {
         var self = this;
 
         var task = button.closest('.col-taskname');
@@ -222,7 +228,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.releaseTask = function (button) {
+     ClassList.prototype.releaseTask = function (button) {
         var self = this;
 
         var task = button.closest('.col-taskname');
@@ -249,7 +255,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-    List.prototype.unreleaseTask = function (button) {
+     ClassList.prototype.unreleaseTask = function (button) {
         var self = this;
 
         var task = button.closest('.col-taskname');
@@ -271,7 +277,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         }]);
     };
 
-    List.prototype.checkCountdowns = function () {
+    ClassList.prototype.checkCountdowns = function () {
         var self = this;
 
         self.rootel.find('.action-undorelease').each(function() {
@@ -299,7 +305,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     };
 
 
-    List.prototype.SortEnd = function (e) {
+    ClassList.prototype.SortEnd = function (e) {
 
         // Don't reorder if moving to same index.
         if (e.oldIndex == e.newIndex) {
@@ -342,7 +348,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @param {string} title The button text of the modal
      * @return {object} jQuery promise
      */
-    List.prototype.loadModal = function (modalkey, title, buttontext, type) {
+     ClassList.prototype.loadModal = function (modalkey, title, buttontext, type) {
         var self = this;
         return ModalFactory.create({type: type}).then(function(modal) {
             modal.setTitle(title);

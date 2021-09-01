@@ -29,6 +29,13 @@
         <a href="{{currstudent.overviewurl}}"><img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span></a>
     </div>
     
+    <div class="column col-firstname col-hidden">
+        {{currstudent.firstname}}
+    </div>
+    <div class="column col-lastname col-hidden">
+        {{currstudent.lastname}}
+    </div>
+    
     {{#tasks}}
         <div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-grade="{{success.grade}}">
             {{#published}}

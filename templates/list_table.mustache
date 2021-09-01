@@ -23,11 +23,16 @@
 
     Template used to generate list overview table. This is also cached.
 }}
-<div class="classlist-table">
+<div id="class-list" class="classlist-table">
         {{! Task names across the top }}
         <div id="task-list" class="classlist-header">
             {{#studentoverviews.0}}
-                <div class="column col-empty col-student">&nbsp;</div>
+                <div class="column col-empty col-student">
+                    <span class="sort" data-sort="col-firstname">First name <i class="fa fa-sort" aria-hidden="true"></i> </span>
+                    <span class="sort" data-sort="col-lastname">Last name <i class="fa fa-sort" aria-hidden="true"></i> </span>
+                </div>
+                <div class="column col-hidden col-firstname"></div>
+                <div class="column col-hidden col-lastname"></div>
                 
                 {{#tasks}}
                     <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
@@ -100,8 +105,9 @@
         </div>
 
         {{! Student rows }}
-        {{#studentoverviews}}
-            {{>mod_psgrading/list_row}}
-        {{/studentoverviews}}
-        
+        <div class="list">
+            {{#studentoverviews}}
+                {{>mod_psgrading/list_row}}
+            {{/studentoverviews}}
+        </div>
     </div>

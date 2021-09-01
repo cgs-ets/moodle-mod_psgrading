@@ -131,6 +131,7 @@ $data = $listexporter->export($output);
 // Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.5.0/list.min.js'), true );
 
 $output = $OUTPUT->header();
 
@@ -138,7 +139,7 @@ $output = $OUTPUT->header();
 $output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/list', 'init');
+$PAGE->requires->js_call_amd('mod_psgrading/classlist', 'init');
 
 // Final outputs.
 $output .= $OUTPUT->footer();
