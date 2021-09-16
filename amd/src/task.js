@@ -32,7 +32,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
     /**
      * Initializes the task component.
      */
-    function init(stubcriterion) {
+    function init() {
         Log.debug('mod_psgrading/task: initializing');
 
         var rootel = $('form[data-form="psgrading-task"]');
@@ -42,7 +42,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             return;
         }
 
-        var task = new Task(rootel, stubcriterion);
+        var task = new Task(rootel);
         task.main();
     }
 
@@ -52,17 +52,18 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function Task(rootel, stubcriterion) {
+    function Task(rootel) {
         var self = this;
         self.rootel = rootel;
-        //self.autosaving = false;
-        //self.savestatus = self.rootel.find('#savestatus');
-        self.stubcriterion = stubcriterion;
+        
+        // Get the stub criterion.
+        var txt = document.createElement("textarea");
+        txt.innerHTML = self.rootel.find('.criterion-selector').data('stub');
+        self.stubcriterion = $.parseJSON(txt.value);
 
         // Setup initial json.
         self.regenerateEvidenceJSON();
         self.regenerateCriterionJSON();
-        //self.formjson = self.getFormJSON();
     }
 
     /**

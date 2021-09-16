@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/psgrading/db" VERSION="20210217" COMMENT="XMLDB file for Moodle mod_psgrading"
+<XMLDB PATH="mod/psgrading/db" VERSION="20210916" COMMENT="XMLDB file for Moodle mod_psgrading"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-
     <TABLE NAME="psgrading" COMMENT="Stores the psgrading activity module instances.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -21,8 +20,7 @@
         <KEY NAME="fk_course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
-    <TABLE NAME="psgrading_tasks" COMMENT="">
+    <TABLE NAME="psgrading_tasks">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -34,7 +32,7 @@
         <FIELD NAME="evidencejson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="published" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="seq" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0" />
+        <FIELD NAME="seq" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timerelease" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -44,7 +42,6 @@
         <KEY NAME="fk_cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="psgrading" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_task_logs" COMMENT="Logs for published changes to tasks">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -59,7 +56,6 @@
         <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_task_criterions" COMMENT="Criterions for a task">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -78,7 +74,6 @@
         <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_task_evidences" COMMENT="Course activities that are predefined as part of a task">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -91,8 +86,6 @@
         <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
-
     <TABLE NAME="psgrading_grades" COMMENT="Grade record for a given student and task">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -109,9 +102,6 @@
         <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
-
-
     <TABLE NAME="psgrading_grade_criterions" COMMENT="Graded criterions">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -127,7 +117,6 @@
         <KEY NAME="fk_gradeid" TYPE="foreign" FIELDS="gradeid" REFTABLE="psgrading_grades" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_grade_evidences" COMMENT="Evidences that are added during or after grading">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -142,7 +131,6 @@
         <KEY NAME="fk_gradeid" TYPE="foreign" FIELDS="gradeid" REFTABLE="psgrading_grades" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_comment_bank" COMMENT="Comment bank for marking">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -156,7 +144,6 @@
         <KEY NAME="fk_taskid" TYPE="foreign" FIELDS="taskid" REFTABLE="psgrading_tasks" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_release_posts" COMMENT="Posts made upon task/grade release.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -170,7 +157,6 @@
         <KEY NAME="fk_gradeid" TYPE="foreign" FIELDS="gradeid" REFTABLE="psgrading_grades" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_userprefs" COMMENT="User preferences per module instance.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -183,7 +169,6 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-
     <TABLE NAME="psgrading_grades_cache" COMMENT="Cached html to speed up load times">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -195,6 +180,19 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-
+    <TABLE NAME="psgrading_gradesync" COMMENT="A staging table to store grades for external SIS sync.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="username" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="externalreportid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="subject" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
   </TABLES>
 </XMLDB>

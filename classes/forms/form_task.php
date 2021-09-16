@@ -101,7 +101,11 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         // Render the criterion from json.
-        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array('criterions' => $criteriondata, 'enableweights' => $enableweights));
+        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array(
+            'criterions' => $criteriondata, 
+            'enableweights' => $enableweights,
+            'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
+        ));
         $mform->addElement('html', $criterionhtml);
 
         /*----------------------

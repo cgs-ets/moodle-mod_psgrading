@@ -47,8 +47,16 @@ class utils {
             'attrs' => 'disabled selected',
         ),
         array (
-            'txt' => 'English',
-            'val' => 'English',
+            'txt' => 'English – reading and viewing',
+            'val' => 'English – reading and viewing',
+        ),
+        array (
+            'txt' => 'English – speaking and listening',
+            'val' => 'English – speaking and listening',
+        ),
+        array (
+            'txt' => 'English – writing',
+            'val' => 'English – writing',
         ),
         array (
             'txt' => 'HAAS',
@@ -63,8 +71,16 @@ class utils {
             'val' => 'Technology',
         ),
         array (
-            'txt' => 'Maths',
-            'val' => 'Maths',
+            'txt' => 'Maths – measurement and geometry',
+            'val' => 'Maths – measurement and geometry',
+        ),
+        array (
+            'txt' => 'Maths – number and algebra',
+            'val' => 'Maths – number and algebra',
+        ),
+        array (
+            'txt' => 'Maths – statistics and probability',
+            'val' => 'Maths – statistics and probability',
         ),
         array (
             'txt' => 'H&PE',

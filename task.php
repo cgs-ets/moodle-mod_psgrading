@@ -185,9 +185,7 @@ echo $OUTPUT->header();
 $formtask->display();
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/task', 'init', array(
-    'stubcriterion' => utils::get_stub_criterion(),
-));
+$PAGE->requires->js_call_amd('mod_psgrading/task', 'init');
 
 echo $OUTPUT->footer();
 
