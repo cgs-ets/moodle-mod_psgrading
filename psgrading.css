@@ -1290,7 +1290,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   padding: 6px 6px;
   border-bottom: 1px solid #fff;
 }
-.psgrading-matrix .column.task .cell-engagement[data-engagement="poor"] {
+.psgrading-matrix .column.task .cell-engagement[data-engagement="NI"] {
   background-color: #D90617;
   color: #fff;
 }

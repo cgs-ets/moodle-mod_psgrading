@@ -230,6 +230,7 @@ class utils {
     );
 
     const ENGAGEMENTWEIGHTS = array (
+        '' => 0,
         'NI' => 25,
         'A' => 50,
         'VG' => 75,
@@ -373,9 +374,11 @@ class utils {
      * @return int[]
      */
     public static function get_enrolled_students($courseid) {
+        global $DB;
         $context = \context_course::instance($courseid);
         // 5 is student.
-        $users = get_role_users(5, $context, false, 'u.id, u.firstname', 'u.firstname'); //last param is sort by.
+        $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.firstname', 'u.firstname'); //last param is sort by. 
         return array_map('intval', array_column($users, 'id'));
     }
 

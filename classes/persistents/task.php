@@ -731,12 +731,10 @@ class task extends persistent {
         }
         $reportgrades = array_values($reportgrades);
 
-        // NO LONGER CALCULATING ENGAGEMENT REPORT GRADE.
         // Get the average engagement accross all tasks.
-        /*
         $engagement = array();
         foreach ($tasks as $task) {
-            if (isset($task->gradeinfo->engagement)) {
+            if (!empty($task->gradeinfo->engagement)) {
                 $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
             }
         }
@@ -748,248 +746,21 @@ class task extends persistent {
             $engagement = 0;
         }
         // Round up to nearest 25.
-        $engagement = ceil($engagement / 25) * 25;
+        //$engagement = ceil($engagement / 25) * 25;
+        $engagement = round($engagement / 25) * 25;
+        $engagementlang = array_flip(utils::ENGAGEMENTWEIGHTS);
+
         // Add to report grades.
         $reportgrades[] = array(
             'subject' => 'Engagement',
             'subjectsanitised' => 'engagement',
             'grade' => $engagement,
-            'gradelang' => $engagement,
+            'gradelang' => $engagementlang[$engagement],
             'issubject' => false,
         );
-        */
 
         return $reportgrades;
     }
-
-    /*public static function cache_grades($cmid, $userid, $data) {
-        global $DB;
-
-        // Delete existing cached grades for user.
-        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'userid' => $userid,
-            'type' => 'subjectgrade',
-        ));
-
-        // Generate new ones.
-        $subjectgrades = array();
-        foreach($data as $task) {
-            foreach($task->subjectgrades as $subjectgrade) {
-                $subjectgrades[] = array(
-                    'cmid' => $cmid,
-                    'taskid' => $task->id,
-                    'userid' => $userid,
-                    'subject' => $subjectgrade['subject'],
-                    'subjectsanitised' => $subjectgrade['subjectsanitised'],
-                    'grade' => $subjectgrade['grade'],
-                    'gradelang' => $subjectgrade['gradelang'],
-                    'type' => 'subjectgrade'
-                );
-            }
-        }
-
-        $DB->insert_records(static::TABLE_GRADES_CACHE, $subjectgrades);
-
-        // Delete existing cached success for user.
-        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'userid' => $userid,
-            'type' => 'success',
-        ));
-
-        // Calculate success.
-        $successgrades = array();
-        foreach($data as $task) {
-            $success = 0;
-            $grades = array();
-            foreach ($subjectgrades as $subjectgrade) {
-                if ($subjectgrade['grade']) {
-                    $grades[] = $subjectgrade['grade'];
-                }
-            }
-            if (count($grades)) {
-                $success = array_sum($grades)/count($grades);
-                $success = (int) round($success, 0);
-            }
-            $gradelang = utils::GRADELANG[$success];
-            $successgrades[] = array(
-                'cmid' => $cmid,
-                'taskid' => $task->id,
-                'userid' => $userid,
-                'grade' => $success,
-                'gradelang' => $gradelang['full'],
-                'subject' => '',
-                'subjectsanitised' => '',
-                'type' => 'success'
-            );
-        }
-        $DB->insert_records(static::TABLE_GRADES_CACHE, $successgrades);
-
-    }
-
-    public static function cache_grades_for_task($cmid, $taskid, $userid, $subjectgrades) {
-        global $DB;
-
-        // Delete existing cached grades for user.
-        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'taskid' => $taskid,
-            'userid' => $userid,
-            'type' => 'subjectgrade',
-        ));
-
-        // Generate new ones.
-        $data = array();
-        foreach($subjectgrades as $subjectgrade) {
-            $data[] = array(
-                'cmid' => $cmid,
-                'taskid' => $taskid,
-                'userid' => $userid,
-                'subject' => $subjectgrade['subject'],
-                'subjectsanitised' => $subjectgrade['subjectsanitised'],
-                'grade' => $subjectgrade['grade'],
-                'gradelang' => $subjectgrade['gradelang'],
-                'type' => 'subjectgrade'
-            );
-        }
-
-        $DB->insert_records(static::TABLE_GRADES_CACHE, $data);
-
-        // Delete existing cached success for user.
-        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'taskid' => $taskid,
-            'userid' => $userid,
-            'type' => 'success',
-        ));
-
-        // Calculate success.
-        $grades = array();
-        foreach ($subjectgrades as $subjectgrade) {
-            if ($subjectgrade['grade']) {
-                $grades[] = $subjectgrade['grade'];
-            }
-        }
-        $success = 0;
-        if (count($grades)) {
-            $success = array_sum($grades)/count($grades);
-            $success = (int) round($success, 0);
-        }
-        $gradelang = utils::GRADELANG[$success];
-        $data = array(
-            'cmid' => $cmid,
-            'taskid' => $taskid,
-            'userid' => $userid,
-            'grade' => $success,
-            'gradelang' => $gradelang['full'],
-            'subject' => '',
-            'subjectsanitised' => '',
-            'type' => 'success'
-        );
-        $DB->insert_record(static::TABLE_GRADES_CACHE, $data);
-
-    }
-
-    public static function cache_report_grades($cmid, $userid, $data) {
-        global $DB;
-
-        // Delete existing cached grades for user.
-        $DB->delete_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'userid' => $userid,
-            'type' => 'reportgrade',
-        ));
-
-        // Generate new ones.
-        $reportgrades = array();
-        foreach($data as $reportgrade) {
-            $reportgrades[] = array(
-                'cmid' => $cmid,
-                'taskid' => -1,
-                'userid' => $userid,
-                'subject' => $reportgrade['subject'],
-                'subjectsanitised' => $reportgrade['subjectsanitised'],
-                'grade' => $reportgrade['grade'],
-                'gradelang' => $reportgrade['gradelang'],
-                'type' => 'reportgrade'
-            );
-        }
-
-        $DB->insert_records(static::TABLE_GRADES_CACHE, $reportgrades);
-    }
-
-    public static function get_cached_grades($cmid, $userid, $includedrafttasks) {
-        global $DB, $OUTPUT;
-
-        // Get all tasks for this course module.
-        $tasks = array();
-        $cmtasks = static::get_for_coursemodule($cmid);
-
-        if (empty($cmtasks)) {
-            return $out;
-        }
-
-        foreach ($cmtasks as $task) {
-            $taskexporter = new task_exporter($task, array('userid' => $userid));
-            $task = $taskexporter->export($OUTPUT);
-
-            if (!$task->published && !$includedrafttasks) {
-                continue;
-            }
-
-            $task->subjectgrades = array_values($DB->get_records(static::TABLE_GRADES_CACHE, array(
-                'cmid' => $cmid,
-                'taskid' => $task->id,
-                'userid' => $userid,
-                'type' => 'subjectgrade',
-            )));
-            $task->success = $DB->get_record(static::TABLE_GRADES_CACHE, array(
-                'cmid' => $cmid,
-                'taskid' => $task->id,
-                'userid' => $userid,
-                'type' => 'success',
-            ));
-
-            // If no cache then we are forced to compute on the fly.
-            if (empty($task->subjectgrades)) {
-                $task = static::compute_grades_for_task($task, $userid, true);
-                static::cache_grades_for_task($cmid, $task->id, $userid, $task->subjectgrades);
-            }
-
-            $tasks[] = $task;
-        }
-
-        return $tasks;
-    }
-
-
-    // $tasks. Used when no cache found to recalculate.
-    public static function get_cached_report_grades($cmid, $userid, $tasks = array()) {
-        global $DB, $OUTPUT;
-
-        $reportgrades = array_values($DB->get_records(static::TABLE_GRADES_CACHE, array(
-            'cmid' => $cmid,
-            'userid' => $userid,
-            'type' => 'reportgrade',
-        ), '', 'subject, subjectsanitised, grade, gradelang'));
-        // Add issubject for template.
-        $reportgrades = array_map(function ($reportgrade) { 
-            $reportgrade->issubject = true;
-            return $reportgrade;
-        }, $reportgrades);
-
-        // If no cache we are forced to compute on the fly.
-        if (empty($reportgrades)) {
-            $reportgrades = static::compute_report_grades($tasks);
-            static::cache_report_grades($cmid, $userid, $reportgrades);
-        }
-
-        return $reportgrades;
-    }
-
-    */
-
 
     public static function reset_task_grades_for_student($data) {
         global $DB, $USER;

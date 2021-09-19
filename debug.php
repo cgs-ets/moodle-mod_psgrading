@@ -23,6 +23,7 @@
  */
 
 require_once(dirname(__FILE__) . '/../../config.php');
+require_once(__DIR__.'/lib.php');
 
 $context = context_system::instance();
 
@@ -34,7 +35,15 @@ $PAGE->set_heading('mod_psgrading debugger');
 require_login();
 require_capability('moodle/site:config', $context, $USER->id);
 
-$task = new \mod_psgrading\task\cron_grade_release;
+/*$task = new \mod_psgrading\task\cron_grade_release;
 $task->execute();
-exit;
+exit;*/
 
+/*$task = new \mod_psgrading\task\adhoc_gradesync();
+$mod = new stdClass();
+$mod->course = 13;
+$mod->id = 1;
+$task->set_custom_data($mod);
+$task->set_component('mod_psgrading');
+$task->execute();
+exit;*/
