@@ -29,8 +29,17 @@ $tasks = array(
     array(
         'classname' => 'mod_psgrading\task\cron_grade_release',
         'blocking' => 0,
-        'minute' => '*', // Runs every minute. '*/10' runs every 10 minutes.
+        'minute' => '*',
         'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*'
+    ),
+    array(
+        'classname' => 'mod_psgrading\task\cron_gradesync',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '4',
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*'

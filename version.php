@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_psgrading';
 $plugin->release = '0.1.0';
-$plugin->version = 2021091600;
+$plugin->version = 2021091601;
 $plugin->requires = 2018051703;
 $plugin->maturity = MATURITY_ALPHA;
