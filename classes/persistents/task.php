@@ -623,7 +623,7 @@ class task extends persistent {
                 if ($subject['val']) {
                     $task->subjectgrades[] = array(
                         'subject' => $subject['val'],
-                        'subjectsanitised' => str_replace('&', '', $subject['val']),
+                        'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $subject['val']),
                         'grade' => 0,
                         'gradelang' => '',
                     );
@@ -659,7 +659,7 @@ class task extends persistent {
                 $gradelang = utils::GRADELANG[$grade];
                 $task->subjectgrades[] = array(
                     'subject' => $subject['val'],
-                    'subjectsanitised' => str_replace('&', '', $subject['val']),
+                    'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $subject['val']),
                     'grade' => $grade,
                     'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
                     'gradetip' => $gradelang['tip'],
@@ -722,7 +722,7 @@ class task extends persistent {
         foreach ($reportgrades as $key => $grade) {
             $reportgrades[$key] = array(
                 'subject' => $key,
-                'subjectsanitised' => str_replace('&', '', $key),
+                'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $key),
                 'grade' => $grade,
                 'gradelang' => utils::GRADELANG[$grade]['full'],
                 'gradetip' => utils::GRADELANG[$grade]['tip'],
