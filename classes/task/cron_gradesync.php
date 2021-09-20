@@ -59,7 +59,7 @@ class cron_gradesync extends \core\task\scheduled_task {
         $sql = "SELECT id, course
                   FROM {psgrading}";
         $this->mods = $DB->get_records_sql($sql);
-        if (empty($mods)) {
+        if (empty($this->mods)) {
             return;
         }
 
