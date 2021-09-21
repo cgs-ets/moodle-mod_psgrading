@@ -157,6 +157,9 @@ form[data-form="psgrading-task"] #savestatus .badge i {
   height: 11px;
   margin-right: 3px;
 }
+form[data-form="psgrading-task"] #fitem_id_notes {
+  margin-top: 20px;
+}
 form[data-form="psgrading-task"] .custom-footer-buttons {
   padding: 25px 0 30px;
   text-align: center;

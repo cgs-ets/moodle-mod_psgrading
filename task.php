@@ -96,6 +96,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $criterionjson = $task->get('criterionjson');
     $evidencejson = $task->get('evidencejson');
     $published = $task->get('published');
+    $notestext = $task->get('notes');
 
     // Course activities that can be selected as evidence.
     $evidencedata = utils::get_evidencedata($course, $evidencejson);
@@ -120,6 +121,16 @@ if (empty($formdata)) { // loading page for edit (not submitted).
         'post', '', array('data-form' => 'psgrading-task')
     );
 
+    // Set up notes editor.
+    $draftideditor = file_get_submitted_draft_itemid('notes');
+    $editoroptions = form_task::editor_options();
+    $notestext = file_prepare_draft_area($draftideditor, $modulecontext->id, 'mod_psgrading', 'notes', $edit, $editoroptions, $notestext);
+    $notes = array(
+        'text' => $notestext,
+        'format' => editors_get_preferred_format(),
+        'itemid' => $draftideditor
+    );
+
     // Set the form values.
     $formtask->set_data(
         array(
@@ -131,6 +142,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'published' => $published,
             'criterionjson' => $criterionjson,
             'evidencejson' => $evidencejson,
+            'notes' => $notes,
         )
     );
 

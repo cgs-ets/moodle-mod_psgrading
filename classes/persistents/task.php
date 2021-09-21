@@ -31,6 +31,7 @@ use \core_user;
 use \context_user;
 use \context_course;
 use \mod_psgrading\forms\form_mark;
+use \mod_psgrading\forms\form_task;
 use \mod_psgrading\external\task_exporter;
 
 /**
@@ -103,7 +104,10 @@ class task extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
-
+            "notes" => [
+                'type' => PARAM_RAW,
+                'default' => '',
+            ],
         ];
     }
 
@@ -118,6 +122,7 @@ class task extends persistent {
         $data->published = intval($formdata->published);
         $data->criterionjson = $formdata->criterionjson;
         $data->evidencejson = $formdata->evidencejson;
+        $data->notes = $formdata->notes;
 
         $editing = false;
         if ($id > 0) {
@@ -153,6 +158,21 @@ class task extends persistent {
         }
         $task->save();
         $id = $task->get('id');
+
+        // Store editor files to permanent file area and get text.
+        $context = \context_module::instance($cmid);
+        $editor = $data->notes;
+        $notestext = file_save_draft_area_files(
+            $editor['itemid'], 
+            $context->id, 
+            'mod_psgrading', 
+            'notes', 
+            $id, 
+            form_task::editor_options(), 
+            $editor['text'],
+        );
+        $task->set('notes', $notestext);
+        $task->save();
 
         // Add a log entry.
         $log = new \stdClass();

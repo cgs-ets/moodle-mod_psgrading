@@ -47,6 +47,7 @@ $string['task:pypuoi'] = 'PYP UOI';
 $string['task:outcomes'] = 'Outcomes';
 $string['task:criteria'] = 'Criteria';
 $string['task:evidence'] = 'Evidence';
+$string['task:notes'] = 'Hidden notes';
 $string['task:visibility'] = 'Visibility';
 $string['task:visibledesc'] = 'Make task visible to students and parents.';
 $string['task:save'] = 'Save';

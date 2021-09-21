@@ -124,6 +124,15 @@ class form_task extends \moodleform {
         ));
         $mform->addElement('html', $evidencehtml);
 
+        /*----------------------
+        *   Notes
+        *----------------------*/
+        $type = 'editor';
+        $name = 'notes';
+        $title = get_string('task:notes', 'mod_psgrading');
+        $mform->addElement($type, $name, $title, null, static::editor_options());
+        $mform->setType($name, PARAM_RAW);
+
         // Buttons.
         $mform->addElement('header', 'actions', '');
         $mform->setExpanded('actions', true, true);
@@ -190,6 +199,17 @@ class form_task extends \moodleform {
         }
 
         return $errors;
+    }
+
+    /**
+     * Returns the options array to use in editor
+     *
+     * @return array
+     */
+    public static function editor_options() {
+        return array(
+            'maxfiles' => EDITOR_UNLIMITED_FILES, 
+        );
     }
 
 }

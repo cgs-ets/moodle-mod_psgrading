@@ -173,6 +173,20 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021091600, 'psgrading');
     }
 
+    if ($oldversion < 2021092100) {
+
+        // Define field notes to be added to psgrading_tasks.
+        $table = new xmldb_table('psgrading_tasks');
+        $field = new xmldb_field('notes', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
+
+        // Conditionally launch add field notes.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2021092100, 'psgrading');
+    }
 
     return true;
 }
