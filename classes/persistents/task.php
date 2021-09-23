@@ -585,7 +585,7 @@ class task extends persistent {
         $cmtasks = static::get_for_coursemodule($cmid);
 
         if (empty($cmtasks)) {
-            return $out;
+            return [];
         }
 
         foreach ($cmtasks as $task) {
@@ -705,6 +705,9 @@ class task extends persistent {
 
     public static function compute_report_grades($tasks) {
         $reportgrades = array();
+        if (empty($tasks)) {
+            return [];
+        }
         foreach (utils::SUBJECTOPTIONS as $subject) {
             $subject = $subject['val'];
             if (!$subject) {
