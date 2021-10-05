@@ -199,7 +199,7 @@ class details_exporter extends exporter {
                     $task->myconnectevidencejson = json_encode($myconnectids);
                 }
                 // Get data for selected ids.
-                $myconnectdata = utils::get_myconnect_data_for_attachmentids($currstudent->username, $myconnectids);
+                $myconnectdata = utils::get_myconnect_data_for_attachments($currstudent->username, $myconnectids);
                 if (isset($myconnectdata->attachments)) {
                     $task->myconnectevidences = array_values($myconnectdata->attachments);
                 }
