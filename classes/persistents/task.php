@@ -475,7 +475,6 @@ class task extends persistent {
         foreach ($records as $record) {
             $postids[] = intval($record->postid);
         }
-        return [];
         return $postids;
     }
 
@@ -697,6 +696,17 @@ class task extends persistent {
         $task->success['grade'] = $success;
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];
+
+        // Get the releasepost
+        if ($task->released) {
+            $releasepostids = static::get_grade_release_posts($gradeinfo->id);
+            $student = \core_user::get_user($userid);
+            $releaseposturl = new \moodle_url('/local/myconnect/index.php', array(
+                'timeline' => $student->username,
+                'postid' => array_pop($releasepostids),
+            ));
+            $task->releaseposturl = $releaseposturl->out(false);
+        }
 
         // Ditch some unnecessary data.
         unset($task->criterions);
