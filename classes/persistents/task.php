@@ -660,7 +660,9 @@ class task extends persistent {
             if (!isset($subjectgrades[$criterionsubject])) {
                 $subjectgrades[$criterionsubject] = array();
             }
-            $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
+            if ($criteriongrade->gradelevel) {
+                $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
+            }
         }
     
         // Flatten to rounded averages.
@@ -686,10 +688,17 @@ class task extends persistent {
             }
         }
 
+        //echo "<pre>"; var_export($subjectgrades); exit;
+
         // Calculate success.
         $success = 0;
-        if (count($subjectgrades)) {
-            $success = array_sum($subjectgrades)/count($subjectgrades);
+        if (array_sum($subjectgrades)) {
+            $successgrades = $subjectgrades;
+            // Remove subjects that are zero from the success calculation.
+            if (($key = array_search(0, $successgrades)) !== false) {
+                unset($successgrades[$key]);
+            }
+            $success = array_sum($successgrades)/count($successgrades);
             $success = (int) round($success, 0);
         }
         $gradelang = utils::GRADELANG[$success];
