@@ -190,9 +190,8 @@ if (empty($formdata)) {
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
         $result = task::save_task_grades_for_student($formdata);
-
         if ($result) {
-            $redirecturl = $listurl->out();
+            $redirecturl = $data->currstudent->overviewurl;;
             if ($formdata->action == 'saveshownext') {
                 $redirecturl = $data->nextstudenturl;
             }
