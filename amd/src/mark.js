@@ -229,8 +229,14 @@ define(['jquery', 'core/log', 'core/ajax'],
         var self = this;
 
         var criterion = level.closest('.criterion');
-        criterion.find('.level').removeClass('selected');
-        level.addClass('selected');
+
+        // If already selected, remove selection.
+        if (level.hasClass('selected')) {
+            criterion.find('.level').removeClass('selected');
+        } else {
+            criterion.find('.level').removeClass('selected');
+            level.addClass('selected');
+        }
     };
 
 

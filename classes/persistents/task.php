@@ -122,7 +122,6 @@ class task extends persistent {
         $data->published = intval($formdata->published);
         $data->criterionjson = $formdata->criterionjson;
         $data->evidencejson = $formdata->evidencejson;
-        $data->notes = $formdata->notes;
 
         $editing = false;
         if ($id > 0) {
@@ -143,6 +142,7 @@ class task extends persistent {
         $task->set('outcomes', $data->outcomes);
         $task->set('criterionjson', $data->criterionjson);
         $task->set('evidencejson', $data->evidencejson);
+        $task->set('notes', '');
         if ($editing) {
             // Editing.
             list($released, $countdown) = static::get_release_info($id);
@@ -161,7 +161,7 @@ class task extends persistent {
 
         // Store editor files to permanent file area and get text.
         $context = \context_module::instance($cmid);
-        $editor = $data->notes;
+        $editor = $formdata->notes;
         $notestext = file_save_draft_area_files(
             $editor['itemid'], 
             $context->id, 
