@@ -176,7 +176,7 @@ class details_exporter extends exporter {
                 unset($task->criterions[$i]);
                 continue;
             }
-            // Add selections.
+            // Add selections only if task is released.
             if (isset($gradeinfo->criterions[$criterion->id]) && $task->released) {
                 // There is a gradelevel chosen for this criterion.
                 $criterion->{'level' . $gradeinfo->criterions[$criterion->id]->gradelevel . 'selected'} = true;
@@ -225,9 +225,10 @@ class details_exporter extends exporter {
                 }
             }
         } else {
-            // Unset some things.
+            // Unset some things if task has not been released yet.
             unset($gradeinfo->engagement);
             unset($gradeinfo->engagementlang);
+            unset($gradeinfo->comment);
         }
 
         return array(

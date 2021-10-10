@@ -1614,27 +1614,27 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .psgrading-matrix.hover-Science .column.report-grades div.cell-Science:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-HAAS .column.y-header div.cell-HAAS {
+.psgrading-matrix.hover-HASS .column.y-header div.cell-HASS {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-HAAS .column.y-header div.cell-HAAS:not(:last-of-type) {
+.psgrading-matrix.hover-HASS .column.y-header div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-HAAS .column.task div.cell-HAAS {
+.psgrading-matrix.hover-HASS .column.task div.cell-HASS {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-HAAS .column.task div.cell-HAAS:not(:last-of-type) {
+.psgrading-matrix.hover-HASS .column.task div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-HAAS .column.report-grades div.cell-HAAS {
+.psgrading-matrix.hover-HASS .column.report-grades div.cell-HASS {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-HAAS .column.report-grades div.cell-HAAS:not(:last-of-type) {
+.psgrading-matrix.hover-HASS .column.report-grades div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
 .psgrading-matrix.hover-Englishwriting .column.y-header div.cell-Englishwriting {

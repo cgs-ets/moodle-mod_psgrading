@@ -59,8 +59,8 @@ class utils {
             'val' => 'English – writing',
         ),
         array (
-            'txt' => 'HAAS',
-            'val' => 'HAAS',
+            'txt' => 'HASS',
+            'val' => 'HASS',
         ),
         array (
             'txt' => 'Science',

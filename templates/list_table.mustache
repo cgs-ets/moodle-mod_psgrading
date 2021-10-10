@@ -35,7 +35,7 @@
                 <div class="column col-hidden col-lastname"></div>
                 
                 {{#tasks}}
-                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-id="{{id}}">
+                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}{{^releasecountdown}}not-released{{/releasecountdown}}{{/released}}" data-id="{{id}}">
 
                         <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
 
@@ -46,15 +46,15 @@
                                     {{#hasgrades}} 
                                         {{#str}}hasgrades, mod_psgrading{{/str}}.
                                         {{#released}}
+                                            {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                        {{/released}}
+                                        {{^released}}
                                             {{#releasecountdown}}
                                                 {{#str}}gradesreleasing, mod_psgrading{{/str}}.
                                             {{/releasecountdown}}
                                             {{^releasecountdown}}
-                                                {{#str}}gradesreleased, mod_psgrading{{/str}}.
+                                                {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
                                             {{/releasecountdown}}
-                                        {{/released}}
-                                        {{^released}} 
-                                            {{#str}}gradesnotreleased, mod_psgrading{{/str}}.
                                         {{/released}}
                                     {{/hasgrades}}
                                     {{^hasgrades}}
@@ -73,14 +73,16 @@
 
                             {{#published}}
                                 {{#hasgrades}}
-                                    {{^released}}<a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>{{/released}}
-                                    {{#released}}
+                                    {{^released}}
+                                        {{^releasecountdown}}
+                                            <a data-toggle="tooltip" data-placement="right" title="Release feedback" class="action-release" href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
+                                        {{/releasecountdown}}
                                         {{#releasecountdown}}
                                             <a data-toggle="tooltip" data-placement="right" title="Feedback will be released after a 15 minute delay. Click to cancel." class="action-undorelease" href="#"><i class="fa fa-spinner spin" aria-hidden="true"></i></a>
                                         {{/releasecountdown}}
-                                        {{^releasecountdown}}
-                                            <span data-toggle="tooltip" data-placement="right" title="Feedback released" class="status-released"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-                                        {{/releasecountdown}}
+                                    {{/released}}
+                                    {{#released}}
+                                        <span data-toggle="tooltip" data-placement="right" title="Feedback released" class="status-released"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
                                     {{/released}}
                                 {{/hasgrades}}
                             {{/published}}

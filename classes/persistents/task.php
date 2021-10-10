@@ -636,7 +636,7 @@ class task extends persistent {
         }
 
         // Check if there is gradeinfo / whether task is released. 
-        if (empty($gradeinfo)) {
+        if (empty($gradeinfo) || !$showgrades) {
             // Skip over the calculations, but define empty structure required by template.
             foreach (utils::SUBJECTOPTIONS as $subject) {
                 if ($subject['val']) {
@@ -658,7 +658,7 @@ class task extends persistent {
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {
-                $subjectgrades[$criterionsubject] = array();
+                $subjectgrades[$criterionsubject] = array(0);
             }
             if ($criteriongrade->gradelevel) {
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
@@ -667,14 +667,17 @@ class task extends persistent {
     
         // Flatten to rounded averages.
         foreach ($subjectgrades as &$subjectgrade) {
-            $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
-            $subjectgrade = (int) round($subjectgrade, 0);
+            if (count($subjectgrade)) {
+                $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
+                $subjectgrade = (int) round($subjectgrade, 0);
+            }
         }
+
         // Rebuild into mustache friendly array.
         foreach (utils::SUBJECTOPTIONS as $subject) {
             if ($subject['val']) {
                 $grade = 0;
-                if (isset($subjectgrades[$subject['val']])) {
+                if ( ! empty($subjectgrades[$subject['val']]) ) {  
                     $grade = $subjectgrades[$subject['val']];
                 }
                 $gradelang = utils::GRADELANG[$grade];
@@ -687,8 +690,6 @@ class task extends persistent {
                 );
             }
         }
-
-        //echo "<pre>"; var_export($subjectgrades); exit;
 
         // Calculate success.
         $success = 0;
@@ -708,13 +709,17 @@ class task extends persistent {
 
         // Get the releasepost
         if ($task->released) {
+            $task->releaseposturl = null;
             $releasepostids = static::get_grade_release_posts($gradeinfo->id);
             $student = \core_user::get_user($userid);
-            $releaseposturl = new \moodle_url('/local/myconnect/index.php', array(
-                'timeline' => $student->username,
-                'postid' => array_pop($releasepostids),
-            ));
-            $task->releaseposturl = $releaseposturl->out(false);
+            $thepost = array_pop($releasepostids);
+            if ($thepost) {
+                $releaseposturl = new \moodle_url('/local/myconnect/index.php', array(
+                    'timeline' => $student->username,
+                    'postid' => $thepost,
+                ));
+                $task->releaseposturl = $releaseposturl->out(false);
+            }
         }
 
         // Ditch some unnecessary data.
@@ -957,7 +962,7 @@ class task extends persistent {
         $released = false;
         $now = time();
         $nowplus15mins = $now + (15 * 60); // Release in 15 minutes.
-        if ($task->get('timerelease') && $task->get('timerelease') <= $nowplus15mins) {
+        if ($task->get('timerelease') && $now > $task->get('timerelease')) {
             $released = true;
         }
 
