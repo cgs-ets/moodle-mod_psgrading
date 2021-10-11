@@ -452,6 +452,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 .psgrading-list .column.not-published {
   background-color: #f9f9f9;
+  padding: 6px;
 }
 .psgrading-list .column.not-released {
   background-color: #f9f9f9;
