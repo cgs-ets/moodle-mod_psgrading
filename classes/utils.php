@@ -195,9 +195,9 @@ class utils {
             'tip' => '',
         ),
         '5' => array (
-            'full' => '5',
-            'minimal' => '',
-            'tip' => '',
+            'full' => '5 (NY)',
+            'minimal' => 'NY',
+            'tip' => 'Not Yet',
         ),
         '4' => array (
             'full' => '4 (GS)',
@@ -215,9 +215,9 @@ class utils {
             'tip' => 'Go Run With It',
         ),
         '1' => array (
-            'full' => '1',
-            'minimal' => '',
-            'tip' => '',
+            'full' => '1 (FH)',
+            'minimal' => 'FH',
+            'tip' => 'Fly High',
         ),
     );
 
