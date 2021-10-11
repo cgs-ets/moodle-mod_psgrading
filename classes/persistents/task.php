@@ -658,7 +658,7 @@ class task extends persistent {
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {
-                $subjectgrades[$criterionsubject] = array(0);
+                $subjectgrades[$criterionsubject] = array();
             }
             if ($criteriongrade->gradelevel) {
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
@@ -670,6 +670,8 @@ class task extends persistent {
             if (count($subjectgrade)) {
                 $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
                 $subjectgrade = (int) round($subjectgrade, 0);
+            } else {
+                $subjectgrade = 0;
             }
         }
 
