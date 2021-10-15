@@ -387,6 +387,9 @@ class task extends persistent {
 
         $tasks = static::get_for_coursemodule($cmid);
         foreach ($tasks as $task) {
+            if (! $task->get('published')) {
+                continue;
+            }
             $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
                 'cmid' => $cmid,
                 'taskid' => $task->get('id'),
