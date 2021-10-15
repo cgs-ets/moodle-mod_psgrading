@@ -104,6 +104,17 @@ $detailsexporter = new details_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $detailsexporter->export($output);
 
+if ( ! $data->task->published) {
+    $message = get_string('taskhidden', 'mod_psgrading');
+    $notice = \core\notification::error($message);
+    redirect(
+        $listurl->out(),
+        $notice,
+        null,
+        \core\output\notification::NOTIFY_ERROR
+    );
+}
+
 // Add overview to nav.
 $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
