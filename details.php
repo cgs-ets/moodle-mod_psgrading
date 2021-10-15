@@ -57,6 +57,9 @@ $detailsurl = new moodle_url('/mod/psgrading/details.php', array(
     'taskid' => $taskid,
     'userid' => $userid,
 ));
+$listurl = new moodle_url('/mod/psgrading/view.php', array(
+    'id' => $cm->id,
+));
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -108,7 +111,7 @@ if ( ! $data->task->published) {
     $message = get_string('taskhidden', 'mod_psgrading');
     $notice = \core\notification::error($message);
     redirect(
-        $listurl->out(),
+        $listurl->out(false),
         $notice,
         null,
         \core\output\notification::NOTIFY_ERROR
