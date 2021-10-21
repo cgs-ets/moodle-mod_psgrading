@@ -42,8 +42,8 @@ class mod_psgrading_mod_form extends moodleform_mod {
         global $CFG, $DB, $COURSE, $PAGE;
 
 
-        // Only allow a single instance per course.
-        $urlparams = $PAGE->url->params();
+        // NEGATED REQUIREMENT: Only allow a single instance per course.
+        /*$urlparams = $PAGE->url->params();
         if (isset($urlparams['add'])) {
             $exists = $DB->get_record('psgrading', array('course' => $COURSE->id), '*', IGNORE_MULTIPLE);
             if ($exists) {
@@ -59,8 +59,7 @@ class mod_psgrading_mod_form extends moodleform_mod {
                 );
                 exit;
             }
-        }
-        
+        }*/
 
         $mform = $this->_form;
 
