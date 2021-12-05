@@ -584,6 +584,7 @@ class utils {
                 'page' => $page,
                 'timelineuser' => $timelineuser,
                 'loggedinuser' => $loggedinuser,
+                'embed' => 0,
             ];
             $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
             $myconnect = $timeline->export($OUTPUT);
