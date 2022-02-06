@@ -98,6 +98,10 @@
   font-size: 85%;
   padding-top: 9px;
 }
+#page-mod-psgrading-task #region-main-box .left-column {
+  width: 100%;
+  background: #fff;
+}
 #page-mod-psgrading-task #page-content .action-menu {
   display: none !important;
 }
@@ -216,7 +220,7 @@ form[data-form="psgrading-task"] .criterion-selector .tbl-tr.reordering {
 }
 form[data-form="psgrading-task"] .criterion-selector .tbl-col {
   display: table-cell;
-  width: 20%;
+  width: 14%;
   padding: 5px 5px 5px 5px;
   vertical-align: top;
   position: relative;
@@ -646,6 +650,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
   background-color: #00812F;
   color: #fff;
 }
+#page-mod-psgrading-mark #region-main-box .left-column {
+  width: 100%;
+  background: #fff;
+}
 #page-mod-psgrading-mark #page-navbar {
   margin-right: 260px;
 }
@@ -697,7 +705,7 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col {
   display: table-cell;
-  width: 20%;
+  width: 16%;
   padding: 5px 5px 5px 5px;
   vertical-align: top;
   position: relative;
@@ -705,10 +713,6 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first {
   padding-left: 0;
-}
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level1,
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level5 {
-  width: 10%;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col .box {
   width: 100%;
@@ -1183,6 +1187,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 }
 #page-mod-psgrading-details .attachment:hover .attachment-header .selector {
   display: none !important;
+}
+#page-mod-psgrading-overview #region-main-box .left-column {
+  width: 100%;
+  background: #fff;
 }
 #page-mod-psgrading-overview .activity-navigation {
   display: none;
@@ -1903,14 +1911,20 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 .modal-DIFF table.task-diff table.criterions th {
   border: 1px solid #ddd;
 }
+.modal-DIFF table.task-diff table.criterions td.level5 {
+  width: 14%;
+}
 .modal-DIFF table.task-diff table.criterions td.level4 {
-  width: 20%;
+  width: 14%;
 }
 .modal-DIFF table.task-diff table.criterions td.level3 {
-  width: 20%;
+  width: 14%;
 }
 .modal-DIFF table.task-diff table.criterions td.level2 {
-  width: 20%;
+  width: 14%;
+}
+.modal-DIFF table.task-diff table.criterions td.level1 {
+  width: 14%;
 }
 .modal-DIFF table.task-diff table.criterions td.subject {
   width: 10%;

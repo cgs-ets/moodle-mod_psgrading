@@ -188,5 +188,26 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021092100, 'psgrading');
     }
 
+    if ($oldversion < 2022020201) {
+
+        // Define field level1 to be added to psgrading_task_criterions.
+        $table = new xmldb_table('psgrading_task_criterions');
+        $level1 = new xmldb_field('level1', XMLDB_TYPE_TEXT, null, null, null, null, null, 'hidden');
+        $level5 = new xmldb_field('level5', XMLDB_TYPE_TEXT, null, null, null, null, null, 'hidden');
+
+        // Conditionally launch add field level1.
+        if (!$dbman->field_exists($table, $level1)) {
+            $dbman->add_field($table, $level1);
+        }
+
+        // Conditionally launch add field level5.
+        if (!$dbman->field_exists($table, $level5)) {
+            $dbman->add_field($table, $level5);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022020201, 'psgrading');
+    }
+
     return true;
 }

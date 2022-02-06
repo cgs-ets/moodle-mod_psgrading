@@ -147,7 +147,7 @@ class form_task extends \moodleform {
 
 
     // Perform some extra moodle validation.
-    function validation($data, $files) {
+    /*function validation($data, $files) {
         $errors = array();
 
         if ($data['action'] != 'publish') {
@@ -191,6 +191,15 @@ class form_task extends \moodleform {
                     $errors['criterionjson'] = get_string('required');
                     break;
                 }
+                // Add level 5 and level 1.
+                if (empty($criterion->level5)) {
+                    $errors['criterionjson'] = get_string('required');
+                    break;
+                }
+                if (empty($criterion->level1)) {
+                    $errors['criterionjson'] = get_string('required');
+                    break;
+                }
                 //if (empty($criterion->weight)) {
                 //    $errors['criterionjson'] = get_string('required');
                 //    break;
@@ -199,7 +208,7 @@ class form_task extends \moodleform {
         }
 
         return $errors;
-    }
+    }*/
 
     /**
      * Returns the options array to use in editor

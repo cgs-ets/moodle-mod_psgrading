@@ -52,7 +52,7 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
         $criterion = new backup_nested_element('criterion', array('id'), array(
             'taskid', 'description', 'level4', 'level3',
             'level2', 'subject', 'weight', 'seq',
-            'hidden'));
+            'hidden', 'level5', 'level1'));
 
         // Build the tree
         $psgrading->add_child($tasks);
