@@ -570,6 +570,9 @@ class utils {
 
         $attachments = [];
 
+        // DISABLED UNTIL MYCONNECT PERFORMANCE FIX.
+        return $attachments;
+
         if (file_exists($CFG->dirroot . '/local/myconnect/lib.php')) {
             // Load users through MyConnect.
             $loggedinuser = \local_myconnect\utils::get_user_with_extras($USER->username);
