@@ -76,6 +76,8 @@ class form_mark extends \moodleform {
         * - Can't use client validation when using custom action buttons. Validation is done on server in mark.php.
         ****/
 
+        $mform->addElement('checkbox', 'didnotsubmit', get_string('mark:didnotsubmit', 'mod_psgrading'), '');
+
         // Critions.
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
