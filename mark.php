@@ -188,7 +188,7 @@ if (empty($formdata)) {
     // Add some goodies to the submitted data.
     $formdata->taskid = $taskid;
     $formdata->userid = $userid;
-    $formdata->didnotsubmit = isset($formdata->didnotsubmit) ? 1 : 0;
+    $formdata->didnotsubmit = $formdata->didnotsubmit ? 1 : 0;
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
         $result = task::save_task_grades_for_student($formdata);
