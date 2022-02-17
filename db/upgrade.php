@@ -209,5 +209,13 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022020201, 'psgrading');
     }
 
+    if ($oldversion < 2022021800) {
+      $table = new xmldb_table('psgrading_grades');
+      $didnotsubmit = new xmldb_field('didnotsubmit', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null, 'graderusername');
+      if (!$dbman->field_exists($table, $didnotsubmit)) {
+          $dbman->add_field($table, $didnotsubmit);
+      }
+    }
+
     return true;
 }

@@ -174,6 +174,7 @@ if (empty($formdata)) {
     // Set the form values.
     $formmark->set_data(array(
         'evidences' => $draftevidence,
+        'didnotsubmit' => isset($data->gradeinfo->didnotsubmit) ? 1 : 0,
         'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
         'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
         'myconnectevidencejson' => $data->task->myconnectevidencejson,

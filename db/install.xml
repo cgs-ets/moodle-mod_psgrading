@@ -95,6 +95,7 @@
         <FIELD NAME="taskid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="studentusername" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="graderusername" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="didnotsubmit" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="engagement" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="comment" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="evidences" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>

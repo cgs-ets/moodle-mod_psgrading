@@ -519,6 +519,7 @@ class task extends persistent {
         if ($graderec) {
             // Update the existing grade data.
             $graderec->graderusername = $USER->username;
+            $graderec->didnotsubmit = $data->didnotsubmit;
             $graderec->engagement = $data->engagement;
             $graderec->comment = $data->comment;
             $graderec->evidences = $data->evidences;
@@ -529,6 +530,7 @@ class task extends persistent {
             $graderec->taskid = $data->taskid;
             $graderec->studentusername = $student->username;
             $graderec->graderusername = $USER->username;
+            $graderec->didnotsubmit = $data->didnotsubmit;
             $graderec->engagement = $data->engagement;
             $graderec->comment = $data->comment;
             $graderec->evidences = $data->evidences;

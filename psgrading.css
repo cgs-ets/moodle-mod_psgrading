@@ -810,6 +810,19 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-vb-tree {
   display: none;
 }
+#page-mod-psgrading-mark .form-group.row.fitem {
+  margin: 0;
+}
+#page-mod-psgrading-mark .form-group.row.fitem .col-md-3 {
+  padding: 0 0 5px 0;
+  font-weight: 600;
+  font-size: 120%;
+}
+#page-mod-psgrading-mark .form-group.row.fitem .col-md-9 {
+  padding: 0 0 15px 0;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
 #page-mod-psgrading-mark #fitem_id_engagement {
   margin: 0;
 }
