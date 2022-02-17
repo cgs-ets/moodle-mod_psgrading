@@ -217,6 +217,15 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.removeMyConnectAttachment(button);
         });
 
+
+        self.rootel.find('input[name="didnotsubmit"]').change(function() {
+          if(this.checked) {
+            alert('checked');
+          } else {
+            alert('unchecked');
+          }      
+        });
+
     };
 
 
