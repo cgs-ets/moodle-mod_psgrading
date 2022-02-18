@@ -927,7 +927,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
 }
-#page-mod-psgrading-mark.didnotsubmit .marking-criterions {
+#page-mod-psgrading-mark.didnotsubmit .marking-criterions,
+#page-mod-psgrading-mark.didnotsubmit .marking-evidences,
+#page-mod-psgrading-mark.didnotsubmit #fitem_id_evidences,
+#page-mod-psgrading-mark.didnotsubmit #fitem_id_engagement {
   opacity: 0.5;
   pointer-events: none;
 }
