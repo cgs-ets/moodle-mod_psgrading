@@ -72,12 +72,17 @@ class cron_grade_release extends \core\task\scheduled_task {
         foreach ($grades as $grade) {
             $this->log("Processing grade record " . $grade->id, 1);
 
-            // If the rubric is not graded at all then skip.
+            // If the rubric is not graded at all then skip, unless didnotsubmit selected and comment is present.
             $criteriaselections = task::get_grade_criterion_selections($grade->id);
             $criteriasum = array_sum(array_column($criteriaselections, 'gradelevel'));
             if (empty($criteriasum)) {
-                $this->log_finish("Skipping. The rubric was not graded for this student/task: " . $grade->studentusername . "/" . $grade->taskid, 3);
-                continue;
+                // Check for did not submit and comment.
+                if ($grade->didnotsubmit && !empty($grade->comment)) {
+                  // Continue to release the grade.
+                } else {
+                  $this->log_finish("Skipping. The rubric was not graded for this student/task: " . $grade->studentusername . "/" . $grade->taskid, 3);
+                  continue;
+                }
             }
 
             // Get the task record for reference.
