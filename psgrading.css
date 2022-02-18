@@ -927,6 +927,10 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 #page-mod-psgrading-mark .custom-footer-buttons {
   margin-top: 30px;
 }
+#page-mod-psgrading-mark.didnotsubmit .marking-criterions {
+  opacity: 0.5;
+  pointer-events: none;
+}
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;

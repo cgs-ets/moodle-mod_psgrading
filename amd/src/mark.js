@@ -220,9 +220,9 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         self.rootel.find('input[name="didnotsubmit"]').change(function() {
           if(this.checked) {
-            alert('checked');
+            self.rootel.addClass('didnotsubmit');
           } else {
-            alert('unchecked');
+            self.rootel.removeClass('didnotsubmit');
           }      
         });
 

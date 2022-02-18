@@ -159,7 +159,7 @@ $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl
 // Instantiate empty form so that we can "get_data" with minimal processing.
 $formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 $formdata = $formmark->get_data();
-if (empty($formdata)) { 
+if (empty($formdata)) {
     // Editing (not submitted).
     // Set up draft evidences file manager.
     $draftevidence = file_get_submitted_draft_itemid('evidences');
@@ -172,9 +172,10 @@ if (empty($formdata)) {
     $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 
     // Set the form values.
+    $didnotsubmit = $data->gradeinfo->didnotsubmit ? 1 : 0;
     $formmark->set_data(array(
         'evidences' => $draftevidence,
-        'didnotsubmit' => $data->gradeinfo->didnotsubmit ? 1 : 0,
+        'didnotsubmit' => $didnotsubmit,
         'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
         'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
         'myconnectevidencejson' => $data->task->myconnectevidencejson,
@@ -183,6 +184,10 @@ if (empty($formdata)) {
 
     // Run get_data again to trigger validation and set errors.
     $formdata = $formmark->get_data();
+
+    if ($didnotsubmit) {
+      $PAGE->add_body_class('didnotsubmit');
+    }
 
 } else {
     // Add some goodies to the submitted data.
