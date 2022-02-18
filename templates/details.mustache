@@ -24,33 +24,37 @@
     details template.
 }}
 
-    <div class="psgrading-details">
-        <div class="header">
-            <div class="selected-student" data-userid="{{currstudent.id}}">
-                <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
-            </div>
-            <div class="task-selector">
-                {{#currstudent.othertasks.0}}
-                    <select class="task-select form-control">
-                        {{#currstudent.othertasks}}
-                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{taskname}}</option>
-                        {{/currstudent.othertasks}}
-                    </select>
-                {{/currstudent.othertasks.0}}
-            </div>
-            {{#students.1}}
-                <div class="student-selector">
-                    <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                    <select class="student-select form-control">
-                        {{#students}}
-                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{fullname}}</option>
-                        {{/students}}
-                    </select>
-                    <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-                </div>
-            {{/students.1}}
+<div class="psgrading-details">
+    <div class="header">
+        <div class="selected-student" data-userid="{{currstudent.id}}">
+            <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
         </div>
-        <div class="contents">
+        <div class="task-selector">
+            {{#currstudent.othertasks.0}}
+                <select class="task-select form-control">
+                    {{#currstudent.othertasks}}
+                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{taskname}}</option>
+                    {{/currstudent.othertasks}}
+                </select>
+            {{/currstudent.othertasks.0}}
+        </div>
+        {{#students.1}}
+            <div class="student-selector">
+                <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                <select class="student-select form-control">
+                    {{#students}}
+                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{fullname}}</option>
+                    {{/students}}
+                </select>
+                <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        {{/students.1}}
+    </div>
+    <div class="contents">
+        {{#gradeinfo->didnotsubmit}}
+          <div class="heading">Did not submit</div>
+        {{/gradeinfo->didnotsubmit}}
+        {{^gradeinfo->didnotsubmit}}
             {{>mod_psgrading/details_criterions}}
             {{#gradeinfo.engagement}}
                 <div class="details-engagement">
@@ -59,9 +63,10 @@
                 </div>
             {{/gradeinfo.engagement}}
             {{>mod_psgrading/details_evidence}}
-            <div class="details-comment">
-                <div class="heading">{{#str}}mark:comment, mod_psgrading{{/str}}</div>
-                {{{gradeinfo.comment}}}
-            </div>
+        {{/gradeinfo->didnotsubmit}}
+        <div class="details-comment">
+            <div class="heading">{{#str}}mark:comment, mod_psgrading{{/str}}</div>
+            {{{gradeinfo.comment}}}
         </div>
     </div>
+</div>
