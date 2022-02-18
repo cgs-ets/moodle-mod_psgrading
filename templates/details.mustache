@@ -23,7 +23,6 @@
 
     details template.
 }}
-
 <div class="psgrading-details">
     <div class="header">
         <div class="selected-student" data-userid="{{currstudent.id}}">
@@ -51,10 +50,10 @@
         {{/students.1}}
     </div>
     <div class="contents">
-        {{#gradeinfo->didnotsubmit}}
-          <div class="heading">Did not submit</div>
-        {{/gradeinfo->didnotsubmit}}
-        {{^gradeinfo->didnotsubmit}}
+        {{#gradeinfo.didnotsubmit}}
+          <div class="heading alert alert-info">{{currstudent.fullname}} did not submit this task.</div>
+        {{/gradeinfo.didnotsubmit}}
+        {{^gradeinfo.didnotsubmit}}
             {{>mod_psgrading/details_criterions}}
             {{#gradeinfo.engagement}}
                 <div class="details-engagement">
@@ -63,7 +62,7 @@
                 </div>
             {{/gradeinfo.engagement}}
             {{>mod_psgrading/details_evidence}}
-        {{/gradeinfo->didnotsubmit}}
+        {{/gradeinfo.didnotsubmit}}
         <div class="details-comment">
             <div class="heading">{{#str}}mark:comment, mod_psgrading{{/str}}</div>
             {{{gradeinfo.comment}}}
