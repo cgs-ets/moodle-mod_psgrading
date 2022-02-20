@@ -641,7 +641,7 @@ class task extends persistent {
         }
 
         // Check if there is gradeinfo / whether task is released. 
-        if (empty($gradeinfo) || !$showgrades) {
+        if (empty($gradeinfo) || !$showgrades || $gradeinfo->didnotsubmit) {
             // Skip over the calculations, but define empty structure required by template.
             foreach (utils::SUBJECTOPTIONS as $subject) {
                 if ($subject['val']) {
