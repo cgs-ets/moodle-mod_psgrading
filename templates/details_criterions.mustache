@@ -24,6 +24,7 @@
     View for the criterion selector component.
 }}
 <div class="details-criterions">
+    {{#task.criterions.0}}
     <div class="headings">
         <ul class="tbl-th">
             <li class="tbl-col tbl-col-first">Descriptor</li>
@@ -58,4 +59,5 @@
             </ul>
         {{/task.criterions}}
     </div>
+    {{/task.criterions.0}}
 </div>

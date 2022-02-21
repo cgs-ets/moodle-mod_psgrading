@@ -24,6 +24,7 @@
     View for the evidence selector component.
 }}
 <div class="details-evidences">
+    {{#task.evidences.0}}
     <div class="heading">{{#str}}task:evidence, mod_psgrading{{/str}}</div>
     <div class="body">
         <table class="table generaltable">
@@ -38,4 +39,5 @@
             </tbody>
         </table>
     </div>
+    {{/task.evidences.0}}
 </div>
