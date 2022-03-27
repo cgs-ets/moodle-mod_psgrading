@@ -112,7 +112,7 @@ class details_exporter extends exporter {
 
         $baseurl = clone($this->related['detailsurl']);
 
-        $taskexporter = new task_exporter($this->related['task']);
+        $taskexporter = new task_exporter($this->related['task'], array('userid' => $this->related['userid']));
         $task = $taskexporter->export($output);
 
         $isstaff = $this->related['isstaff'];
