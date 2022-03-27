@@ -32,17 +32,34 @@ form[data-form="psgrading-task"] {
     	}
 		table {
 			max-width: 500px;
-			background-color: #fff;
 			td {
     			border: 1px solid #dee2e6;
 			}
+      .labelonly {
+        td {
+          background-color: #f6f6f6;
+        }
+        &:hover {
+          td {
+            background-color: #dbeafe;
+          }
+        }
+      }
 		}
-		.c-checkbox {
+		.c-indent {
 		    width: 37px;
+        border: 0 none;
 		}
+    .c-name {
+      background-color: #fff;
+    }
 		.c-link {
 			width: 80px;
 			text-align: center;
+      background-color: #fff;
 		}
+    tr.activity.labelonly {
+      cursor: pointer;
+    }
 	}
 }

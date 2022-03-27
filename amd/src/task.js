@@ -118,6 +118,14 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             self.deleteCriterion(button);
         });
 
+        // Toggle evidence.
+        self.rootel.on('click', '.activity.labelonly', function(e) {
+          e.preventDefault();
+          var toggle = $(this);
+          self.toggleEvidence(toggle);
+        });
+        
+
         // Styling the criterion selects based on selected option.
         self.rootel.on('change', 'select', function(e) {
             var select = $(this);
@@ -171,7 +179,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
             var checkbox = $(this);
             var cm = {
-                evidencetype: 'cm',
+                evidencetype: 'cm_' + checkbox.data('modname'),
                 refdata: checkbox.val(),
             };
             evidences.push(cm);
@@ -283,6 +291,26 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
             $(this).remove();
         });
     };
+
+    /**
+     * Toggle evidence visibility.
+     *
+     * @method
+     */
+     Task.prototype.toggleEvidence = function (toggle) {
+      var self = this;
+      var cmid = toggle.data('cmid');
+
+      if (toggle.hasClass("subhidden")) {
+        // Show subs.
+        self.rootel.find('.activity.sub[data-cmid="' + cmid + '"]').show();
+        toggle.removeClass("subhidden");
+      } else {
+        // Hide subs.
+        self.rootel.find('.activity.sub[data-cmid="' + cmid + '"]').hide();
+        toggle.addClass("subhidden");
+      }
+  };
 
     /**
      * Helper used to preload a template

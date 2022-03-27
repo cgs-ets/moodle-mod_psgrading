@@ -398,17 +398,30 @@ form[data-form="psgrading-task"] .evidence-selector .heading {
 }
 form[data-form="psgrading-task"] .evidence-selector table {
   max-width: 500px;
-  background-color: #fff;
 }
 form[data-form="psgrading-task"] .evidence-selector table td {
   border: 1px solid #dee2e6;
 }
-form[data-form="psgrading-task"] .evidence-selector .c-checkbox {
+form[data-form="psgrading-task"] .evidence-selector table .labelonly td {
+  background-color: #f6f6f6;
+}
+form[data-form="psgrading-task"] .evidence-selector table .labelonly:hover td {
+  background-color: #dbeafe;
+}
+form[data-form="psgrading-task"] .evidence-selector .c-indent {
   width: 37px;
+  border: 0 none;
+}
+form[data-form="psgrading-task"] .evidence-selector .c-name {
+  background-color: #fff;
 }
 form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
+  background-color: #fff;
+}
+form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
+  cursor: pointer;
 }
 .psgrading-list {
   white-space: nowrap;

@@ -122,7 +122,7 @@ class task_exporter extends persistent_exporter {
      * @return array Keys are the property names, values are their values.
      */
     protected function get_other_values(renderer_base $output) {
-        global $USER;
+        global $USER, $DB;
 
         $userid = isset($this->related['userid']) ? $this->related['userid'] : 0;
         
@@ -147,67 +147,104 @@ class task_exporter extends persistent_exporter {
 
         // Check if released. Time must be in the past but not 0.
         list($released, $releasecountdown) = task::get_release_info($this->data->id);
+        
+        // Used to determine URLs below.
+        $isstaff = utils::is_grader();
 
         // Load task evidences (pre-defined evidences).
         $evidences = task::get_evidences($this->data->id);
         foreach ($evidences as &$evidence) {
-            if ($evidence->evidencetype == 'cm') {
-                // get the icon and name.
-                $cm = get_coursemodule_from_id('', $evidence->refdata);
-                $modinfo = get_fast_modinfo($cm->course, $USER->id);
-                $cms = $modinfo->get_cms();
-                $cm = $cms[$evidence->refdata];
-                $evidence->icon = $cm->get_icon_url()->out();
-                $evidence->name = $cm->name;
+            if ($evidence->evidencetype == 'cm' || substr( $evidence->evidencetype, 0, 3 ) === "cm_") {
+                // Things are a bit different for cm_giportfoliochapter
+                if ($evidence->evidencetype == 'cm_giportfoliochapter') {
+                    $split = explode('_', $evidence->refdata);
+                    $cmid = $split[0];
+                    $cminstance = $split[1];
+                    $chapterid = $split[2];
 
-                // Determine the URL depending on the activity, and viewing user's role.
-                $isstaff = utils::is_grader();
-
-                // Default.
-                $evidence->url = clone($cm->url);
-
-                // Based on activity.
-                switch ($cm->modname) 
-                {
-                    case 'giportfolio':
-                        // Custom URL for all users.
-                        $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', array(
-                            'id' => $cm->id,
-                            'userid' => $userid,
-                        ));
-                        break;
-
-                    case 'googledocs':
-                        // Use default view page for all users.
-                        break;
-
-                    case 'assign':
-                        // Use default view page for students/parents.
-                        if ($isstaff) {
-                            // Custom URL for staff.
-                            $evidence->url = new \moodle_url('/mod/assign/view.php', array(
-                                'id' => $cm->id,
-                                'action' => 'grader',
-                                'userid' => $userid,
-                            ));
-                        }
-                        break;
-
-                    case 'quiz':
-                        // Use default view page for students/parents.
-                        if ($isstaff) {
-                            // Custom URL for staff.
-                            $evidence->url = new \moodle_url('/mod/quiz/grade.php', array(
-                                'id' => $cm->id,
-                                'userid' => $userid,
-                            ));
-                        }
-                        break;
+                    // get the cm data
+                    $cm = get_coursemodule_from_id('', $cmid);
+                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                    $cms = $modinfo->get_cms();
+                    $cm = $cms[$cmid];
+                    // Get the chapter.
+                    $sql = "SELECT * 
+                            FROM {giportfolio_chapters}
+                            WHERE id = ?";
+                    $chapter = $DB->get_record_sql($sql, array($chapterid));
+                    // Icon
+                    $evidence->icon = $cm->get_icon_url()->out();
+                    // Name
+                    $evidence->name = $cm->name . ' → ' . $chapter->title;
+                    // URL
+                    $evidence->url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                        'id' => $cmid,
+                        'chapterid' => $chapterid,
+                        'mentee' => $userid,
+                    ));
+                    $evidence->url = $evidence->url->out(false);
                 }
+                else 
+                {
+                    // Evidence type is "cm" or "cm_something" but these are handled the same
+                    // get the cm data
+                    $cm = get_coursemodule_from_id('', $evidence->refdata);
+                    $modinfo = get_fast_modinfo($cm->course, $USER->id);
+                    $cms = $modinfo->get_cms();
+                    $cm = $cms[$evidence->refdata];
+                    // Icon
+                    $evidence->icon = $cm->get_icon_url()->out();
+                    // Name
+                    $evidence->name = $cm->name;
 
-                $evidence->url = $evidence->url->out(false);
+                    // Default.
+                    $evidence->url = clone($cm->url);
+
+                    // Based on activity.
+                    switch ($cm->modname) 
+                    {
+                        // For historical purposes. The overarching activity cannot be selected anymore.
+                        case 'giportfolio':
+                            // Custom URL for all users.
+                            $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', array(
+                                'id' => $cm->id,
+                                'userid' => $userid,
+                            ));
+                            break;
+
+                        case 'googledocs':
+                            // Use default view page for all users.
+                            break;
+
+                        case 'assign':
+                            // Use default view page for students/parents.
+                            if ($isstaff) {
+                                // Custom URL for staff.
+                                $evidence->url = new \moodle_url('/mod/assign/view.php', array(
+                                    'id' => $cm->id,
+                                    'action' => 'grader',
+                                    'userid' => $userid,
+                                ));
+                            }
+                            break;
+
+                        case 'quiz':
+                            // Use default view page for students/parents.
+                            if ($isstaff) {
+                                // Custom URL for staff.
+                                $evidence->url = new \moodle_url('/mod/quiz/grade.php', array(
+                                    'id' => $cm->id,
+                                    'userid' => $userid,
+                                ));
+                            }
+                            break;
+                    }
+                    $evidence->url = $evidence->url->out(false);
+                }
             }
         }
+
+        //echo "<pre>"; var_export($evidences); exit;
 
         // Check if this task has grades.
         $hasgrades = task::has_grades($this->data->id);

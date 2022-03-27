@@ -309,7 +309,7 @@ class utils {
     }
 
     public static function get_evidencedata($course, $evidencejson) {
-        global $USER;
+        global $USER, $DB;
 
         // Already selected activities.
         $selectedcms = array();
@@ -356,13 +356,54 @@ class utils {
                 ))) {
                 continue;
             }
-            
-            $cmrec->icon = $cm->get_icon_url()->out(); //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
-            $cmrec->url = $cm->url;
-            if (in_array($cmrec->id, $selectedcms)) {
-                $cmrec->sel = true;
+
+            // TODO: ADD portfolio chapter selection
+            // For giportfolio, we want to list all of the chapters as evidence instead of the activity.
+            if ($cmrec->modname == 'giportfolio') {
+                // Add the module, but no URL to denote it is not a selectable item.
+                $cmrec->icon = $cm->get_icon_url()->out();
+                $cmrec->isheader = true;
+                $cmrec->cmid = $cmrec->id;
+                $activities[] = $cmrec;
+
+                // Get the chapters.
+                $chapters = [];
+                $sql = "SELECT * 
+                          FROM {giportfolio_chapters}
+                         WHERE giportfolioid = ?";
+                $chapters = $DB->get_records_sql($sql, array($cmrec->instance));
+
+                foreach ($chapters as $chapter) {
+                    $ch = new \stdClass();
+                    $ch->cmid = $cmrec->id;
+                    $ch->id = $cmrec->id . '_' . $cmrec->instance . '_' . $chapter->id;
+                    $ch->icon = '';
+                    $ch->name = $chapter->title;
+                    $ch->modname = 'giportfoliochapter';
+                    $url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                        'id' => $cm->id,
+                        'chapterid' => $chapter->id,
+                        'userid' => $USER->id,
+                    ));
+                    $ch->url = $url->out(false);
+                    if (in_array($cmrec->id . '_' . $cmrec->instance . '_' . $chapter->id, $selectedcms)) {
+                        $ch->sel = true;
+                    }
+                    $ch->issub = true;
+                    $activities[] = $ch;
+                }
+
+            } else {
+                $cmrec->cmid = $cm->id;
+                $cmrec->icon = $cm->get_icon_url()->out(); //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
+                $cmrec->url = $cm->url;
+                if (in_array($cmrec->id, $selectedcms)) {
+                    $cmrec->sel = true;
+                }
+                $activities[] = $cmrec;
             }
-            $activities[] = $cmrec;
+            
+            
         }
         return $activities;
     }
