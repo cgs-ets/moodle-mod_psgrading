@@ -153,7 +153,7 @@ class task_exporter extends persistent_exporter {
 
         // Load task evidences (pre-defined evidences).
         $evidences = task::get_evidences($this->data->id);
-        foreach ($evidences as &$evidence) {
+        foreach ($evidences as $i => &$evidence) {
             if ($evidence->evidencetype == 'cm' || substr( $evidence->evidencetype, 0, 3 ) === "cm_") {
                 // Things are a bit different for cm_giportfoliochapter
                 if ($evidence->evidencetype == 'cm_giportfoliochapter') {
@@ -161,7 +161,6 @@ class task_exporter extends persistent_exporter {
                     $cmid = $split[0];
                     $cminstance = $split[1];
                     $chapterid = $split[2];
-
                     // get the cm data
                     $cm = get_coursemodule_from_id('', $cmid);
                     $modinfo = get_fast_modinfo($cm->course, $USER->id);
@@ -172,6 +171,10 @@ class task_exporter extends persistent_exporter {
                             FROM {giportfolio_chapters}
                             WHERE id = ?";
                     $chapter = $DB->get_record_sql($sql, array($chapterid));
+                    if (empty($chapter)) {
+                        unset($evidences[$i]);
+                        continue;
+                    }
                     // Icon
                     $evidence->icon = $cm->get_icon_url()->out();
                     // Name
@@ -243,7 +246,7 @@ class task_exporter extends persistent_exporter {
                 }
             }
         }
-
+        $evidences = array_values($evidences);
         //echo "<pre>"; var_export($evidences); exit;
 
         // Check if this task has grades.
