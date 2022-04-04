@@ -71,7 +71,8 @@ class grade_exporter extends exporter {
     */
     protected static function define_related() {
         return [
-            'cmid' => 'int',
+            'courseid' => 'int?',
+            'cmid' => 'int?',
             'userid' => 'int',
             'isstaff' => 'bool',
             'includehiddentasks' => 'bool?',
@@ -93,18 +94,26 @@ class grade_exporter extends exporter {
             'currstudent' => null,
         );
 
+        // Grade calculations can be done for a single instance of the psgrading activity, or it can look across multiple instances within a course.
+        if ($this->related['cmid']) {
+            $tasks = task::compute_grades_for_cm($this->related['cmid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+                'cmid' => $this->related['cmid'],
+                'userid' => $this->related['userid'],
+            ));
+        } else if ($this->related['courseid']) {
+            $tasks = task::compute_grades_for_course($this->related['courseid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+                'courseid' => $this->related['cmid'],
+                'userid' => $this->related['userid'],
+            ));
+        }
+
         // Get the current student.
         $currstudent = \core_user::get_user($this->related['userid']);
         utils::load_user_display_info($currstudent);
-        $currstudent->iscurrent = false;
-        $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
-            'cmid' => $this->related['cmid'],
-            'userid' => $this->related['userid'],
-        ));
-        $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
         $currstudent->iscurrent = true;
-
-        $tasks = task::compute_grades($this->related['cmid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
+        $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
 
         $index = count( $tasks ) - 1;
         if (isset($tasks[$index])) {

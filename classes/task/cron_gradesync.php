@@ -34,9 +34,9 @@ class cron_gradesync extends \core\task\scheduled_task {
     use \core\task\logging_trait;
 
     /**
-    * A list of unique courses in the gradesync_mappings table.
+    * A list of courses that have instances of the ps grading activity.
     */
-    protected $mods = array();
+    protected $courseswithinstances = array();
 
     /**
      * Get a descriptive name for this task (shown to admins).
@@ -55,11 +55,11 @@ class cron_gradesync extends \core\task\scheduled_task {
 
         $this->log_start("Starting gradesync.");
 
-        // Get all psgrading mods.
-        $sql = "SELECT id, course
-                  FROM {psgrading}";
-        $this->mods = $DB->get_records_sql($sql);
-        if (empty($this->mods)) {
+        // Get all psgrading instances.
+        $sql = "SELECT DISTINCT course
+                FROM {psgrading}";
+        $this->courseswithinstances = $DB->get_records_sql($sql);
+        if (empty($this->courseswithinstances)) {
             return;
         }
 
@@ -76,19 +76,19 @@ class cron_gradesync extends \core\task\scheduled_task {
     protected function sync_grades() {
         global $DB;
 
-        // Create an adhoc task for each activity.
-        foreach ($this->mods as $mod) {
+        // Create an adhoc task for each course.
+        foreach ($this->courseswithinstances as $coursewithinstance) {
             // Look up the course, skip if not visible or ended.
             $sql = "SELECT *
                       FROM {course}
                      WHERE id = ?
                        AND visible = 1
                        AND (enddate = 0 OR enddate > ?)";
-            $params = array($mod->course, time());
+            $params = array($coursewithinstance->course, time());
             if ($course = $DB->get_record_sql($sql, $params)) {
-                $this->log("Creating adhoc gradesync task for psgrading activity $mod->id in $course->fullname ($course->id)", 1);
+                $this->log("Creating adhoc gradesync task for $course->fullname ($course->id)", 1);
                 $task = new \mod_psgrading\task\adhoc_gradesync();
-                $task->set_custom_data($mod);
+                $task->set_custom_data($course->id);
                 $task->set_component('mod_psgrading');
                 \core\task\manager::queue_adhoc_task($task);
             }

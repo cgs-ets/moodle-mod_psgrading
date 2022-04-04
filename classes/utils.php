@@ -357,7 +357,6 @@ class utils {
                 continue;
             }
 
-            // TODO: ADD portfolio chapter selection
             // For giportfolio, we want to list all of the chapters as evidence instead of the activity.
             if ($cmrec->modname == 'giportfolio') {
                 // Add the module, but no URL to denote it is not a selectable item.
@@ -370,7 +369,8 @@ class utils {
                 $chapters = [];
                 $sql = "SELECT * 
                           FROM {giportfolio_chapters}
-                         WHERE giportfolioid = ?";
+                         WHERE giportfolioid = ?
+                           AND userid = 0";
                 $chapters = $DB->get_records_sql($sql, array($cmrec->instance));
 
                 foreach ($chapters as $chapter) {

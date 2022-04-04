@@ -37,7 +37,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
     /**
      * @var stdClass The mod id and course id for this task.
      */
-    protected $mod = null;
+    protected $courseid = null;
 
     /**
      * @var array Existing staged grades.
@@ -74,9 +74,10 @@ class adhoc_gradesync extends \core\task\adhoc_task {
     public function execute() {
         global $DB;
 
-        $this->mod = $this->get_custom_data();
-        $this->log_start("Processing grade sync for psgrading mod {$this->mod->id}");
-        $course = $DB->get_record('course', array('id' => $this->mod->course));
+        $this->courseid = $this->get_custom_data();
+        $this->log_start("Processing grade sync for course {$this->courseid}");
+
+        $course = $DB->get_record('course', array('id' => $this->courseid));
         if (empty($course)) {
             $this->log("Error - course record not found.", 1);
             return;
@@ -84,28 +85,14 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         $this->log("Course record found: $course->fullname", 1);
 
         // Load in all of the existing staged grades for this course.
-        $this->log("Caching existing grades for this mod.", 1);
+        $this->log("Caching existing grades for this course.", 1);
         $this->cache_existing_grades();
 
-        // Get the cmid for this mod instance.
-        $sql = "SELECT id
-                  FROM {course_modules}
-                 WHERE instance = ?
-                   AND course = ?
-                   AND module = ?";
-        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
-        $this->mod->cmid = $DB->get_field_sql($sql, array(
-            'instance' => $this->mod->id,
-            'course' => $this->mod->course,
-            'module' => $moduleid,
-        ));
-
-        // Cache grade for each student.
-        $students = utils::get_enrolled_students($this->mod->course);
+        // Get/compute the grades for each student.
+        $students = utils::get_enrolled_students($this->courseid);
         foreach ($students as $studentid) {
             $this->get_grades($studentid);
         }
-        //echo "<pre>"; var_export($this->grades); exit;
 
         // Save student grades.
         $this->log("Saving grades to database.", 1);
@@ -126,10 +113,10 @@ class adhoc_gradesync extends \core\task\adhoc_task {
 
         $sql = "SELECT *
                   FROM {psgrading_gradesync}
-                 WHERE id = ?";
-        $grades = $DB->get_records_sql($sql, array('id' => $this->mod->id));
+                 WHERE courseid = ?";
+        $grades = $DB->get_records_sql($sql, array('id' => $this->courseid));
         foreach ($grades as $grade) {
-            $key = $grade->psgradingid . '-' . $grade->subject  . '-' . $grade->username;
+            $key = $grade->courseid . '-' . $grade->subject  . '-' . $grade->username;
             $this->log("Caching existing staged grades {$grade->psgradingid}/{$grade->subject} for {$grade->username}", 2);
             $this->existinggrades[$key] = $grade;
         }
@@ -145,7 +132,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
 
         // Use the grade exporter to get grades for this student.
         $relateds = array(
-            'cmid' => (int) $this->mod->cmid,
+            'courseid' => (int) $this->courseid,
             'userid' => $studentid,
             'isstaff' => true, // Only staff can view the report grades.
             'includehiddentasks' => true,
@@ -153,25 +140,25 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         $gradeexporter = new grade_exporter(null, $relateds);
         $output = $PAGE->get_renderer('core');
         $gradedata = $gradeexporter->export($output);
-        //echo "<pre>"; var_export($gradedata); exit;
         if (empty($gradedata->reportgrades)) {
             return;
         }
 
         $username = $DB->get_field('user', 'username', array('id' => $studentid));
+
         foreach($gradedata->reportgrades as $reportgrade) {
             $reportgrade = (object) $reportgrade;
-            $key = $this->mod->id . '-' . $reportgrade->subjectsanitised  . '-' . $username;
+            $key = $this->courseid . '-' . $reportgrade->subjectsanitised  . '-' . $username;
             $grade = $reportgrade->subjectsanitised == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
             if (empty($grade)) {
-                $this->log("Grade empty for psgrading id {$this->mod->id} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
+                $this->log("Grade empty for course id {$this->courseid} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
                 continue;
             }
-            $this->log("Caching grade for psgrading id {$this->mod->id} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
+            $this->log("Caching grade for course id {$this->courseid} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
             $gradeobj = new \stdClass();
-            $gradeobj->courseid = $this->mod->course;
+            $gradeobj->courseid = $this->courseid;
             $gradeobj->username	= $username;
-            $gradeobj->psgradingid = $this->mod->id;
+            $gradeobj->psgradingid = 0; // The grade does not relate to a single psgrading instance as they are calculated across multiple.
             $gradeobj->externalreportid = 0;
             $gradeobj->subject = strtolower($reportgrade->subjectsanitised);
             $gradeobj->grade = $grade;

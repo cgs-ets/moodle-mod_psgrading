@@ -571,9 +571,8 @@ class task extends persistent {
 
         }
 
-        $tasks = static::compute_grades($task->get('cmid'), $data->userid, true, true);
-
-        $reportgrades = static::compute_report_grades($tasks, true);
+        //$tasks = static::compute_grades_for_cm($task->get('cmid'), $data->userid, true, true);
+        //$reportgrades = static::compute_report_grades($tasks, true);
 
         // Invalidate cached list page.
         utils::invalidate_cache($task->get('cmid'), 'list-%');
@@ -581,7 +580,43 @@ class task extends persistent {
         return $graderec->id;
     }
 
-    public static function compute_grades($cmid, $userid, $includehiddentasks, $isstaff) {
+    public static function compute_grades_for_course($courseid, $userid, $includehiddentasks, $isstaff) {
+        global $OUTPUT, $DB;
+
+        // Get all psgrading instances for this course.
+        $sql = "SELECT id
+                FROM {psgrading}
+                WHERE course = ?";
+        $courseinstances = array_column($DB->get_records_sql($sql, array($courseid)), 'id');
+        if (empty($courseinstances)) {
+            return;
+        }
+
+        // Get the cmids for the mod instances.
+        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
+        list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
+        $sql = "SELECT id
+                  FROM {course_modules}
+                 WHERE course = ?
+                   AND module = ?
+                   AND instance $insql";
+        $params = array($courseid, $moduleid);
+        $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
+        if (empty($cms)) {
+            return;
+        }
+
+        // Compute the grades across all cms.
+        $tasks = array();
+        foreach ($cms as $cm) {
+            $cmtasks = static::compute_grades_for_cm($cm->id, $userid, $includehiddentasks, $isstaff);
+            $tasks = array_merge($tasks, $cmtasks);
+        }
+
+        return $tasks;
+    }
+
+    public static function compute_grades_for_cm($cmid, $userid, $includehiddentasks, $isstaff) {
         global $OUTPUT;
 
         // Get all tasks for this course module.

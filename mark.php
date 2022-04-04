@@ -172,7 +172,7 @@ if (empty($formdata)) {
     $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 
     // Set the form values.
-    $didnotsubmit = $data->gradeinfo->didnotsubmit ? 1 : 0;
+    $didnotsubmit = isset($data->gradeinfo->didnotsubmit) && $data->gradeinfo->didnotsubmit ? 1 : 0;
     $formmark->set_data(array(
         'evidences' => $draftevidence,
         'didnotsubmit' => $didnotsubmit,
@@ -193,7 +193,7 @@ if (empty($formdata)) {
     // Add some goodies to the submitted data.
     $formdata->taskid = $taskid;
     $formdata->userid = $userid;
-    $formdata->didnotsubmit = $formdata->didnotsubmit ? 1 : 0;
+    $formdata->didnotsubmit = isset($formdata->didnotsubmit) ? 1 : 0;
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
         $result = task::save_task_grades_for_student($formdata);

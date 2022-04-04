@@ -85,7 +85,7 @@
             </div>
         </div>{{/tasks}}{{!
     
-    }}{{#reportgrades.0}}<div class="column report-grades">
+    }}{{#xreportgrades.0}}<div class="column report-grades">
         <div class="cell cell-taskname">&nbsp;</div>
         <div class="cell">&nbsp;</div>
         <div class="cell cell-report-grade"><span><span>Report Grade</span></span></div>
@@ -96,7 +96,7 @@
         </div>
         <div class="cell cell-blank">&nbsp;</div>
         {{#reportgrades}}{{^issubject}}
-            <div class="cell cell-{{subjectsanitisedx}}" data-grade="{{gradex}}" title="{{gradetipx}}" data-toggle="tooltipx">{{gradelangx}}&nbsp;</div>
+            <div class="cell">&nbsp;</div>
         {{/issubject}}{{/reportgrades}}
-    </div>{{/reportgrades.0}}
+    </div>{{/xreportgrades.0}}
 </div>
