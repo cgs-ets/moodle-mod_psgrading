@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Provides {@link mod_psgrading\external\list_exporter} class.
+ * Provides {@link mod_psgrading\external\course_exporter} class.
  *
  * @package   mod_psgrading
  * @copyright 2021 Michael Vangelovski
@@ -33,7 +33,7 @@ use \mod_psgrading\persistents\task;
 /**
  * Exporter of a single task
  */
-class list_exporter extends exporter {
+class course_exporter extends exporter {
 
     /**
     * Return the list of additional properties.
@@ -77,7 +77,6 @@ class list_exporter extends exporter {
     protected static function define_related() {
         return [
             'courseid' => 'int',
-            'cmid' => 'int',
             'groups' => 'int[]?',
             'students' => 'int[]?',
             'groupid' => 'int',
@@ -95,8 +94,8 @@ class list_exporter extends exporter {
         global $DB;
 
         // Group navigation. 
-        $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
-            'id' => $this->related['cmid']
+        $baseurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
+            'courseid' => $this->related['courseid']
         ));
         $groups = array();
         foreach ($this->related['groups'] as $i => $groupid) {
@@ -114,14 +113,10 @@ class list_exporter extends exporter {
         $basenavurl->param('groupid', 0);
         $basenavurl->param('nav', 'all');
 
-        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
-            'cmid' => $this->related['cmid'],
-            'edit' => 0,
-        ));
 
         // Check if there is a cached version of the student rows.
         $listhtml = null;
-        $cache = utils::get_cache($this->related['cmid'], 'list-' . $this->related['groupid']);
+        $cache = utils::get_cache($this->related['courseid'], 'list-course-' . $this->related['groupid']);
         if ($cache) {
             $listhtml = $cache->value;
         } else {
@@ -129,7 +124,7 @@ class list_exporter extends exporter {
             // Export the grade overviews afresh.
             foreach ($this->related['students'] as $studentid) {
                 $relateds = array(
-                    'cmid' => $this->related['cmid'],
+                    'courseid' => $this->related['courseid'],
                     'userid' => $studentid,
                     'isstaff' => true, // Only staff can view the class list page.
                     'includehiddentasks' => true,
@@ -138,43 +133,74 @@ class list_exporter extends exporter {
                 $gradedata = $gradeexporter->export($output);
                 $studentoverviews[] = $gradedata;
             }
-            $courseoverviewurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
-                'courseid' => $this->related['courseid'],
-                'groupid' => $this->related['groupid'],
-            ));
 
             // Add psgrading instance titles above tasks.
             $cms = array();
             if (!empty($studentoverviews)) {
+                $processingcmid = 0;
+                $width = 0;
+                foreach($studentoverviews[0]->tasks as $task) {
+                    if ($task->cmid != $processingcmid) {
+                        if ($processingcmid != 0) {
+                            // Save the cm.
+                            $cmtitle = $DB->get_field_sql(
+                                'SELECT p.name 
+                                 FROM {psgrading} p, {course_modules} c
+                                 WHERE c.id = ?
+                                 AND c.course = p.course
+                                 AND c.instance = p.id', 
+                                 array($processingcmid)
+                            );
+                            $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
+                                'id' => $processingcmid,
+                                'groupid' =>$this->related['groupid'],
+                            ));
+                            $cms[] = array(
+                                'cmid' => $processingcmid,
+                                'overviewurl' => $viewurl->out(false),
+                                'title' => $cmtitle,
+                                'width' => $width,
+                            );
+                        }
+                        $processingcmid = $task->cmid;
+                        $width = 1;
+                    } else {
+                        $width++;
+                    }
+                }
+                // Save the last one.
+                $lasttask = end($studentoverviews[0]->tasks);
                 $cmtitle = $DB->get_field_sql(
                     'SELECT p.name 
                      FROM {psgrading} p, {course_modules} c
                      WHERE c.id = ?
                      AND c.course = p.course
                      AND c.instance = p.id', 
-                     array($this->related['cmid'])
+                     array($lasttask->cmid)
                 );
                 $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
-                    'id' => $this->related['cmid'],
+                    'id' => $lasttask->cmid,
                     'groupid' =>$this->related['groupid'],
                 ));
                 $cms[] = array(
-                    'cmid' => $this->related['cmid'],
+                    'cmid' => $lasttask->cmid,
                     'overviewurl' => $viewurl->out(false),
                     'title' => $cmtitle,
-                    'width' => count($studentoverviews[0]->tasks),
+                    'width' => $width,
                 );
             }
-
+            //var_export($cms);
+            //exit;
+            
             // Prerender and cache it.
             $listhtml = $output->render_from_template('mod_psgrading/list_table', array(
                 'studentoverviews' => $studentoverviews,
                 'cms' => $cms,
-                'taskcreateurl' => $taskcreateurl->out(false),
-                'courseoverviewurl' => $courseoverviewurl->out(false),
+                //'taskcreateurl' => '', // Tasks must be created in the context of a single instance.
+                //'courseoverviewurl' => '', // Not needed because we are already in the course overview.
             ));
             if ($listhtml) {
-                utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
+                utils::save_cache($this->related['courseid'], 'list-course-' . $this->related['groupid'], $listhtml);
             }
         }
 

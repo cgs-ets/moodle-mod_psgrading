@@ -35,10 +35,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     function init() {
         Log.debug('mod_psgrading/classlist: initializing');
 
-        var rootel = $('#page-mod-psgrading-view');
+        var rootel = $('.psgrading-overview-page');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/classlist: #page-mod-psgrading-view not found!');
+            Log.error('mod_psgrading/classlist: .psgrading-overview-page not found!');
             return;
         }
 
@@ -110,7 +110,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.deleteTask(button);
         });
 
-        // Set up drag reordering of criterions.
+        // Show psgrading instance title above tasks.
+        
+
+        // Set up drag reordering of tasks.
         if (typeof Sortable != 'undefined') {
             var el = document.getElementById('task-list');
             var sortable = new Sortable(el, {

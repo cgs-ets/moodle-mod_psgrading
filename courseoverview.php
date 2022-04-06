@@ -26,35 +26,25 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use mod_psgrading\persistents\task;
-use mod_psgrading\external\list_exporter;
+use mod_psgrading\external\course_exporter;
 use mod_psgrading\utils;
 
-// Course_module ID, or
-$id = optional_param('id', 0, PARAM_INT);
-
-// ... module instance id.
-$p  = optional_param('p', 0, PARAM_INT);
+// Course ID
+$courseid = optional_param('courseid', 0, PARAM_INT);
 
 // Custom params.
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
 $refresh = optional_param('refresh', 0, PARAM_INT);
 
-if ($id) {
-    $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
-    $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
+if ($courseid) {
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
 
 $coursecontext = context_course::instance($course->id);
-$modulecontext = context_module::instance($cm->id);
-require_login($course, true, $cm);
+require_login($course, true);
 
 // If a non-staff, redirect them to the studentoverview page instead.
 $isstaff = utils::is_grader();
@@ -64,37 +54,37 @@ if (!$isstaff) {
 	exit;
 } 
 
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
-    'id' => $cm->id,
+$courseoverviewurl = new moodle_url('/mod/psgrading/courseoverview.php', array(
+    'courseid' => $course->id,
     'groupid' => $groupid,
     'nav' => $nav,
 ));
 
 if ($refresh) {
-    utils::invalidate_cache($cm->id, 'list-' . $groupid);
-	redirect($viewurl->out(false));
+    utils::invalidate_cache($courseid, 'list-course-' . $groupid);
+	redirect($courseoverviewurl->out(false));
 	exit;
 }
 
-$PAGE->set_url($viewurl);
-$PAGE->set_title(format_string($moduleinstance->name));
-//$PAGE->set_heading(format_string($course->fullname));
-$PAGE->set_heading(format_string($moduleinstance->name));
-$PAGE->set_context($modulecontext);
+$PAGE->set_url($courseoverviewurl);
+$title = format_string($course->fullname) . ' Grading Overview';
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+$PAGE->set_context($coursecontext);
 $PAGE->add_body_class('psgrading-overview-page');
 
 // Get groups in the course.
-$groups = utils::get_course_groups($course->id);
+$groups = utils::get_course_groups($courseid);
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
     // custom pref db as the pref needs to be per cm instance.
-    $groupid = intval(utils::get_user_preferences($cm->id, 'mod_psgrading_groupid', 0));
+    $groupid = intval(utils::get_user_preferences($courseid, 'mod_psgrading_course_groupid', 0));
     if ($groupid) {
-        $viewurl->param('groupid', $groupid);
-        $PAGE->set_url($viewurl);
+        $courseoverviewurl->param('groupid', $groupid);
+        $PAGE->set_url($courseoverviewurl);
     }
 } else {
-    utils::set_user_preference($cm->id, 'mod_psgrading_groupid', $groupid);
+    utils::set_user_preference($courseid, 'mod_psgrading_course_groupid', $groupid);
 }
 
 // Get the students in the course.
@@ -108,31 +98,31 @@ if (empty($groupid)) {
 if (empty($students)) {
     if ($groupid) {
         // Try redirecting to top.
-        $viewurl->param('groupid', 0);
-        $viewurl->param('nav', 'all'); 
-        redirect($viewurl->out(false));
+        $courseoverviewurl->param('groupid', 0);
+        $courseoverviewurl->param('nav', 'all'); 
+        redirect($courseoverviewurl->out(false));
     }
     echo "No students in course";
     exit;
 }
 
 // Get the tasks.
-$taskdata = task::get_for_coursemodule($cm->id);
+$taskdata = task::get_for_course($courseid);
 $relateds = array(
     'courseid' => (int) $course->id,
-    'cmid' => (int) $cm->id,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
 	'tasks' => $taskdata,
 );
-$listexporter = new list_exporter(null, $relateds);
+$listexporter = new course_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $listexporter->export($output);
 
 // Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
-$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+// Maybe do not allow sorting as this is something that should happen in instance context??
+//$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.5.0/list.min.js'), true );
 
 $output = $OUTPUT->header();

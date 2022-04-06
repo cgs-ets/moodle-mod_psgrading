@@ -303,6 +303,40 @@ class task extends persistent {
         return 1;
     }*/
 
+    public static function get_for_course($courseid) {
+        global $DB;
+
+        // Get all psgrading instances for this course.
+        $sql = "SELECT id
+                FROM {psgrading}
+                WHERE course = ?";
+        $courseinstances = array_column($DB->get_records_sql($sql, array($courseid)), 'id');
+        if (empty($courseinstances)) {
+            return;
+        }
+
+        // Get the cmids for the mod instances.
+        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
+        list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
+        $sql = "SELECT id
+                  FROM {course_modules}
+                 WHERE course = ?
+                   AND module = ?
+                   AND instance $insql";
+        $params = array($courseid, $moduleid);
+        $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
+        if (empty($cms)) {
+            return;
+        }
+
+        $tasks = [];
+        foreach($cms as $cm) {
+            $tasks = array_merge($tasks, static::get_for_coursemodule($cm->id));
+        }
+
+        return $tasks;
+    }
+
 
     public static function get_for_coursemodule($cmid) {
         global $DB;
@@ -628,6 +662,9 @@ class task extends persistent {
         }
 
         foreach ($cmtasks as $task) {
+            // TODO: Check that the task applies to this user based on setting.
+
+            
             $taskexporter = new task_exporter($task, array('userid' => $userid));
             $task = $taskexporter->export($OUTPUT);
             if (!$task->published && !$includehiddentasks) {
@@ -676,6 +713,7 @@ class task extends persistent {
         }
 
         // Check if there is gradeinfo / whether task is released. 
+        // Check if student `didnosubmit`
         if (empty($gradeinfo) || !$showgrades || $gradeinfo->didnotsubmit) {
             // Skip over the calculations, but define empty structure required by template.
             foreach (utils::SUBJECTOPTIONS as $subject) {

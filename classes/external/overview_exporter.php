@@ -106,7 +106,8 @@ class overview_exporter extends exporter {
     */
     protected static function define_related() {
         return [
-            'cmid' => 'int',
+            'courseid' => 'int?',
+            'cmid' => 'int?',
             'groups' => 'int[]?',
             'students' => 'int[]?',
             'userid' => 'int',
@@ -129,13 +130,20 @@ class overview_exporter extends exporter {
             'cmid' => $this->related['cmid'],
             'userid' => $this->related['userid'],
         ));
-
-        // Export tasks/grades.
         $relateds = array(
-            'cmid' => $this->related['cmid'],
             'userid' => $this->related['userid'],
             'isstaff' => $this->related['isstaff'],
         );
+        if ($this->related['cmid']) {
+            $relateds['cmid'] = $this->related['cmid'];
+        } else {
+            $baseurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
+                'courseid' => $this->related['courseid'],
+                'userid' => $this->related['userid'],
+            ));
+            $relateds['courseid'] = $this->related['courseid'];
+        }
+
         $gradeexporter = new grade_exporter(null, $relateds);
         $gradedata = $gradeexporter->export($output);
         $tasks = $gradedata->tasks;

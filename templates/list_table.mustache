@@ -24,6 +24,23 @@
     Template used to generate list overview table. This is also cached.
 }}
 <div id="class-list" class="classlist-table">
+
+        {{#cms.0}}
+        <div id="cm-list" class="classlist-header">
+            <div class="column col-empty col-student"></div>
+            {{#cms}}
+                <div class="column col-cm" data-cmid="{{cmid}}" style="width: calc(90px*{{width}});">
+                    <a target="_blank" href="{{overviewurl}}" title="{{title}}">{{title}}</a>
+                </div>
+            {{/cms}}
+            <div class="column col-show-all-tasks">
+              {{#courseoverviewurl}}
+                <a class="btn btn-primary" href="{{courseoverviewurl}}" style="display: block;margin-bottom: 5px;">Show all tasks in course</a>
+              {{/courseoverviewurl}}
+            </div>
+        </div>
+        {{/cms.0}}
+
         {{! Task names across the top }}
         <div id="task-list" class="classlist-header">
             {{#studentoverviews.0}}
@@ -35,7 +52,7 @@
                 <div class="column col-hidden col-lastname"></div>
                 
                 {{#tasks}}
-                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}{{^releasecountdown}}not-released{{/releasecountdown}}{{/released}}" data-id="{{id}}">
+                    <div class="column col-taskname {{^published}}not-published{{/published}} {{^released}}{{^releasecountdown}}not-released{{/releasecountdown}}{{/released}}" data-id="{{id}}" data-cmid="{{cmid}}">
 
                         <span class="text" data-toggle="tooltip" title="{{taskname}}">{{taskname}}</span>
 
@@ -94,14 +111,16 @@
                                 <a class="action-delete" data-toggle="tooltip" data-placement="right" title="{{#str}}task:deletetask, mod_psgrading{{/str}}" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             {{/released}}
 
-                            <a href="" data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}" class="action-reorder"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
+                            <a class="action-reorder" href="" data-toggle="tooltip" data-placement="bottom" title="{{#str}}dragtoreorder, mod_psgrading{{/str}}"><i class="fa fa-arrows-h" aria-hidden="true"></i></a>
 
                         </div>
                     </div>
                 {{/tasks}}
                 
                 <div class="column col-taskcreatecol" data-href="{{taskcreateurl}}">
-                    <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}task:create, mod_psgrading{{/str}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <a id="btn-taskcreate" class="btn btn-primary" href="{{taskcreateurl}}" title="{{#str}}task:create, mod_psgrading{{/str}}">
+                      Create new task
+                    </a>
                 </div>
             {{/studentoverviews.0}}
         </div>

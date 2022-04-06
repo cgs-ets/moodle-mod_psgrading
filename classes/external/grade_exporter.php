@@ -103,8 +103,8 @@ class grade_exporter extends exporter {
             ));
         } else if ($this->related['courseid']) {
             $tasks = task::compute_grades_for_course($this->related['courseid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
-            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
-                'courseid' => $this->related['cmid'],
+            $overviewurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
+                'courseid' => $this->related['courseid'],
                 'userid' => $this->related['userid'],
             ));
         }

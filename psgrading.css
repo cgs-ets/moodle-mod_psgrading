@@ -447,6 +447,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .classlist-table.reordering .classlist-row {
   opacity: 0.5;
 }
+.psgrading-list #cm-list .col-cm {
+  background-color: #f9f9f9;
+}
 .psgrading-list .classlist-header {
   font-size: 0;
 }
@@ -468,11 +471,11 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-size: 17px;
 }
 .psgrading-list .column.not-published {
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
   padding: 6px;
 }
 .psgrading-list .column.not-released {
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
 }
 .psgrading-list .col-empty {
   border: none !important;
@@ -505,33 +508,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   position: relative;
-  /*display: inline-block;
-        height: 104px;
-        white-space: normal;
-        .text {
-            display: inline-block;
-            position: relative;
-            line-height: 23px;
-            max-height: 92px;
-            word-break: break-word;
-            &:before {
-                content:'';
-                width:100%;
-                height:100%;    
-                position:absolute;
-                left:0;
-                top:0;
-                background:linear-gradient(transparent 69px, #fff);
-            }
-        }*/
-  /*.text {
-            display: inline-block;
-            white-space: normal;
-            vertical-align: middle;
-            width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }*/
 }
 .psgrading-list .col-taskname .text {
   display: inline-block;
@@ -579,7 +555,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .col-taskname .actions a.action-undorelease:hover:before {
   position: absolute;
-  content: '';
+  content: "";
   top: 14px;
   left: 1px;
   right: 0px;
@@ -598,7 +574,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .col-taskname .actions a.action-publish:before {
   position: absolute;
-  content: '';
+  content: "";
   left: 0;
   top: 50%;
   right: 0;
@@ -624,13 +600,22 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #cce5ff;
   box-shadow: 0 0 2px 0px #004085;
 }
+.psgrading-list .col-show-all-tasks {
+  border-top: 0 none;
+  width: auto;
+  padding-top: 0;
+}
 .psgrading-list .col-taskcreatecol {
-  height: 100%;
+  height: calc(100% - 43px);
   position: absolute;
   border-top: none;
-  padding: 3px 0 0 5px;
+  padding: 0 0 0 5px;
   width: 180px;
   transition: all ease 0.3s;
+  width: auto;
+}
+.psgrading-list .col-taskcreatecol a {
+  box-shadow: none !important;
 }
 .psgrading-list .col-success {
   padding: 0;
@@ -662,6 +647,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .column[data-grade="1"] {
   background-color: #00812F;
   color: #fff;
+}
+#page-mod-psgrading-courseoverview .psgrading-list .col-taskname .actions a.action-delete {
+  position: absolute;
+  bottom: 0px;
+  right: 2px;
+}
+#page-mod-psgrading-courseoverview .psgrading-list .col-taskname .actions a.action-reorder {
+  display: none;
 }
 #page-mod-psgrading-mark #region-main-box .left-column {
   width: 100%;
@@ -1221,41 +1214,51 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-details .attachment:hover .attachment-header .selector {
   display: none !important;
 }
-#page-mod-psgrading-overview #region-main-box .left-column {
+#page-mod-psgrading-overview #region-main-box .left-column,
+#page-mod-psgrading-studentoverview #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-#page-mod-psgrading-overview .activity-navigation {
+#page-mod-psgrading-overview .activity-navigation,
+#page-mod-psgrading-studentoverview .activity-navigation {
   display: none;
 }
-#page-mod-psgrading-overview #region-main-settings-menu {
+#page-mod-psgrading-overview #region-main-settings-menu,
+#page-mod-psgrading-studentoverview #region-main-settings-menu {
   display: none;
 }
-#page-mod-psgrading-overview #region-main {
+#page-mod-psgrading-overview #region-main,
+#page-mod-psgrading-studentoverview #region-main {
   padding: 0;
 }
-#page-mod-psgrading-overview #user-notifications .alert {
+#page-mod-psgrading-overview #user-notifications .alert,
+#page-mod-psgrading-studentoverview #user-notifications .alert {
   margin: 0;
 }
-#page-mod-psgrading-overview .psgrading-overview .header {
+#page-mod-psgrading-overview .psgrading-overview .header,
+#page-mod-psgrading-studentoverview .psgrading-overview .header {
   margin: -1px 0px 0px 0px;
 }
-#page-mod-psgrading-overview .psgrading-overview .contents-wrap {
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap,
+#page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap {
   position: relative;
 }
-#page-mod-psgrading-overview .psgrading-overview .contents-wrap.is-viewas {
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap.is-viewas,
+#page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap.is-viewas {
   background-color: #fff;
   background-image: radial-gradient(circle at top right, yellow, #fff 170px);
   background-position: 0px -43px;
   background-repeat: no-repeat;
 }
-#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options {
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options,
+#page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap .floating-options {
   position: absolute;
   top: 0;
   right: 0;
   padding: 10px;
 }
-#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options a.viewas {
+#page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options a.viewas,
+#page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap .floating-options a.viewas {
   display: inline-block;
   font-style: italic;
   font-size: 90%;
@@ -1441,6 +1444,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-engagement .column.task div.cell-engagement:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-engagement .column.task.last div.cell-engagement {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1463,6 +1469,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Music .column.task div.cell-Music:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Music .column.task.last div.cell-Music {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Music .column.report-grades div.cell-Music {
   border-top: 1px solid #000 !important;
@@ -1487,6 +1496,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-Language .column.task div.cell-Language:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-Language .column.task.last div.cell-Language {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-Language .column.report-grades div.cell-Language {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1509,6 +1521,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-VisArts .column.task div.cell-VisArts:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-VisArts .column.task.last div.cell-VisArts {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-VisArts .column.report-grades div.cell-VisArts {
   border-top: 1px solid #000 !important;
@@ -1533,6 +1548,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-HPE .column.task div.cell-HPE:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-HPE .column.task.last div.cell-HPE {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-HPE .column.report-grades div.cell-HPE {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1555,6 +1573,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.task div.cell-Mathsstatisticsandprobability:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Mathsstatisticsandprobability .column.task.last div.cell-Mathsstatisticsandprobability {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.report-grades div.cell-Mathsstatisticsandprobability {
   border-top: 1px solid #000 !important;
@@ -1579,6 +1600,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.task div.cell-Mathsnumberandalgebra:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-Mathsnumberandalgebra .column.task.last div.cell-Mathsnumberandalgebra {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.report-grades div.cell-Mathsnumberandalgebra {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1601,6 +1625,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.task div.cell-Mathsmeasurementandgeometry:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Mathsmeasurementandgeometry .column.task.last div.cell-Mathsmeasurementandgeometry {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.report-grades div.cell-Mathsmeasurementandgeometry {
   border-top: 1px solid #000 !important;
@@ -1625,6 +1652,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-Technology .column.task div.cell-Technology:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-Technology .column.task.last div.cell-Technology {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-Technology .column.report-grades div.cell-Technology {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1647,6 +1677,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Science .column.task div.cell-Science:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Science .column.task.last div.cell-Science {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Science .column.report-grades div.cell-Science {
   border-top: 1px solid #000 !important;
@@ -1671,6 +1704,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-HASS .column.task div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-HASS .column.task.last div.cell-HASS {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-HASS .column.report-grades div.cell-HASS {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1693,6 +1729,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Englishwriting .column.task div.cell-Englishwriting:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Englishwriting .column.task.last div.cell-Englishwriting {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Englishwriting .column.report-grades div.cell-Englishwriting {
   border-top: 1px solid #000 !important;
@@ -1717,6 +1756,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-Englishspeakingandlistening .column.task div.cell-Englishspeakingandlistening:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-Englishspeakingandlistening .column.task.last div.cell-Englishspeakingandlistening {
+  border-right: 1px solid #000 !important;
+}
 .psgrading-matrix.hover-Englishspeakingandlistening .column.report-grades div.cell-Englishspeakingandlistening {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
@@ -1739,6 +1781,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-matrix.hover-Englishreadingandviewing .column.task div.cell-Englishreadingandviewing:not(:last-of-type) {
   padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Englishreadingandviewing .column.task.last div.cell-Englishreadingandviewing {
+  border-right: 1px solid #000 !important;
 }
 .psgrading-matrix.hover-Englishreadingandviewing .column.report-grades div.cell-Englishreadingandviewing {
   border-top: 1px solid #000 !important;
