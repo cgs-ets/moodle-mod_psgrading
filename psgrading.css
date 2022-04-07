@@ -440,6 +440,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .classlist-table {
   position: relative;
   overflow: auto;
+  cursor: all-scroll;
 }
 .psgrading-list .classlist-table div.classlist-row:last-child .column {
   border-bottom: 1px solid #ccc;

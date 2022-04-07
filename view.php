@@ -133,6 +133,7 @@ $data = $listexporter->export($output);
 // Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/dragscroll.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.5.0/list.min.js'), true );
 
 $output = $OUTPUT->header();
