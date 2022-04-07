@@ -110,7 +110,19 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.deleteTask(button);
         });
 
-        // Show psgrading instance title above tasks.
+        // Zoom
+        self.rootel.on('click', '.btn-fullscreen', function(e) {
+          e.preventDefault();
+          var button = $(this);
+          if (self.rootel.hasClass('zoomed')) {
+            self.rootel.removeClass('zoomed');
+            button.html('<i class="fa fa-window-maximize" aria-hidden="true"></i>');
+          } else {
+            self.rootel.addClass('zoomed');
+            button.html('<i class="fa fa-window-minimize" aria-hidden="true"></i>');
+
+          }
+        });
         
 
         // Set up drag reordering of tasks.

@@ -423,24 +423,87 @@ form[data-form="psgrading-task"] .evidence-selector .c-link {
 form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   cursor: pointer;
 }
+#page-mod-psgrading-courseoverview #region-main,
+#page-mod-psgrading-view #region-main {
+  padding: 0;
+}
+#page-mod-psgrading-courseoverview #region-main-box .left-column,
+#page-mod-psgrading-view #region-main-box .left-column {
+  width: 100%;
+  background: #fff;
+}
+#page-mod-psgrading-courseoverview.zoomed,
+#page-mod-psgrading-view.zoomed {
+  background-color: #fff;
+  overflow: hidden;
+}
+#page-mod-psgrading-courseoverview.zoomed #maincontent,
+#page-mod-psgrading-view.zoomed #maincontent {
+  display: none;
+}
+#page-mod-psgrading-courseoverview.zoomed #region-main,
+#page-mod-psgrading-view.zoomed #region-main {
+  border: 0 none;
+  overflow: visible;
+}
+#page-mod-psgrading-courseoverview.zoomed nav,
+#page-mod-psgrading-view.zoomed nav {
+  display: none;
+}
+#page-mod-psgrading-courseoverview.zoomed footer,
+#page-mod-psgrading-view.zoomed footer {
+  display: none;
+}
+#page-mod-psgrading-courseoverview.zoomed #page-header,
+#page-mod-psgrading-view.zoomed #page-header {
+  display: none;
+}
+#page-mod-psgrading-courseoverview.zoomed #nav-drawer,
+#page-mod-psgrading-view.zoomed #nav-drawer {
+  display: none;
+}
+#page-mod-psgrading-courseoverview.zoomed #page,
+#page-mod-psgrading-view.zoomed #page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+#page-mod-psgrading-courseoverview.zoomed #page #page-content,
+#page-mod-psgrading-view.zoomed #page #page-content {
+  padding: 0 !important;
+}
+#page-mod-psgrading-courseoverview.zoomed .psgrading-list,
+#page-mod-psgrading-view.zoomed .psgrading-list {
+  height: 100vh;
+}
+#page-mod-psgrading-courseoverview.zoomed .psgrading-list .top-buttons,
+#page-mod-psgrading-view.zoomed .psgrading-list .top-buttons {
+  position: fixed;
+}
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
-  padding: 20px;
   font-size: 1.125em;
+  position: relative;
+  padding: 45px 35px;
+  cursor: all-scroll;
 }
-.psgrading-list .btn-refresh {
-  float: right;
-  margin-right: 50px;
-  font-size: 22px;
+.psgrading-list .top-buttons {
   position: absolute;
-  right: 32px;
-  top: 12px;
+  right: 15px;
+  top: 0;
+  display: flex;
+}
+.psgrading-list .top-buttons a {
+  font-size: 22px;
+  margin-left: 20px;
 }
 .psgrading-list .classlist-table {
   position: relative;
-  overflow: auto;
-  cursor: all-scroll;
 }
 .psgrading-list .classlist-table div.classlist-row:last-child .column {
   border-bottom: 1px solid #ccc;
@@ -614,6 +677,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: 180px;
   transition: all ease 0.3s;
   width: auto;
+  padding-right: 30px;
 }
 .psgrading-list .col-taskcreatecol a {
   box-shadow: none !important;

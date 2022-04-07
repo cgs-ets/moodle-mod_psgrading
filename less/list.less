@@ -1,21 +1,75 @@
 @tableborder: 1px solid #ccc;
+#page-mod-psgrading-courseoverview, #page-mod-psgrading-view {
+  #region-main {
+    padding: 0;
+  }
+  #region-main-box .left-column {
+		width: 100%;
+		background: #fff;
+	}
+  &.zoomed {
+		background-color: #fff;
+    overflow: hidden;
+    #maincontent {
+      display: none;
+    }
+    #region-main {
+      border: 0 none;
+      overflow: visible;
+    }
+    nav {
+      display: none;
+    }
+    footer {
+      display: none;
+    }
+    #page-header {
+      display: none;
+    }
+    #nav-drawer {
+      display: none;
+    }
+    #page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      #page-content {
+        padding: 0 !important;
+      }
+    }
+    .psgrading-list {
+      height: 100vh;
+      .top-buttons {
+        position: fixed;
+      }
+    }
+	}
+}
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
-  padding: 20px;
   font-size: 1.125em;
-  .btn-refresh {
-    float: right;
-    margin-right: 50px;
-    font-size: 22px;
+  position: relative;
+  padding: 45px 35px;
+  cursor: all-scroll;
+  .top-buttons {
     position: absolute;
-    right: 32px;
-    top: 12px;
+    right: 15px;
+    top: 0;
+    display: flex;
+    a {
+      font-size: 22px;
+      margin-left: 20px;
+    }
   }
   .classlist-table {
     position: relative;
-    overflow: auto;
-    cursor: all-scroll;
+    //overflow: auto;
+    //cursor: all-scroll;
     div.classlist-row:last-child {
       .column {
         border-bottom: @tableborder;
@@ -200,6 +254,7 @@
     width: 180px;
     transition: all ease 0.3s;
     width: auto;
+    padding-right: 30px;
     a {
       box-shadow: none !important;
     }
