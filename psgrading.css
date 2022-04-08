@@ -432,6 +432,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: 100%;
   background: #fff;
 }
+#page-mod-psgrading-courseoverview #region-main-settings-menu,
+#page-mod-psgrading-view #region-main-settings-menu {
+  display: none;
+}
 #page-mod-psgrading-courseoverview.zoomed,
 #page-mod-psgrading-view.zoomed {
   background-color: #fff;
