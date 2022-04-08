@@ -494,7 +494,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .top-buttons {
   position: absolute;
-  right: 15px;
+  right: 20px;
   top: 0;
   display: flex;
 }
