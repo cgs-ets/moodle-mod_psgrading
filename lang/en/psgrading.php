@@ -64,6 +64,8 @@ $string['mark:savefail'] = 'Failed to save feedback for {$a}';
 $string['mark:resetsuccess'] = 'Feedback was reset for {$a}';
 $string['mark:myconnectattachments'] = 'MyConnect attachments';
 $string['mark:didnotsubmit'] = 'Did not submit';
+$string['mark:dns'] = 'DNS';
+$string['mark:replacegrader'] = '<b>{$a}</b> will appear as the grader when this grade is released. Tick this option to become the grader. Leave this option unticked to keep the current grader.';
 
 $string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
 

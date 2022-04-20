@@ -700,6 +700,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .col-success a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
+.psgrading-list .col-success.dns {
+  background-color: #ddd;
+}
 .psgrading-list .column[data-grade="5"] {
   background-color: #D90617;
   color: #fff;
@@ -745,7 +748,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 0;
 }
 #page-mod-psgrading-mark .header {
-  margin: -1px 0px 30px 0px;
+  margin: -1px 0px 0px 0px;
 }
 #page-mod-psgrading-mark form[data-form="psgrading-mark"] {
   padding: 0 20px 20px 20px;
@@ -842,6 +845,16 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     right: 10px;
     text-align: right;
   }
+}
+#page-mod-psgrading-mark .outcomes {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding: 20px 20px 20px;
+}
+#page-mod-psgrading-mark .outcomes .heading {
+  font-weight: 600;
+  font-size: 120%;
+  padding-bottom: 5px;
 }
 #page-mod-psgrading-mark .marking-evidences {
   margin-top: 30px;
@@ -1874,6 +1887,11 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin-top: -1px;
   padding-bottom: 6px !important;
 }
+#page-mod-psgrading-details #region-main-box .left-column,
+#page-mod-psgrading-print #region-main-box .left-column {
+  width: 100%;
+  background: #fff;
+}
 #page-mod-psgrading-details #page-navbar,
 #page-mod-psgrading-print #page-navbar {
   margin-right: 260px;
@@ -1919,6 +1937,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
+}
+#page-mod-psgrading-details .details-outcomes,
+#page-mod-psgrading-print .details-outcomes {
+  margin-bottom: 25px;
 }
 #page-mod-psgrading-details .details-criterions,
 #page-mod-psgrading-print .details-criterions {

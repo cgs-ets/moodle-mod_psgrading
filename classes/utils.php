@@ -419,7 +419,7 @@ class utils {
         $context = \context_course::instance($courseid);
         // 5 is student.
         $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
-        $users = get_role_users($studentroleid, $context, false, 'u.id, u.firstname', 'u.firstname'); //last param is sort by. 
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.firstname, u.lastname', 'u.lastname'); //last param is sort by. 
         return array_map('intval', array_column($users, 'id'));
     }
 

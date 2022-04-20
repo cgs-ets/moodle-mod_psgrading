@@ -133,6 +133,14 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.form.submit();
         });
 
+        // Cancel.
+        self.rootel.on('click', '#btn-cancel', function(e) {
+            e.preventDefault();
+            window.onbeforeunload = null;
+            self.rootel.find('[name="action"]').val('cancel');
+            self.form.submit();
+        });
+
         // Save comment to bank.
         self.rootel.on('click', '#save-to-comment-bank', function(e) {
             e.preventDefault();

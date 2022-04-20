@@ -552,7 +552,9 @@ class task extends persistent {
 
         if ($graderec) {
             // Update the existing grade data.
-            $graderec->graderusername = $USER->username;
+            if ($data->replacegrader) {
+                $graderec->graderusername = $USER->username;
+            }
             $graderec->didnotsubmit = $data->didnotsubmit;
             $graderec->engagement = $data->engagement;
             $graderec->comment = $data->comment;
@@ -724,6 +726,10 @@ class task extends persistent {
                         'grade' => 0,
                         'gradelang' => '',
                     );
+                }
+                if (!empty($gradeinfo) && $gradeinfo->didnotsubmit) {
+                    $task->didnotsubmit = true;
+                    $task->success['gradelang'] = get_string('mark:dns', 'mod_psgrading');
                 }
             }
             unset($task->gradeinfo);

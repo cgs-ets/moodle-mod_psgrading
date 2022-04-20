@@ -26,7 +26,7 @@
 
 <div class="classlist-row">
     <div class="column col-student" data-userid="{{currstudent.id}}">
-        <a href="{{currstudent.overviewurl}}"><img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span></a>
+        <a href="{{currstudent.overviewurl}}"><img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.lastname}}, {{currstudent.firstname}}</span></a>
     </div>
     
     <div class="column col-firstname col-hidden">
@@ -37,7 +37,7 @@
     </div>
     
     {{#tasks}}
-        <div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}}" data-grade="{{success.grade}}">
+        <div class="column col-success {{^published}}not-published{{/published}} {{^released}}not-released{{/released}} {{#didnotsubmit}}dns{{/didnotsubmit}}" data-grade="{{success.grade}}">
             {{#published}}
                 <a href="{{success.detailsurl}}" title="{{success.gradetip}}" data-toggle="tooltip">{{success.gradelang}}&nbsp;</a>
             {{/published}}

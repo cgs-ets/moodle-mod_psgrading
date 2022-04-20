@@ -50,6 +50,10 @@
         {{/students.1}}
     </div>
     <div class="contents">
+        <div class="details-outcomes">
+            <div class="heading">{{#str}}task:outcomes, mod_psgrading{{/str}}</div>
+            {{{task.outcomes}}}
+        </div>
         {{#gradeinfo.didnotsubmit}}
           <div class="heading alert alert-info">{{currstudent.fullname}} did not submit this task.</div>
         {{/gradeinfo.didnotsubmit}}

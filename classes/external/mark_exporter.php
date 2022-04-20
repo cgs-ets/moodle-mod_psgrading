@@ -237,6 +237,12 @@ class mark_exporter extends exporter {
             $myconnectattachments = array_merge($task->myconnectevidences, $myconnectattachments);
         }
 
+        // Check if grader is different.
+        if (isset($gradeinfo->graderusername) && $gradeinfo->graderusername != $USER->username) {
+            // User is different to the person that initially graded this.
+            $gradeinfo->graderisdiff = true;
+        }
+
         //echo "<pre>";
         //echo "pre selected<hr>";
         //var_export($task->myconnectevidences); 

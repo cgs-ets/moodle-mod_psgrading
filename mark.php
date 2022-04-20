@@ -143,7 +143,7 @@ if ( ! $data->task->published) {
     $message = get_string('taskhidden', 'mod_psgrading');
     $notice = \core\notification::error($message);
     redirect(
-        $listurl->out(),
+        $listurl->out(false),
         $notice,
         null,
         \core\output\notification::NOTIFY_ERROR
@@ -157,7 +157,10 @@ $PAGE->navbar->add($data->task->taskname, $data->task->editurl);
 $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
 // Instantiate empty form so that we can "get_data" with minimal processing.
-$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
+    //Cannot instantiate empty as data needed for replacegrader checkbox to register properly.
+    //$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
+// Instantiate the form with data.
+$formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 $formdata = $formmark->get_data();
 if (empty($formdata)) {
     // Editing (not submitted).
@@ -167,9 +170,6 @@ if (empty($formdata)) {
     $uniqueid = sprintf( "%d%d", $taskid, $userid ); // Join the taskid and userid to make a unique itemid.
     file_prepare_draft_area($draftevidence, $modulecontext->id, 'mod_psgrading', 
         'evidences', $uniqueid, $evidenceoptions);
-
-    // Reinstantiate the form with the data.
-    $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 
     // Set the form values.
     $didnotsubmit = isset($data->gradeinfo->didnotsubmit) && $data->gradeinfo->didnotsubmit ? 1 : 0;
@@ -194,6 +194,8 @@ if (empty($formdata)) {
     $formdata->taskid = $taskid;
     $formdata->userid = $userid;
     $formdata->didnotsubmit = isset($formdata->didnotsubmit) ? 1 : 0;
+    $formdata->replacegrader = isset($formdata->replacegrader) ? 1 : 0;
+
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
         $result = task::save_task_grades_for_student($formdata);
@@ -220,7 +222,11 @@ if (empty($formdata)) {
         }
     }
 
-    if ($formdata->action == 'reset') {
+    if ($formdata->action == 'cancel') {
+        redirect($listurl->out(false));
+    }
+
+    /*if ($formdata->action == 'reset') {
         task::reset_task_grades_for_student($formdata);
         $notice = get_string("mark:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
         redirect(
@@ -229,7 +235,7 @@ if (empty($formdata)) {
             null,
             \core\output\notification::NOTIFY_SUCCESS
         );
-    }
+    }*/
     
 }
 

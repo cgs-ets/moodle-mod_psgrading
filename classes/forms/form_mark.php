@@ -61,7 +61,7 @@ class form_mark extends \moodleform {
         $mform =& $this->_form;
         $data = $this->_customdata['data'];
 
-        if (empty($data)) {
+        /*if (empty($data)) {
             // create a stub so that the fields can be setup properly.
             $data = new \stdClass();
             $data->task = new \stdClass();
@@ -69,7 +69,7 @@ class form_mark extends \moodleform {
             $data->task->criterions = [];
             $data->myconnectattachments = null;
             $data->currstudent = null;
-        }
+        }*/
 
         /****
         * Notes:
@@ -105,6 +105,12 @@ class form_mark extends \moodleform {
         $mform->setType('comment', PARAM_RAW);
         $comments = task::get_comment_bank($data->task->id);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_commentbank', array('comments' => $comments)));
+
+        // Replace grader.
+        if (isset($data->gradeinfo) && isset($data->gradeinfo->graderisdiff)) {
+            $grader = \core_user::get_user_by_username($data->gradeinfo->graderusername);
+            $mform->addElement('checkbox', 'replacegrader', 'Grading teacher', get_string('mark:replacegrader', 'mod_psgrading', fullname($grader)));
+        }
 
         // Buttons.
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_buttons', array()));
