@@ -150,10 +150,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
         // Preload the modals and templates.
         self.modals = {
-            DIFF: null,
+          DELETE: null,
+          RELEASE: null,
         };
         var preloads = [];
-        //preloads.push(self.loadModal('DIFF', 'Review draft changes and confirm deletion', 'Delete draft', ModalFactory.types.SAVE_CANCEL));
+        preloads.push(self.loadModal('DELETE', 'Confirm delete', 'Delete', ModalFactory.types.SAVE_CANCEL));
+        preloads.push(self.loadModal('RELEASE', 'Confirm release', 'Release', ModalFactory.types.SAVE_CANCEL));
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         })
@@ -164,22 +166,29 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         var self = this;
 
         var task = button.closest('.col-taskname');
+        var subject = task.find('.text').first().html();
 
-        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
+        //button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
 
-        Ajax.call([{
-            methodname: 'mod_psgrading_apicontrol',
-            args: { 
-                action: 'delete_task',
-                data: task.data('id'),
-            },
-            done: function() {
-                window.location.reload(false);
-            },
-            fail: function(reason) {
-                Log.debug(reason);
-            }
-        }]);
+        if (self.modals.DELETE) {
+          self.modals.DELETE.setBody('<p>Are you sure you want to delete this task?<br><strong>' + subject + '</strong></p>');
+          self.modals.DELETE.getRoot().on(ModalEvents.save, function(e) {
+            Ajax.call([{
+                methodname: 'mod_psgrading_apicontrol',
+                args: { 
+                    action: 'delete_task',
+                    data: task.data('id'),
+                },
+                done: function() {
+                    window.location.reload(false);
+                },
+                fail: function(reason) {
+                    Log.debug(reason);
+                }
+            }]);
+          });
+          self.modals.DELETE.show();
+        }        
     };
 
 
@@ -188,9 +197,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      *
      * @method
      */
-     ClassList.prototype.publishTask = function (button) {
-        var self = this;
-        
+     ClassList.prototype.publishTask = function (button) {       
         var task = button.closest('.col-taskname');
 
         button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
@@ -244,25 +251,30 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @method
      */
      ClassList.prototype.releaseTask = function (button) {
-        var self = this;
+      var self = this;
 
-        var task = button.closest('.col-taskname');
+      var task = button.closest('.col-taskname');
+      var subject = task.find('.text').first().html();
 
-        button.replaceWith('<div class="spinner"><div class="circle spin"></div></div>');
-
-        Ajax.call([{
-            methodname: 'mod_psgrading_apicontrol',
-            args: { 
-                action: 'release_task',
-                data: task.data('id'),
-            },
-            done: function() {
-                window.location.reload(false);
-            },
-            fail: function(reason) {
-                Log.debug(reason);
-            }
-        }]);
+      if (self.modals.RELEASE) {
+        self.modals.RELEASE.setBody('<p>Are you sure you want to release this task?<br><strong>' + subject + '</strong></p>');
+        self.modals.RELEASE.getRoot().on(ModalEvents.save, function(e) {
+          Ajax.call([{
+              methodname: 'mod_psgrading_apicontrol',
+              args: { 
+                  action: 'release_task',
+                  data: task.data('id'),
+              },
+              done: function() {
+                  window.location.reload(false);
+              },
+              fail: function(reason) {
+                  Log.debug(reason);
+              }
+          }]);
+        });
+        self.modals.RELEASE.show();
+      }
     };
 
     /**
