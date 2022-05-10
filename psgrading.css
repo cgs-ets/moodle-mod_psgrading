@@ -980,6 +980,8 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-weight: 600;
   font-size: 120%;
   position: unset;
+  max-width: 100%;
+  flex: none;
 }
 #page-mod-psgrading-mark #fitem_id_comment .col-md-9 {
   padding: 0;
