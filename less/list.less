@@ -261,9 +261,28 @@
     a {
       box-shadow: none !important;
     }
+    .dot-key {
+      margin: 10px 0;
+      line-height: 1.4;
+      font-size: 90%;
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-bottom: 2px;
+      }
+      .dot-red {
+        background: red;
+      }
+      .dot-blue {
+        background: blue;
+      }
+    }
   }
   .col-success {
     padding: 0;
+    position: relative;
     a {
       width: 100%;
       display: inline-block;
@@ -273,6 +292,27 @@
       transition: background ease 0.2s;
       &:hover {
         background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+    .dot-box {
+      top: 0px;
+      right: 0px;
+      position: absolute;
+      background: rgba(255,255,255,0.6);
+      padding: 2px 2px 0 2px;
+      border-radius: 0 0 0 2px;
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .dot-red {
+        background: red;
+      }
+      .dot-blue {
+        background: blue;
       }
     }
   }

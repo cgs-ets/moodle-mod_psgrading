@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A framework for CGS's Primary School assessment grading model.
+ * A framework for CGS's Primary School assessment grading model. Single student overview.
  *
  * @package   mod_psgrading
  * @copyright 2020 Michael Vangelovski

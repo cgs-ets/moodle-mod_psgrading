@@ -96,6 +96,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $criterionjson = $task->get('criterionjson');
     $evidencejson = $task->get('evidencejson');
     $published = $task->get('published');
+    $proposedrelease = $task->get('proposedrelease');
     $notestext = $task->get('notes');
 
     // Course activities that can be selected as evidence.
@@ -116,6 +117,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'criteriondata' => $criteriondata,
             'evidencedata' => $evidencedata,
             'published' => $published,
+            'proposedrelease' => $proposedrelease,
             'enableweights' => $moduleinstance->enableweights,
         ), 
         'post', '', array('data-form' => 'psgrading-task')
@@ -134,12 +136,13 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     // Set the form values.
     $formtask->set_data(
         array(
-            'general' => '',//$edit ? get_string('task:edit', 'mod_psgrading') : get_string('task:create', 'mod_psgrading'),
+            'general' => '',
             'edit' => $edit,
             'taskname' => $taskname,
             'pypuoi' => $pypuoi,
             'outcomes' => $outcomes,
             'published' => $published,
+            'proposedrelease' => $proposedrelease,
             'criterionjson' => $criterionjson,
             'evidencejson' => $evidencejson,
             'notes' => $notes,

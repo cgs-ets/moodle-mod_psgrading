@@ -67,6 +67,7 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
 
         $data->cmid = $this->task->get_moduleid();
         $data->published = 0;
+        $data->proposedrelease = 0;
         $data->timerelease = 0;
 
         // insert the entry record

@@ -88,6 +88,10 @@ class task extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
+            "proposedrelease" => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
             "deleted" => [
                 'type' => PARAM_INT,
                 'default' => 0,
@@ -120,6 +124,7 @@ class task extends persistent {
         $data->pypuoi = $formdata->pypuoi;
         $data->outcomes = $formdata->outcomes;
         $data->published = intval($formdata->published);
+        $data->proposedrelease = intval($formdata->proposedrelease);
         $data->criterionjson = $formdata->criterionjson;
         $data->evidencejson = $formdata->evidencejson;
 
@@ -143,6 +148,7 @@ class task extends persistent {
         $task->set('criterionjson', $data->criterionjson);
         $task->set('evidencejson', $data->evidencejson);
         $task->set('notes', '');
+        $task->set('proposedrelease', $data->proposedrelease);
         if ($editing) {
             // Editing.
             list($released, $countdown) = static::get_release_info($id);
@@ -665,7 +671,6 @@ class task extends persistent {
 
         foreach ($cmtasks as $task) {
             // TODO: Check that the task applies to this user based on setting.
-
             
             $taskexporter = new task_exporter($task, array('userid' => $userid));
             $task = $taskexporter->export($OUTPUT);
@@ -704,6 +709,8 @@ class task extends persistent {
             'grade' => 0,
             'gradelang' => '',
             'detailsurl' => $detailsurl->out(false),
+            'missingcomment' => static::is_missing_comment_engagement($gradeinfo),
+            'missingevidence' => static::is_missing_evidence($gradeinfo, $userid, $task->cmid),
         );
 
         $showgrades = true;
@@ -777,8 +784,9 @@ class task extends persistent {
             }
         }
 
-        // Calculate success.
-        $success = 0;
+        // Final Grades to be average from rubric rather than subject averages.
+        // Calculate success/final grades --> average of task's subject grades.
+        /*$success = 0;
         if (array_sum($subjectgrades)) {
             $successgrades = $subjectgrades;
             // Remove subjects that are zero from the success calculation.
@@ -791,7 +799,25 @@ class task extends persistent {
         $gradelang = utils::GRADELANG[$success];
         $task->success['grade'] = $success;
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
+        $task->success['gradetip'] = $gradelang['tip'];*/
+
+        // Calculate success/final grades --> average of task's criteria grades.
+        $success = 0;
+        $criteriagrades = array();
+        foreach ($gradeinfo->criterions as $criteriongrade) {
+            $criteriagrades[] = $criteriongrade->gradelevel;
+        }
+        if (array_sum($criteriagrades)) {
+            $success = array_sum($criteriagrades)/count($criteriagrades);
+            $success = (int) round($success, 0);
+        }
+        $gradelang = utils::GRADELANG[$success];
+        $task->success['grade'] = $success;
+        $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];
+
+
+
 
         // Get the releasepost
         if ($task->released) {
@@ -811,6 +837,39 @@ class task extends persistent {
         // Ditch some unnecessary data.
         unset($task->criterions);
         return $task;
+    }
+
+    public static function is_missing_comment_engagement($gradeinfo) {
+        if (empty($gradeinfo)) {
+            return true;
+        }
+        if (empty($gradeinfo->engagement) || empty($gradeinfo->comment)) {
+            return true;
+        }
+    }
+
+    public static function is_missing_evidence($gradeinfo, $userid, $cmid) {
+        if (empty($gradeinfo)) {
+            return true;
+        }
+
+        $evidence = static::get_evidences($gradeinfo->taskid);
+        if ($evidence) {
+            return false;
+        }
+
+        $myconnectevidence = static::get_myconnect_grade_evidences($gradeinfo->taskid);
+        if ($myconnectevidence) {
+            return false;
+        }
+
+        $modulecontext = \context_module::instance($cmid);
+        $fs = get_file_storage();
+        $uniqueid = sprintf( "%d%d", $gradeinfo->taskid, $userid ); // Join the taskid and userid to make a unique itemid.
+        $files = $fs->get_area_files($modulecontext->id, 'mod_psgrading', 'evidences', $uniqueid, "filename", false);
+        if ($files) {
+            return false;
+        }
     }
 
     public static function compute_report_grades($tasks) {

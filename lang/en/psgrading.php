@@ -50,11 +50,14 @@ $string['task:evidence'] = 'Evidence';
 $string['task:notes'] = 'Hidden notes';
 $string['task:visibility'] = 'Visibility';
 $string['task:visibledesc'] = 'Make task visible to students and parents.';
+$string['task:proposedrelease'] = 'Proposed release date';
 $string['task:save'] = 'Save';
 $string['task:delete'] = 'Delete';
 $string['task:cancel'] = 'Cancel';
 $string['task:deletetask'] = 'Delete task';
-$string['mark:comment'] = 'Comment';
+
+
+$string['mark:comment'] = 'Comment for {$a}';
 $string['mark:engagement'] = 'Engagement';
 $string['mark:save'] = 'Save and return';
 $string['mark:saveshownext'] = 'Save and show next';

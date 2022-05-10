@@ -91,12 +91,24 @@ class utils {
             'val' => 'VisArts',
         ),
         array (
-            'txt' => 'Language',
-            'val' => 'Language',
+            'txt' => 'Chinese',
+            'val' => 'Chinese',
+        ),
+        array (
+            'txt' => 'Indonesian',
+            'val' => 'Indonesian',
         ),
         array (
             'txt' => 'Music',
             'val' => 'Music',
+        ),
+        array (
+            'txt' => 'Media Arts',
+            'val' => 'Media Arts',
+        ),
+        array (
+            'txt' => 'Drama',
+            'val' => 'Drama',
         ),
     );
 
@@ -810,6 +822,16 @@ class utils {
                      WHERE " . $DB->sql_like('name', ':name') . "
                        AND cmid = :cmid";
             $DB->execute($sql, array('name' => $name, 'cmid' => $cmid));
+
+            // invalidate the course too.
+            if ($name == 'list-%') {
+                $courseid = $DB->get_field('course_modules', 'course', array('id' => $cmid));
+                $sql = "DELETE 
+                          FROM {" . task::TABLE_GRADES_CACHE . "}
+                         WHERE " . $DB->sql_like('name', ':name') . "
+                           AND cmid = :cmid";
+                $DB->execute($sql, array('name' => 'list-course-%', 'cmid' => $courseid));
+            }
         }
     }
 

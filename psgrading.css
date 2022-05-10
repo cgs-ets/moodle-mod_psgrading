@@ -686,8 +686,27 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .col-taskcreatecol a {
   box-shadow: none !important;
 }
+.psgrading-list .col-taskcreatecol .dot-key {
+  margin: 10px 0;
+  line-height: 1.4;
+  font-size: 90%;
+}
+.psgrading-list .col-taskcreatecol .dot-key .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+.psgrading-list .col-taskcreatecol .dot-key .dot-red {
+  background: red;
+}
+.psgrading-list .col-taskcreatecol .dot-key .dot-blue {
+  background: blue;
+}
 .psgrading-list .col-success {
   padding: 0;
+  position: relative;
 }
 .psgrading-list .col-success a {
   width: 100%;
@@ -699,6 +718,27 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .col-success a:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+.psgrading-list .col-success .dot-box {
+  top: 0px;
+  right: 0px;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 2px 0 2px;
+  border-radius: 0 0 0 2px;
+}
+.psgrading-list .col-success .dot-box .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: block;
+  margin-bottom: 2px;
+}
+.psgrading-list .col-success .dot-box .dot-red {
+  background: red;
+}
+.psgrading-list .col-success .dot-box .dot-blue {
+  background: blue;
 }
 .psgrading-list .col-success.dns {
   background-color: #ddd;
@@ -1537,6 +1577,58 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement:not(:last-of-type) {
   padding-bottom: 5px;
 }
+.psgrading-matrix.hover-Drama .column.y-header div.cell-Drama {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Drama .column.y-header div.cell-Drama:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Drama .column.task div.cell-Drama {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Drama .column.task div.cell-Drama:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Drama .column.task.last div.cell-Drama {
+  border-right: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Drama .column.report-grades div.cell-Drama {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Drama .column.report-grades div.cell-Drama:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-MediaArts .column.y-header div.cell-MediaArts {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-MediaArts .column.y-header div.cell-MediaArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-MediaArts .column.task div.cell-MediaArts {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-MediaArts .column.task div.cell-MediaArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-MediaArts .column.task.last div.cell-MediaArts {
+  border-right: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-MediaArts .column.report-grades div.cell-MediaArts {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-MediaArts .column.report-grades div.cell-MediaArts:not(:last-of-type) {
+  padding-bottom: 5px;
+}
 .psgrading-matrix.hover-Music .column.y-header div.cell-Music {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
@@ -1563,30 +1655,56 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-matrix.hover-Music .column.report-grades div.cell-Music:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-Language .column.y-header div.cell-Language {
+.psgrading-matrix.hover-Indonesian .column.y-header div.cell-Indonesian {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-Language .column.y-header div.cell-Language:not(:last-of-type) {
+.psgrading-matrix.hover-Indonesian .column.y-header div.cell-Indonesian:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-Language .column.task div.cell-Language {
+.psgrading-matrix.hover-Indonesian .column.task div.cell-Indonesian {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-Language .column.task div.cell-Language:not(:last-of-type) {
+.psgrading-matrix.hover-Indonesian .column.task div.cell-Indonesian:not(:last-of-type) {
   padding-bottom: 5px;
 }
-.psgrading-matrix.hover-Language .column.task.last div.cell-Language {
+.psgrading-matrix.hover-Indonesian .column.task.last div.cell-Indonesian {
   border-right: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-Language .column.report-grades div.cell-Language {
+.psgrading-matrix.hover-Indonesian .column.report-grades div.cell-Indonesian {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-.psgrading-matrix.hover-Language .column.report-grades div.cell-Language:not(:last-of-type) {
+.psgrading-matrix.hover-Indonesian .column.report-grades div.cell-Indonesian:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Chinese .column.y-header div.cell-Chinese {
+  border-left: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Chinese .column.y-header div.cell-Chinese:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Chinese .column.task div.cell-Chinese {
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Chinese .column.task div.cell-Chinese:not(:last-of-type) {
+  padding-bottom: 5px;
+}
+.psgrading-matrix.hover-Chinese .column.task.last div.cell-Chinese {
+  border-right: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Chinese .column.report-grades div.cell-Chinese {
+  border-top: 1px solid #000 !important;
+  border-right: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+}
+.psgrading-matrix.hover-Chinese .column.report-grades div.cell-Chinese:not(:last-of-type) {
   padding-bottom: 5px;
 }
 .psgrading-matrix.hover-VisArts .column.y-header div.cell-VisArts {

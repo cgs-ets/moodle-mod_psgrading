@@ -44,6 +44,10 @@
             {{^published}}
                 <span title="{{success.gradetip}}" data-toggle="tooltip">{{success.gradelang}}&nbsp;</span>
             {{/published}}
+            <div class="dot-box">
+              {{#success.missingcomment}}<span class="dot dot-red"></span>{{/success.missingcomment}}
+              {{#success.missingevidence}}<span class="dot dot-blue"></span>{{/success.missingevidence}}
+            </div>
         </div>
     {{/tasks}}
 </div>

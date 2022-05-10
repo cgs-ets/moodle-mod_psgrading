@@ -217,5 +217,13 @@ function xmldb_psgrading_upgrade($oldversion) {
       }
     }
 
+    if ($oldversion < 2022050900) {
+        $table = new xmldb_table('psgrading_tasks');
+        $proposedrelease = new xmldb_field('proposedrelease', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null, 'published');
+        if (!$dbman->field_exists($table, $proposedrelease)) {
+            $dbman->add_field($table, $proposedrelease);
+        }
+    }
+
     return true;
 }

@@ -91,6 +91,11 @@ class form_task extends \moodleform {
         $mform->addElement($type, $name, $label, $desc, $options, $values);
 
         /*----------------------
+        *   Proposed release date
+        *----------------------*/
+        $mform->addElement('date_time_selector', 'proposedrelease', get_string('task:proposedrelease', 'mod_psgrading'));
+
+        /*----------------------
          *   Criterion
          *----------------------*/
         // A custom JS driven component.
