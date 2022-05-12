@@ -801,11 +801,15 @@ class task extends persistent {
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];*/
 
+
+
         // Calculate success/final grades --> average of task's criteria grades.
         $success = 0;
         $criteriagrades = array();
         foreach ($gradeinfo->criterions as $criteriongrade) {
-            $criteriagrades[] = $criteriongrade->gradelevel;
+            if ($criteriongrade->gradelevel) {
+                $criteriagrades[] = $criteriongrade->gradelevel;
+            }
         }
         if (array_sum($criteriagrades)) {
             $success = array_sum($criteriagrades)/count($criteriagrades);
