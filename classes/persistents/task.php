@@ -234,38 +234,7 @@ class task extends persistent {
         return $id;
     }
 
-    /*public static function save_draft($formjson) {
-        global $USER, $DB;
 
-        // Some validation.
-        $formdata = json_decode($formjson);
-        if (empty($formdata->id)) {
-            return;
-        }
-
-        $task = new static($formdata->id);
-        $task->set('draftjson', $formjson);
-        $task->save();
-
-        // Only keep latest draft from this user as they are so frequent.
-        $DB->delete_records(static::TABLE_TASK_LOGS, array(
-            'taskid' => $formdata->id,
-            'username' => $USER->username,
-            'status' => 0,
-        ));
-
-        // Add a log entry.
-        $log = new \stdClass();
-        $log->taskid = $formdata->id;
-        $log->username = $USER->username;
-        $log->logtime = $task->get('timemodified');
-        $log->formjson = $formjson;
-        $log->status = 0; // draft log.
-        $DB->insert_record(static::TABLE_TASK_LOGS, $log);
-
-        // Invalidate list html cache.
-        utils::invalidate_cache($task->get('cmid'), 'list-%');
-    }*/
 
     public static function soft_delete($id) {
         global $USER, $DB;
@@ -279,70 +248,6 @@ class task extends persistent {
 
         return 1;
     }
-
-    /*public static function delete_draft($id) {
-        global $USER, $DB;
-
-        $task = new static($id);
-
-        // Task is still a draft - delete it.
-        if (!$task->get('published')) {
-            $task->set('deleted', 1);
-            $task->save();
-        } else {
-            // Task is publised, has no unpublished edits - delete it.
-            if (empty($task->get('draftjson'))) {
-                if (!static::has_grades($id)) {
-                    $task->set('deleted', 1);
-                    $task->save();
-                }
-            } else {
-                // Task is publised, has some unpublished edits - delete the draft edits only.
-                $task->set('draftjson', '');
-                $task->save();
-            }
-        }
-
-        // Invalidate list html cache.
-        utils::invalidate_cache($task->get('cmid'), 'list-%');
-
-        return 1;
-    }*/
-
-    public static function get_for_course($courseid) {
-        global $DB;
-
-        // Get all psgrading instances for this course.
-        $sql = "SELECT id
-                FROM {psgrading}
-                WHERE course = ?";
-        $courseinstances = array_column($DB->get_records_sql($sql, array($courseid)), 'id');
-        if (empty($courseinstances)) {
-            return;
-        }
-
-        // Get the cmids for the mod instances.
-        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
-        list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
-        $sql = "SELECT id
-                  FROM {course_modules}
-                 WHERE course = ?
-                   AND module = ?
-                   AND instance $insql";
-        $params = array($courseid, $moduleid);
-        $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
-        if (empty($cms)) {
-            return;
-        }
-
-        $tasks = [];
-        foreach($cms as $cm) {
-            $tasks = array_merge($tasks, static::get_for_coursemodule($cm->id));
-        }
-
-        return $tasks;
-    }
-
 
     public static function get_for_coursemodule($cmid) {
         global $DB;
@@ -626,10 +531,26 @@ class task extends persistent {
         global $OUTPUT, $DB;
 
         // Get all psgrading instances for this course.
-        $sql = "SELECT id
+        /*$sql = "SELECT id
                 FROM {psgrading}
                 WHERE course = ?";
         $courseinstances = array_column($DB->get_records_sql($sql, array($courseid)), 'id');
+        if (empty($courseinstances)) {
+            return;
+        }*/
+
+        // Get all psgrading instances for this course.
+        $sql = "SELECT id, restrictto
+                FROM {psgrading}
+                WHERE course = ?";
+        $modinstances = $DB->get_records_sql($sql, array($courseid));
+        $courseinstances = array();
+        // Don't include instances that are restricted to specific users.
+        foreach($modinstances as $inst) {
+            if (empty($inst->restrictto)) {
+                $courseinstances[] = $inst->id;
+            }
+        }
         if (empty($courseinstances)) {
             return;
         }

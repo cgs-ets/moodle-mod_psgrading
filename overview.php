@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A framework for CGS's Primary School assessment grading model. Single student overview.
+ * For staff - Overview for a single student in a single ps grading instance.
  *
  * @package   mod_psgrading
  * @copyright 2020 Michael Vangelovski
@@ -69,14 +69,12 @@ $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 
 // Get groups in the course.
-$groups = utils::get_course_groups($course->id);
-// Set a default group.
-//if (empty($groupid)) {
-//    $groupid = $groups[0];
-//    $overviewurl->param('groupid', $groupid);
-//    $PAGE->set_url($overviewurl);
-//}
-
+$groups = [];
+// If there are restrictions do not offer group nav.
+if (!$moduleinstance->restrictto) {
+    // Get groups in the course.
+    $groups = utils::get_course_groups($course->id);
+}
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
     $groupid = intval(utils::get_user_preferences($cm->id, 'mod_psgrading_groupid', 0));
@@ -91,10 +89,10 @@ if (empty($groupid) && $nav != 'all') {
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
-    $students = utils::get_filtered_students($course->id, $userid);
+    $students = utils::get_filtered_students($course->id, $userid, $moduleinstance->restrictto);
 } else {
     // Get by group.
-    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid);
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid, $moduleinstance->restrictto);
 }
 if (empty($students)) {
     redirect($listurl->out(false));

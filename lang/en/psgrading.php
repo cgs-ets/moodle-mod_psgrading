@@ -79,6 +79,7 @@ $string['addevidence'] = 'Select any course activities that form part of this ta
 
 // Settings
 $string['enableweights'] = 'Enable weights';
+$string['restrictto'] = 'Restrict to users (comma-separated usernames)';
 
 // Statuses
 $string['taskvisible'] = 'Task is visible';

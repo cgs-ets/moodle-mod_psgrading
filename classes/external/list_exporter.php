@@ -81,7 +81,6 @@ class list_exporter extends exporter {
             'groups' => 'int[]?',
             'students' => 'int[]?',
             'groupid' => 'int',
-            'tasks' => 'mod_psgrading\persistents\task[]',
         ];
     }
 

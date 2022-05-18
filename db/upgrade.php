@@ -225,5 +225,15 @@ function xmldb_psgrading_upgrade($oldversion) {
         }
     }
 
+    if ($oldversion < 2022051700) {
+        $table = new xmldb_table('psgrading');
+        $restrictto = new xmldb_field('restrictto', XMLDB_TYPE_TEXT, null, null, null, null, null, 'enableweights');
+        if (!$dbman->field_exists($table, $restrictto)) {
+            $dbman->add_field($table, $restrictto);
+        }
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022051700, 'psgrading');
+    }
+
     return true;
 }

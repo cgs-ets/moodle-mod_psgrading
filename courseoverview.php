@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Prints an instance of mod_psgrading.
+ * For staff - shows an overview for the whole course, including all psgrading instances, tasks and students.
  *
  * @package     mod_psgrading
  * @copyright   2021 Michael Vangelovski
@@ -106,14 +106,11 @@ if (empty($students)) {
     exit;
 }
 
-// Get the tasks.
-$taskdata = task::get_for_course($courseid);
 $relateds = array(
     'courseid' => (int) $course->id,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
-	'tasks' => $taskdata,
 );
 $listexporter = new course_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');

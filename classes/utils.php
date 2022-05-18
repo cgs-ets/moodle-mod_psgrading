@@ -436,6 +436,26 @@ class utils {
     }
 
     /**
+     * Helper function to get enrolled students by username.
+     *
+     * @param int $courseid
+     * @return int[]
+     */
+    public static function get_enrolled_students_restricted($courseid, $usernames) {
+        global $DB;
+        $context = \context_course::instance($courseid);
+        // 5 is student.
+        $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
+
+        $filteredusers = array_filter( $users, function( $u ) use($usernames) { 
+            return in_array($u->username, $usernames);
+        });
+
+        return array_map('intval', array_column($filteredusers, 'id'));
+    }
+
+    /**
      * Helper function to get the students enrolled.
      * If this is a non-staff member, filter the list and perform permission check.
      *
@@ -443,10 +463,15 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students($courseid, $accessuserid = 0) {
+    public static function get_filtered_students($courseid, $accessuserid = 0, $restrictto = '') {
         global $USER;
 
-        $students = static::get_enrolled_students($courseid);
+        if ($restrictto) {
+            $students = static::get_enrolled_students_restricted($courseid, explode(',', $restrictto));
+        } else {
+            $students = static::get_enrolled_students($courseid);
+        }
+
 
         $isstaff = static::is_grader();
         if (!$isstaff) {
@@ -465,13 +490,15 @@ class utils {
                 return false;
             });
             $students = array_values($students);
-            // If a specific user is being viewed, ensure that the user being viewed is in the list of students.
-            if (!empty($accessuserid)) {
-                if (!in_array($accessuserid, $students)) {
-                    exit;
-                }
+        }
+
+        // If a specific user is being viewed, ensure that the user being viewed is in the list of students.
+        if (!empty($accessuserid)) {
+            if (!in_array($accessuserid, $students)) {
+                exit;
             }
         }
+
         return $students;
     }
 
@@ -520,10 +547,10 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students_by_group($courseid, $groupid = 0, $accessuserid = 0) {
+    public static function get_filtered_students_by_group($courseid, $groupid = 0, $accessuserid = 0, $restrictto = '') {
         global $DB;
 
-        $students = static::get_filtered_students($courseid, $accessuserid);
+        $students = static::get_filtered_students($courseid, $accessuserid, $restrictto);
 
         $sql = "SELECT DISTINCT gm.userid
                   FROM {groups_members} gm

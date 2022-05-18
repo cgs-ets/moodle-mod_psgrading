@@ -87,8 +87,10 @@ class mod_psgrading_mod_form extends moodleform_mod {
         }
 
         // Custom fields here.
-        $mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
-        $mform->setDefault('enableweights', 0);
+        //$mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
+        //$mform->setDefault('enableweights', 0);
+
+        $mform->addElement('textarea', 'restrictto', get_string("restrictto", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

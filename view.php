@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Prints an instance of mod_psgrading.
+ * For staff - Overview of a single ps grading instance, including only tasks in that instance and all students.
  *
  * @package     mod_psgrading
  * @copyright   2021 Michael Vangelovski
@@ -83,8 +83,12 @@ $PAGE->set_heading(format_string($moduleinstance->name));
 $PAGE->set_context($modulecontext);
 $PAGE->add_body_class('psgrading-overview-page');
 
-// Get groups in the course.
-$groups = utils::get_course_groups($course->id);
+$groups = [];
+// If there are restrictions do not offer group nav.
+if (!$moduleinstance->restrictto) {
+    // Get groups in the course.
+    $groups = utils::get_course_groups($course->id);
+}
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
     // custom pref db as the pref needs to be per cm instance.
@@ -100,10 +104,10 @@ if (empty($groupid) && $nav != 'all') {
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
-    $students = utils::get_filtered_students($course->id);
+    $students = utils::get_filtered_students($course->id, 0, $moduleinstance->restrictto);
 } else {
     // Get by group.
-    $students = utils::get_filtered_students_by_group($course->id, $groupid);
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, 0, $moduleinstance->restrictto);
 }
 if (empty($students)) {
     if ($groupid) {
@@ -117,14 +121,12 @@ if (empty($students)) {
 }
 
 // Get the tasks.
-$taskdata = task::get_for_coursemodule($cm->id);
 $relateds = array(
     'courseid' => (int) $course->id,
     'cmid' => (int) $cm->id,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
-	'tasks' => $taskdata,
 );
 $listexporter = new list_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');

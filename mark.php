@@ -78,9 +78,6 @@ $PAGE->set_url($markurl);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($moduleinstance->name));
 
-// Get groups in the course.
-$groups = utils::get_course_groups($course->id);
-
 // Load existing task.
 $exists = task::record_exists($taskid);
 if ($exists) {
@@ -93,6 +90,13 @@ if ($exists) {
 if (!$exists || $task->get('deleted')) {
     redirect($listurl->out(false));
     exit;
+}
+
+$groups = [];
+// If there are restrictions do not offer group nav.
+if (!$moduleinstance->restrictto) {
+    // Get groups in the course.
+    $groups = utils::get_course_groups($course->id);
 }
 
 // If group is not specified, check if preference is set.
@@ -109,10 +113,10 @@ if (empty($groupid) && $nav != 'all') {
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
-    $students = utils::get_filtered_students($course->id, $userid);
+    $students = utils::get_filtered_students($course->id, $userid, $moduleinstance->restrictto);
 } else {
     // Get by group.
-    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid);
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid, $moduleinstance->restrictto);
 }
 if (empty($students)) {
     redirect($listurl->out(false));
