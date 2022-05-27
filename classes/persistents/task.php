@@ -527,7 +527,7 @@ class task extends persistent {
         return $graderec->id;
     }
 
-    public static function compute_grades_for_course($courseid, $userid, $includehiddentasks, $isstaff) {
+    public static function compute_grades_for_course($courseid, $userid, $includehiddentasks, $isstaff, $reportingperiod = 1) {
         global $OUTPUT, $DB;
 
         // Get all psgrading instances for this course.
@@ -542,8 +542,9 @@ class task extends persistent {
         // Get all psgrading instances for this course.
         $sql = "SELECT id, restrictto
                 FROM {psgrading}
-                WHERE course = ?";
-        $modinstances = $DB->get_records_sql($sql, array($courseid));
+                WHERE course = ?
+                  AND reportingperiod = ?";
+        $modinstances = $DB->get_records_sql($sql, array($courseid, $reportingperiod));
         $courseinstances = array();
         // Don't include instances that are restricted to specific users.
         foreach($modinstances as $inst) {

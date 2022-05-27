@@ -235,5 +235,39 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022051700, 'psgrading');
     }
 
+    if ($oldversion < 2022052001) {
+        $table = new xmldb_table('psgrading');
+        $reportingperiod = new xmldb_field('reportingperiod', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 0, null, 'restrictto');
+        if (!$dbman->field_exists($table, $reportingperiod)) {
+            $dbman->add_field($table, $reportingperiod);
+        }
+        $timelocked = new xmldb_field('timelocked', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null, 'reportingperiod');
+        if (!$dbman->field_exists($table, $timelocked)) {
+            $dbman->add_field($table, $timelocked);
+        }
+
+        // Add fileyear, reporting period. Remove psgradingid, externalreportid.
+        $table = new xmldb_table('psgrading_gradesync');
+        $fileyear = new xmldb_field('fileyear', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 0, null, 'grade');
+        if (!$dbman->field_exists($table, $fileyear)) {
+            $dbman->add_field($table, $fileyear);
+        }
+        $reportingperiod = new xmldb_field('reportingperiod', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 0, null, 'fileyear');
+        if (!$dbman->field_exists($table, $reportingperiod)) {
+            $dbman->add_field($table, $reportingperiod);
+        }
+        $psgradingid = new xmldb_field('psgradingid');
+        if ($dbman->field_exists($table, $psgradingid)) {
+            $dbman->drop_field($table, $psgradingid);
+        }
+        $externalreportid = new xmldb_field('externalreportid');
+        if ($dbman->field_exists($table, $externalreportid)) {
+            $dbman->drop_field($table, $externalreportid);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022052000, 'psgrading');
+    }
+
     return true;
 }

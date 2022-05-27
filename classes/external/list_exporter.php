@@ -81,6 +81,7 @@ class list_exporter extends exporter {
             'groups' => 'int[]?',
             'students' => 'int[]?',
             'groupid' => 'int',
+            'moduleinstance' => 'stdClass',
         ];
     }
 
@@ -140,6 +141,7 @@ class list_exporter extends exporter {
             $courseoverviewurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
                 'courseid' => $this->related['courseid'],
                 'groupid' => $this->related['groupid'],
+                'reporting' => $this->related['moduleinstance']->reportingperiod,
             ));
 
             // Add psgrading instance titles above tasks.

@@ -33,6 +33,7 @@ use mod_psgrading\utils;
 $courseid = optional_param('courseid', 0, PARAM_INT);
 
 // Custom params.
+$reporting = optional_param('reporting', 1, PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
 $refresh = optional_param('refresh', 0, PARAM_INT);
@@ -56,15 +57,10 @@ if (!$isstaff) {
 
 $courseoverviewurl = new moodle_url('/mod/psgrading/courseoverview.php', array(
     'courseid' => $course->id,
+    'reporting' => $reporting,
     'groupid' => $groupid,
     'nav' => $nav,
 ));
-
-if ($refresh) {
-    utils::invalidate_cache($courseid, 'list-course-' . $groupid);
-	redirect($courseoverviewurl->out(false));
-	exit;
-}
 
 $PAGE->set_url($courseoverviewurl);
 $title = format_string($course->fullname) . ' Grading Overview';
@@ -85,6 +81,12 @@ if (empty($groupid) && $nav != 'all') {
     }
 } else {
     utils::set_user_preference($courseid, 'mod_psgrading_course_groupid', $groupid);
+}
+
+if ($refresh) {
+    utils::invalidate_cache($courseid, 'list-course-' . $reporting . '-' . $groupid);
+	redirect($courseoverviewurl->out(false));
+	exit;
 }
 
 // Get the students in the course.
@@ -108,6 +110,7 @@ if (empty($students)) {
 
 $relateds = array(
     'courseid' => (int) $course->id,
+    'reportingperiod' => $reporting,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
@@ -115,6 +118,8 @@ $relateds = array(
 $listexporter = new course_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $listexporter->export($output);
+
+//echo "<pre>"; var_export($data); exit; 
 
 // Add css and vendor js.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));

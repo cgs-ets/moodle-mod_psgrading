@@ -31,6 +31,7 @@ $string['modulename'] = 'Primary School Grading';
 $string['modulenameplural'] = 'Primary School Grading';
 $string['modform:name'] = 'Name';
 $string['modform:name_help'] = 'Name for the PS Grading system';
+
 $string['pluginadministration'] = '';
 //$string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\' is allowed per course.';
 $string['cron_grade_release'] = 'PS Grading grade release processing.';
@@ -80,6 +81,7 @@ $string['addevidence'] = 'Select any course activities that form part of this ta
 // Settings
 $string['enableweights'] = 'Enable weights';
 $string['restrictto'] = 'Restrict to users (comma-separated usernames)';
+$string['reportingperiod'] = 'Reporting Period';
 
 // Statuses
 $string['taskvisible'] = 'Task is visible';

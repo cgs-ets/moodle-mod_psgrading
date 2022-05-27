@@ -49,6 +49,11 @@ class course_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportingperiods' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
             'groups' => [
                 'type' => PARAM_RAW,
                 'multiple' => true,
@@ -80,6 +85,7 @@ class course_exporter extends exporter {
             'groups' => 'int[]?',
             'students' => 'int[]?',
             'groupid' => 'int',
+            'reportingperiod' => 'int',
         ];
     }
 
@@ -92,10 +98,12 @@ class course_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $DB;
 
-        // Group navigation. 
         $baseurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
-            'courseid' => $this->related['courseid']
+            'courseid' => $this->related['courseid'],
+            'reporting' => $this->related['reportingperiod'],
         ));
+
+        // Group navigation. 
         $groups = array();
         foreach ($this->related['groups'] as $i => $groupid) {
             $group = utils::get_group_display_info($groupid);
@@ -108,14 +116,30 @@ class course_exporter extends exporter {
             }
             $groups[] = $group;
         }
+
+        // Reporting period navigation. 
+        $rps = array();
+        for ($i = 1; $i <= 2; $i++) {
+            $rp = new \stdClass();
+            $rp->value = $rp->name = $i;
+            $rp->viewurl = clone($baseurl);
+            $rp->viewurl->param('reporting', $i);
+            $rp->viewurl = $rp->viewurl->out(false); // Replace viewurl with string val.
+            $rp->iscurrent = false;
+            if ($this->related['reportingperiod'] == $i) {
+                $rp->iscurrent = true;
+            }
+            $rps[] = $rp;
+        }
+
         $basenavurl = clone($baseurl);
         $basenavurl->param('groupid', 0);
+        $basenavurl->param('reporting', $this->related['reportingperiod']);
         $basenavurl->param('nav', 'all');
-
 
         // Check if there is a cached version of the student rows.
         $listhtml = null;
-        $cache = utils::get_cache($this->related['courseid'], 'list-course-' . $this->related['groupid']);
+        $cache = utils::get_cache($this->related['courseid'], 'list-course-' . $this->related['reportingperiod'] . '-' . $this->related['groupid']);
         if ($cache) {
             $listhtml = $cache->value;
         } else {
@@ -127,6 +151,7 @@ class course_exporter extends exporter {
                     'userid' => $studentid,
                     'isstaff' => true, // Only staff can view the class list page.
                     'includehiddentasks' => true,
+                    'reportingperiod' => $this->related['reportingperiod'],
                 );
                 $gradeexporter = new grade_exporter(null, $relateds);
                 $gradedata = $gradeexporter->export($output);
@@ -135,7 +160,7 @@ class course_exporter extends exporter {
 
             // Add psgrading instance titles above tasks.
             $cms = array();
-            if (!empty($studentoverviews)) {
+            if ( !empty($studentoverviews) && !empty($studentoverviews[0]->tasks) ) {
                 $processingcmid = 0;
                 $width = 0;
                 foreach($studentoverviews[0]->tasks as $task) {
@@ -199,12 +224,13 @@ class course_exporter extends exporter {
                 //'courseoverviewurl' => '', // Not needed because we are already in the course overview.
             ));
             if ($listhtml) {
-                utils::save_cache($this->related['courseid'], 'list-course-' . $this->related['groupid'], $listhtml);
+                utils::save_cache($this->related['courseid'], 'list-course-' . $this->related['reportingperiod'] . '-' . $this->related['groupid'], $listhtml);
             }
         }
 
         return array(
             'listhtml' => $listhtml,
+            'reportingperiods' => $rps,
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),

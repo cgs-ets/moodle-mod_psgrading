@@ -127,6 +127,7 @@ $relateds = array(
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
+    'moduleinstance' => $moduleinstance,
 );
 $listexporter = new list_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
@@ -140,7 +141,7 @@ $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.
 
 $output = $OUTPUT->header();
 
-// Render the announcement list.
+// Render the overview list.
 $output .= $OUTPUT->render_from_template('mod_psgrading/list', $data);
 
 // Add scripts.

@@ -35,6 +35,16 @@
         </select>
     {{/groups.1}}
 </div>
+{{#reportingperiods.1}}
+<div class="reportingperiod-selector">
+    <span>{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+    <select class="reportingperiod-select form-control">
+        {{#reportingperiods}}
+            <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+        {{/reportingperiods}}
+    </select>
+</div>
+{{/reportingperiods.1}}
 <div class="psgrading-list dragscroll">
   <div class="top-buttons">
     <a class="btn-fullscreen" href="#"><i class="fa fa-window-maximize" aria-hidden="true"></i></a>

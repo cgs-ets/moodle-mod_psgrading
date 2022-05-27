@@ -66,14 +66,23 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
         self.checkCountdowns();
 
+        // Change reporting period.
+        self.rootel.on('change', '.reportingperiod-select', function(e) {
+          var select = $(this);
+          var url = select.find(':selected').data('viewurl');
+          if (url) {
+              window.location.replace(url);
+          }
+        });
+
         // Change group.
         self.rootel.on('change', '.group-select', function(e) {
-            var select = $(this);
-            var url = select.find(':selected').data('viewurl');
-            if (url) {
-                window.location.replace(url);
-            }
-        });
+          var select = $(this);
+          var url = select.find(':selected').data('viewurl');
+          if (url) {
+              window.location.replace(url);
+          }
+      });
 
         // Release.
         self.rootel.on('click', '.action-release', function(e) {

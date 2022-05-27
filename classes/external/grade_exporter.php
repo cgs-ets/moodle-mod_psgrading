@@ -76,6 +76,7 @@ class grade_exporter extends exporter {
             'userid' => 'int',
             'isstaff' => 'bool',
             'includehiddentasks' => 'bool?',
+            'reportingperiod' => 'int?',
         ];
     }
 
@@ -96,13 +97,24 @@ class grade_exporter extends exporter {
 
         // Grade calculations can be done for a single instance of the psgrading activity, or it can look across multiple instances within a course.
         if ($this->related['cmid']) {
-            $tasks = task::compute_grades_for_cm($this->related['cmid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
+            $tasks = task::compute_grades_for_cm(
+                $this->related['cmid'], 
+                $this->related['userid'], 
+                $this->related['includehiddentasks'], 
+                $this->related['isstaff']
+            );
             $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
                 'cmid' => $this->related['cmid'],
                 'userid' => $this->related['userid'],
             ));
         } else if ($this->related['courseid']) {
-            $tasks = task::compute_grades_for_course($this->related['courseid'], $this->related['userid'], $this->related['includehiddentasks'], $this->related['isstaff']);
+            $tasks = task::compute_grades_for_course(
+                $this->related['courseid'], 
+                $this->related['userid'], 
+                $this->related['includehiddentasks'], 
+                $this->related['isstaff'],
+                $this->related['reportingperiod'],
+            );
             $overviewurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
                 'courseid' => $this->related['courseid'],
                 'userid' => $this->related['userid'],
@@ -115,9 +127,11 @@ class grade_exporter extends exporter {
         $currstudent->iscurrent = true;
         $currstudent->overviewurl = $overviewurl->out(false); // Replace overviewurl with string val.
 
-        $index = count( $tasks ) - 1;
-        if (isset($tasks[$index])) {
-            $tasks[$index]->islast = true;
+        if ($tasks) {
+            $index = count( $tasks ) - 1;
+            if (isset($tasks[$index])) {
+                $tasks[$index]->islast = true;
+            }
         }
 
         $reportgrades = array();

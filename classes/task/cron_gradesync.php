@@ -86,9 +86,18 @@ class cron_gradesync extends \core\task\scheduled_task {
                        AND (enddate = 0 OR enddate > ?)";
             $params = array($coursewithinstance->course, time());
             if ($course = $DB->get_record_sql($sql, $params)) {
-                $this->log("Creating adhoc gradesync task for $course->fullname ($course->id)", 1);
+                // Reporting period 1.
+                $this->log("Creating adhoc gradesync task for $course->fullname ($course->id) for reporting period 1", 1);
                 $task = new \mod_psgrading\task\adhoc_gradesync();
-                $task->set_custom_data($course->id);
+                $task->set_custom_data(array($course->id, 1));
+                $task->set_component('mod_psgrading');
+                \core\task\manager::queue_adhoc_task($task);
+
+
+                // Reporting period 2.
+                $this->log("Creating adhoc gradesync task for $course->fullname ($course->id) for reporting period 2", 1);
+                $task = new \mod_psgrading\task\adhoc_gradesync();
+                $task->set_custom_data(array($course->id, 2));
                 $task->set_component('mod_psgrading');
                 \core\task\manager::queue_adhoc_task($task);
             }

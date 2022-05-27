@@ -68,6 +68,21 @@
 .path-mod-psgrading .selected-student {
   float: left;
 }
+.path-mod-psgrading .reportingperiod-selector {
+  right: 310px;
+  position: absolute;
+  top: -70px;
+  width: 171px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.path-mod-psgrading .reportingperiod-selector span {
+  font-size: 85%;
+}
+.path-mod-psgrading .reportingperiod-selector select {
+  width: auto;
+}
 .path-mod-psgrading .task-selector,
 .path-mod-psgrading .group-selector {
   position: absolute;

@@ -40,6 +40,11 @@ class adhoc_gradesync extends \core\task\adhoc_task {
     protected $courseid = null;
 
     /**
+     * @var stdClass The reporting period.
+     */
+    protected $reportingperiod = null;
+
+    /**
      * @var array Existing staged grades.
      */
     protected $existinggrades = array();
@@ -74,7 +79,9 @@ class adhoc_gradesync extends \core\task\adhoc_task {
     public function execute() {
         global $DB;
 
-        $this->courseid = $this->get_custom_data();
+        $data = $this->get_custom_data();
+        $this->courseid = $data[0];
+        $this->reportingperiod = $data[1];
         $this->log_start("Processing grade sync for course {$this->courseid}");
 
         $course = $DB->get_record('course', array('id' => $this->courseid));
@@ -113,11 +120,13 @@ class adhoc_gradesync extends \core\task\adhoc_task {
 
         $sql = "SELECT *
                   FROM {psgrading_gradesync}
-                 WHERE courseid = ?";
-        $grades = $DB->get_records_sql($sql, array('id' => $this->courseid));
+                 WHERE courseid = ?
+                   AND reportingperiod = ?";
+        $grades = $DB->get_records_sql($sql, array($this->courseid, $this->reportingperiod));
         foreach ($grades as $grade) {
-            $key = $grade->courseid . '-' . $grade->subject  . '-' . $grade->username;
-            $this->log("Caching existing staged grades {$grade->psgradingid}/{$grade->subject} for {$grade->username}", 2);
+            //$key = $grade->fileyear . '' . $grade->courseid . '-' . $grade->subject  . '-' . $grade->username;
+            $key = "{$grade->fileyear}-{$grade->reportingperiod}-{$grade->courseid}-{$grade->subject}-{$grade->username}";
+            $this->log("Caching existing staged grades {$grade->fileyear}/{$grade->reportingperiod}/{$grade->subject} for {$grade->username}", 2);
             $this->existinggrades[$key] = $grade;
         }
     }
@@ -136,6 +145,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             'userid' => $studentid,
             'isstaff' => true, // Only staff can view the report grades.
             'includehiddentasks' => true,
+            'reportingperiod' => (int) $this->reportingperiod,
         );
         $gradeexporter = new grade_exporter(null, $relateds);
         $output = $PAGE->get_renderer('core');
@@ -148,7 +158,9 @@ class adhoc_gradesync extends \core\task\adhoc_task {
 
         foreach($gradedata->reportgrades as $reportgrade) {
             $reportgrade = (object) $reportgrade;
-            $key = $this->courseid . '-' . $reportgrade->subjectsanitised  . '-' . $username;
+            $fileyear = date("Y");
+            //$key = $this->courseid . '-' . $reportgrade->subjectsanitised  . '-' . $username;
+            $key = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$reportgrade->subjectsanitised}-{$username}";
             $grade = $reportgrade->subjectsanitised == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
             if (empty($grade)) {
                 $this->log("Grade empty for course id {$this->courseid} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
@@ -158,8 +170,8 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             $gradeobj = new \stdClass();
             $gradeobj->courseid = $this->courseid;
             $gradeobj->username	= $username;
-            $gradeobj->psgradingid = 0; // The grade does not relate to a single psgrading instance as they are calculated across multiple.
-            $gradeobj->externalreportid = 0;
+            $gradeobj->fileyear = $fileyear;
+            $gradeobj->reportingperiod = (int) $this->reportingperiod;
             $gradeobj->subject = strtolower($reportgrade->subjectsanitised);
             $gradeobj->grade = $grade;
             $this->grades[$key] = $gradeobj;
@@ -177,7 +189,9 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         foreach ($this->grades as $key => $grade) {
             // Check if the grade already staged.
             $params = array(
-                'psgradingid' => $grade->psgradingid,
+                'fileyear' => $grade->fileyear,
+                'reportingperiod' => $grade->reportingperiod,
+                'courseid' => $grade->courseid,
                 'subject' => $grade->subject,
                 'username' => $grade->username,
             );
@@ -185,11 +199,11 @@ class adhoc_gradesync extends \core\task\adhoc_task {
                 // Update the existing record.
                 $grade->id = $stagedgrade->id;
                 $DB->update_record('psgrading_gradesync', $grade);
-                $this->log("Updated grade {$grade->psgradingid}/{$grade->subject} for {$grade->username}", 2);
+                $this->log("Updated grade {$grade->fileyear}/{$grade->reportingperiod}/{$grade->subject} for {$grade->username}", 2);
             } else {
                 // Insert a new grade.
                 $DB->insert_record('psgrading_gradesync', $grade);
-                $this->log("Inserted grade {$grade->psgradingid}/{$grade->subject} for {$grade->username}", 2);
+                $this->log("Inserted grade {$grade->fileyear}/{$grade->reportingperiod}/{$grade->subject} for {$grade->username}", 2);
             }
             unset($this->existinggrades[$key]);
         }
@@ -205,7 +219,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         foreach ($this->existinggrades as $grade) {
             if ($grade->id) {
                 $DB->delete_records('psgrading_gradesync', array('id' => $grade->id));
-                $this->log("Deleted old grade {$grade->psgradingid}/{$grade->subject} for {$grade->username}", 2);
+                $this->log("Deleted old grade {$grade->fileyear}/{$grade->reportingperiod}/{$grade->subject} for {$grade->username}", 2);
             }
         }
     }

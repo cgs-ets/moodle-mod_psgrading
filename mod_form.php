@@ -87,9 +87,21 @@ class mod_psgrading_mod_form extends moodleform_mod {
         }
 
         // Custom fields here.
+
+        // Enable weights
         //$mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
         //$mform->setDefault('enableweights', 0);
 
+        // Reporting period
+        $options = array(
+            '1' => 1,
+            '2' => 2,
+        );
+        $select = $mform->addElement('select', 'reportingperiod', get_string('reportingperiod', 'mod_psgrading'), $options);
+        $select->setSelected(1);
+        $mform->addRule('reportingperiod', null, 'required', null, 'client');
+
+        // Restrict to specific students
         $mform->addElement('textarea', 'restrictto', get_string("restrictto", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
 
         // Add standard elements.
