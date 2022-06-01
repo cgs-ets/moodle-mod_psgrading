@@ -79,6 +79,12 @@ $formdata = $formtask->get_data();
 
 // Check whether loading page or submitting page.
 if (empty($formdata)) { // loading page for edit (not submitted).
+    
+    // Check if PS Grading activity is locked.
+    if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
+        $message = get_string('activitylocked', 'mod_psgrading');
+        \core\notification::error($message);
+    }
 
     // Export the task.
     $taskexporter = new task_exporter($task);
@@ -153,13 +159,22 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $formdata = $formtask->get_data();
 
 } else {
-    // Invalidate list html cache.
-    utils::invalidate_cache($cm->id, 'list-%');
 
     if ($formdata->action == 'cancel') {
         redirect($listurl->out());
         exit;
     }
+
+    // Check whether activity is locked.
+    if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
+        $message = get_string('activitylocked', 'mod_psgrading');
+        \core\notification::error($message);
+        redirect($listurl->out());
+        exit;
+    }
+
+    // Invalidate list html cache.
+    utils::invalidate_cache($cm->id, 'list-%');
 
     if ($formdata->action == 'delete') {
         task::soft_delete($edit);
@@ -173,7 +188,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             $notice = get_string("task:savesuccess", "mod_psgrading");
             redirect(
                 $listurl->out(),
-                '<p>'.$notice.'</p>',
+                $notice,
                 null,
                 \core\output\notification::NOTIFY_SUCCESS
             );
@@ -181,7 +196,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             $notice = get_string("task:savefail", "mod_psgrading");
             redirect(
                 $listurl->out(),
-                '<p>'.$notice.'</p>',
+                $notice,
                 null,
                 \core\output\notification::NOTIFY_ERROR
             );

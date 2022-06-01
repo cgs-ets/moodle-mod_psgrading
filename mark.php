@@ -92,6 +92,12 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
+// Check if PS Grading activity is locked.
+if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
+    $message = get_string('activitylocked', 'mod_psgrading');
+    \core\notification::error($message);
+}
+
 $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {

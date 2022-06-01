@@ -72,6 +72,7 @@ $string['mark:dns'] = 'DNS';
 $string['mark:replacegrader'] = '<b>{$a}</b> will appear as the grader when this grade is released. Tick this option to become the grader. Leave this option unticked to keep the current grader.';
 
 $string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
+$string['activitylocked'] = 'The reporting period for this is over and the grading actiity has been locked. Changes to tasks and grades will not be saved.';
 
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['overview'] = 'Student overview';
