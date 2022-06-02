@@ -54,6 +54,17 @@
                 <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             </div>
         {{/students.1}}
+
+        {{#reportingperiods.1}}
+        <div class="reportingperiod-selector">
+            <span>{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+            <select class="reportingperiod-select form-control">
+                {{#reportingperiods}}
+                    <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+                {{/reportingperiods}}
+            </select>
+        </div>
+        {{/reportingperiods.1}}
         
     </div>
     <div class="contents-wrap {{#viewas}}is-viewas{{/viewas}}">

@@ -94,6 +94,11 @@ class overview_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportingperiods' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -114,6 +119,7 @@ class overview_exporter extends exporter {
             'groupid' => 'int',
             'isstaff' => 'bool',
             'includehiddentasks' => 'bool?',
+            'reportingperiod' => 'int',
         ];
     }
 
@@ -133,6 +139,7 @@ class overview_exporter extends exporter {
         $relateds = array(
             'userid' => $this->related['userid'],
             'isstaff' => $this->related['isstaff'],
+            'reportingperiod' => $this->related['reportingperiod'],
         );
         if ($this->related['cmid']) {
             $relateds['cmid'] = $this->related['cmid'];
@@ -213,6 +220,21 @@ class overview_exporter extends exporter {
         $basenavurl->param('groupid', 0);
         $basenavurl->param('nav', 'all'); 
 
+        // Reporting period navigation. 
+        $rps = array();
+        for ($i = 1; $i <= 2; $i++) {
+            $rp = new \stdClass();
+            $rp->value = $rp->name = $i;
+            $rp->viewurl = clone($baseurl);
+            $rp->viewurl->param('reporting', $i);
+            $rp->viewurl = $rp->viewurl->out(false); // Replace viewurl with string val.
+            $rp->iscurrent = false;
+            if ($this->related['reportingperiod'] == $i) {
+                $rp->iscurrent = true;
+            }
+            $rps[] = $rp;
+        }
+
         $out = array(
             'tasks' => $tasks,
             'reportgrades' => $reportgrades,
@@ -224,6 +246,7 @@ class overview_exporter extends exporter {
             'nextstudenturl' => $nextstudenturl,
             'prevstudenturl' => $prevstudenturl,
             'isstaff' => $this->related['isstaff'],
+            'reportingperiods' => $rps,
         );
         return $out;
     }

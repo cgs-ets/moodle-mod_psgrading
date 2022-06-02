@@ -65,6 +65,15 @@ define(['jquery', 'core/log', 'core/ajax'],
     Overview.prototype.main = function () {
         var self = this;
 
+        // Change reporting period.
+        self.rootel.on('change', '.reportingperiod-select', function(e) {
+          var select = $(this);
+          var url = select.find(':selected').data('viewurl');
+          if (url) {
+              window.location.replace(url);
+          }
+        });
+
         // Change group.
         self.rootel.on('change', '.group-select', function(e) {
             var select = $(this);

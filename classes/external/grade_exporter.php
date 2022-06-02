@@ -94,6 +94,10 @@ class grade_exporter extends exporter {
             'reportgrades' => null,
             'currstudent' => null,
         );
+        $reportingperiod = 1;
+        if ($this->related['reportingperiod']) {
+            $reportingperiod = $this->related['reportingperiod'];
+        }
 
         // Grade calculations can be done for a single instance of the psgrading activity, or it can look across multiple instances within a course.
         if ($this->related['cmid']) {
@@ -113,7 +117,7 @@ class grade_exporter extends exporter {
                 $this->related['userid'], 
                 $this->related['includehiddentasks'], 
                 $this->related['isstaff'],
-                $this->related['reportingperiod'],
+                $reportingperiod,
             );
             $overviewurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
                 'courseid' => $this->related['courseid'],
