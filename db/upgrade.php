@@ -266,7 +266,7 @@ function xmldb_psgrading_upgrade($oldversion) {
         }
 
         // Psgrading savepoint reached.
-        upgrade_mod_savepoint(true, 2022052000, 'psgrading');
+        upgrade_mod_savepoint(true, 2022052001, 'psgrading');
     }
 
     return true;
