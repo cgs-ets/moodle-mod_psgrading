@@ -37,6 +37,7 @@ $groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
 $viewas = optional_param('viewas', '', PARAM_RAW);
+$reporting = optional_param('reporting', 1, PARAM_INT);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
@@ -57,6 +58,7 @@ $overviewurl = new moodle_url('/mod/psgrading/overview.php', array(
     'groupid' => $groupid,
     'userid' => $userid,
     'nav' => $nav,
+    'reporting' => $reporting,
 ));
 $listurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,
@@ -114,6 +116,7 @@ $relateds = array(
     'userid' => $userid,
     'groupid' => $groupid,
     'isstaff' => $viewas ? false : utils::is_grader(),
+    'reportingperiod' => $reporting,
 );
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
