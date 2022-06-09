@@ -146,7 +146,6 @@ class overview_exporter extends exporter {
             $baseurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
                 'courseid' => $this->related['courseid'],
                 'userid' => $this->related['userid'],
-                'reportingperiod' => $this->related['reportingperiod'],
             ));
             $relateds['courseid'] = $this->related['courseid'];
             $relateds['reportingperiod'] = $this->related['reportingperiod'];
