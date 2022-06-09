@@ -221,19 +221,23 @@ class overview_exporter extends exporter {
         $basenavurl->param('groupid', 0);
         $basenavurl->param('nav', 'all'); 
 
-        // Reporting period navigation. 
+        // Reporting period navigation.
         $rps = array();
-        for ($i = 1; $i <= 2; $i++) {
-            $rp = new \stdClass();
-            $rp->value = $rp->name = $i;
-            $rp->viewurl = clone($baseurl);
-            $rp->viewurl->param('reporting', $i);
-            $rp->viewurl = $rp->viewurl->out(false); // Replace viewurl with string val.
-            $rp->iscurrent = false;
-            if ($this->related['reportingperiod'] == $i) {
-                $rp->iscurrent = true;
+        if ($this->related['cmid']) {
+            // Specific instance in view, no need for reporting period navigation.
+        } else {
+            for ($i = 1; $i <= 2; $i++) {
+                $rp = new \stdClass();
+                $rp->value = $rp->name = $i;
+                $rp->viewurl = clone($baseurl);
+                $rp->viewurl->param('reporting', $i);
+                $rp->viewurl = $rp->viewurl->out(false); // Replace viewurl with string val.
+                $rp->iscurrent = false;
+                if ($this->related['reportingperiod'] == $i) {
+                    $rp->iscurrent = true;
+                }
+                $rps[] = $rp;
             }
-            $rps[] = $rp;
         }
 
         $out = array(
