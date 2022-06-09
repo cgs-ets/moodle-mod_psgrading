@@ -119,7 +119,7 @@ class overview_exporter extends exporter {
             'groupid' => 'int',
             'isstaff' => 'bool',
             'includehiddentasks' => 'bool?',
-            'reportingperiod' => 'int',
+            'reportingperiod' => 'int?',
         ];
     }
 
@@ -135,12 +135,10 @@ class overview_exporter extends exporter {
         $baseurl = new \moodle_url('/mod/psgrading/overview.php', array(
             'cmid' => $this->related['cmid'],
             'userid' => $this->related['userid'],
-            'reporting' => $this->related['reportingperiod'],
         ));
         $relateds = array(
             'userid' => $this->related['userid'],
             'isstaff' => $this->related['isstaff'],
-            'reportingperiod' => $this->related['reportingperiod'],
         );
         if ($this->related['cmid']) {
             $relateds['cmid'] = $this->related['cmid'];
@@ -148,8 +146,10 @@ class overview_exporter extends exporter {
             $baseurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
                 'courseid' => $this->related['courseid'],
                 'userid' => $this->related['userid'],
+                'reportingperiod' => $this->related['reportingperiod'],
             ));
             $relateds['courseid'] = $this->related['courseid'];
+            $relateds['reportingperiod'] = $this->related['reportingperiod'];
         }
 
         $gradeexporter = new grade_exporter(null, $relateds);
