@@ -200,14 +200,28 @@ if (empty($formdata)) {
     }
 
 } else {
-    // Add some goodies to the submitted data.
-    $formdata->taskid = $taskid;
-    $formdata->userid = $userid;
-    $formdata->didnotsubmit = isset($formdata->didnotsubmit) ? 1 : 0;
-    $formdata->replacegrader = isset($formdata->replacegrader) ? 1 : 0;
+    
+    if ($formdata->action == 'cancel') {
+        redirect($listurl->out(false));
+        exit;
+    }
+
+    // Check whether activity is locked.
+    if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
+        $message = get_string('activitylocked', 'mod_psgrading');
+        \core\notification::error($message);
+        redirect($listurl->out());
+        exit;
+    }
 
     // The form was submitted.
     if ($formdata->action == 'save' || $formdata->action == 'saveshownext') {
+        // Add some goodies to the submitted data.
+        $formdata->taskid = $taskid;
+        $formdata->userid = $userid;
+        $formdata->didnotsubmit = isset($formdata->didnotsubmit) ? 1 : 0;
+        $formdata->replacegrader = isset($formdata->replacegrader) ? 1 : 0;
+
         $result = task::save_task_grades_for_student($formdata);
         if ($result) {
             $redirecturl = $data->currstudent->overviewurl;;
@@ -231,21 +245,6 @@ if (empty($formdata)) {
             );
         }
     }
-
-    if ($formdata->action == 'cancel') {
-        redirect($listurl->out(false));
-    }
-
-    /*if ($formdata->action == 'reset') {
-        task::reset_task_grades_for_student($formdata);
-        $notice = get_string("mark:resetsuccess", "mod_psgrading", $data->currstudent->fullname);
-        redirect(
-            $markurl->out(),
-            $notice,
-            null,
-            \core\output\notification::NOTIFY_SUCCESS
-        );
-    }*/
     
 }
 
