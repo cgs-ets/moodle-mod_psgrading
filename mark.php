@@ -92,12 +92,6 @@ if (!$exists || $task->get('deleted')) {
     exit;
 }
 
-// Check if PS Grading activity is locked.
-if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
-    $message = get_string('activitylocked', 'mod_psgrading');
-    \core\notification::error($message);
-}
-
 $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
@@ -173,6 +167,13 @@ $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl
 $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
 $formdata = $formmark->get_data();
 if (empty($formdata)) {
+
+    // Check if PS Grading activity is locked.
+    if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
+        $message = get_string('activitylocked', 'mod_psgrading');
+        \core\notification::error($message);
+    }
+
     // Editing (not submitted).
     // Set up draft evidences file manager.
     $draftevidence = file_get_submitted_draft_itemid('evidences');
