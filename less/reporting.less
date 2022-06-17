@@ -1,0 +1,50 @@
+.psgrading-reporting {
+
+	.reporting-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 5px;
+    padding: 10px;
+  }
+  .reporting-row:nth-child(even) {background: #FFF}
+  .reporting-row:nth-child(odd) {background: #F2F4F6}
+  .student-info {
+    white-space: nowrap;
+    margin-right: 15px;
+  }
+  .report-element {
+    padding: 3px 10px;
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: 7px;
+    background-color: #fff;
+    border-radius: 1px;
+    text-decoration: none;
+    border: 2px solid blue;
+    color: #FFF;
+    background: cornflowerblue;
+  }
+  .report-element[data-grade="1"] {
+    background-color: #D90617;
+    border-color: #D90617;
+  }
+  .report-element[data-grade="2"] {
+    background-color: #F97D01;
+    border-color: #F97D01;
+    color: #000;
+  }
+  .report-element[data-grade="3"] {
+    background-color: #FFDB00;
+    border-color: #FFDB00;
+    color: #000;
+  }
+  .report-element[data-grade="4"] {
+    background-color: #6BB82E;
+    border-color: #6BB82E;
+    color: #000;
+  }
+  .report-element[data-grade="5"] {
+    background-color: #00812F;
+    border-color: #00812F;
+  }
+}

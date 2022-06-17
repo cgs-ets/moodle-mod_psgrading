@@ -27,5 +27,21 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
 
+	$options = array('', "mysqli", "oci", "pdo", "pgsql", "sqlite3", "sqlsrv");
+    $options = array_combine($options, $options);
+    $settings->add(new admin_setting_configselect(
+        'mod_psgrading/dbtype', 
+        get_string('dbtype', 'mod_psgrading'), 
+        get_string('dbtype_desc', 'mod_psgrading'), 
+        '', 
+        $options
+    ));
+    $settings->add(new admin_setting_configtext('mod_psgrading/dbhost', get_string('dbhost', 'mod_psgrading'), get_string('dbhost_desc', 'mod_psgrading'), 'localhost'));
+    $settings->add(new admin_setting_configtext('mod_psgrading/dbuser', get_string('dbuser', 'mod_psgrading'), '', ''));
+    $settings->add(new admin_setting_configpasswordunmask('mod_psgrading/dbpass', get_string('dbpass', 'mod_psgrading'), '', ''));
+    $settings->add(new admin_setting_configtext('mod_psgrading/dbname', get_string('dbname', 'mod_psgrading'), '', ''));
+    $settings->add(new admin_setting_configtext('mod_psgrading/staffclassessql', get_string('staffclassessql', 'mod_psgrading'), '', ''));
+    $settings->add(new admin_setting_configtext('mod_psgrading/classstudentssql', get_string('classstudentssql', 'mod_psgrading'), '', ''));
+
 
 }

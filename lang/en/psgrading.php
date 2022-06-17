@@ -32,6 +32,18 @@ $string['modulenameplural'] = 'Primary School Grading';
 $string['modform:name'] = 'Name';
 $string['modform:name_help'] = 'Name for the PS Grading system';
 
+$string['settingsheaderdb'] = 'Database connection';
+$string['dbtype'] = 'Database driver';
+$string['dbtype_desc'] = 'ADOdb database driver name, type of the external database engine.';
+$string['dbhost'] = 'Database host';
+$string['dbhost_desc'] = 'Type database server IP address or host name. Use a system DSN name if using ODBC. Use a PDO DSN if using PDO.';
+$string['dbname'] = 'Database name';
+$string['dbuser'] = 'Database user';
+$string['dbpass'] = 'Database password';
+$string['staffclassessql'] = 'Staff Classes SQL';
+$string['classstudentssql'] = 'Class Students SQL';
+
+
 $string['pluginadministration'] = '';
 //$string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\' is allowed per course.';
 $string['cron_grade_release'] = 'PS Grading grade release processing.';

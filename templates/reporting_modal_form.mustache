@@ -1,0 +1,45 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2022 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/reporting_modal_effort
+}}
+<div id="reporting-modal-form">
+  {{#iseffort}}
+
+    <!--<select>
+      <option value="0">Select</option>
+      <option value="1" {{#is1}}selected{{/is1}}>Limited Participation</option>
+      <option value="2" {{#is2}}selected{{/is2}}>Needs Improvement</option>
+      <option value="3" {{#is3}}selected{{/is3}}>Acceptable</option>
+      <option value="4" {{#is4}}selected{{/is4}}>Very Good</option>
+      <option value="5" {{#is5}}selected{{/is5}}>Excellent</option>
+    </select>-->
+    
+    <label><input type="radio" name="effort" value="0"> Not set</label><br>
+    <label><input type="radio" name="effort" value="1" {{#is1}}checked{{/is1}}> Limited Participation</label><br>
+    <label><input type="radio" name="effort" value="2" {{#is2}}checked{{/is2}}> Needs Improvement</label><br>
+    <label><input type="radio" name="effort" value="3" {{#is3}}checked{{/is3}}> Acceptable</label><br>
+    <label><input type="radio" name="effort" value="4" {{#is4}}checked{{/is4}}> Very Good</label><br>
+    <label><input type="radio" name="effort" value="5" {{#is5}}checked{{/is5}}> Excellent</label><br>
+
+
+  {{/iseffort}}
+</div>

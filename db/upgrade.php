@@ -269,5 +269,37 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022052001, 'psgrading');
     }
 
+
+
+    if ($oldversion < 2022061601) {
+
+        // Define table psgrading_reporting to be created.
+        $table = new xmldb_table('psgrading_reporting');
+
+        // Adding fields to table psgrading_reporting.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('studentusername', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('graderusername', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('elementname', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('elementtype', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('grade', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('fileyear', XMLDB_TYPE_INTEGER, '4', null, null, null, '0');
+        $table->add_field('reportingperiod', XMLDB_TYPE_INTEGER, '4', null, null, null, '0');
+
+        // Adding keys to table psgrading_reporting.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for psgrading_reporting.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022061601, 'psgrading');
+    }
+
+
+
     return true;
 }
