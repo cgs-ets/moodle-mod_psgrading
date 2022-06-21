@@ -2262,6 +2262,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   white-space: nowrap;
   margin-right: 15px;
   margin-bottom: 11px;
+  min-width: 170px;
 }
 .psgrading-reporting .report-element {
   padding: 3px 10px;
