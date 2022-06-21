@@ -71,6 +71,10 @@
     background-color: #00812F;
     border-color: #00812F;
   }
+  .report-element[data-grade="text_graded"] {
+    background-color: #5F9EA0;
+    border-color: #5F9EA0;
+  }
 
   .options-area {
     position: absolute;
@@ -91,6 +95,22 @@
       &:hover {
         background: #f2f4f6;
       }
+    }
+    textarea {
+      height: 200px;
+      width: 100%;
+      margin: 10px 0;
+      border: 1px solid #414141;
+      border-radius: 3px;
+      padding: 10px;
+      resize: none;
+    }
+    .actions {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+    .btn-primary {
+      color: #fff !important;
     }
   }
   // When a text based element is opened, display it as a block.

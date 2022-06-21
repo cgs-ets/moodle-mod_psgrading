@@ -2310,6 +2310,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #00812F;
   border-color: #00812F;
 }
+.psgrading-reporting .report-element[data-grade="text_graded"] {
+  background-color: #5F9EA0;
+  border-color: #5F9EA0;
+}
 .psgrading-reporting .options-area {
   position: absolute;
   background: #fff;
@@ -2330,6 +2334,22 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-reporting .options-area label:hover {
   background: #f2f4f6;
+}
+.psgrading-reporting .options-area textarea {
+  height: 200px;
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid #414141;
+  border-radius: 3px;
+  padding: 10px;
+  resize: none;
+}
+.psgrading-reporting .options-area .actions {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+.psgrading-reporting .options-area .btn-primary {
+  color: #fff !important;
 }
 .psgrading-reporting .report-element[data-type="text"].options-open {
   display: block;

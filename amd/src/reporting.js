@@ -69,8 +69,11 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
         $(window).click(function() {
           //Hide grade menus if open.
-          self.rootel.find('#reporting-grademenu').remove();
-          self.rootel.find('.report-element').removeClass('options-open');
+          if (self.opentype == 'effort') {
+            self.closeElements();
+            //self.rootel.find('#reporting-grademenu').remove();
+            //self.rootel.find('.report-element').removeClass('options-open');
+          }
         });
 
         // Open element for grading.
@@ -83,13 +86,27 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             }
         });
 
-        // Select an effort grade.
+        // Save an effort grade.
         self.rootel.on('click', '#reporting-grademenu label', function(e) {
           e.preventDefault();
           e.stopPropagation();
           var effortel = $(this);
           self.saveEffort(effortel);
-      });
+        });
+
+        // Save a text reflection.
+        self.rootel.on('click', '#reporting-grademenu .save', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var btn = $(this);
+          self.saveText(btn);
+        });
+        // Cancel a text reflection.
+        self.rootel.on('click', '#reporting-grademenu .cancel', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          self.closeElements();
+      })
 
         // Preload the templates.
         self.templates = {
@@ -107,16 +124,17 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         var self = this;
 
         var type = element.data('type');
+        self.opentype = type;
         var existinggrade = element.data('grade');
         var optionsarea = element.find('.options-area');
+        var hiddentext = element.find('.element-reflection');
         var templatedata = {};
         templatedata["is" + type] = true;
         templatedata["is" + existinggrade] = true;
+        templatedata["reflection"] = hiddentext.val();
 
         Templates.render(self.templates.FORM, templatedata).done(function(tmpl) {
-          // Remove existing dropdowns.
-          self.rootel.find('#reporting-grademenu').remove();
-          self.rootel.find('.report-element').removeClass('options-open');
+          self.closeElements();
           element.addClass('options-open');
 
           // Add the dropdown in.
@@ -124,6 +142,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         });
         
     };
+
+    Reporting.prototype.closeElements = function () {
+      var self = this;
+      self.rootel.find('#reporting-grademenu').remove();
+      self.rootel.find('.report-element').removeClass('options-open');
+    }
 
 
     Reporting.prototype.saveEffort = function (effortel) {
@@ -137,7 +161,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
       var type = element.data('type');
       var row = element.closest('.reporting-row');
 
-      self.rootel.find('#reporting-grademenu').remove();
+      //self.rootel.find('#reporting-grademenu').remove();
+      self.closeElements();
       element.addClass('submitting');
 
       Ajax.call([{
@@ -163,6 +188,51 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
               label += " (" + minimal + ")";
             }
             element.find('.subjectgrade').html(label);
+          }
+        },
+        fail: function(reason) {
+          Log.debug(reason);
+          element.removeClass('submitting');
+        }
+      }]);
+
+    };
+
+    Reporting.prototype.saveText = function (btn) {
+      var self = this;
+
+      var element = btn.closest('.report-element');
+      var hiddentext = element.find('.element-reflection');
+      var textel = element.find('.element-text');
+      var reflection = textel.val();
+      var subjectarea = element.data('subjectarea');
+      var type = element.data('type');
+      var row = element.closest('.reporting-row');
+
+      self.closeElements();
+      element.addClass('submitting');
+
+      Ajax.call([{
+        methodname: 'mod_psgrading_apicontrol',
+        args: { 
+            action: 'grade_element',
+            data: JSON.stringify({
+                courseid: self.courseid,
+                year: self.year,
+                period: self.period,
+                username: row.data('username'),
+                subjectarea: subjectarea,
+                type: type,
+                reflection: reflection,
+            }),
+        },
+        done: function(success) {
+          element.removeClass('submitting');
+          if (success && reflection.length) {
+            element.attr('data-grade', 'text_graded');
+            hiddentext.val(reflection);
+          } else {
+            element.attr('data-grade', '');
           }
         },
         fail: function(reason) {

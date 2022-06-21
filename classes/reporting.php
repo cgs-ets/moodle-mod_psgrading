@@ -248,19 +248,21 @@ class reporting {
                 );
                 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
                     // Incorporate existing.
-                    $element['grade'] = $existing->grade;
-                    $element['minimal'] = static::REPORTENGAGEMENTOPTIONS[$existing->grade]['minimal'];
+                    if ($existing->elementtype == 'effort') {
+                        $element['grade'] = $existing->grade;
+                        $element['minimal'] = static::REPORTENGAGEMENTOPTIONS[$existing->grade]['minimal'];
+                    } else {
+                        $element['reflection'] = $existing->reflection;
+                        $element['grade'] = 'text_graded';
+                        $element['minimal'] = '';
+                    }
                 }
-                
-                //$element['grade'] = '2';
-                //$element['minimal'] = static::REPORTENGAGEMENTOPTIONS['2']['minimal'];
             }
             //echo "<pre>"; var_export($sdata); exit;
-
         }
     }
 
-    public static function save_reportelement($courseid, $year, $period, $username, $elname, $eltype, $grade) {
+    public static function save_reportelement_effort($courseid, $year, $period, $username, $elname, $eltype, $grade) {
         global $DB, $USER;
 
         $data = array (
@@ -274,6 +276,7 @@ class reporting {
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
             $existing->grade = $grade;
+            $existing->reflection = '';
             $existing->graderusername = $USER->username;
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
@@ -287,5 +290,35 @@ class reporting {
         return true;
 
     }
+
+    public static function save_reportelement_text($courseid, $year, $period, $username, $elname, $eltype, $reflection) {
+        global $DB, $USER;
+
+        $data = array (
+            'courseid' => $courseid,
+            'fileyear' => $year,
+            'reportingperiod' => $period,
+            'studentusername' => $username,
+            'elementname' => $elname,
+            'elementtype' => $eltype,
+        );
+        if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
+            // Update
+            $existing->graderusername = $USER->username;
+            $existing->reflection = $reflection;
+            $existing->grade = '';
+            $DB->update_record(static::TABLE_REPORTING, $existing);
+        } else {
+            // Insert
+            $data['graderusername'] = $USER->username;
+            $data['reflection'] = $reflection;
+            $data['grade'] = '';
+            $DB->insert_record(static::TABLE_REPORTING, $data);
+        }
+        
+        return true;
+    }
+
+    
 
 }        

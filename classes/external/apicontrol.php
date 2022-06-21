@@ -140,15 +140,28 @@ trait apicontrol {
 
         if ($action == 'grade_element') {
             $data = json_decode($data);
-            return reporting::save_reportelement(
-                $data->courseid, 
-                $data->year, 
-                $data->period, 
-                $data->username, 
-                $data->subjectarea, 
-                $data->type, 
-                $data->grade
-            );
+            if (property_exists($data, 'reflection')) {
+                return reporting::save_reportelement_text(
+                    $data->courseid, 
+                    $data->year, 
+                    $data->period, 
+                    $data->username, 
+                    $data->subjectarea, 
+                    $data->type, 
+                    $data->reflection
+                );
+            } elseif (property_exists($data, 'grade')) {
+                return reporting::save_reportelement_effort(
+                    $data->courseid, 
+                    $data->year, 
+                    $data->period, 
+                    $data->username, 
+                    $data->subjectarea, 
+                    $data->type, 
+                    $data->grade
+                );
+            }
+            
         }
 
         return 0;
