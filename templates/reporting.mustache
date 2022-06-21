@@ -32,7 +32,8 @@
           <div class="student-report-elements">
             {{#reportelements}}
               <a href="#" class="report-element" data-subjectarea="{{subjectarea}}" data-type="{{type}}" data-grade="{{grade}}">
-                {{subjectarea}} {{#grade}}({{minimal}}){{/grade}}
+                <div class="subjectgrade">{{subjectarea}} {{#grade}}({{minimal}}){{/grade}}</div>
+                <div class="options-area"></div>
               </a>
             {{/reportelements}}
           </div>

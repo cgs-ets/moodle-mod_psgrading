@@ -171,28 +171,27 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
      * @method
      */
     Task.prototype.regenerateEvidenceJSON = function () {
-        var self = this;
+      var self = this;
 
-        var evidencejson = $('input[name="evidencejson"]');
-        var evidences = new Array();
+      var evidencejson = $('input[name="evidencejson"]');
+      var evidences = new Array();
 
-        self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
-            var checkbox = $(this);
-            var cm = {
-                evidencetype: 'cm_' + checkbox.data('modname'),
-                refdata: checkbox.val(),
-            };
-            evidences.push(cm);
-        });
+      self.rootel.find('.evidence-selector .activity .cmid:checked').each(function() {
+          var checkbox = $(this);
+          var cm = {
+              evidencetype: 'cm_' + checkbox.data('modname'),
+              refdata: checkbox.val(),
+          };
+          evidences.push(cm);
+      });
 
-        // Encode to json and add tag to hidden input.
-        var evidencesStr = '';
-        if (evidences.length) {
-            evidencesStr = JSON.stringify(evidences);
-            evidencejson.val(evidencesStr);
-        }
+      // Encode to json and add tag to hidden input.
+      var evidencesStr = '';
+      if (evidences.length) {
+          evidencesStr = JSON.stringify(evidences);
+      }
 
-        return evidencesStr;
+      evidencejson.val(evidencesStr);
     };
 
     /**

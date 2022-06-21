@@ -28,6 +28,7 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 use \mod_psgrading\utils;
+use \mod_psgrading\reporting;
 
 // Course ID
 $courseid = required_param('courseid', PARAM_INT);
@@ -64,12 +65,12 @@ $PAGE->set_context($coursecontext);
 
 
 // Get classes based on user.
-$classes = utils::get_staff_classes($USER->username, $year, $period);
+$classes = reporting::get_staff_classes($USER->username, $year, $period);
 
 // Get students from classes.
 $students = array();
 foreach ($classes as &$class) {
-    $class->students = utils::get_class_students($class->classcode, $year, $period);
+    $class->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
 }
 $students = array_unique($students);
@@ -103,14 +104,14 @@ foreach ($classes as $class) {
             // Add the reportelements based on the assesscode.
             $students[$classstudent->id]['reportelements'] = array_merge(
                 $students[$classstudent->id]['reportelements'], 
-                utils::get_reportelements($class->assesscode, $classstudent->yearlevel)
+                reporting::get_reportelements($class->assesscode, $classstudent->yearlevel)
             );
         }
     }
 }
 
 // Get existing reporting values.
-utils::populate_existing_reportelements($courseid, $year, $period, $students);
+reporting::populate_existing_reportelements($courseid, $year, $period, $students);
 
 $data = array(
     'students' => array_values($students),
@@ -129,8 +130,10 @@ echo $OUTPUT->render_from_template('mod_psgrading/reporting', $data);
 
 // Add scripts.
 $PAGE->requires->js_call_amd('mod_psgrading/reporting', 'init', array(
+    'courseid' => $courseid,
     'year' => $year,
     'period' => $period,
 ));
 
 echo $OUTPUT->footer();
+echo '<div class="invisible-underlay"></div>';

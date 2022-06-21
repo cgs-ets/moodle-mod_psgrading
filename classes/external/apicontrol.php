@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\utils;
+use \mod_psgrading\reporting;
 use external_function_parameters;
 use external_value;
 use context_user;
@@ -135,6 +136,19 @@ trait apicontrol {
             }
 
             return "Feedback will be released in {$releasecountdown}. Click to cancel.";
+        }
+
+        if ($action == 'grade_element') {
+            $data = json_decode($data);
+            return reporting::save_reportelement(
+                $data->courseid, 
+                $data->year, 
+                $data->period, 
+                $data->username, 
+                $data->subjectarea, 
+                $data->type, 
+                $data->grade
+            );
         }
 
         return 0;

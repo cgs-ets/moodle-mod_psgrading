@@ -299,6 +299,22 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022061601, 'psgrading');
     }
 
+    if ($oldversion < 2022062000) {
+
+        // Define field reflection to be added to psgrading_reporting.
+        $table = new xmldb_table('psgrading_reporting');
+        $field = new xmldb_field('reflection', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'grade');
+
+        // Conditionally launch add field reflection.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022062000, 'psgrading');
+    }
+
+
 
 
     return true;

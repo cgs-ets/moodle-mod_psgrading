@@ -32,7 +32,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     /**
      * Initializes the reporting component.
      */
-    function init(year, period) {
+    function init(courseid, year, period) {
         Log.debug('mod_psgrading/reporting: initializing');
 
         var rootel = $('.psgrading-reporting');
@@ -42,7 +42,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             return;
         }
 
-        var reporting = new Reporting(rootel, year, period);
+        var reporting = new Reporting(rootel, courseid, year, period);
         reporting.main();
     }
 
@@ -52,9 +52,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @constructor
      * @param {jQuery} rootel
      */
-    function Reporting(rootel, year, period) {
+    function Reporting(rootel, courseid, year, period) {
         var self = this;
         self.rootel = rootel;
+        self.courseid = courseid;
         self.year = year;
         self.period = period;
     }
@@ -66,24 +67,36 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      Reporting.prototype.main = function () {
         var self = this;
 
+        $(window).click(function() {
+          //Hide grade menus if open.
+          self.rootel.find('#reporting-grademenu').remove();
+          self.rootel.find('.report-element').removeClass('options-open');
+        });
+
         // Open element for grading.
         self.rootel.on('click', '.report-element', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             var element = $(this);
-            self.openElement(element);
+            if (!element.hasClass('options-open') ) {
+              self.openElement(element);
+            }
         });
 
-        // Preload the modals and templates.
-        self.modals = {
-          ELEMENT: null,
-        };
+        // Select an effort grade.
+        self.rootel.on('click', '#reporting-grademenu label', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var effortel = $(this);
+          self.saveEffort(effortel);
+      });
+
+        // Preload the templates.
         self.templates = {
-          FORM: 'mod_psgrading/reporting_modal_form',
+          FORM: 'mod_psgrading/reporting_grademenu',
         };
         var preloads = [];
-        preloads.push(self.loadModal('ELEMENT', '', 'Save', ModalFactory.types.SAVE_CANCEL));
-        preloads.push(self.loadTemplate('EFFORT'));
-        preloads.push(self.loadTemplate('TEXT'));
+        preloads.push(self.loadTemplate('FORM'));
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         });
@@ -93,50 +106,71 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     Reporting.prototype.openElement = function (element) {
         var self = this;
 
-        if (self.modals.ELEMENT) {
+        var type = element.data('type');
+        var existinggrade = element.data('grade');
+        var optionsarea = element.find('.options-area');
+        var templatedata = {};
+        templatedata["is" + type] = true;
+        templatedata["is" + existinggrade] = true;
 
-          var type = element.data('type');
-          var row = element.closest('.reporting-row');
-          var studentinfo = row.find('.student-info').html();
-          var subjectarea = element.data('subjectarea');
-          var existinggrade = element.data('grade');
-          var title = studentinfo ? studentinfo + ': ' + subjectarea : 'Set ' + subjectarea;
-          self.modals.ELEMENT.setTitle(title);
+        Templates.render(self.templates.FORM, templatedata).done(function(tmpl) {
+          // Remove existing dropdowns.
+          self.rootel.find('#reporting-grademenu').remove();
+          self.rootel.find('.report-element').removeClass('options-open');
+          element.addClass('options-open');
 
-          var templatedata = {};
-          templatedata["is" + type] = true;
-          templatedata["is" + existinggrade] = true;
+          // Add the dropdown in.
+          optionsarea.html(tmpl);
+        });
+        
+    };
 
-          console.log(templatedata);
 
-          Templates.render(self.templates.FORM, templatedata).done(function(html) {
-            self.modals.ELEMENT.setBody(html);
-          });
+    Reporting.prototype.saveEffort = function (effortel) {
+      var self = this;
 
-          self.modals.ELEMENT.getRoot().on(ModalEvents.save, function(e) {
-            // Get grade selected, or text, and check it before proceeding.
-            var grade = document.querySelector('input[name="effort"]:checked').value;
-            Ajax.call([{
-                methodname: 'mod_psgrading_apicontrol',
-                args: { 
-                    action: 'grade_element',
-                    data: JSON.stringify({
-                        username: row.data('username'),
-                        subjectarea: subjectarea,
-                        grade: grade,
-                    }),
-                },
-                done: function() {
-                    //window.location.reload(false);
-                },
-                fail: function(reason) {
-                    Log.debug(reason);
-                }
-            }]);
-          });
+      var grade = effortel.data('value');
+      var minimal = effortel.data('minimal');
 
-          self.modals.ELEMENT.show();
-        }        
+      var element = effortel.closest('.report-element');
+      var subjectarea = element.data('subjectarea');
+      var type = element.data('type');
+      var row = element.closest('.reporting-row');
+
+      self.rootel.find('#reporting-grademenu').remove();
+      element.addClass('submitting');
+
+      Ajax.call([{
+        methodname: 'mod_psgrading_apicontrol',
+        args: { 
+            action: 'grade_element',
+            data: JSON.stringify({
+                courseid: self.courseid,
+                year: self.year,
+                period: self.period,
+                username: row.data('username'),
+                subjectarea: subjectarea,
+                type: type,
+                grade: grade,
+            }),
+        },
+        done: function(success) {
+          element.removeClass('submitting');
+          if (success) {
+            element.attr('data-grade', grade);
+            var label = subjectarea;
+            if (minimal) {
+              label += " (" + minimal + ")";
+            }
+            element.find('.subjectgrade').html(label);
+          }
+        },
+        fail: function(reason) {
+          Log.debug(reason);
+          element.removeClass('submitting');
+        }
+      }]);
+
     };
 
     /**
@@ -148,7 +182,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
      * @param {string} title The button text of the modal
      * @return {object} jQuery promise
      */
-     Reporting.prototype.loadModal = function (modalkey, title, buttontext, type) {
+    /*Reporting.prototype.loadModal = function (modalkey, title, buttontext, type) {
         var self = this;
         return ModalFactory.create({type: type}).then(function(modal) {
             modal.setTitle(title);
@@ -160,7 +194,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             modal.getBackdrop();
             modal.getRoot().addClass('modal-' + modalkey);
         });
-    }
+    }*/
 
     /**
      * Helper used to preload a template

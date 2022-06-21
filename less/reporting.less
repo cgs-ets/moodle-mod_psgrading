@@ -1,16 +1,26 @@
+#page-mod-psgrading-reporting {
+  #region-main {
+    padding: 0;
+  }
+}
 .psgrading-reporting {
-
+  padding: 0 0 300px 0;
+  margin-top: -1px;
 	.reporting-row {
-    display: flex;
     align-items: baseline;
-    margin-bottom: 5px;
-    padding: 10px;
+    padding: 14px 90px 12px 14px;
+  }
+  @media only screen and (min-width: 960px) {
+    .reporting-row {
+      display: flex;
+    }
   }
   .reporting-row:nth-child(even) {background: #FFF}
   .reporting-row:nth-child(odd) {background: #F2F4F6}
   .student-info {
     white-space: nowrap;
     margin-right: 15px;
+    margin-bottom: 11px;
   }
   .report-element {
     padding: 3px 10px;
@@ -20,9 +30,23 @@
     background-color: #fff;
     border-radius: 1px;
     text-decoration: none;
-    border: 2px solid blue;
+    border: 2px solid #414141;
     color: #FFF;
-    background: cornflowerblue;
+    background: #414141;
+    position: relative;
+    &.options-open {
+      .subjectgrade {
+        z-index: 20;
+        position: relative;
+      }
+      .options-area {
+        display: block;
+      }
+    }
+  }
+  .report-element.submitting {
+    opacity: 0.4;
+    pointer-events: none;
   }
   .report-element[data-grade="1"] {
     background-color: #D90617;
@@ -47,4 +71,43 @@
     background-color: #00812F;
     border-color: #00812F;
   }
+
+  .options-area {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 10px 40px -6px #000;
+    color: #000;
+    z-index: 10;
+    left: -2px;
+    top: 31px;
+    min-width: 210px;
+    display: none;
+    label {
+      width: 100%;
+      padding: 8px 30px 8px 10px;
+      border-bottom: 1px solid #ccc;
+      margin: 0;
+      cursor: pointer;
+      &:hover {
+        background: #f2f4f6;
+      }
+    }
+  }
+  // When a text based element is opened, display it as a block.
+  .report-element[data-type="text"].options-open {
+    display: block;
+    padding: 0;
+    background-color: transparent;
+    border: 0 none;
+    color: #000;
+  }
+  .report-element[data-type="text"] .options-area {
+    width: 100%;
+    position: relative;
+    box-shadow: none;
+    top: 0;
+    left: 0;
+    background: transparent;
+  }
+  
 }
