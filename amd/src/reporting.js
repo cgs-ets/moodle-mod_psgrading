@@ -230,10 +230,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
           element.removeClass('submitting');
           if (success && reflection.length) {
             element.attr('data-grade', 'text_graded');
-            hiddentext.val(reflection);
           } else {
             element.attr('data-grade', '');
           }
+          hiddentext.val(reflection);
         },
         fail: function(reason) {
           Log.debug(reason);
