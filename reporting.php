@@ -69,8 +69,8 @@ $classes = reporting::get_staff_classes($USER->username, $year, $period);
 
 // Get students from classes.
 $students = array();
-foreach ($classes as &$class) {
-    $class->students = reporting::get_class_students($class->classcode, $year, $period);
+foreach ($classes as $i => $class) {
+    $classes[$i]->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
 }
 $students = array_unique($students);
@@ -92,6 +92,7 @@ array_walk($students, function(&$value, $key) {
     }
 });
 
+
 // Cache reporting requirements for each student.
 foreach ($classes as $class) {
     foreach ($class->students as $classstudent) {
@@ -100,6 +101,7 @@ foreach ($classes as $class) {
             continue;
         }
         if (!in_array($class->assesscode, $students[$classstudent->id]['assesscodes'])) {
+            // Add the assescode to the student.
             $students[$classstudent->id]['assesscodes'][] = $class->assesscode;
             // Add the reportelements based on the assesscode.
             $students[$classstudent->id]['reportelements'] = array_merge(
@@ -110,6 +112,7 @@ foreach ($classes as $class) {
     }
 }
 
+
 // Get existing reporting values.
 reporting::populate_existing_reportelements($courseid, $year, $period, $students);
 
@@ -117,9 +120,7 @@ $data = array(
     'students' => array_values($students),
 );
 
-//echo "<pre>";
-//var_export($data);
-//exit;
+
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
