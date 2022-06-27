@@ -33,7 +33,7 @@ use \mod_psgrading\reporting;
 // Course ID
 $courseid = required_param('courseid', PARAM_INT);
 $year = optional_param('year', 0, PARAM_INT);
-$period = optional_param('period', 1, PARAM_INT);
+$period = optional_param('period', 0, PARAM_INT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -43,6 +43,24 @@ if ($courseid) {
 
 if (empty($year)) {
     $year = date('Y');
+}
+
+$passedp1 = time() > strtotime( $year . '-07-15' );
+
+if ($period == 0) {
+    // Try to guess reporting period. If passed July 15, then period 2.
+    $period = 1;
+    if ( $passedp1 ) {
+        $period = 2;
+    }
+}
+
+// Lock previous periods.
+$locked = false;
+if ($year < date('Y')) {
+    $locked = true;
+} else if ( $period == 1 && $passedp1 ) {
+    $locked = true;
 }
 
 $coursecontext = context_course::instance($course->id);
@@ -116,10 +134,28 @@ foreach ($classes as $class) {
 // Get existing reporting values.
 reporting::populate_existing_reportelements($courseid, $year, $period, $students);
 
+// Reporting period navigation. 
+$rps = array();
+for ($i = 1; $i <= 2; $i++) {
+    $rp = new \stdClass();
+    $rp->value = $rp->name = $i;
+    $rp->viewurl = clone($url);
+    $rp->viewurl->param('period', $i);
+    $rp->viewurl = $rp->viewurl->out(false); // Replace viewurl with string val.
+    $rp->iscurrent = false;
+    if ($period == $i) {
+        $rp->iscurrent = true;
+    }
+    $rps[] = $rp;
+}
+
 $data = array(
     'students' => array_values($students),
+    'period' => $period,
+    'year' => $year,
+    'reportingperiods' => $rps,
+    'locked' => $locked,
 );
-
 
 
 // Add css.
@@ -137,4 +173,6 @@ $PAGE->requires->js_call_amd('mod_psgrading/reporting', 'init', array(
 ));
 
 echo $OUTPUT->footer();
-echo '<div class="invisible-underlay"></div>';
+//echo '<div class="invisible-underlay"></div>';
+//echo '<div class="reporting-helper">ddsaasdasd</div>';
+

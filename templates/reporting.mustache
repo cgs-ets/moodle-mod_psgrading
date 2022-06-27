@@ -23,11 +23,24 @@
 
     Reporting template.
 }}
-<div class="psgrading-reporting">
+{{#reportingperiods.1}}
+<div class="reportingperiod-selector">
+    <span>{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+    <select class="reportingperiod-select form-control">
+        {{#reportingperiods}}
+            <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+        {{/reportingperiods}}
+    </select>
+</div>
+{{/reportingperiods.1}}
+<div class="psgrading-reporting {{^locked}}editable{{/locked}}">
+  <div class="period-heading">{{year}} Reporting Period {{period}}{{#locked}} - Locked{{/locked}}</div>
+
+
     {{#students}}
       <div class="reporting-row" data-username="{{user.username}}">
           <div class="student-info">
-              <a href="#"><img src="{{user.profilephoto}}" class="round"/> <span class="name">{{user.lastname}}, {{user.firstname}}</span></a>
+              <img src="{{user.profilephoto}}" class="round"/> <span class="name">{{user.lastname}}, {{user.firstname}}</span>
           </div>
           <div class="student-report-elements">
             {{#reportelements}}
@@ -40,4 +53,5 @@
           </div>
       </div>
     {{/students}}
+
 </div>

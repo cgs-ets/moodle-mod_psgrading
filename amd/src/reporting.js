@@ -35,10 +35,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     function init(courseid, year, period) {
         Log.debug('mod_psgrading/reporting: initializing');
 
-        var rootel = $('.psgrading-reporting');
+        var rootel = $('#page-mod-psgrading-reporting');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/reporting: .psgrading-reporting not found!');
+            Log.error('mod_psgrading/reporting: #page-mod-psgrading-reporting not found!');
             return;
         }
 
@@ -58,14 +58,19 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         self.courseid = courseid;
         self.year = year;
         self.period = period;
+        self.editable = self.rootel.find('.psgrading-reporting').hasClass('editable');
     }
 
     /**
      * Run the Audience Selector.
      *
      */
-     Reporting.prototype.main = function () {
-        var self = this;
+    Reporting.prototype.main = function () {
+      var self = this;
+
+      console.log(self.editable);
+
+      if (self.editable) {
 
         $(window).click(function() {
           //Hide grade menus if open.
@@ -106,7 +111,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
           e.preventDefault();
           e.stopPropagation();
           self.closeElements();
-      })
+        })
 
         // Preload the templates.
         self.templates = {
@@ -117,6 +122,17 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         });
+
+      }
+
+      // Change reporting period.
+      self.rootel.on('change', '.reportingperiod-select', function(e) {
+        var select = $(this);
+        var url = select.find(':selected').data('viewurl');
+        if (url) {
+            window.location.replace(url);
+        }
+      });
 
     };
 

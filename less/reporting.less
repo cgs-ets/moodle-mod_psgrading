@@ -2,13 +2,33 @@
   #region-main {
     padding: 0;
   }
+  .reportingperiod-selector {
+    right: 37px;
+  }
+  .reporting-helper {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+    background: rebeccapurple;
+    transition: 0.4s;
+    &.active {
+      right: 0;
+    }
+  }
+
+  #region-main-box .left-column {
+    width: 100%;
+  }
 }
 .psgrading-reporting {
   padding: 0 0 300px 0;
   margin-top: -1px;
 	.reporting-row {
     align-items: baseline;
-    padding: 14px 90px 12px 14px;
+    padding: 14px 120px 12px 14px;
   }
   @media only screen and (min-width: 960px) {
     .reporting-row {
@@ -130,5 +150,10 @@
     left: 0;
     background: transparent;
   }
-  
+  .period-heading {
+    font-weight: 600;
+    font-size: 20px;
+    background: #dedede;
+    padding: 5px 10px;
+  }
 }

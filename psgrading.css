@@ -2239,13 +2239,32 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-reporting #region-main {
   padding: 0;
 }
+#page-mod-psgrading-reporting .reportingperiod-selector {
+  right: 37px;
+}
+#page-mod-psgrading-reporting .reporting-helper {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  height: 100%;
+  width: 100%;
+  max-width: 400px;
+  background: rebeccapurple;
+  transition: 0.4s;
+}
+#page-mod-psgrading-reporting .reporting-helper.active {
+  right: 0;
+}
+#page-mod-psgrading-reporting #region-main-box .left-column {
+  width: 100%;
+}
 .psgrading-reporting {
   padding: 0 0 300px 0;
   margin-top: -1px;
 }
 .psgrading-reporting .reporting-row {
   align-items: baseline;
-  padding: 14px 90px 12px 14px;
+  padding: 14px 120px 12px 14px;
 }
 @media only screen and (min-width: 960px) {
   .psgrading-reporting .reporting-row {
@@ -2366,4 +2385,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   top: 0;
   left: 0;
   background: transparent;
+}
+.psgrading-reporting .period-heading {
+  font-weight: 600;
+  font-size: 20px;
+  background: #dedede;
+  padding: 5px 10px;
 }
