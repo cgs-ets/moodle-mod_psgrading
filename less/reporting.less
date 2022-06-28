@@ -26,9 +26,27 @@
 .psgrading-reporting {
   padding: 0 0 300px 0;
   margin-top: -1px;
+
+  .period-heading {
+    font-weight: 600;
+    font-size: 20px;
+    background: #dedede;
+    padding: 5px 10px;
+  }
+
 	.reporting-row {
     align-items: baseline;
     padding: 14px 120px 12px 14px;
+    &.dropdown-focussed {
+      .report-element:not(.options-open) {
+        opacity: 0.3;
+      }
+    }
+    &.popout-focussed {
+      .report-element:not(.options-open) {
+        display: none;
+      }
+    }
   }
   @media only screen and (min-width: 960px) {
     .reporting-row {
@@ -37,11 +55,16 @@
   }
   .reporting-row:nth-child(even) {background: #FFF}
   .reporting-row:nth-child(odd) {background: #F2F4F6}
+
   .student-info {
     white-space: nowrap;
     margin-right: 15px;
     margin-bottom: 11px;
     min-width: 170px;
+  }
+
+  .student-report-elements {
+    width: 100%;;
   }
   .report-element {
     padding: 3px 10px;
@@ -96,8 +119,11 @@
     background-color: #5F9EA0;
     border-color: #5F9EA0;
   }
-
   .options-area {
+    display: none;
+  }
+
+  #reporting-inlinegrading, #reporting-popoutgrading {
     position: absolute;
     background: #fff;
     box-shadow: 0 10px 40px -6px #000;
@@ -105,11 +131,12 @@
     z-index: 10;
     left: -2px;
     top: 31px;
-    min-width: 210px;
-    display: none;
-    label {
+    min-width: 220px;
+
+    label, a.open-popout {
       width: 100%;
-      padding: 8px 30px 8px 10px;
+      display: block;
+      padding: 0 15px 0 0;
       border-bottom: 1px solid #ccc;
       margin: 0;
       cursor: pointer;
@@ -120,40 +147,89 @@
     textarea {
       height: 200px;
       width: 100%;
-      margin: 10px 0;
       border: 1px solid #414141;
       border-radius: 3px;
       padding: 10px;
       resize: none;
     }
     .actions {
-      padding-bottom: 15px;
-      margin-bottom: 15px;
+      padding: 15px 0;
     }
     .btn-primary {
       color: #fff !important;
     }
+    .bg-radio {
+      display: inline-block;
+      padding: 7px 10px;
+      margin-right: 4px;
+    }
+    .bg-0 {
+      background-color: #414141;
+      color: #fff;
+    }
+    .bg-e, .bg-E {
+      background-color: #00812F;
+      color: #fff;
+    }
+    .bg-vg,.bg-VG {
+      background-color: #6BB82E;
+    }
+    .bg-a, .bg-A {
+      background-color: #FFDB00;
+    }
+    .bg-ni, .bg-NI {
+      background-color: #F97D01;
+    }
+    .bg-lp, .bg-LP {
+      background-color: #D90617;
+      color: #fff;
+    }
   }
-  // When a text based element is opened, display it as a block.
-  .report-element[data-type="text"].options-open {
+
+ 
+  // When a popout is opened, display it as a block.
+  .report-element.options-open.popout {
     display: block;
-    padding: 0;
-    background-color: transparent;
     border: 0 none;
     color: #000;
+    background-color: #f2f4f6;
+    padding: 10px 22px 20px;
+    margin: 15px 0 20px;
+    cursor: default;
+    .subjectgrade {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+    #reporting-popoutgrading {
+      width: 100%;
+      position: relative;
+      box-shadow: none;
+      top: 0;
+      left: 0;
+      background: transparent;
+      label {
+        border: 0 none;
+        background: #ccc;
+        margin: 10px 10px 10px 0;
+        width: auto;
+        &:hover {
+          background: #bbb;
+        }
+      }
+    }
+    .help-area {
+      margin: 0 0 25px;
+      .spinner {
+        display: block;
+      }
+      th, td {
+          padding: 10px;
+          border: 1px solid #000;
+      }
+
+    }
   }
-  .report-element[data-type="text"] .options-area {
-    width: 100%;
-    position: relative;
-    box-shadow: none;
-    top: 0;
-    left: 0;
-    background: transparent;
-  }
-  .period-heading {
-    font-weight: 600;
-    font-size: 20px;
-    background: #dedede;
-    padding: 5px 10px;
-  }
+
+
+
 }

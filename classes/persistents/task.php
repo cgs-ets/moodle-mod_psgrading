@@ -531,15 +531,6 @@ class task extends persistent {
         global $OUTPUT, $DB;
 
         // Get all psgrading instances for this course.
-        /*$sql = "SELECT id
-                FROM {psgrading}
-                WHERE course = ?";
-        $courseinstances = array_column($DB->get_records_sql($sql, array($courseid)), 'id');
-        if (empty($courseinstances)) {
-            return;
-        }*/
-
-        // Get all psgrading instances for this course.
         $sql = "SELECT id, restrictto
                 FROM {psgrading}
                 WHERE course = ?

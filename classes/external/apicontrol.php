@@ -161,7 +161,17 @@ trait apicontrol {
                     $data->grade
                 );
             }
-            
+        }
+
+        if ($action == 'reporting_help') {
+            $data = json_decode($data);
+            return reporting::get_reportelement_help(
+                $data->courseid, 
+                $data->year, 
+                $data->period, 
+                $data->username, 
+                $data->subjectarea, 
+            );
         }
 
         return 0;

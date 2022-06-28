@@ -319,6 +319,76 @@ class reporting {
         return true;
     }
 
+
+    public static function get_reportelement_help($courseid, $year, $period, $username, $subjectarea) {
+        global $OUTPUT, $DB;
+
+        // Get all psgrading instances for this course.
+        // Get the cmids for the mod instances.
+
+        // Get tasks that have this subject in the rubric.
+        // Get the student's enagement for these tasks.
+        // Display
+        // - Taskname, subjectareas (csv), engagement/color
+
+        $username = 51265;
+
+        // Get all psgrading instances for this course.
+        $sql = "SELECT id, restrictto
+                FROM {psgrading}
+                WHERE course = ?
+                  AND reportingperiod = ?";
+        $modinstances = $DB->get_records_sql($sql, array($courseid, $period));
+
+        $courseinstances = array();
+        // Don't include instances that are restricted to specific users.
+        foreach($modinstances as $inst) {
+            if (empty($inst->restrictto)) {
+                $courseinstances[] = $inst->id;
+            }
+        }
+        if (empty($courseinstances)) {
+            return;
+        }
+
+        // Get the cmids for the mod instances.
+        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
+        list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
+        $sql = "SELECT id
+                  FROM {course_modules}
+                 WHERE course = ?
+                   AND module = ?
+                   AND instance $insql";
+        $params = array($courseid, $moduleid);
+        $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
+        if (empty($cms)) {
+            return;
+        }
+
+
+        // Get student engagement for tasks that have this subject in the rubric.
+        $relevanttasks = array();
+        foreach ($cms as $cm) {
+            $sql = "SELECT t.id, t.taskname, tg.engagement
+                      FROM {psgrading_tasks} t
+                INNER JOIN {psgrading_task_criterions} tc ON t.id = tc.taskid
+                INNER JOIN {psgrading_grades} tg on t.id = tg.taskid
+                       AND tc.subject = ?
+                       AND t.cmid = ?
+                       AND t.published = 1
+                       AND t.deleted = 0
+                       AND tg.studentusername = ?";
+            $params = array($subjectarea, $cm->id, $username);
+            $cmtasks = $DB->get_records_sql($sql, $params);
+            $relevanttasks = array_merge($relevanttasks, $cmtasks);
+        }
+
+        // Render as html table.
+        $html = $OUTPUT->render_from_template('mod_psgrading/reporting_help', array('tasks' => array_values($relevanttasks)));
+        return $html;
+    }
+
+
     
 
 }        

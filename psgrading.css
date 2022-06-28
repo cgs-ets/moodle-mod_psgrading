@@ -2262,9 +2262,21 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 0 0 300px 0;
   margin-top: -1px;
 }
+.psgrading-reporting .period-heading {
+  font-weight: 600;
+  font-size: 20px;
+  background: #dedede;
+  padding: 5px 10px;
+}
 .psgrading-reporting .reporting-row {
   align-items: baseline;
   padding: 14px 120px 12px 14px;
+}
+.psgrading-reporting .reporting-row.dropdown-focussed .report-element:not(.options-open) {
+  opacity: 0.3;
+}
+.psgrading-reporting .reporting-row.popout-focussed .report-element:not(.options-open) {
+  display: none;
 }
 @media only screen and (min-width: 960px) {
   .psgrading-reporting .reporting-row {
@@ -2282,6 +2294,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin-right: 15px;
   margin-bottom: 11px;
   min-width: 170px;
+}
+.psgrading-reporting .student-report-elements {
+  width: 100%;
 }
 .psgrading-reporting .report-element {
   padding: 3px 10px;
@@ -2335,6 +2350,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border-color: #5F9EA0;
 }
 .psgrading-reporting .options-area {
+  display: none;
+}
+.psgrading-reporting #reporting-inlinegrading,
+.psgrading-reporting #reporting-popoutgrading {
   position: absolute;
   background: #fff;
   box-shadow: 0 10px 40px -6px #000;
@@ -2342,43 +2361,99 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   z-index: 10;
   left: -2px;
   top: 31px;
-  min-width: 210px;
-  display: none;
+  min-width: 220px;
 }
-.psgrading-reporting .options-area label {
+.psgrading-reporting #reporting-inlinegrading label,
+.psgrading-reporting #reporting-popoutgrading label,
+.psgrading-reporting #reporting-inlinegrading a.open-popout,
+.psgrading-reporting #reporting-popoutgrading a.open-popout {
   width: 100%;
-  padding: 8px 30px 8px 10px;
+  display: block;
+  padding: 0 15px 0 0;
   border-bottom: 1px solid #ccc;
   margin: 0;
   cursor: pointer;
 }
-.psgrading-reporting .options-area label:hover {
+.psgrading-reporting #reporting-inlinegrading label:hover,
+.psgrading-reporting #reporting-popoutgrading label:hover,
+.psgrading-reporting #reporting-inlinegrading a.open-popout:hover,
+.psgrading-reporting #reporting-popoutgrading a.open-popout:hover {
   background: #f2f4f6;
 }
-.psgrading-reporting .options-area textarea {
+.psgrading-reporting #reporting-inlinegrading textarea,
+.psgrading-reporting #reporting-popoutgrading textarea {
   height: 200px;
   width: 100%;
-  margin: 10px 0;
   border: 1px solid #414141;
   border-radius: 3px;
   padding: 10px;
   resize: none;
 }
-.psgrading-reporting .options-area .actions {
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+.psgrading-reporting #reporting-inlinegrading .actions,
+.psgrading-reporting #reporting-popoutgrading .actions {
+  padding: 15px 0;
 }
-.psgrading-reporting .options-area .btn-primary {
+.psgrading-reporting #reporting-inlinegrading .btn-primary,
+.psgrading-reporting #reporting-popoutgrading .btn-primary {
   color: #fff !important;
 }
-.psgrading-reporting .report-element[data-type="text"].options-open {
+.psgrading-reporting #reporting-inlinegrading .bg-radio,
+.psgrading-reporting #reporting-popoutgrading .bg-radio {
+  display: inline-block;
+  padding: 7px 10px;
+  margin-right: 4px;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-0,
+.psgrading-reporting #reporting-popoutgrading .bg-0 {
+  background-color: #414141;
+  color: #fff;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-e,
+.psgrading-reporting #reporting-popoutgrading .bg-e,
+.psgrading-reporting #reporting-inlinegrading .bg-E,
+.psgrading-reporting #reporting-popoutgrading .bg-E {
+  background-color: #00812F;
+  color: #fff;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-vg,
+.psgrading-reporting #reporting-popoutgrading .bg-vg,
+.psgrading-reporting #reporting-inlinegrading .bg-VG,
+.psgrading-reporting #reporting-popoutgrading .bg-VG {
+  background-color: #6BB82E;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-a,
+.psgrading-reporting #reporting-popoutgrading .bg-a,
+.psgrading-reporting #reporting-inlinegrading .bg-A,
+.psgrading-reporting #reporting-popoutgrading .bg-A {
+  background-color: #FFDB00;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-ni,
+.psgrading-reporting #reporting-popoutgrading .bg-ni,
+.psgrading-reporting #reporting-inlinegrading .bg-NI,
+.psgrading-reporting #reporting-popoutgrading .bg-NI {
+  background-color: #F97D01;
+}
+.psgrading-reporting #reporting-inlinegrading .bg-lp,
+.psgrading-reporting #reporting-popoutgrading .bg-lp,
+.psgrading-reporting #reporting-inlinegrading .bg-LP,
+.psgrading-reporting #reporting-popoutgrading .bg-LP {
+  background-color: #D90617;
+  color: #fff;
+}
+.psgrading-reporting .report-element.options-open.popout {
   display: block;
-  padding: 0;
-  background-color: transparent;
   border: 0 none;
   color: #000;
+  background-color: #f2f4f6;
+  padding: 10px 22px 20px;
+  margin: 15px 0 20px;
+  cursor: default;
 }
-.psgrading-reporting .report-element[data-type="text"] .options-area {
+.psgrading-reporting .report-element.options-open.popout .subjectgrade {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+.psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading {
   width: 100%;
   position: relative;
   box-shadow: none;
@@ -2386,9 +2461,23 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   left: 0;
   background: transparent;
 }
-.psgrading-reporting .period-heading {
-  font-weight: 600;
-  font-size: 20px;
-  background: #dedede;
-  padding: 5px 10px;
+.psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading label {
+  border: 0 none;
+  background: #ccc;
+  margin: 10px 10px 10px 0;
+  width: auto;
+}
+.psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading label:hover {
+  background: #bbb;
+}
+.psgrading-reporting .report-element.options-open.popout .help-area {
+  margin: 0 0 25px;
+}
+.psgrading-reporting .report-element.options-open.popout .help-area .spinner {
+  display: block;
+}
+.psgrading-reporting .report-element.options-open.popout .help-area th,
+.psgrading-reporting .report-element.options-open.popout .help-area td {
+  padding: 10px;
+  border: 1px solid #000;
 }

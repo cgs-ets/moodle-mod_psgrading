@@ -163,6 +163,8 @@ $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.cs
 
 echo $OUTPUT->header();
 
+//$reportingeditor->render();
+
 echo $OUTPUT->render_from_template('mod_psgrading/reporting', $data);
 
 // Add scripts.

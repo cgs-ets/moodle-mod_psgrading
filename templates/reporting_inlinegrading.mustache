@@ -19,16 +19,16 @@
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 {{!
-    @template mod_psgrading/reporting_modal_effort
+    @template mod_psgrading/reporting_inlinegrading
 }}
-<div id="reporting-grademenu">  
+<div id="reporting-inlinegrading">  
   {{#iseffort}}
-    <label data-value="0"><input type="radio" name="effort" value="0"> Not set</label>
-    <label data-value="1" data-minimal="LP"><input type="radio" name="effort" value="1" {{#is1}}checked{{/is1}}> Limited Participation</label>
-    <label data-value="2" data-minimal="NI"><input type="radio" name="effort" value="2" {{#is2}}checked{{/is2}}> Needs Improvement</label>
-    <label data-value="3" data-minimal="A"><input type="radio" name="effort" value="3" {{#is3}}checked{{/is3}}> Acceptable</label>
-    <label data-value="4" data-minimal="VG"><input type="radio" name="effort" value="4" {{#is4}}checked{{/is4}}> Very Good</label>
-    <label data-value="5" data-minimal="E"><input type="radio" name="effort" value="5" {{#is5}}checked{{/is5}}> Excellent</label>
+    <label data-value="5" data-minimal="E"><div class="bg-radio bg-e"><input type="radio" name="effort" value="5" {{#is5}}checked{{/is5}}></div> Excellent</label>
+    <label data-value="4" data-minimal="VG"><div class="bg-radio bg-vg"><input type="radio" name="effort" value="4" {{#is4}}checked{{/is4}}></div> Very Good</label>
+    <label data-value="3" data-minimal="A"><div class="bg-radio bg-a"><input type="radio" name="effort" value="3" {{#is3}}checked{{/is3}}></div> Acceptable</label>
+    <label data-value="2" data-minimal="NI"><div class="bg-radio bg-ni"><input type="radio" name="effort" value="2" {{#is2}}checked{{/is2}}></div> Needs Improvement</label>
+    <label data-value="1" data-minimal="LP"><div class="bg-radio bg-lp"><input type="radio" name="effort" value="1" {{#is1}}checked{{/is1}}></div> Limited Participation</label>
+    <a class="open-popout"><div class="bg-radio"><i class="fa fa-external-link-square" aria-hidden="true"></i></div> View task engagement</a>
   {{/iseffort}} 
   {{#istext}}
     <textarea class="element-text">{{reflection}}</textarea>

@@ -58,7 +58,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         self.courseid = courseid;
         self.year = year;
         self.period = period;
-        self.editable = self.rootel.find('.psgrading-reporting').hasClass('editable');
+        self.rootelinner = self.rootel.find('.psgrading-reporting');
+        self.editable = self.rootelinner.hasClass('editable');
     }
 
     /**
@@ -68,31 +69,45 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
     Reporting.prototype.main = function () {
       var self = this;
 
-      console.log(self.editable);
-
       if (self.editable) {
 
         $(window).click(function() {
           //Hide grade menus if open.
           if (self.opentype == 'effort') {
             self.closeElements();
-            //self.rootel.find('#reporting-grademenu').remove();
-            //self.rootel.find('.report-element').removeClass('options-open');
           }
         });
 
-        // Open element for grading.
-        self.rootel.on('click', '.report-element', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var element = $(this);
-            if (!element.hasClass('options-open') ) {
-              self.openElement(element);
-            }
+        // Open effort element for grading.
+        self.rootel.on('click', '.report-element[data-type="effort"]', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var element = $(this);
+          if (!element.hasClass('options-open') ) {
+            self.openInline(element);
+          }
         });
 
-        // Save an effort grade.
-        self.rootel.on('click', '#reporting-grademenu label', function(e) {
+        // Open text element for grading.
+        self.rootel.on('click', '.report-element[data-type="text"]', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var element = $(this);
+          if (!element.hasClass('options-open') ) {
+            self.openPopout(element);
+          }
+        });
+
+        // Open popout for grading.
+        self.rootel.on('click', '.open-popout', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var element = $(this).closest('.report-element');
+          self.openPopout(element);
+        });
+
+        // Select an effort grade.
+        self.rootel.on('click', '.options-area label', function(e) {
           e.preventDefault();
           e.stopPropagation();
           var effortel = $(this);
@@ -100,14 +115,14 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         });
 
         // Save a text reflection.
-        self.rootel.on('click', '#reporting-grademenu .save', function(e) {
+        self.rootel.on('click', '.options-area .save', function(e) {
           e.preventDefault();
           e.stopPropagation();
           var btn = $(this);
           self.saveText(btn);
         });
         // Cancel a text reflection.
-        self.rootel.on('click', '#reporting-grademenu .cancel', function(e) {
+        self.rootel.on('click', '.options-area .cancel', function(e) {
           e.preventDefault();
           e.stopPropagation();
           self.closeElements();
@@ -115,10 +130,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
         // Preload the templates.
         self.templates = {
-          FORM: 'mod_psgrading/reporting_grademenu',
+          INLINE: 'mod_psgrading/reporting_inlinegrading',
+          POPOUT: 'mod_psgrading/reporting_popoutgrading',
         };
         var preloads = [];
-        preloads.push(self.loadTemplate('FORM'));
+        preloads.push(self.loadTemplate('INLINE'));
+        preloads.push(self.loadTemplate('POPOUT'));
         $.when.apply($, preloads).then(function() {
             self.rootel.removeClass('preloading').addClass('preloads-completed');
         });
@@ -136,9 +153,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
     };
 
-    Reporting.prototype.openElement = function (element) {
+    Reporting.prototype.openInline = function (element) {
         var self = this;
 
+        var row = element.closest('.reporting-row');
         var type = element.data('type');
         self.opentype = type;
         var existinggrade = element.data('grade');
@@ -148,9 +166,9 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         templatedata["is" + type] = true;
         templatedata["is" + existinggrade] = true;
         templatedata["reflection"] = hiddentext.val();
-
-        Templates.render(self.templates.FORM, templatedata).done(function(tmpl) {
+        Templates.render(self.templates.INLINE, templatedata).done(function(tmpl) {
           self.closeElements();
+          row.addClass('dropdown-focussed');
           element.addClass('options-open');
 
           // Add the dropdown in.
@@ -159,10 +177,67 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         
     };
 
+
+    Reporting.prototype.openPopout = function (element) {
+      var self = this;
+
+      var row = element.closest('.reporting-row');
+      var type = element.data('type');
+      self.opentype = type;
+      var existinggrade = element.data('grade');
+      var optionsarea = element.find('.options-area');
+      var hiddentext = element.find('.element-reflection');
+      var templatedata = {};
+      templatedata["is" + type] = true;
+      templatedata["is" + existinggrade] = true;
+      templatedata["reflection"] = hiddentext.val();
+      Templates.render(self.templates.POPOUT, templatedata).done(function(tmpl) {
+        self.closeElements();
+        // Open this element.
+        row.addClass('popout-focussed');
+        element.addClass('options-open');
+        element.addClass('popout');
+        // Add the dropdown in.
+        optionsarea.html(tmpl);
+
+        // Load the help guide.
+        Ajax.call([{
+          methodname: 'mod_psgrading_apicontrol',
+          args: { 
+              action: 'reporting_help',
+              data: JSON.stringify({
+                  courseid: self.courseid,
+                  year: self.year,
+                  period: self.period,
+                  username: row.data('username'),
+                  subjectarea: element.data('subjectarea'),
+              }),
+          },
+          done: function(html) {
+            if (html.length) {
+              optionsarea.find('.help-area').html(html);
+            } else {
+              optionsarea.find('.help-area').html('No relevant task engagement data found for this subject.');
+            }
+          },
+          fail: function(reason) {
+            Log.debug(reason);
+            optionsarea.find('.help-area').html('No relevant task engagement data found for this subject.');
+          }
+        }]);
+  
+
+      });
+      
+  };
+
     Reporting.prototype.closeElements = function () {
       var self = this;
-      self.rootel.find('#reporting-grademenu').remove();
+      self.rootel.find('#reporting-inlinegrading').remove();
       self.rootel.find('.report-element').removeClass('options-open');
+      self.rootel.find('.report-element').removeClass('popout');
+      self.rootel.find('.reporting-row').removeClass('dropdown-focussed');
+      self.rootel.find('.reporting-row').removeClass('popout-focussed');
     }
 
 
@@ -177,7 +252,6 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
       var type = element.data('type');
       var row = element.closest('.reporting-row');
 
-      //self.rootel.find('#reporting-grademenu').remove();
       self.closeElements();
       element.addClass('submitting');
 
@@ -199,6 +273,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
           element.removeClass('submitting');
           if (success) {
             element.attr('data-grade', grade);
+            element.data('grade', grade);
             var label = subjectarea;
             if (minimal) {
               label += " (" + minimal + ")";
