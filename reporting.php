@@ -81,7 +81,6 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_context($coursecontext);
 
-
 // Get classes based on user.
 $classes = reporting::get_staff_classes($USER->username, $year, $period);
 
@@ -110,7 +109,12 @@ array_walk($students, function(&$value, $key) {
     }
 });
 
+$studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
+    'courseid' => $course->id,
+    'year' => $year,
+    'period' => $period,
 
+));
 // Cache reporting requirements for each student.
 foreach ($classes as $class) {
     foreach ($class->students as $classstudent) {
@@ -121,15 +125,17 @@ foreach ($classes as $class) {
         if (!in_array($class->assesscode, $students[$classstudent->id]['assesscodes'])) {
             // Add the assescode to the student.
             $students[$classstudent->id]['assesscodes'][] = $class->assesscode;
+
             // Add the reportelements based on the assesscode.
+            $studentreflectionurl->param('user', $classstudent->id);
+            $elements = reporting::get_reportelements($class->assesscode, $classstudent->yearlevel, $studentreflectionurl);
             $students[$classstudent->id]['reportelements'] = array_merge(
                 $students[$classstudent->id]['reportelements'], 
-                reporting::get_reportelements($class->assesscode, $classstudent->yearlevel)
+                $elements
             );
         }
     }
 }
-
 
 // Get existing reporting values.
 reporting::populate_existing_reportelements($courseid, $year, $period, $students);
@@ -149,6 +155,7 @@ for ($i = 1; $i <= 2; $i++) {
     $rps[] = $rp;
 }
 
+
 $data = array(
     'students' => array_values($students),
     'period' => $period,
@@ -157,13 +164,10 @@ $data = array(
     'locked' => $locked,
 );
 
-
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
 echo $OUTPUT->header();
-
-//$reportingeditor->render();
 
 echo $OUTPUT->render_from_template('mod_psgrading/reporting', $data);
 
@@ -175,6 +179,3 @@ $PAGE->requires->js_call_amd('mod_psgrading/reporting', 'init', array(
 ));
 
 echo $OUTPUT->footer();
-//echo '<div class="invisible-underlay"></div>';
-//echo '<div class="reporting-helper">ddsaasdasd</div>';
-

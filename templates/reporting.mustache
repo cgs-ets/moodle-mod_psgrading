@@ -44,7 +44,7 @@
           </div>
           <div class="student-report-elements">
             {{#reportelements}}
-              <a href="#" class="report-element" data-subjectarea="{{subjectarea}}" data-type="{{type}}" data-grade="{{grade}}">
+              <a href="{{url}}" class="report-element" data-subjectarea="{{subjectarea}}" data-type="{{type}}" data-grade="{{grade}}">
                 <input class="element-reflection" type="hidden" value="{{reflection}}" />
                 <div class="subjectgrade">{{subjectarea}} {{#minimal}}({{minimal}}){{/minimal}}</div>
                 <div class="options-area"></div>
@@ -53,5 +53,11 @@
           </div>
       </div>
     {{/students}}
+
+    <div id="reflection-form-wrap">
+      <div id="reflection-form">
+        {{{reflectionform}}}
+      </div>
+    </div>
 
 </div>

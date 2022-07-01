@@ -25,6 +25,7 @@ namespace mod_psgrading;
 defined('MOODLE_INTERNAL') || die();
 
 use \mod_psgrading\persistents\task;
+use \mod_psgrading\forms\form_reflection;
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -122,7 +123,7 @@ class reporting {
         }
     }
 
-    public static function get_reportelements($assesscode, $yearlevel) {
+    public static function get_reportelements($assesscode, $yearlevel, $studentreflectionurl) {
 
         $elements = array();
 
@@ -213,12 +214,13 @@ class reporting {
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
                     );
-                    if ($yearlevel >= 3) {
+                    //if ($yearlevel >= 3) {
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
-                            'type' => 'text',
+                            'type' => 'editor',
+                            'url' => $studentreflectionurl->out(false),
                         );
-                    }
+                    //}
                     break;
             }
         } else { // Pre-S to Pre-K
@@ -252,9 +254,11 @@ class reporting {
                         $element['grade'] = $existing->grade;
                         $element['minimal'] = static::REPORTENGAGEMENTOPTIONS[$existing->grade]['minimal'];
                     } else {
-                        $element['reflection'] = $existing->reflection;
-                        $element['grade'] = 'text_graded';
-                        $element['minimal'] = '';
+                        if (!empty($existing->reflection)) {
+                            $element['reflection'] = $existing->reflection;
+                            $element['grade'] = 'text_graded';
+                            $element['minimal'] = '';
+                        }
                     }
                 }
             }
@@ -312,6 +316,47 @@ class reporting {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $reflection;
+            $data['grade'] = '';
+            $DB->insert_record(static::TABLE_REPORTING, $data);
+        }
+        
+        return true;
+    }
+
+    public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
+        global $DB, $USER;
+
+        $user = \core_user::get_user_by_username($username);
+
+        // Store editor files to permanent file area and get text.
+        $reflectiontext = file_save_draft_area_files(
+            $reflection['itemid'], 
+            $context->id, 
+            'mod_psgrading', 
+            'reflection', 
+            $year . $period . $user->id,
+            form_reflection::editor_options(), 
+            $reflection['text'],
+        );
+
+        $data = array (
+            'courseid' => $courseid,
+            'fileyear' => $year,
+            'reportingperiod' => $period,
+            'studentusername' => $username,
+            'elementname' => $elname,
+            'elementtype' => $eltype,
+        );
+        if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
+            // Update
+            $existing->graderusername = $USER->username;
+            $existing->reflection = $reflectiontext;
+            $existing->grade = '';
+            $DB->update_record(static::TABLE_REPORTING, $existing);
+        } else {
+            // Insert
+            $data['graderusername'] = $USER->username;
+            $data['reflection'] = $reflectiontext;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }

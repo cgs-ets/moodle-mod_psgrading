@@ -94,7 +94,7 @@ $string['addevidence'] = 'Select any course activities that form part of this ta
 // Settings
 $string['enableweights'] = 'Enable weights';
 $string['restrictto'] = 'Restrict to users (comma-separated usernames)';
-$string['reportingperiod'] = 'Reporting Period';
+$string['reportingperiod'] = 'Reporting Period (Semester)';
 
 // Statuses
 $string['taskvisible'] = 'Task is visible';
@@ -106,3 +106,6 @@ $string['gradesnotreleased'] = 'Feedback not released';
 $string['gradesreleasing'] = 'Releasing grades';
 $string['taskhiddenmakevisible'] = 'Task is hidden. Click to make visible.';
 $string['dragtoreorder'] = 'Drag to reorder';
+
+// Reporting
+$string['reflection'] = 'Reflection';

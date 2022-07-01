@@ -126,7 +126,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
           e.preventDefault();
           e.stopPropagation();
           self.closeElements();
-        })
+        });
 
         // Preload the templates.
         self.templates = {
@@ -200,32 +200,33 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         // Add the dropdown in.
         optionsarea.html(tmpl);
 
-        // Load the help guide.
-        Ajax.call([{
-          methodname: 'mod_psgrading_apicontrol',
-          args: { 
-              action: 'reporting_help',
-              data: JSON.stringify({
-                  courseid: self.courseid,
-                  year: self.year,
-                  period: self.period,
-                  username: row.data('username'),
-                  subjectarea: element.data('subjectarea'),
-              }),
-          },
-          done: function(html) {
-            if (html.length) {
-              optionsarea.find('.help-area').html(html);
-            } else {
+        if (type == 'text') {
+          // Load the help guide.
+          Ajax.call([{
+            methodname: 'mod_psgrading_apicontrol',
+            args: { 
+                action: 'reporting_help',
+                data: JSON.stringify({
+                    courseid: self.courseid,
+                    year: self.year,
+                    period: self.period,
+                    username: row.data('username'),
+                    subjectarea: element.data('subjectarea'),
+                }),
+            },
+            done: function(html) {
+              if (html.length) {
+                optionsarea.find('.help-area').html(html);
+              } else {
+                optionsarea.find('.help-area').html('No relevant task engagement data found for this subject.');
+              }
+            },
+            fail: function(reason) {
+              Log.debug(reason);
               optionsarea.find('.help-area').html('No relevant task engagement data found for this subject.');
             }
-          },
-          fail: function(reason) {
-            Log.debug(reason);
-            optionsarea.find('.help-area').html('No relevant task engagement data found for this subject.');
-          }
-        }]);
-  
+          }]);
+        }
 
       });
       
