@@ -64,6 +64,11 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportingurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -178,12 +183,19 @@ class list_exporter extends exporter {
                 utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
             }
         }
+        
+        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', array(
+            'courseid' => $this->related['courseid'],
+            'year' => date('Y'),
+            'period' => $this->related['moduleinstance']->reportingperiod,
+        ));
 
         return array(
             'listhtml' => $listhtml,
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),
+            'reportingurl' => $reportingurl->out(false),
         );
 
     }

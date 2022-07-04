@@ -69,6 +69,11 @@ class course_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportingurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -228,12 +233,19 @@ class course_exporter extends exporter {
             }
         }
 
+        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', array(
+            'courseid' => $this->related['courseid'],
+            'year' => date('Y'),
+            'period' => $this->related['reportingperiod'],
+        ));
+
         return array(
             'listhtml' => $listhtml,
             'reportingperiods' => $rps,
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),
+            'reportingurl' => $reportingurl->out(false),
         );
 
     }

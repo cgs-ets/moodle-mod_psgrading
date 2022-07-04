@@ -84,7 +84,7 @@ class reporting {
             $params = array(
                 'year' => $year,
                 'period' => $period,
-                'username' => 41804 //$username
+                'username' => $username, //41804
             );
 
             $staffclasses = $externalDB->get_records_sql($sql, $params);
@@ -214,13 +214,13 @@ class reporting {
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
                     );
-                    //if ($yearlevel >= 3) {
+                    if ($yearlevel >= 3) {
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
                             'type' => 'editor',
                             'url' => $studentreflectionurl->out(false),
                         );
-                    //}
+                    }
                     break;
             }
         } else { // Pre-S to Pre-K
