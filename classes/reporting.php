@@ -262,7 +262,6 @@ class reporting {
                     }
                 }
             }
-            //echo "<pre>"; var_export($sdata); exit;
         }
     }
 
@@ -281,6 +280,7 @@ class reporting {
             // Update
             $existing->grade = $grade;
             $existing->reflection = '';
+            $existing->reflectionbase64 = '';
             $existing->graderusername = $USER->username;
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
@@ -288,6 +288,7 @@ class reporting {
             $data['graderusername'] = $USER->username;
             $data['grade'] = $grade;
             $data['reflection'] = '';
+            $data['reflectionbase64'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
         
@@ -310,12 +311,14 @@ class reporting {
             // Update
             $existing->graderusername = $USER->username;
             $existing->reflection = $reflection;
+            $existing->reflectionbase64 = $reflection;
             $existing->grade = '';
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $reflection;
+            $data['reflectionbase64'] = $reflection;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
@@ -324,7 +327,7 @@ class reporting {
     }
 
     public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
-        global $DB, $USER;
+        global $DB, $USER, $CFG;
 
         $user = \core_user::get_user_by_username($username);
 
@@ -339,6 +342,35 @@ class reporting {
             $reflection['text'],
         );
 
+        $dom = new \DOMDocument();
+        @$dom->loadHTML(mb_convert_encoding($reflectiontext, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        foreach ($dom->getElementsByTagName('img') as $img) {
+            $fs = get_file_storage();
+            $fullpath = "/$context->id/mod_psgrading/reflection/" . $year . $period . $user->id . "/" . urldecode(substr($img->getAttribute( 'src' ), 15));
+
+            if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+                continue;
+            }
+
+            // Determine the physical location of the file.
+            $dir = str_replace('\\\\', '\\', $CFG->dataroot) . 
+            '\filedir\\' . substr($file->get_contenthash(), 0, 2) . 
+            '\\' . substr($file->get_contenthash(), 2, 2) . 
+            '\\';
+            $physicalpath = $dir . $file->get_contenthash();
+
+            // Create the base64 string.
+            $type = pathinfo($physicalpath, PATHINFO_EXTENSION);
+            $data = file_get_contents($physicalpath);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+            // Update the src.
+            $img->setAttribute( 'src', $base64 ); 
+        }
+
+        $reflectionbase64 = $dom->saveHTML();
+
         $data = array (
             'courseid' => $courseid,
             'fileyear' => $year,
@@ -351,12 +383,14 @@ class reporting {
             // Update
             $existing->graderusername = $USER->username;
             $existing->reflection = $reflectiontext;
+            $existing->reflectionbase64 = $reflectionbase64;
             $existing->grade = '';
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $reflectiontext;
+            $data['reflectionbase64'] = $reflectionbase64;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }

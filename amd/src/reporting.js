@@ -200,7 +200,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
         // Add the dropdown in.
         optionsarea.html(tmpl);
 
-        if (type == 'text') {
+        if (type == 'effort') {
           // Load the help guide.
           Ajax.call([{
             methodname: 'mod_psgrading_apicontrol',
