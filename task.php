@@ -165,11 +165,6 @@ if (empty($formdata)) { // loading page for edit (not submitted).
 
 } else {
 
-    if ($formdata->action == 'cancel') {
-        redirect($listurl->out());
-        exit;
-    }
-
     // Check whether activity is locked.
     if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
         $message = get_string('activitylocked', 'mod_psgrading');

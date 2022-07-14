@@ -165,6 +165,12 @@ $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl
     //$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 // Instantiate the form with data.
 $formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
+
+if ($formmark->is_cancelled()) {
+    redirect($listurl->out(false));
+    exit;
+}
+
 $formdata = $formmark->get_data();
 if (empty($formdata)) {
 
@@ -201,11 +207,6 @@ if (empty($formdata)) {
     }
 
 } else {
-    
-    if ($formdata->action == 'cancel') {
-        redirect($listurl->out(false));
-        exit;
-    }
 
     // Check whether activity is locked.
     if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
