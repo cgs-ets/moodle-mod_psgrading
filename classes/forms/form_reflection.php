@@ -51,6 +51,14 @@ class form_reflection extends \moodleform {
         $mform->setType($name, PARAM_RAW);
 
         /*----------------------
+        *   Buttons
+        *----------------------*/
+        $buttonarray = array();
+        $buttonarray[] = &$mform->createElement('submit', 'save', get_string('task:save', 'mod_psgrading'));
+        $buttonarray[] = &$mform->createElement('cancel');
+        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+
+        /*----------------------
         *   Hidden fields
         *----------------------*/
         $mform->addElement('hidden', 'action');

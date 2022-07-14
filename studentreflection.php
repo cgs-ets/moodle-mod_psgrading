@@ -86,11 +86,9 @@ $reportingurl = new moodle_url('/mod/psgrading/reporting.php', array(
 $formreflection = new form_reflection($url->out(false), array(), 'post', '', array('data-form' => 'psgrading-studentreflection'));
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
-
     if ($formdata->action == 'save') {
         reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'Student reflection', 'editor', $formdata->reflection);
     }
-
     redirect($reportingurl->out());
     exit;
 }

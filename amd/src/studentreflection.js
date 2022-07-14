@@ -65,20 +65,14 @@ define(['jquery', 'core/log'],
      StudentReflection.prototype.main = function () {
       var self = this;
 
-      // Cancel.
-      self.rootel.on('click', '#btn-cancel', function(e) {
-        e.preventDefault();
-        window.onbeforeunload = null;
-        self.form.find('[name="action"]').val('cancel');
-        self.form.submit();
+      // Cancel edit.
+      self.rootel.on('click', 'input[name="cancel"]', function(e) {
+          self.rootel.find('[name="action"]').val('cancel');
       });
 
       // Save.
-      self.rootel.on('click', '#btn-save', function(e) {
-        e.preventDefault();
-        window.onbeforeunload = null;
-        self.form.find('[name="action"]').val('save');
-        self.form.submit();
+      self.rootel.on('click', 'input[name="save"]', function(e) {
+          self.rootel.find('[name="action"]').val('save');
       });
 
     };

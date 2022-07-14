@@ -2497,7 +2497,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-size: 20px;
   background: #dedede;
   padding: 5px 10px;
-  margin: -21px -20px 0;
 }
 #page-mod-psgrading-studentreflection .student-info {
   margin: 15px 0;
@@ -2513,6 +2512,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   max-width: 100%;
   flex: none;
 }
-#page-mod-psgrading-studentreflection .buttons {
-  padding: 15px 0;
+#page-mod-psgrading-studentreflection #fitem_id_reflection {
+  margin-bottom: 15px;
 }
