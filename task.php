@@ -75,6 +75,11 @@ if (!empty($edit)) {
 // Instantiate the form.
 $formtask = new form_task($editurl->out(false), array(),'post', '', []);
 
+if ($formtask->is_cancelled()) {
+    redirect($listurl->out());
+    exit;
+}
+
 $formdata = $formtask->get_data();
 
 // Check whether loading page or submitting page.
@@ -176,11 +181,13 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     // Invalidate list html cache.
     utils::invalidate_cache($cm->id, 'list-%');
 
+
     if ($formdata->action == 'delete') {
         task::soft_delete($edit);
         redirect($listurl->out());
         exit;
     }
+
 
     if ($formdata->action == 'save') {
         $result = task::save_from_data($edit, $cm->id, $formdata);

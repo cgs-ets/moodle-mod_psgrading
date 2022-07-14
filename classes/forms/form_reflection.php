@@ -46,7 +46,7 @@ class form_reflection extends \moodleform {
         *----------------------*/
         $type = 'editor';
         $name = 'reflection';
-        $title = ''; //get_string('reflection', 'mod_psgrading');
+        $title = '';
         $mform->addElement($type, $name, $title, null, static::editor_options());
         $mform->setType($name, PARAM_RAW);
 

@@ -52,11 +52,13 @@ class form_task extends \moodleform {
         ****/
 
         // Page title.
-        $mform->addElement('header', 'general', '');
-        $mform->setExpanded('general', true, true);
+        $mform->addElement('header', 'details', 'Details');
+        $mform->setExpanded('details', true, true);
 
         // Print preview.
-        $mform->addElement('html', '<a class="btn-print" data-toggle="tooltip" data-placement="right" title="Print preview" href="' . task::get_printurl($edit) . '"><i class="fa fa-print" aria-hidden="true"></i></a>');
+        if ($edit) {
+            $mform->addElement('html', '<a class="btn-print" data-toggle="tooltip" data-placement="right" title="Print preview" href="' . task::get_printurl($edit) . '"><i class="fa fa-print" aria-hidden="true"></i></a>');
+        }
 
         /*----------------------
          *   Name.
@@ -132,16 +134,30 @@ class form_task extends \moodleform {
         /*----------------------
         *   Notes
         *----------------------*/
+        // Section title
+        $mform->addElement('header', 'othersection', 'Other');
+        $mform->setExpanded('othersection', true, true);
         $type = 'editor';
         $name = 'notes';
         $title = get_string('task:notes', 'mod_psgrading');
         $mform->addElement($type, $name, $title, null, static::editor_options());
         $mform->setType($name, PARAM_RAW);
 
-        // Buttons.
-        $mform->addElement('header', 'actions', '');
-        $mform->setExpanded('actions', true, true);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/task_buttons', array('hasgrades' => task::has_grades($edit), 'edit' => $edit)));
+        /*----------------------
+         *   Buttons.
+         *----------------------*/
+        $buttonarray = array();
+        $buttonarray[] = &$mform->createElement('submit','save',get_string('task:save', 'mod_psgrading'));
+        $buttonarray[] = &$mform->createElement('cancel');
+        if (!$released && $edit) {
+            $buttonarray[] = &$mform->createElement(
+                'submit',
+                'delete',
+                get_string('task:delete', 'mod_psgrading'),
+            );
+        }
+        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');

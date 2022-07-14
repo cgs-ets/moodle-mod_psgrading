@@ -13,6 +13,9 @@
   &.zoomed {
 		background-color: #fff;
     overflow: hidden;
+    .drawer-toggler {
+      display: none;
+    }
     #maincontent {
       display: none;
     }
@@ -40,6 +43,7 @@
       overflow: hidden;
       margin: 0;
       padding: 0;
+      z-index: 10;
       #page-content {
         padding: 0 !important;
       }

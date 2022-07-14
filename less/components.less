@@ -1,59 +1,48 @@
-/* Helpers */
 .path-mod-psgrading {
-    .header {
-        background-color: #f5f5f5;
-        overflow: hidden;
-        padding: 20px;
-        margin: -1px -20px 30px -20px;
-        box-shadow: 1px 0 12px -3px black;
+  .selected-student {
+    float: left;
+  }
+  .reportingperiod-selector {
+    right: 310px;
+    position: absolute;
+    top: -70px;
+    width: 171px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      font-size: 85%;
     }
-    .selected-student {
-        float: left;
+    select {
+        width: auto;
     }
-
-    .reportingperiod-selector {
-      right: 310px;
-      position: absolute;
-      top: -70px;
-      width: 171px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      span {
-        font-size: 85%;
-      }
-      select {
-          width: auto;
-      }
+  }
+  .task-selector, .group-selector {
+    position: absolute;
+    top: -70px;
+    right: 35px;
+    width: 200px;
+    select {
+      width: auto;
+      min-width: 200px;
+      max-width: 100%;
     }
-
-    .task-selector, .group-selector {
-        position: absolute;
-        top: -70px;
-        right: 35px;
-        width: 200px;
-        select {
-            width: auto;
-            min-width: 200px;
-            max-width: 100%;
-        }
+  }
+  .student-selector {
+    float: right;
+    select {
+      display: inline-block;
+      width: 230px;
+      margin: 0 6px;
     }
-
-    .student-selector {
-        float: right;
-        select {
-            display: inline-block;
-            width: 230px;
-            margin: 0 6px;
-        }
-        a {
-            cursor: pointer;
-        }
+    a {
+      cursor: pointer;
     }
-    .selector-label {
-        position: absolute;
-        left: -51px;
-        font-size: 85%;
-        padding-top: 9px;
-    }
+  }
+  .selector-label {
+    position: absolute;
+    left: -51px;
+    font-size: 85%;
+    padding-top: 9px;
+  }
 }

@@ -108,37 +108,20 @@ define(['jquery', 'core/log', 'core/ajax'],
         });
 
         // Save.
-        self.rootel.on('click', '#btn-save', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="save"]', function(e) {
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('save');
-            self.form.submit();
         });
 
         // Save and show next.
-        self.rootel.on('click', '#btn-saveshownext', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('saveshownext');
-            self.form.submit();
-        });
-
-        // Reset.
-        self.rootel.on('click', '#btn-reset', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
-            self.rootel.find('[name="action"]').val('reset');
-            self.form.submit();
         });
 
         // Cancel.
-        self.rootel.on('click', '#btn-cancel', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="cancel"]', function(e) {
             self.rootel.find('[name="action"]').val('cancel');
-            self.form.submit();
         });
 
         // Save comment to bank.

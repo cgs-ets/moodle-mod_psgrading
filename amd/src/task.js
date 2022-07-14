@@ -74,29 +74,21 @@ define(['jquery', 'core/log', 'core/templates', 'core/ajax', 'core/str'],
         var self = this;
 
         // Cancel edit.
-        self.rootel.on('click', '#btn-cancel', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="cancel"]', function(e) {
             self.rootel.find('[name="action"]').val('cancel');
-            self.rootel.submit();
         });
 
         // Delete task.
-        self.rootel.on('click', '#btn-delete', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="delete"]', function(e) {
             self.rootel.find('[name="action"]').val('delete');
-            self.rootel.submit();
         });
 
         // Save.
-        self.rootel.on('click', '#btn-save', function(e) {
-            e.preventDefault();
-            window.onbeforeunload = null;
+        self.rootel.on('click', 'input[name="save"]', function(e) {
             self.rootel.find('[name="action"]').val('save');
             self.regenerateEvidenceJSON();
             self.regenerateCriterionJSON();
-            self.rootel.submit();
+            Log.debug('regenerated evidence and criteria json');
         });
 
         // Add criterion.

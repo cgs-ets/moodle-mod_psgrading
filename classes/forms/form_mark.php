@@ -113,7 +113,11 @@ class form_mark extends \moodleform {
         }
 
         // Buttons.
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_buttons', array()));
+        $buttonarray = array();
+        $buttonarray[] = &$mform->createElement('submit','save', get_string('mark:save', 'mod_psgrading'));
+        $buttonarray[] = &$mform->createElement('submit','saveshownext', get_string('mark:saveshownext', 'mod_psgrading'));
+        $buttonarray[] = &$mform->createElement('cancel');
+        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
 
         // Hidden.
         $mform->addElement('hidden', 'action');

@@ -22,6 +22,9 @@
     top: 0px;
     font-size: 20px;
 	}
+  .collapsible-actions {
+    display: none;
+  }
 }	
 
 form[data-form="psgrading-task"] {
@@ -48,6 +51,7 @@ form[data-form="psgrading-task"] {
 		}
 		fieldset {
 			margin-left: 0 !important;
+      border: 0 none;
 		}
 	}
 
@@ -82,17 +86,14 @@ form[data-form="psgrading-task"] {
 		margin-top: 20px;
 	}
 
-	.custom-footer-buttons {
-		padding: 25px 0 30px;
-	    text-align: center;
-		#btn-save, #btn-cancel {
-			float: left;
-			margin-right: 7px;
-		}
-		#btn-delete {
-			float: right;
-		}
-	}
+  input#id_delete {
+    right: 0;
+    position: absolute;
+    color: #fff;
+    background-color: #ca3120;
+    border-color: #ca3120;
+  }
+
 	
 }
 

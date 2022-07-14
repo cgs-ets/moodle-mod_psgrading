@@ -1,3 +1,16 @@
+.path-mod-psgrading header#page-header {
+  max-width: 100%;
+}
+.path-mod-psgrading .header {
+  background-color: #f5f5f5;
+  overflow: hidden;
+  padding: 20px;
+  margin: -1px -20px 30px -20px;
+  box-shadow: 1px 0 12px -3px black;
+}
+.path-mod-psgrading .secondary-navigation {
+  display: none;
+}
 /* Variables */
 /* Helpers */
 .path-mod-psgrading .spinner {
@@ -56,14 +69,6 @@
   border-radius: 1px;
   font-size: 15px;
   opacity: 1;
-}
-/* Helpers */
-.path-mod-psgrading .header {
-  background-color: #f5f5f5;
-  overflow: hidden;
-  padding: 20px;
-  margin: -1px -20px 30px -20px;
-  box-shadow: 1px 0 12px -3px black;
 }
 .path-mod-psgrading .selected-student {
   float: left;
@@ -132,6 +137,9 @@
   top: 0px;
   font-size: 20px;
 }
+#page-mod-psgrading-task .collapsible-actions {
+  display: none;
+}
 form[data-form="psgrading-task"] {
   position: relative;
 }
@@ -151,6 +159,7 @@ form[data-form="psgrading-task"].mform legend a.fheader {
 }
 form[data-form="psgrading-task"].mform fieldset {
   margin-left: 0 !important;
+  border: 0 none;
 }
 form[data-form="psgrading-task"] #id_actions {
   border: 0 none;
@@ -179,17 +188,12 @@ form[data-form="psgrading-task"] #savestatus .badge i {
 form[data-form="psgrading-task"] #fitem_id_notes {
   margin-top: 20px;
 }
-form[data-form="psgrading-task"] .custom-footer-buttons {
-  padding: 25px 0 30px;
-  text-align: center;
-}
-form[data-form="psgrading-task"] .custom-footer-buttons #btn-save,
-form[data-form="psgrading-task"] .custom-footer-buttons #btn-cancel {
-  float: left;
-  margin-right: 7px;
-}
-form[data-form="psgrading-task"] .custom-footer-buttons #btn-delete {
-  float: right;
+form[data-form="psgrading-task"] input#id_delete {
+  right: 0;
+  position: absolute;
+  color: #fff;
+  background-color: #ca3120;
+  border-color: #ca3120;
 }
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
 #page-mod-psgrading-task #fitem_id_criterionjson {
@@ -456,6 +460,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #fff;
   overflow: hidden;
 }
+#page-mod-psgrading-courseoverview.zoomed .drawer-toggler,
+#page-mod-psgrading-view.zoomed .drawer-toggler {
+  display: none;
+}
 #page-mod-psgrading-courseoverview.zoomed #maincontent,
 #page-mod-psgrading-view.zoomed #maincontent {
   display: none;
@@ -490,6 +498,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   overflow: hidden;
   margin: 0;
   padding: 0;
+  z-index: 10;
 }
 #page-mod-psgrading-courseoverview.zoomed #page #page-content,
 #page-mod-psgrading-view.zoomed #page #page-content {
@@ -1073,9 +1082,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 #page-mod-psgrading-mark .clear {
   clear: both;
-}
-#page-mod-psgrading-mark .custom-footer-buttons {
-  margin-top: 30px;
 }
 #page-mod-psgrading-mark.didnotsubmit .marking-criterions,
 #page-mod-psgrading-mark.didnotsubmit .marking-evidences,
