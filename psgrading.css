@@ -6,7 +6,7 @@
   overflow: hidden;
   padding: 20px;
   margin: -1px -20px 30px -20px;
-  box-shadow: 1px 0 12px -3px black;
+  border: 1px solid #eee;
 }
 .path-mod-psgrading .secondary-navigation {
   display: none;
@@ -1388,7 +1388,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-overview .psgrading-overview .header,
 #page-mod-psgrading-studentoverview .psgrading-overview .header {
   margin: -1px 0px 0px 0px;
-  box-shadow: none;
 }
 #page-mod-psgrading-overview .psgrading-overview .psgrading-matrix,
 #page-mod-psgrading-studentoverview .psgrading-overview .psgrading-matrix {
