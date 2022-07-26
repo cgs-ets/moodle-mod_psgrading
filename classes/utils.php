@@ -471,7 +471,6 @@ class utils {
             $students = static::get_enrolled_students($courseid);
         }
 
-
         $isstaff = static::is_grader();
         if (!$isstaff) {
             $vars = array(
@@ -594,6 +593,8 @@ class utils {
 
         // Fullname.
         $user->fullname = fullname($user);
+        // Fullname reverse
+        $user->fullnamereverse = "{$user->lastname}, {$user->firstname}";
 
         // Profile photo.
         $userphoto = new \user_picture($user);

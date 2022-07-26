@@ -50,7 +50,7 @@
         <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
         <select class="student-select form-control">
             {{#students}}
-                <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{fullname}}</option>
+                <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-markurl="{{markurl}}">{{fullnamereverse}}</option>
             {{/students}}
         </select>
         <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
