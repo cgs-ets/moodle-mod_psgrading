@@ -410,8 +410,6 @@ class reporting {
         // Display
         // - Taskname, subjectareas (csv), engagement/color
 
-        $username = 51265;
-
         // Get all psgrading instances for this course.
         $sql = "SELECT id, restrictto
                 FROM {psgrading}
@@ -427,7 +425,7 @@ class reporting {
             }
         }
         if (empty($courseinstances)) {
-            return;
+            return '';
         }
 
         // Get the cmids for the mod instances.
@@ -441,7 +439,7 @@ class reporting {
         $params = array($courseid, $moduleid);
         $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
         if (empty($cms)) {
-            return;
+            return '';
         }
 
 
