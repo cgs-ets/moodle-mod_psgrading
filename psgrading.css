@@ -1,4 +1,4 @@
-.path-mod-psgrading header#page-header {
+.path-mod-psgrading header#page-header.header-maxwidth {
   max-width: 100%;
 }
 .path-mod-psgrading .header {

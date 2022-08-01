@@ -109,18 +109,21 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Save.
         self.rootel.on('click', 'input[name="save"]', function(e) {
+            window.onbeforeunload = null;
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('save');
         });
 
         // Save and show next.
         self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
+            window.onbeforeunload = null;
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('saveshownext');
         });
 
         // Cancel.
         self.rootel.on('click', 'input[name="cancel"]', function(e) {
+            window.onbeforeunload = null;
             self.rootel.find('[name="action"]').val('cancel');
         });
 
