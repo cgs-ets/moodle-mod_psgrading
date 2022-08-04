@@ -58,7 +58,7 @@ class cron_grade_release extends \core\task\scheduled_task {
 
         // Get grades that need to be processed, from tasks that are released.
         $this->log_finish("Looking for grades to process");
-        $sql = "SELECT tg.*
+        $sql = "SELECT tg.*, t.cmid
                   FROM {" . task::TABLE_GRADES . "} tg
             INNER JOIN {" . task::TABLE . "} t ON t.id = tg.taskid
                  WHERE tg.releaseprocessed = 0
@@ -71,6 +71,18 @@ class cron_grade_release extends \core\task\scheduled_task {
         // Loop grades.
         foreach ($grades as $grade) {
             $this->log("Processing grade record " . $grade->id, 1);
+
+            // Check restrictto and excludeusers.
+            $cm = get_coursemodule_from_id('psgrading', $grade->cmid, 0, false, MUST_EXIST);
+            $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+            if (in_array($grade->studentusername, explode(',', $moduleinstance->excludeusers))) {
+                $this->log_finish("Skipping as this student is excluded: " . $grade->studentusername, 3);
+                continue;
+            }
+            if ($moduleinstance->restrictto && !in_array($grade->studentusername, explode(',', $moduleinstance->restrictto))) {
+                $this->log_finish("Skipping as this student is not in the restrictto list: " . $grade->studentusername, 3);
+                continue;
+            }
 
             // If the rubric is not graded at all then skip, unless didnotsubmit selected and comment is present.
             $criteriaselections = task::get_grade_criterion_selections($grade->id);

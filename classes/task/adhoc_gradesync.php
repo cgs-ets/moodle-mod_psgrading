@@ -96,7 +96,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         $this->cache_existing_grades();
 
         // Get/compute the grades for each student.
-        $students = utils::get_enrolled_students($this->courseid);
+        $students = utils::get_enrolled_students($this->courseid, []);
         foreach ($students as $studentid) {
             $this->get_grades($studentid);
         }

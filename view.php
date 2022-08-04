@@ -104,10 +104,10 @@ if (empty($groupid) && $nav != 'all') {
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
-    $students = utils::get_filtered_students($course->id, 0, $moduleinstance->restrictto);
+    $students = utils::get_filtered_students($course->id, 0, $moduleinstance->restrictto, $moduleinstance->excludeusers);
 } else {
     // Get by group.
-    $students = utils::get_filtered_students_by_group($course->id, $groupid, 0, $moduleinstance->restrictto);
+    $students = utils::get_filtered_students_by_group($course->id, $groupid, 0, $moduleinstance->restrictto, $moduleinstance->excludeusers);
 }
 if (empty($students)) {
     if ($groupid) {

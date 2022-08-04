@@ -105,6 +105,9 @@ class mod_psgrading_mod_form extends moodleform_mod {
         // Restrict to specific students
         $mform->addElement('textarea', 'restrictto', get_string("restrictto", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
 
+        
+        $mform->addElement('textarea', 'excludeusers', get_string("excludeusers", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
+
         // Add standard elements.
         $this->standard_coursemodule_elements();
 

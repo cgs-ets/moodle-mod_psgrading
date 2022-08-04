@@ -82,7 +82,7 @@ if (!$exists || $task->get('deleted')) {
 }
 
 // Get the students in the course.
-$students = utils::get_filtered_students($course->id, $userid, $moduleinstance->restrictto); // Also ensures only user/staff/mentor is viewing.
+$students = utils::get_filtered_students($course->id, $userid, $moduleinstance->restrictto, $moduleinstance->excludeusers); // Also ensures only user/staff/mentor is viewing.
 if (empty($students)) {
     redirect($listurl->out(false));
     exit;

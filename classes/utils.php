@@ -425,13 +425,19 @@ class utils {
      * @param int $courseid
      * @return int[]
      */
-    public static function get_enrolled_students($courseid) {
+    public static function get_enrolled_students($courseid, $excludeusers) {
         global $DB;
         $context = \context_course::instance($courseid);
+        
         // 5 is student.
         $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
-        $users = get_role_users($studentroleid, $context, false, 'u.id, u.firstname, u.lastname', 'u.lastname'); //last param is sort by. 
-        return array_map('intval', array_column($users, 'id'));
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
+        
+        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) { 
+            return !in_array($u->username, $excludeusers);
+        });
+
+        return array_map('intval', array_column($filteredusers, 'id'));
     }
 
     /**
@@ -440,7 +446,7 @@ class utils {
      * @param int $courseid
      * @return int[]
      */
-    public static function get_enrolled_students_restricted($courseid, $usernames) {
+    public static function get_enrolled_students_restricted($courseid, $usernames, $excludeusers) {
         global $DB;
         $context = \context_course::instance($courseid);
         // 5 is student.
@@ -449,6 +455,10 @@ class utils {
 
         $filteredusers = array_filter( $users, function( $u ) use($usernames) { 
             return in_array($u->username, $usernames);
+        });
+
+        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) { 
+            return !in_array($u->username, $excludeusers);
         });
 
         return array_map('intval', array_column($filteredusers, 'id'));
@@ -462,13 +472,13 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students($courseid, $accessuserid = 0, $restrictto = '') {
+    public static function get_filtered_students($courseid, $accessuserid = 0, $restrictto = '', $excludeusers = '') {
         global $USER;
 
         if ($restrictto) {
-            $students = static::get_enrolled_students_restricted($courseid, explode(',', $restrictto));
+            $students = static::get_enrolled_students_restricted($courseid, explode(',', $restrictto), explode(',', $excludeusers));
         } else {
-            $students = static::get_enrolled_students($courseid);
+            $students = static::get_enrolled_students($courseid, explode(',', $excludeusers));
         }
 
         $isstaff = static::is_grader();
@@ -545,10 +555,10 @@ class utils {
      * @param int $accessuserid. The user id that is being viewed.
      * @return int[]
      */
-    public static function get_filtered_students_by_group($courseid, $groupid = 0, $accessuserid = 0, $restrictto = '') {
+    public static function get_filtered_students_by_group($courseid, $groupid = 0, $accessuserid = 0, $restrictto = '', $excludeusers = '') {
         global $DB;
 
-        $students = static::get_filtered_students($courseid, $accessuserid, $restrictto);
+        $students = static::get_filtered_students($courseid, $accessuserid, $restrictto, $excludeusers);
 
         $sql = "SELECT DISTINCT gm.userid
                   FROM {groups_members} gm

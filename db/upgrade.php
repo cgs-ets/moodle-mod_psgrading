@@ -329,5 +329,15 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022070400, 'psgrading');
     }
 
+    if ($oldversion < 2022080300) {
+        $table = new xmldb_table('psgrading');
+        $excludeusers = new xmldb_field('excludeusers', XMLDB_TYPE_TEXT, null, null, null, null, null, 'restrictto');
+        if (!$dbman->field_exists($table, $excludeusers)) {
+            $dbman->add_field($table, $excludeusers);
+        }
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022080300, 'psgrading');
+    }
+
     return true;
 }

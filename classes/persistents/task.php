@@ -531,7 +531,7 @@ class task extends persistent {
         global $OUTPUT, $DB;
 
         // Get all psgrading instances for this course.
-        $sql = "SELECT id, restrictto
+        $sql = "SELECT id, restrictto, excludeusers
                 FROM {psgrading}
                 WHERE course = ?
                   AND reportingperiod = ?";

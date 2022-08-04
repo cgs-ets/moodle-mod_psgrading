@@ -67,6 +67,12 @@ function mod_psgrading_pluginfile($course, $cm, $context, $filearea, $args, $for
  * @return true | null True if the feature is supported, null otherwise.
  */
 function psgrading_supports($feature) {
+    if (!defined("FEATURE_MOD_PURPOSE")) {
+        define("FEATURE_MOD_PURPOSE", false);
+    }
+    if (!defined("MOD_PURPOSE_ASSESSMENT")) {
+        define("MOD_PURPOSE_ASSESSMENT", false);
+    }
     switch ($feature) {
         case FEATURE_MOD_INTRO: return true;
         case FEATURE_BACKUP_MOODLE2:  return true;
