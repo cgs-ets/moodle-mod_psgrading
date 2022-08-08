@@ -84,6 +84,10 @@ $reportingurl = new moodle_url('/mod/psgrading/reporting.php', array(
 
 // Check to see if the page was submitted for a student reflection before continuing.
 $formreflection = new form_reflection($url->out(false), array(), 'post', '', array('data-form' => 'psgrading-studentreflection'));
+if ($formreflection->is_cancelled()) {
+    redirect($reportingurl->out());
+    exit;
+}
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
