@@ -22,38 +22,32 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require(__DIR__.'/../../config.php');
-
+require(dirname(__FILE__).'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-$id = required_param('id', PARAM_INT);
+$id = required_param('id', PARAM_INT); // Course Module ID.
+global $DB, $PAGE, $OUTPUT, $CFG;
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
-require_course_login($course);
 
-$coursecontext = context_course::instance($course->id);
-
-$event = \mod_psgrading\event\course_module_instance_list_viewed::create(array(
-    'context' => $modulecontext
-));
-$event->add_record_snapshot('course', $course);
-$event->trigger();
+require_course_login($course, true);
+$PAGE->set_pagelayout('incourse');
 
 $PAGE->set_url('/mod/psgrading/index.php', array('id' => $id));
 $PAGE->set_title(format_string($course->fullname));
 $PAGE->set_heading(format_string($course->fullname));
-$PAGE->set_context($coursecontext);
-
 echo $OUTPUT->header();
+
+\mod_psgrading\event\course_module_instance_list_viewed::create_from_course($course)->trigger();
 
 $modulenameplural = get_string('modulenameplural', 'mod_psgrading');
 echo $OUTPUT->heading($modulenameplural);
 
 $psgradings = get_all_instances_in_course('psgrading', $course);
-
 if (empty($psgradings)) {
     notice(get_string('nonewmodules', 'mod_psgrading'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }
+
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
