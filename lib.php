@@ -166,3 +166,14 @@ function psgrading_extend_navigation($psgradingnode, $course, $module, $cm) {
  */
 function psgrading_extend_settings_navigation($settingsnav, $psgradingnode = null) {
 }
+
+
+/**
+* Hook called before we delete a course module.
+*
+* @param stdClass $cm The course module record.
+*/
+function mod_psgrading_pre_course_module_delete($cm) {
+    echo get_string('nodelete', 'mod_psgrading', $cm->id);
+    exit;
+}
