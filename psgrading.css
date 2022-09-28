@@ -81,6 +81,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: -50px;
+  top: auto;
 }
 .path-mod-psgrading .reportingperiod-selector span {
   font-size: 85%;
@@ -94,6 +96,8 @@
   top: -70px;
   right: 35px;
   width: 200px;
+  margin-top: -50px;
+  top: auto;
 }
 .path-mod-psgrading .task-selector select,
 .path-mod-psgrading .group-selector select {
