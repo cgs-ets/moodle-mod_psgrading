@@ -51,12 +51,9 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        // Only allow one main psgrading in the course
-        if (!$DB->record_exists('psgrading', array('course' => $this->get_courseid()))) {
-            // insert the psgrading record
-            $newitemid = $DB->insert_record('psgrading', $data);
-            $this->apply_activity_instance($newitemid);
-        }
+        // insert the psgrading record
+        $newitemid = $DB->insert_record('psgrading', $data);
+        $this->apply_activity_instance($newitemid);
     }
 
     protected function process_psgrading_task($data) {

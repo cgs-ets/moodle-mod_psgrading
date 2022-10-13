@@ -115,6 +115,27 @@ class task_exporter extends persistent_exporter {
         ];
     }
 
+    /* 
+    * Check if the cm is available to the student.
+    */
+    private function is_cm_available_for_userid($cm, $userid) {
+        if (!$cm->visible) {
+            return false;
+        }
+
+        // Relevant docs: https://docs.moodle.org/dev/Availability_API
+        // Relevant git: https://github.com/moodle/moodle/blob/master/availability/classes/info_module.php
+        $info = new \core_availability\info_module($cm);
+        $user = \core_user::get_user($userid);
+        $filtered = $info->filter_user_list([$userid => $user]);
+        if (empty($filtered)) {
+            // User is not allowed to view this.
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Get the additional values to inject while exporting.
      *
@@ -166,6 +187,12 @@ class task_exporter extends persistent_exporter {
                     $modinfo = get_fast_modinfo($cm->course, $USER->id);
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$cmid];
+
+                    if ( ! $this->is_cm_available_for_userid($cm, $userid)) {
+                        unset($evidences[$i]);
+                        continue;
+                    }
+
                     // Get the chapter.
                     $sql = "SELECT * 
                             FROM {giportfolio_chapters}
@@ -195,6 +222,11 @@ class task_exporter extends persistent_exporter {
                     $modinfo = get_fast_modinfo($cm->course, $USER->id);
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$evidence->refdata];
+                    
+                    if ( ! $this->is_cm_available_for_userid($cm, $userid)) {
+                        unset($evidences[$i]);
+                        continue;
+                    }
                     // Icon
                     $evidence->icon = $cm->get_icon_url()->out();
                     // Name
@@ -247,24 +279,23 @@ class task_exporter extends persistent_exporter {
             }
         }
         $evidences = array_values($evidences);
-        //echo "<pre>"; var_export($evidences); exit;
 
         // Check if this task has grades.
         $hasgrades = task::has_grades($this->data->id);
 
         $pypuoilang = utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)] == 'Select' ? '' : utils::PYPUOIOPTIONS[strtolower($this->data->pypuoi)];
 
-    	return [
+        return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
             'detailsurl' => $detailsurl->out(false),
-	        'readabletime' => $readabletime,
+            'readabletime' => $readabletime,
             'released' => $released,
             'releasecountdown' => $releasecountdown,
             'evidences' => $evidences,
             'hasgrades' => $hasgrades,
             'pypuoilang' => $pypuoilang,
-	    ];
+        ];
     }
 
 }
