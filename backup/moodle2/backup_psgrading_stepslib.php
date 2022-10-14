@@ -39,14 +39,14 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
         // Define each element separated
         $psgrading = new backup_nested_element('psgrading', array('id'), array(
             'course', 'name', 'timecreated', 'timemodified', 'intro',
-            'introformat', 'enableweights'));
+            'introformat', 'enableweights', 'reportingperiod'));
 
         $tasks = new backup_nested_element('tasks');
         $task = new backup_nested_element('task', array('id'), array(
             'cmid', 'creatorusername', 'taskname', 'pypuoi',
             'outcomes', 'criterionjson', 'evidencejson', 'published',
             'deleted', 'seq', 'timerelease', 'timecreated',
-            'timemodified'));
+            'timemodified', 'notes', 'proposedrelease'));
 
         $criterions = new backup_nested_element('criterions');
         $criterion = new backup_nested_element('criterion', array('id'), array(
