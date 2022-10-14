@@ -104,8 +104,8 @@ if (empty($students)) {
         $courseoverviewurl->param('nav', 'all'); 
         redirect($courseoverviewurl->out(false));
     }
-    echo "No students in course";
-    exit;
+    //echo "No students in course";
+    //exit;
 }
 
 $relateds = array(

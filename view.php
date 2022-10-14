@@ -116,8 +116,8 @@ if (empty($students)) {
         $viewurl->param('nav', 'all'); 
         redirect($viewurl->out(false));
     }
-    echo "No students in course";
-    exit;
+    //echo "No students in course";
+    //exit;
 }
 
 // Get the tasks.
