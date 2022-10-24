@@ -215,7 +215,8 @@
         <FIELD NAME="elementtype" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="grade" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="reflection" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="reflectionbase64" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="reflectionimagepath" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="reflectionimagefileid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="fileyear" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="reportingperiod" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>

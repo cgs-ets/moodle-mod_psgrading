@@ -339,5 +339,36 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022080300, 'psgrading');
     }
 
+    if ($oldversion < 2022102500) {
+
+        // Define field reflectionbase64 to be dropped from psgrading_reporting.
+        $table = new xmldb_table('psgrading_reporting');
+        $field = new xmldb_field('reflectionbase64');
+
+        // Conditionally launch drop field reflection.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Define field reflectionimagepath to be added to psgrading_reporting.
+        $table = new xmldb_table('psgrading_reporting');
+        $field = new xmldb_field('reflectionimagepath', XMLDB_TYPE_CHAR, '200', null, XMLDB_NOTNULL, null, null, 'reflection');
+
+        // Conditionally launch add field reflectionimagepath.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Add reflectionimagefileid field.
+        $table = new xmldb_table('psgrading_reporting');
+        $field = new xmldb_field('reflectionimagefileid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null, 'reflectionimagepath');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022102500, 'psgrading');
+    }
+
     return true;
 }

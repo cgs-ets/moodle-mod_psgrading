@@ -418,6 +418,21 @@ class reporting {
             );
         }
 
+        $reflectionimagepath = '';
+        $reflectionimagefileid = 0;
+        $fs = get_file_storage();
+        $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
+        $files = $fs->get_area_files($context->id, 'mod_psgrading', 'reflectionimage', $uniqueid, "filename", false);
+        if ($files) {
+            // Determine the physical location of the file.
+            $dir = str_replace('\\\\', '\\', $CFG->dataroot) . 
+            '\filedir\\' . substr($files[0]->get_contenthash(), 0, 2) . 
+            '\\' . substr($files[0]->get_contenthash(), 2, 2) . 
+            '\\';
+            $reflectionimagepath = $dir . $files[0]->get_contenthash();
+            $reflectionimagefileid = $files[0]->get_id();
+        }
+
         $data = array (
             'courseid' => $courseid,
             'fileyear' => $year,
@@ -431,12 +446,16 @@ class reporting {
             // Update
             $existing->graderusername = $USER->username;
             $existing->reflection = $formdata->reflection;
+            $existing->reflectionimagepath = $reflectionimagepath;
+            $existing->reflectionimagefileid = $reflectionimagefileid;
             $existing->grade = '';
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $formdata->reflection;
+            $data['reflectionimagepath'] = $formdata->reflectionimagepath;
+            $data['reflectionimagefileid'] = $formdata->reflectionimagefileid;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
