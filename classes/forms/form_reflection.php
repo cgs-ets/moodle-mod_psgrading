@@ -44,11 +44,27 @@ class form_reflection extends \moodleform {
         /*----------------------
         *   Reflection editor
         *----------------------*/
-        $type = 'editor';
+        //$type = 'editor';
+        //$name = 'reflection';
+        //$title = '';
+        //$mform->addElement($type, $name, $title, null, static::editor_options());
+        //$mform->setType($name, PARAM_RAW);
+        
+        /*----------------------
+        *   Reflection textarea
+        *----------------------*/
+        $type = 'textarea';
         $name = 'reflection';
-        $title = '';
-        $mform->addElement($type, $name, $title, null, static::editor_options());
+        $title = 'Text';
+        $mform->addElement($type, $name, $title, 'wrap="virtual" rows="10" cols="50"');
         $mform->setType($name, PARAM_RAW);
+
+
+        /*----------------------
+        *   Reflection image file
+        *----------------------*/
+        $mform->addElement('filepicker', 'image', 'Image upload', null, array('maxbytes' => $CFG->maxbytes, 'accepted_types' => 'image/jpeg,image/jpg,image/png'));
+
 
         /*----------------------
         *   Buttons
