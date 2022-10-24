@@ -328,7 +328,7 @@ class reporting {
         return true;
     }
 
-    public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
+    /*public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
         global $DB, $USER, $CFG;
 
         $user = \core_user::get_user_by_username($username);
@@ -394,6 +394,49 @@ class reporting {
             $data['reflection'] = $reflectiontext;
             $data['reflectionbase64'] = $reflectionbase64;
             $data['grade'] = '';
+            $DB->insert_record(static::TABLE_REPORTING, $data);
+        }
+        
+        return true;
+    }*/
+
+    public static function save_reportelement_form($context, $courseid, $year, $period, $username, $elname, $eltype, $formdata) {
+        global $DB, $USER, $CFG;
+
+        $user = \core_user::get_user_by_username($username);
+
+        // Save image to permanent store.
+        if (isset($formdata->image)) {
+            $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id ); // Join the year, period and userid to make a unique itemid.
+            file_save_draft_area_files(
+                $formdata->image, 
+                $context->id, 
+                'mod_psgrading', 
+                'image', 
+                $uniqueid, 
+                form_reflection::editor_options()
+            );
+        }
+
+        if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
+            // Update
+            $existing->graderusername = $USER->username;
+            $existing->reflection = $formdata->reflection;
+            $existing->grade = '';
+            $DB->update_record(static::TABLE_REPORTING, $existing);
+        } else {
+            // Insert
+            $data = array (
+                'courseid' => $courseid,
+                'fileyear' => $year,
+                'reportingperiod' => $period,
+                'studentusername' => $username,
+                'elementname' => $elname,
+                'elementtype' => $eltype,
+                'graderusername' => $USER->username,
+                'reflection' => $formdata->reflection,
+                'grade' => '',
+            );
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
         
