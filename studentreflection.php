@@ -123,7 +123,17 @@ if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTI
     //    'itemid' => $draftideditor
     //);
     //$formreflection->set_data(array('reflection' => $reflection));
-    $formreflection->set_data(array('reflection' => $existing->reflection));
+
+    // Set up draft image file manager.
+    $draftimage = file_get_submitted_draft_itemid('reflectionimage');
+    $imageoptions = form_reflection::image_options();
+    $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
+    file_prepare_draft_area($draftimage, $coursecontext->id, 'mod_psgrading', 
+        'reflectionimage', $uniqueid, $imageoptions);
+    $formreflection->set_data(array(
+        'reflection' => $existing->reflection,
+        'reflectionimage' => $draftimage
+    ));
 }
 
 $data = array(

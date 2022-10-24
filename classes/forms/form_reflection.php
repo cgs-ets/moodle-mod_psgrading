@@ -64,7 +64,7 @@ class form_reflection extends \moodleform {
         /*----------------------
         *   Reflection image file
         *----------------------*/
-        $mform->addElement('filemanager', 'image', 'Image upload', null, self::image_options());
+        $mform->addElement('filemanager', 'reflectionimage', 'Image upload', null, self::image_options());
 
         /*----------------------
         *   Buttons
@@ -106,7 +106,7 @@ class form_reflection extends \moodleform {
             'subdirs' => 0,
             'maxfiles' => 1,
             'maxbytes' => $CFG->maxbytes,
-            'accepted_types' => 'jpeg,png',
+            'accepted_types' => 'jpeg,jpg,png',
             'return_types'=> FILE_INTERNAL | FILE_CONTROLLED_LINK,
         );
     }

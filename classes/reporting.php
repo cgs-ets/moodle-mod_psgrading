@@ -406,15 +406,15 @@ class reporting {
         $user = \core_user::get_user_by_username($username);
 
         // Save image to permanent store.
-        if (isset($formdata->image)) {
+        if (isset($formdata->reflectionimage)) {
             $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id ); // Join the year, period and userid to make a unique itemid.
             file_save_draft_area_files(
-                $formdata->image, 
+                $formdata->reflectionimage, 
                 $context->id, 
                 'mod_psgrading', 
-                'image', 
+                'reflectionimage', 
                 $uniqueid, 
-                form_reflection::editor_options()
+                form_reflection::image_options()
             );
         }
 
