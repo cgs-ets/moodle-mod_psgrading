@@ -109,7 +109,7 @@ $conds = array (
     'reportingperiod' => $period,
     'studentusername' => $username,
     'elementname' => 'Student reflection',
-    'elementtype' => 'editor',
+    'elementtype' => 'form',
 );
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
     // Set up reflection editor.
@@ -130,7 +130,7 @@ $data = array(
     'year' => $year,
     'period' => $period,
     'user' => $user,
-    'editor' => $formreflection->render(),
+    'form' => $formreflection->render(),
 );
 
 // Add css.

@@ -209,25 +209,27 @@ class reporting {
                         'type' => 'effort',
                     );
                     break;
-                case 'OL':
+                case 'OL': // Core class
                     $elements[] = array(
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
                     );
-                    if ($yearlevel >= 3) {
-                        $elements[] = array(
-                            'subjectarea' => 'Student reflection',
-                            'type' => 'editor',
-                            'url' => $studentreflectionurl->out(false),
-                        );
-                    }
+                    $elements[] = array(
+                        'subjectarea' => 'Student reflection',
+                        'type' => 'text',
+                    );
                     break;
             }
         } else { // Pre-S to Pre-K
-            if ($code == 'OL') {
+            if ($code == 'OL') { // Core class
                 $elements[] = array(
                     'subjectarea' => 'Teacher reflection',
                     'type' => 'text',
+                );
+                $elements[] = array(
+                    'subjectarea' => 'Student reflection',
+                    'type' => 'form',
+                    'url' => $studentreflectionurl->out(false),
                 );
             }
         }

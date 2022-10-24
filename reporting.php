@@ -22,7 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
-// https://moodle.local/mod/psgrading/reporting.php?courseid=13
+// Based on teacher's classes, log in as to test.
+// .../mod/psgrading/reporting.php?courseid=13
 
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
