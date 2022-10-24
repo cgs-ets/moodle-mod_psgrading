@@ -423,14 +423,16 @@ class reporting {
         $fs = get_file_storage();
         $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
         $files = $fs->get_area_files($context->id, 'mod_psgrading', 'reflectionimage', $uniqueid, "filename", false);
-        if ($files) {
+        if (count($files)) {
+            // Get first file. Should only be one.
+            $file = reset($files);
             // Determine the physical location of the file.
             $dir = str_replace('\\\\', '\\', $CFG->dataroot) . 
-            '\filedir\\' . substr($files[0]->get_contenthash(), 0, 2) . 
-            '\\' . substr($files[0]->get_contenthash(), 2, 2) . 
+            '\filedir\\' . substr($file->get_contenthash(), 0, 2) . 
+            '\\' . substr($file->get_contenthash(), 2, 2) . 
             '\\';
-            $reflectionimagepath = $dir . $files[0]->get_contenthash();
-            $reflectionimagefileid = $files[0]->get_id();
+            $reflectionimagepath = $dir . $file->get_contenthash();
+            $reflectionimagefileid = $file->get_id();
         }
 
         $data = array (
