@@ -17,7 +17,7 @@
  * Form definition for posting.
  * *
  * @package   mod_psgrading
- * @copyright 2020 Michael Vangelovski
+ * @copyright 2022 Michael Vangelovski
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,6 +26,7 @@ namespace mod_psgrading\forms;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->dirroot . '/repository/lib.php');
 
 use \mod_psgrading\reporting;
 
@@ -63,8 +64,7 @@ class form_reflection extends \moodleform {
         /*----------------------
         *   Reflection image file
         *----------------------*/
-        $mform->addElement('filepicker', 'image', 'Image upload', null, array('maxbytes' => $CFG->maxbytes, 'accepted_types' => 'image/jpeg,image/jpg,image/png'));
-
+        $mform->addElement('filemanager', 'image', 'Image upload', null, self::image_options());
 
         /*----------------------
         *   Buttons
@@ -87,9 +87,27 @@ class form_reflection extends \moodleform {
      *
      * @return array
      */
-    public static function editor_options() {
+    /*public static function editor_options() {
         return array(
             'maxfiles' => EDITOR_UNLIMITED_FILES, 
+        );
+    }*/
+
+
+    /**
+     * Returns the options array to use for the evidence filemanager
+     *
+     * @return array
+     */
+    public static function image_options() {
+        global $CFG;
+
+        return array(
+            'subdirs' => 0,
+            'maxfiles' => 1,
+            'maxbytes' => $CFG->maxbytes,
+            'accepted_types' => 'jpeg,png',
+            'return_types'=> FILE_INTERNAL | FILE_CONTROLLED_LINK,
         );
     }
 

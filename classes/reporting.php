@@ -127,7 +127,7 @@ class reporting {
 
         $elements = array();
 
-        if ($yearlevel >= 0) { // Kindy and above.
+        if ($yearlevel >= 0 && $yearlevel <= 6) { // K-6.
             switch ($assesscode) {
                 case 'CH':
                     $elements[] = array(
@@ -221,7 +221,7 @@ class reporting {
                     break;
             }
         } else { // Pre-S to Pre-K
-            if ($code == 'OL') { // Core class
+            if ($assesscode == 'OL') { // Core class
                 $elements[] = array(
                     'subjectarea' => 'Teacher reflection',
                     'type' => 'text',
