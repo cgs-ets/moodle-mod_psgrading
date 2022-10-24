@@ -418,6 +418,15 @@ class reporting {
             );
         }
 
+        $data = array (
+            'courseid' => $courseid,
+            'fileyear' => $year,
+            'reportingperiod' => $period,
+            'studentusername' => $username,
+            'elementname' => $elname,
+            'elementtype' => $eltype,
+        );
+
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
             $existing->graderusername = $USER->username;
@@ -426,17 +435,9 @@ class reporting {
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
             // Insert
-            $data = array (
-                'courseid' => $courseid,
-                'fileyear' => $year,
-                'reportingperiod' => $period,
-                'studentusername' => $username,
-                'elementname' => $elname,
-                'elementtype' => $eltype,
-                'graderusername' => $USER->username,
-                'reflection' => $formdata->reflection,
-                'grade' => '',
-            );
+            $data['graderusername'] = $USER->username;
+            $data['reflection'] = $formdata->reflection;
+            $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
         
