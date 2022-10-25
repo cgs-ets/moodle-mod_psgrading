@@ -62,7 +62,7 @@ if (!$isstaff) {
 	$url = new moodle_url('/mod/psgrading/studentoverview.php', array('courseid' => $course->id));
 	redirect($url->out(false));
 	exit;
-} 
+}
 
 $viewurl = new moodle_url('/mod/psgrading/view.php', array(
     'id' => $cm->id,

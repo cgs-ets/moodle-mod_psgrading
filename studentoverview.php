@@ -87,6 +87,20 @@ if (empty($groupid)) {
     $students = utils::get_filtered_students_by_group($course->id, $groupid, $userid);
 }
 if (empty($students)) {
+    // If no students and also not a grader (teacher in course) then the user is not going to be able to see anything.
+    $isstaff = utils::is_grader();
+    if (!$isstaff) {
+        $courseurl = new moodle_url('/course/view.php', array(
+            'id' => $courseid,
+        ));
+        $notice = \core\notification::error('Access Primary School Grading module denied because you are neither a parent, student, nor a teacher in this course.');
+        redirect(
+            $courseurl->out(false),
+            $notice,
+            null,
+            \core\output\notification::NOTIFY_ERROR
+        );
+    } 
     redirect($listurl->out(false));
     exit;
 }
