@@ -100,6 +100,7 @@ if (empty($students)) {
             null,
             \core\output\notification::NOTIFY_ERROR
         );
+        exit;
     } 
     redirect($listurl->out(false));
     exit;
