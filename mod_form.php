@@ -94,12 +94,14 @@ class mod_psgrading_mod_form extends moodleform_mod {
 
         // Reporting period
         $options = array(
-            '' => '',
             '1' => 1,
             '2' => 2,
         );
         $select = $mform->addElement('select', 'reportingperiod', get_string('reportingperiod', 'mod_psgrading'), $options);
-        $select->setSelected('');
+        $year = date('Y');
+        $passedp1 = time() > strtotime( $year . '-07-15' );
+        $select->setSelected($passedp1 ? '2' : '1');
+
         $mform->addRule('reportingperiod', null, 'required', null, 'client');
 
         // Restrict to specific students
