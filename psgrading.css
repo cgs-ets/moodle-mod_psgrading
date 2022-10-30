@@ -19,6 +19,7 @@
   gap: 15px;
   align-items: center;
   justify-content: end;
+  margin: 14px 0px;
 }
 .path-mod-psgrading .psgrading-header .top-buttons {
   display: flex;
