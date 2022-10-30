@@ -26,41 +26,45 @@
 
 <div class="psgrading-header">
 
-  <!-- END OF SEMESTER REPORTING -->
-  <div class="psgrading-othertasks">
-    {{#reportingurl}}<a href="{{reportingurl}}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i> End of semester reporting</a>{{/reportingurl}}
-  </div>
+  <div class="psgrading-header-right">
 
-  <!-- TOOL BUTTONS -->
-  <div class="top-buttons">
-    <a class="btn-fullscreen" href="#"><i class="fa fa-window-maximize" aria-hidden="true"></i></a>
-    <a class="btn-refresh" href="{{baseurl}}&refresh=1"><i class="fa fa-refresh" aria-hidden="true"></i></a>
-  </div>
+    <!-- END OF SEMESTER REPORTING -->
+    <div class="psgrading-othertasks">
+      {{#reportingurl}}<a href="{{reportingurl}}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i> End of semester reporting</a>{{/reportingurl}}
+    </div>
 
-  <!-- GROUP SELECTOR -->
-  <div class="group-selector">
-      {{#groups.1}}
-          <span class="selector-label">Group</span>
-          <select class="group-select form-control">
-              <option value="0" data-viewurl="{{basenavurl}}">All groups</option>
-              {{#groups}}
-                  <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
-              {{/groups}}
-          </select>
-      {{/groups.1}}
-  </div>
+    <!-- TOOL BUTTONS -->
+    <div class="top-buttons">
+      <a class="btn-fullscreen" href="#"><i class="fa fa-window-maximize" aria-hidden="true"></i></a>
+      <a class="btn-refresh" href="{{baseurl}}&refresh=1"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
 
-  <!-- REPORTING PERIOD SELECTOR -->
-  {{#reportingperiods.1}}
-  <div class="reportingperiod-selector">
-      <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
-      <select class="reportingperiod-select form-control">
-          {{#reportingperiods}}
-              <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
-          {{/reportingperiods}}
-      </select>
+    <!-- GROUP SELECTOR -->
+    <div class="group-selector">
+        {{#groups.1}}
+            <span class="selector-label">Group</span>
+            <select class="group-select form-control">
+                <option value="0" data-viewurl="{{basenavurl}}">All groups</option>
+                {{#groups}}
+                    <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+                {{/groups}}
+            </select>
+        {{/groups.1}}
+    </div>
+
+    <!-- REPORTING PERIOD SELECTOR -->
+    {{#reportingperiods.1}}
+    <div class="reportingperiod-selector">
+        <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+        <select class="reportingperiod-select form-control">
+            {{#reportingperiods}}
+                <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+            {{/reportingperiods}}
+        </select>
+    </div>
+    {{/reportingperiods.1}}
+
   </div>
-  {{/reportingperiods.1}}
 
 </div>
 

@@ -938,9 +938,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   }
 }
 #page-mod-psgrading-mark .outcomes {
-  margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
-  padding: 20px 20px 20px;
+  margin: 20px;
+  padding-bottom: 20px;
 }
 #page-mod-psgrading-mark .outcomes .heading {
   font-weight: 600;
