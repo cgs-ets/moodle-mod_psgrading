@@ -31,8 +31,9 @@
   <div class="reportingperiod-selector">
       <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
       <select class="reportingperiod-select form-control">
+          <option value="0" disabled="disabled">{{#str}}reportingperiod, mod_psgrading{{/str}}</option>
           {{#reportingperiods}}
-              <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+              <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">Semester {{name}}</option>
           {{/reportingperiods}}
       </select>
   </div>
