@@ -24,6 +24,9 @@
   justify-content: space-between;
   margin: 14px 0px;
 }
+.path-mod-psgrading .psgrading-header.justify-end {
+  justify-content: end;
+}
 .path-mod-psgrading .psgrading-header .psgrading-header-right {
   display: flex;
   gap: 15px;

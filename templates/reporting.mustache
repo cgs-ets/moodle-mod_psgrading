@@ -24,25 +24,19 @@
     Reporting template.
 }}
 
-<div class="psgrading-header">
-
-  <div class="psgrading-header-right">
-
-    <!-- REPORTING PERIOD SELECTOR -->
-    {{#reportingperiods.1}}
-    <div class="reportingperiod-selector">
-        <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
-        <select class="reportingperiod-select form-control">
-            <option value="0" disabled="disabled">{{#str}}reportingperiod, mod_psgrading{{/str}}</option>
-            {{#reportingperiods}}
-                <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">Semester {{name}}</option>
-            {{/reportingperiods}}
-        </select>
-    </div>
-    {{/reportingperiods.1}}
-
+<div class="psgrading-header justify-end">
+  <!-- REPORTING PERIOD SELECTOR -->
+  {{#reportingperiods.1}}
+  <div class="reportingperiod-selector">
+      <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+      <select class="reportingperiod-select form-control">
+          <option value="0" disabled="disabled">{{#str}}reportingperiod, mod_psgrading{{/str}}</option>
+          {{#reportingperiods}}
+              <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">Semester {{name}}</option>
+          {{/reportingperiods}}
+      </select>
   </div>
-
+  {{/reportingperiods.1}}
 </div>
 
 <div class="psgrading-reporting {{^locked}}editable{{/locked}}">
