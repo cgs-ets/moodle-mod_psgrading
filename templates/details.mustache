@@ -31,32 +31,36 @@
             <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
         </div>
 
-        <!-- TASK SELECTOR -->
-        <div class="task-selector">
-            {{#currstudent.othertasks.0}}
-                <select class="task-select form-control">
-                    {{#currstudent.othertasks}}
-                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{taskname}}</option>
-                    {{/currstudent.othertasks}}
-                </select>
-            {{/currstudent.othertasks.0}}
+        <div class="psgrading-header-right">
+        
+          <!-- TASK SELECTOR -->
+          <div class="task-selector">
+              {{#currstudent.othertasks.0}}
+                  <select class="task-select form-control">
+                      {{#currstudent.othertasks}}
+                          <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{taskname}}</option>
+                      {{/currstudent.othertasks}}
+                  </select>
+              {{/currstudent.othertasks.0}}
+          </div>
+
+          <!-- STUDENT SELECTOR -->
+          {{#students.1}}
+              <div class="student-selector">
+                  <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                  <select class="student-select form-control">
+                      {{#students}}
+                          <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{fullnamereverse}}</option>
+                      {{/students}}
+                  </select>
+                  <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
+          {{/students.1}}
+
         </div>
 
-        <!-- STUDENT SELECTOR -->
-        {{#students.1}}
-            <div class="student-selector">
-                <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                <select class="student-select form-control">
-                    {{#students}}
-                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-detailsurl="{{detailsurl}}">{{fullnamereverse}}</option>
-                    {{/students}}
-                </select>
-                <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            </div>
-        {{/students.1}}
-
     </div>
-    
+
     <div class="contents">
         <div class="details-outcomes">
             <div class="heading">{{#str}}task:outcomes, mod_psgrading{{/str}}</div>

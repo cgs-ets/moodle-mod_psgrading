@@ -32,45 +32,49 @@
             <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
         </div>
 
-        <!-- GROUP SELECTOR -->
-        {{#isstaff}}
-            <div class="group-selector">
-                {{#groups.1}}
-                    <span class="selector-label">Group</span>
-                    <select class="group-select form-control">
-                        <option value="0" data-overviewurl="{{basenavurl}}">All groups</option>
-                        {{#groups}}
-                            <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
-                        {{/groups}}
-                    </select>
-                {{/groups.1}}
-            </div>
-        {{/isstaff}}
+        <div class="psgrading-header-right">
 
-        <!-- STUDENT SELECTOR -->
-        {{#students.1}}
-            <div class="student-selector">
-                <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                <select class="student-select form-control">
-                    {{#students}}
-                        <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{fullnamereverse}}</option>
-                    {{/students}}
-                </select>
-                <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            </div>
-        {{/students.1}}
+          <!-- GROUP SELECTOR -->
+          {{#isstaff}}
+              <div class="group-selector">
+                  {{#groups.1}}
+                      <span class="selector-label">Group</span>
+                      <select class="group-select form-control">
+                          <option value="0" data-overviewurl="{{basenavurl}}">All groups</option>
+                          {{#groups}}
+                              <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{name}}</option>
+                          {{/groups}}
+                      </select>
+                  {{/groups.1}}
+              </div>
+          {{/isstaff}}
 
-        <!-- REPORTING PERIOD SELECTOR -->
-        {{#reportingperiods.1}}
-        <div class="reportingperiod-selector">
-            <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
-            <select class="reportingperiod-select form-control">
-                {{#reportingperiods}}
-                    <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
-                {{/reportingperiods}}
-            </select>
+          <!-- STUDENT SELECTOR -->
+          {{#students.1}}
+              <div class="student-selector">
+                  <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                  <select class="student-select form-control">
+                      {{#students}}
+                          <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-overviewurl="{{overviewurl}}">{{fullnamereverse}}</option>
+                      {{/students}}
+                  </select>
+                  <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
+          {{/students.1}}
+
+          <!-- REPORTING PERIOD SELECTOR -->
+          {{#reportingperiods.1}}
+          <div class="reportingperiod-selector">
+              <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+              <select class="reportingperiod-select form-control">
+                  {{#reportingperiods}}
+                      <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+                  {{/reportingperiods}}
+              </select>
+          </div>
+          {{/reportingperiods.1}}
+
         </div>
-        {{/reportingperiods.1}}
         
     </div>
     

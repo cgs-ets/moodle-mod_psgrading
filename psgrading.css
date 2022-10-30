@@ -10,6 +10,9 @@
 .path-mod-psgrading header#page-header.header-maxwidth {
   max-width: 100%;
 }
+.path-mod-psgrading .fp-main-top-blocks-region-wrap.mb-4 {
+  display: none;
+}
 .path-mod-psgrading .secondary-navigation {
   width: 100%;
   max-width: 100%;
@@ -18,8 +21,13 @@
   display: flex;
   gap: 15px;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   margin: 14px 0px;
+}
+.path-mod-psgrading .psgrading-header .psgrading-header-right {
+  display: flex;
+  gap: 15px;
+  justify-content: right;
 }
 .path-mod-psgrading .psgrading-header .top-buttons {
   display: flex;
