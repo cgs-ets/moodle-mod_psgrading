@@ -1,13 +1,3 @@
-.path-mod-psgrading header#page-header.header-maxwidth {
-  max-width: 100%;
-}
-.path-mod-psgrading .header {
-  background-color: #f5f5f5;
-  overflow: hidden;
-  padding: 20px;
-  margin: -1px -20px 30px -20px;
-  border: 1px solid #eee;
-}
 .path-mod-psgrading .secondary-navigation {
   width: 100%;
   max-width: 100%;
@@ -23,7 +13,10 @@
 }
 .path-mod-psgrading .psgrading-header .top-buttons a {
   font-size: 22px;
-  margin-left: 20px;
+  margin: 0 7px;
+}
+.path-mod-psgrading .psgrading-header .selector-label {
+  display: none;
 }
 /* Variables */
 /* Helpers */
@@ -145,9 +138,6 @@
     padding-top: 9px;
   }
   */
-}
-.path-mod-psgrading .selector-label {
-  display: none;
 }
 #page-mod-psgrading-task #region-main-box .left-column {
   width: 100%;
@@ -832,9 +822,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-mark #user-notifications .alert {
   margin: 0;
 }
-#page-mod-psgrading-mark .header {
-  margin: -1px 0px 0px 0px;
-}
 #page-mod-psgrading-mark form[data-form="psgrading-mark"] {
   padding: 0 20px 20px 20px;
 }
@@ -1400,10 +1387,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-overview #user-notifications .alert,
 #page-mod-psgrading-studentoverview #user-notifications .alert {
   margin: 0;
-}
-#page-mod-psgrading-overview .psgrading-overview .header,
-#page-mod-psgrading-studentoverview .psgrading-overview .header {
-  margin: -1px 0px 0px 0px;
 }
 #page-mod-psgrading-overview .psgrading-overview .psgrading-matrix,
 #page-mod-psgrading-studentoverview .psgrading-overview .psgrading-matrix {
@@ -2077,10 +2060,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-details #user-notifications .alert,
 #page-mod-psgrading-print #user-notifications .alert {
   margin: 0;
-}
-#page-mod-psgrading-details .psgrading-details > .header,
-#page-mod-psgrading-print .psgrading-details > .header {
-  margin: -1px 0px 0px 0px;
 }
 #page-mod-psgrading-details .contents,
 #page-mod-psgrading-print .contents {

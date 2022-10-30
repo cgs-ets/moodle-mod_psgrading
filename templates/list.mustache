@@ -53,7 +53,7 @@
   <!-- REPORTING PERIOD SELECTOR -->
   {{#reportingperiods.1}}
   <div class="reportingperiod-selector">
-      <span>{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+      <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
       <select class="reportingperiod-select form-control">
           {{#reportingperiods}}
               <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>

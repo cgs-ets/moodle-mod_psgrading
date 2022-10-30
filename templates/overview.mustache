@@ -24,11 +24,14 @@
     Overview template.
 }}
 <div class="psgrading-overview">
-    <div class="header">
+    <div class="psgrading-header">
+
+
         <div class="selected-student" data-userid="{{currstudent.id}}">
             <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
         </div>
 
+        <!-- GROUP SELECTOR -->
         {{#isstaff}}
             <div class="group-selector">
                 {{#groups.1}}
@@ -43,6 +46,7 @@
             </div>
         {{/isstaff}}
 
+        <!-- STUDENT SELECTOR -->
         {{#students.1}}
             <div class="student-selector">
                 <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
@@ -55,9 +59,10 @@
             </div>
         {{/students.1}}
 
+        <!-- REPORTING PERIOD SELECTOR -->
         {{#reportingperiods.1}}
         <div class="reportingperiod-selector">
-            <span>{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
+            <span class="selector-label">{{#str}}reportingperiod, mod_psgrading{{/str}}</span>
             <select class="reportingperiod-select form-control">
                 {{#reportingperiods}}
                     <option value="{{value}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
