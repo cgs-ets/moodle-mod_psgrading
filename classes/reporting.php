@@ -456,8 +456,8 @@ class reporting {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $formdata->reflection;
-            $data['reflectionimagepath'] = $formdata->reflectionimagepath;
-            $data['reflectionimagefileid'] = $formdata->reflectionimagefileid;
+            $data['reflectionimagepath'] = $reflectionimagepath;
+            $data['reflectionimagefileid'] = $reflectionimagefileid;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
