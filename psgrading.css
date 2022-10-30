@@ -86,7 +86,7 @@
 }
 .path-mod-psgrading {
   /*
-  
+
   .selected-student {
     float: left;
   }
@@ -145,6 +145,9 @@
     padding-top: 9px;
   }
   */
+}
+.path-mod-psgrading .selector-label {
+  display: none;
 }
 #page-mod-psgrading-task #region-main-box .left-column {
   width: 100%;
