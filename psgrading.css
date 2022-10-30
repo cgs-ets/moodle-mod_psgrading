@@ -1,3 +1,15 @@
+.path-mod-psgrading {
+  /*.header {
+    background-color: #f5f5f5;
+    overflow: hidden;
+    padding: 20px;
+    margin: -1px -20px 30px -20px;
+    border: 1px solid #eee;
+  }*/
+}
+.path-mod-psgrading header#page-header.header-maxwidth {
+  max-width: 100%;
+}
 .path-mod-psgrading .secondary-navigation {
   width: 100%;
   max-width: 100%;
