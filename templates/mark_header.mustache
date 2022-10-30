@@ -21,10 +21,14 @@
 {{!
     @template mod_psgrading/mark_header
 }}
-<div class="header">
+<div class="psgrading-header">
+
+    <!-- SELECTED STUDENT -->
     <div class="selected-student" data-userid="{{currstudent.id}}" data-username="{{currstudent.username}}">
         <img src="{{currstudent.profilephoto}}" class="round" /> <a href="{{currstudent.overviewurl}}"><span class="name">{{currstudent.fullname}}</span></a>
     </div>
+
+    <!-- TASK SELECTOR -->
     <div class="task-selector">
         {{#currstudent.othertasks.0}}
             <span class="selector-label">Task</span>
@@ -35,6 +39,8 @@
             </select>
         {{/currstudent.othertasks.0}}
     </div>
+
+    <!-- GROUP SELECTOR -->
     <div class="group-selector">
         {{#groups.1}}
             <span class="selector-label">Group</span>
@@ -46,6 +52,8 @@
             </select>
         {{/groups.1}}
     </div>
+
+    <!-- STUDENT SELECTOR -->
     <div class="student-selector">
         <a href="{{prevstudenturl}}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
         <select class="student-select form-control">
@@ -55,6 +63,7 @@
         </select>
         <a href="{{nextstudenturl}}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
+    
 </div>
 <div class="outcomes">
     <div class="heading">{{#str}}task:outcomes, mod_psgrading{{/str}}</div>
