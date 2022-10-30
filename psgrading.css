@@ -543,11 +543,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-view.zoomed .psgrading-list .top-buttons {
   position: fixed;
 }
-#page-mod-psgrading-courseoverview .psgrading-othertasks,
-#page-mod-psgrading-view .psgrading-othertasks {
-  padding: 0 35px 40px;
-  display: none;
-}
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
