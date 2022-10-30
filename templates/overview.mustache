@@ -24,9 +24,10 @@
     Overview template.
 }}
 <div class="psgrading-overview">
+
     <div class="psgrading-header">
 
-
+        <!-- SELECTED STUDENT -->
         <div class="selected-student" data-userid="{{currstudent.id}}">
             <img src="{{currstudent.profilephoto}}" class="round" /> <span class="name">{{currstudent.fullname}}</span>
         </div>
@@ -72,6 +73,7 @@
         {{/reportingperiods.1}}
         
     </div>
+    
     <div class="contents-wrap {{#viewas}}is-viewas{{/viewas}}">
         {{>mod_psgrading/overview_matrix}}
         <div class="floating-options">

@@ -131,17 +131,7 @@
     top: auto;
   }
 
-  .student-selector {
-    float: right;
-    select {
-      display: inline-block;
-      width: 230px;
-      margin: 0 6px;
-    }
-    a {
-      cursor: pointer;
-    }
-  }
+  
 
   .selector-label {
     position: absolute;
@@ -150,6 +140,14 @@
     padding-top: 9px;
   }
   */
+}
+.path-mod-psgrading .student-selector select {
+  display: inline-block;
+  width: 230px;
+  margin: 0 6px;
+}
+.path-mod-psgrading .student-selector a {
+  cursor: pointer;
 }
 #page-mod-psgrading-task #region-main-box .left-column {
   width: 100%;
