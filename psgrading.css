@@ -9,7 +9,21 @@
   border: 1px solid #eee;
 }
 .path-mod-psgrading .secondary-navigation {
-  display: none;
+  width: 100%;
+  max-width: 100%;
+}
+.path-mod-psgrading .psgrading-header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: end;
+}
+.path-mod-psgrading .psgrading-header .top-buttons {
+  display: flex;
+}
+.path-mod-psgrading .psgrading-header .top-buttons a {
+  font-size: 22px;
+  margin-left: 20px;
 }
 /* Variables */
 /* Helpers */
@@ -70,57 +84,67 @@
   font-size: 15px;
   opacity: 1;
 }
-.path-mod-psgrading .selected-student {
-  float: left;
-}
-.path-mod-psgrading .reportingperiod-selector {
-  right: 310px;
-  position: absolute;
-  top: -70px;
-  width: 171px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: -50px;
-  top: auto;
-}
-.path-mod-psgrading .reportingperiod-selector span {
-  font-size: 85%;
-}
-.path-mod-psgrading .reportingperiod-selector select {
-  width: auto;
-}
-.path-mod-psgrading .task-selector,
-.path-mod-psgrading .group-selector {
-  position: absolute;
-  top: -70px;
-  right: 35px;
-  width: 200px;
-  margin-top: -50px;
-  top: auto;
-}
-.path-mod-psgrading .task-selector select,
-.path-mod-psgrading .group-selector select {
-  width: auto;
-  min-width: 200px;
-  max-width: 100%;
-}
-.path-mod-psgrading .student-selector {
-  float: right;
-}
-.path-mod-psgrading .student-selector select {
-  display: inline-block;
-  width: 230px;
-  margin: 0 6px;
-}
-.path-mod-psgrading .student-selector a {
-  cursor: pointer;
-}
-.path-mod-psgrading .selector-label {
-  position: absolute;
-  left: -51px;
-  font-size: 85%;
-  padding-top: 9px;
+.path-mod-psgrading {
+  /*
+  
+  .selected-student {
+    float: left;
+  }
+
+  .reportingperiod-selector {
+    right: 310px;
+    position: absolute;
+    top: -70px;
+    width: 171px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      font-size: 85%;
+    }
+    select {
+        width: auto;
+    }
+    // For moodle 4
+    margin-top: -50px;
+    top: auto;
+  }
+
+  .task-selector, .group-selector {
+    position: absolute;
+    top: -70px;
+    right: 35px;
+    width: 200px;
+    select {
+      width: auto;
+      min-width: 200px;
+      max-width: 100%;
+    }
+
+    // For moodle 4
+    margin-top: -50px;
+    top: auto;
+  }
+
+  .student-selector {
+    float: right;
+    select {
+      display: inline-block;
+      width: 230px;
+      margin: 0 6px;
+    }
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .selector-label {
+    position: absolute;
+    left: -51px;
+    font-size: 85%;
+    padding-top: 9px;
+  }
+  */
 }
 #page-mod-psgrading-task #region-main-box .left-column {
   width: 100%;
@@ -528,16 +552,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   padding: 45px 35px;
   cursor: all-scroll;
-}
-.psgrading-list .top-buttons {
-  position: absolute;
-  right: 20px;
-  top: 0;
-  display: flex;
-}
-.psgrading-list .top-buttons a {
-  font-size: 22px;
-  margin-left: 20px;
 }
 .psgrading-list .classlist-table {
   position: relative;
