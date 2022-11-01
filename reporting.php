@@ -93,9 +93,8 @@ foreach ($classes as $i => $class) {
     $students = array_merge($students, array_column($class->students, 'id'));
 }
 $courseusers = array_column(get_enrolled_users($coursecontext), 'username');
-$students = array_intersect($students, $courseusers);
 $students = array_unique($students);
-$students = array_combine($students, $students);
+$students = array_intersect($students, $courseusers);
 
 array_walk($students, function(&$value, $key) { 
     $user = \core_user::get_user_by_username($value);
@@ -103,6 +102,7 @@ array_walk($students, function(&$value, $key) {
         utils::load_user_display_info($user);
         $value = array (
             'sort' => $user->lastname,
+            'username' => $user->username,
             'user' => $user,
             'assesscodes' => array(),
             'reportelements' => array(),
@@ -111,14 +111,14 @@ array_walk($students, function(&$value, $key) {
 });
 
 // Sort users.
-//$sort = array_column($students, 'sort');
-//array_multisort($sort, SORT_ASC, $students);
+$sort = array_column($students, 'sort');
+array_multisort($sort, SORT_ASC, $students);
+$students = array_combine(array_column($students, 'username'), $students);
 
 $studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
-
 ));
 // Cache reporting requirements for each student.
 foreach ($classes as $class) {
