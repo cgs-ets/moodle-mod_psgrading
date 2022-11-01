@@ -36,6 +36,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $year = optional_param('year', 0, PARAM_INT);
 $period = optional_param('period', 0, PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
+$nav = optional_param('nav', '', PARAM_RAW);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -77,6 +78,7 @@ $url = new moodle_url('/mod/psgrading/reporting.php', array(
     'year' => $year,
     'period' => $period,
     'groupid' => $groupid,
+    'nav' => $nav,
 ));
 $PAGE->set_url($url);
 $title = 'Primary School Reporting';
@@ -103,12 +105,14 @@ $students = array_unique($students);
 $groups = utils::get_course_groups($courseid);
 // Group navigation. 
 $allgroupsurl = clone($url);
-$allgroupsurl->param('groupid', 'all');
+$allgroupsurl->param('groupid', 0);
+$allgroupsurl->param('nav', 'all');
 $groupsnav = array();
-foreach ($groups as $i => $groupid) {
-    $group = utils::get_group_display_info($groupid);
+foreach ($groups as $i => $gid) {
+    $group = utils::get_group_display_info($gid);
     $group->viewurl = clone($url);
-    $group->viewurl->param('groupid', $groupid);
+    $group->viewurl->param('groupid', $gid);
+    $group->viewurl->param('nav', '');
     $group->viewurl = $group->viewurl->out(false); // Replace viewurl with string val.
     $group->iscurrent = false;
     if ($groupid == $group->id) {
@@ -116,6 +120,7 @@ foreach ($groups as $i => $groupid) {
     }
     $groupsnav[] = $group;
 }
+
 if (empty($groupid) && $nav != 'all') {
     $groupid = intval(utils::get_user_preferences($courseid, 'mod_psgrading_course_groupid', 0));
     if ($groupid) {
