@@ -128,6 +128,15 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
           self.closeElements();
         });
 
+        // Groups nav - change group.
+        self.rootel.on('change', '.group-select', function(e) {
+          var select = $(this);
+          var url = select.find(':selected').data('viewurl');
+          if (url) {
+              window.location.replace(url);
+          }
+        });
+
         // Preload the templates.
         self.templates = {
           INLINE: 'mod_psgrading/reporting_inlinegrading',

@@ -94,6 +94,7 @@ foreach ($classes as $i => $class) {
     $classes[$i]->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
 }
+$students = array_unique($students);
 
 
 
@@ -127,16 +128,16 @@ if (empty($groupid) && $nav != 'all') {
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
-    $courseusers = utils::get_filtered_students($course->id);
+    $courseusers = utils::get_enrolled_students($course->id);
 } else {
     // Get by group.
-    $courseusers = utils::get_filtered_students_by_group($course->id, $groupid);
+    $courseusers = utils::get_enrolled_students_by_group($course->id, $groupid);
 }
-$students = array_unique($students);
+
+list($insql, $inparams) = $DB->get_in_or_equal($courseusers);
+$sql = "SELECT username FROM {user} WHERE id $insql";
+$courseusers = array_column($DB->get_records_sql($sql, $inparams), 'username');
 $students = array_intersect($students, $courseusers);
-
-
-
 
 array_walk($students, function(&$value, $key) { 
     $user = \core_user::get_user_by_username($value);
@@ -210,7 +211,7 @@ $data = array(
     'year' => $year,
     'reportingperiods' => $rps,
     'locked' => $locked,
-    'allgroupsurl' => $allgroupsurl->out(false);
+    'allgroupsurl' => $allgroupsurl->out(false),
     'groups' => $groupsnav,
     'groupid' => $groupid,
 );

@@ -425,7 +425,7 @@ class utils {
      * @param int $courseid
      * @return int[]
      */
-    public static function get_enrolled_students($courseid, $excludeusers) {
+    public static function get_enrolled_students($courseid, $excludeusers = []) {
         global $DB;
         $context = \context_course::instance($courseid);
         
@@ -569,6 +569,31 @@ class utils {
 
         return $students;
     }
+
+    
+    /**
+     * Helper function to get the students enrolled.
+     *
+     * @param int $courseid
+     * @param int $groupid
+     * @param int $accessuserid. The user id that is being viewed.
+     * @return int[]
+     */
+    public static function get_enrolled_students_by_group($courseid, $groupid = 0) {
+        global $DB;
+
+        $students = static::get_enrolled_students($courseid);
+
+        $sql = "SELECT DISTINCT gm.userid
+                  FROM {groups_members} gm
+                 WHERE gm.groupid = ?";
+        $members = array_column($DB->get_records_sql($sql, array($groupid)), 'userid');
+
+        $students = array_values(array_intersect($students, $members));
+
+        return $students;
+    }
+
 
     public static function is_staff_profile() {
         global $USER;
