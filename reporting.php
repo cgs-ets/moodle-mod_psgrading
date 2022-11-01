@@ -111,8 +111,8 @@ array_walk($students, function(&$value, $key) {
 });
 
 // Sort users.
-$sort = array_column($students, 'sort');
-array_multisort($sort, SORT_ASC, $students);
+//$sort = array_column($students, 'sort');
+//array_multisort($sort, SORT_ASC, $students);
 
 $studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'courseid' => $course->id,
