@@ -96,6 +96,8 @@ $courseusers = array_column(get_enrolled_users($coursecontext), 'username');
 $students = array_unique($students);
 $students = array_intersect($students, $courseusers);
 
+//$students = array_combine($students, $students);
+
 array_walk($students, function(&$value, $key) { 
     $user = \core_user::get_user_by_username($value);
     if (!empty($user)) {
@@ -110,10 +112,14 @@ array_walk($students, function(&$value, $key) {
     }
 });
 
+//echo "<pre>"; var_export($students); exit;
+
 // Sort users.
 $sort = array_column($students, 'sort');
 array_multisort($sort, SORT_ASC, $students);
 $students = array_combine(array_column($students, 'username'), $students);
+
+//echo "<pre>"; var_export($students); exit;
 
 $studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'courseid' => $course->id,
