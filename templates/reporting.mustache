@@ -25,6 +25,20 @@
 }}
 
 <div class="psgrading-header justify-end">
+
+  <!-- GROUP SELECTOR -->
+  <div class="group-selector">
+      {{#groups.1}}
+          <span class="selector-label">Group</span>
+          <select class="group-select form-control">
+              <option value="0" data-viewurl="{{allgroupsurl}}">All groups</option>
+              {{#groups}}
+                  <option value="{{id}}"{{#iscurrent}} selected="selected"{{/iscurrent}} data-viewurl="{{viewurl}}">{{name}}</option>
+              {{/groups}}
+          </select>
+      {{/groups.1}}
+  </div>
+
   <!-- REPORTING PERIOD SELECTOR -->
   {{#reportingperiods.1}}
   <div class="reportingperiod-selector">

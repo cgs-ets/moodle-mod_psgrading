@@ -35,6 +35,7 @@ use \mod_psgrading\reporting;
 $courseid = required_param('courseid', PARAM_INT);
 $year = optional_param('year', 0, PARAM_INT);
 $period = optional_param('period', 0, PARAM_INT);
+$groupid = optional_param('groupid', 0, PARAM_INT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -75,6 +76,7 @@ $url = new moodle_url('/mod/psgrading/reporting.php', array(
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
+    'groupid' => $groupid,
 ));
 $PAGE->set_url($url);
 $title = 'Primary School Reporting';
@@ -92,11 +94,49 @@ foreach ($classes as $i => $class) {
     $classes[$i]->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
 }
-$courseusers = array_column(get_enrolled_users($coursecontext), 'username');
+
+
+
+
+// Get groups in the course.
+$groups = utils::get_course_groups($courseid);
+// Group navigation. 
+$allgroupsurl = clone($url);
+$allgroupsurl->param('groupid', 'all');
+$groupsnav = array();
+foreach ($groups as $i => $groupid) {
+    $group = utils::get_group_display_info($groupid);
+    $group->viewurl = clone($url);
+    $group->viewurl->param('groupid', $groupid);
+    $group->viewurl = $group->viewurl->out(false); // Replace viewurl with string val.
+    $group->iscurrent = false;
+    if ($groupid == $group->id) {
+        $group->iscurrent = true;
+    }
+    $groupsnav[] = $group;
+}
+if (empty($groupid) && $nav != 'all') {
+    $groupid = intval(utils::get_user_preferences($courseid, 'mod_psgrading_course_groupid', 0));
+    if ($groupid) {
+        $url->param('groupid', $groupid);
+        $PAGE->set_url($url);
+    }
+} else {
+    utils::set_user_preference($courseid, 'mod_psgrading_course_groupid', $groupid);
+}
+// Get the students in the course.
+if (empty($groupid)) {
+    // Groupid = 0, get all students in course.
+    $courseusers = utils::get_filtered_students($course->id);
+} else {
+    // Get by group.
+    $courseusers = utils::get_filtered_students_by_group($course->id, $groupid);
+}
 $students = array_unique($students);
 $students = array_intersect($students, $courseusers);
 
-//$students = array_combine($students, $students);
+
+
 
 array_walk($students, function(&$value, $key) { 
     $user = \core_user::get_user_by_username($value);
@@ -111,8 +151,6 @@ array_walk($students, function(&$value, $key) {
         );
     }
 });
-
-//echo "<pre>"; var_export($students); exit;
 
 // Sort users.
 $sort = array_column($students, 'sort');
@@ -166,14 +204,17 @@ for ($i = 1; $i <= 2; $i++) {
     $rps[] = $rp;
 }
 
-
 $data = array(
     'students' => array_values($students),
     'period' => $period,
     'year' => $year,
     'reportingperiods' => $rps,
     'locked' => $locked,
+    'allgroupsurl' => $allgroupsurl->out(false);
+    'groups' => $groupsnav,
+    'groupid' => $groupid,
 );
+
 
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
