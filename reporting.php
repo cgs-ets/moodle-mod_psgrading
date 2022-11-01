@@ -102,12 +102,17 @@ array_walk($students, function(&$value, $key) {
     if (!empty($user)) {
         utils::load_user_display_info($user);
         $value = array (
+            'sort' => $user->lastname,
             'user' => $user,
             'assesscodes' => array(),
             'reportelements' => array(),
         );
     }
 });
+
+// Sort users.
+$sort = array_column($students, 'sort');
+array_multisort($sort, SORT_ASC, $students);
 
 $studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'courseid' => $course->id,
