@@ -529,6 +529,26 @@ class utils {
     }
 
     /**
+     * Helper function to get users groups in a course.
+     *
+     * @param int $courseid
+     * @return int[]
+     */
+    public static function get_users_course_groups($userid, $courseid) {
+        global $DB;
+
+        $sql = "SELECT DISTINCT g.id
+                  FROM {groups} g, {groups_members} gm
+                 WHERE gm.groupid = g.id 
+                   AND g.courseid = ?
+                   AND gm.userid = ?";
+        $groups = $DB->get_records_sql($sql, array($courseid, $userid));
+        $groups = array_map('intval', array_column($groups, 'id'));
+
+        return $groups;
+    }
+
+    /**
      * Helper function to get group info.
      *
      * @param int $groupid
