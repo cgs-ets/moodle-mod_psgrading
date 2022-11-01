@@ -92,12 +92,10 @@ foreach ($classes as $i => $class) {
     $classes[$i]->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
 }
+$courseusers = array_column(get_enrolled_users($coursecontext), 'username');
+$students = array_intersect($students, $courseusers);
 $students = array_unique($students);
 $students = array_combine($students, $students);
-
-//echo "<pre>";
-//var_export($students);
-//exit;
 
 array_walk($students, function(&$value, $key) { 
     $user = \core_user::get_user_by_username($value);
