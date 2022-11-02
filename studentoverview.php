@@ -65,7 +65,7 @@ $PAGE->set_title(format_string($course->shortname) . ' Student Grades');
 $PAGE->set_heading(format_string($course->shortname) . ' Student Grades');
 
 // Get groups in the course.
-$groups = utils::get_course_groups($course->id);
+$groups = utils::get_users_course_groups($USER->id, $courseid);
 
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
@@ -114,6 +114,7 @@ if (empty($userid) || (!in_array($userid, $students))) {
 }
 
 // Export the data for this page.
+usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'courseid' => (int) $courseid,
     'groups' => $groups,

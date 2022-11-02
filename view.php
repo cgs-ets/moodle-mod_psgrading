@@ -87,7 +87,7 @@ $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
     // Get groups in the course.
-    $groups = utils::get_course_groups($course->id);
+    $groups = utils::get_users_course_groups($USER->id, $courseid);
 }
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
@@ -121,6 +121,7 @@ if (empty($students)) {
 }
 
 // Get the tasks.
+usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'courseid' => (int) $course->id,
     'cmid' => (int) $cm->id,
