@@ -256,7 +256,7 @@ class reporting {
                         $element['grade'] = $existing->grade;
                         $element['minimal'] = static::REPORTENGAGEMENTOPTIONS[$existing->grade]['minimal'];
                     } else {
-                        if (!empty($existing->reflection)) {
+                        if (!empty($existing->reflection) || !empty($existing->reflectionimagepath)) {
                             $element['reflection'] = $existing->reflection;
                             $element['grade'] = 'text_graded';
                             $element['minimal'] = '';
