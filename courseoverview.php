@@ -70,7 +70,7 @@ $PAGE->set_context($coursecontext);
 $PAGE->add_body_class('psgrading-overview-page');
 
 // Get groups in the course.
-$groups = utils::get_users_course_groups($USER->id, $courseid);
+$groups = utils::get_users_course_groups($USER->id, $course->id);
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
     // custom pref db as the pref needs to be per cm instance.
