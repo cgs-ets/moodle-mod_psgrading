@@ -270,12 +270,14 @@ class reporting {
     public static function save_reportelement_effort($courseid, $year, $period, $username, $elname, $eltype, $grade) {
         global $DB, $USER;
 
+        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
+
         $data = array (
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
-            'elementname' => $elname,
+            'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
         );
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
