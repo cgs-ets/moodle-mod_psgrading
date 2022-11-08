@@ -242,12 +242,13 @@ class reporting {
 
         foreach ($students as &$sdata) {
             foreach($sdata['reportelements'] as &$element) {
+                $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $element['subjectarea']));
                 $conds = array (
                     'courseid' => $courseid,
                     'fileyear' => $year,
                     'reportingperiod' => $period,
                     'studentusername' => $sdata['user']->username,
-                    'elementname' => $element['subjectarea'],
+                    'elementname' => $subjectsanitised,
                     'elementtype' => $element['type'],
                 );
                 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
@@ -303,12 +304,14 @@ class reporting {
     public static function save_reportelement_text($courseid, $year, $period, $username, $elname, $eltype, $reflection) {
         global $DB, $USER;
 
+        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
+
         $data = array (
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
-            'elementname' => $elname,
+            'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
         );
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
@@ -437,12 +440,15 @@ class reporting {
             $reflectionimagefileid = $file->get_id();
         }
 
+
+        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
+
         $data = array (
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
-            'elementname' => $elname,
+            'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
         );
 
