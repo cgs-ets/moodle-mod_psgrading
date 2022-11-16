@@ -91,8 +91,7 @@ if ($formreflection->is_cancelled()) {
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
-        //reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'Student reflection', 'editor', $formdata->reflection);
-        reporting::save_reportelement_form($coursecontext, $course->id, $year, $period, $username, 'Student reflection', 'form', $formdata);
+        reporting::save_reportelement_form($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata);
     }
     redirect($reportingurl->out());
     exit;
@@ -109,7 +108,7 @@ $conds = array (
     'fileyear' => $year,
     'reportingperiod' => $period,
     'studentusername' => $username,
-    'elementname' => 'Student reflection',
+    'elementname' => 'studentreflection',
     'elementtype' => 'form',
 );
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
