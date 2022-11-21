@@ -44,4 +44,13 @@ $tasks = array(
         'month' => '*',
         'dayofweek' => '*'
     ),
+    array(
+        'classname' => 'mod_psgrading\task\cron_copy_report_images',
+        'blocking' => 0,
+        'minute' => '20',
+        'hour' => '3',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*'
+    ),
 );
