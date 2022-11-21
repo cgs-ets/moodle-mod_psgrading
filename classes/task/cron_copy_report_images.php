@@ -46,7 +46,7 @@ class cron_copy_report_images extends \core\task\scheduled_task {
      * Execute the scheduled task.
      */
     public function execute() {
-        global $DB;
+        global $DB, $CFG;
 
         $this->log_start("Starting image copy.");
 
