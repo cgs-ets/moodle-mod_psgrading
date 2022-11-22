@@ -115,7 +115,6 @@ if (empty($userid) || (!in_array($userid, $students))) {
 }
 
 // Export the data for this page.
-usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'courseid' => (int) $courseid,
     'groups' => $groups,

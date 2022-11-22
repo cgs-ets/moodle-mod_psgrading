@@ -521,7 +521,8 @@ class utils {
 
         $sql = "SELECT g.id
                   FROM {groups} g
-                 WHERE g.courseid = ?";
+                 WHERE g.courseid = ?
+              ORDER BY g.name ASC";
         $groups = $DB->get_records_sql($sql, array($courseid));
         $groups = array_map('intval', array_column($groups, 'id'));
 
@@ -541,7 +542,8 @@ class utils {
                   FROM {groups} g, {groups_members} gm
                  WHERE gm.groupid = g.id 
                    AND g.courseid = ?
-                   AND gm.userid = ?";
+                   AND gm.userid = ?
+              ORDER BY g.name ASC";
         $groups = $DB->get_records_sql($sql, array($courseid, $userid));
         $groups = array_map('intval', array_column($groups, 'id'));
 

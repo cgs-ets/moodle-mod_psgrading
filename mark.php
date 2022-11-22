@@ -131,7 +131,6 @@ if (empty($userid) || !in_array($userid, $students)) {
     $PAGE->set_url($markurl);
 }
 // Export the data.
-usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'task' => $task,
     'students' => $students,

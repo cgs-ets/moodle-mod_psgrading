@@ -121,7 +121,6 @@ if (empty($students)) {
 }
 
 // Get the tasks.
-usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'courseid' => (int) $course->id,
     'cmid' => (int) $cm->id,

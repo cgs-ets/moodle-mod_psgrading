@@ -109,7 +109,6 @@ if (empty($students)) {
     //exit;
 }
 
-usort($groups, function($a, $b) {return strcmp($a->name, $b->name);});
 $relateds = array(
     'courseid' => (int) $course->id,
     'reportingperiod' => $reporting,
