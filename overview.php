@@ -73,7 +73,8 @@ $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
     // Get groups in the course.
-    $groups = utils::get_users_course_groups($USER->id, $course->id);
+    //$groups = utils::get_users_course_groups($USER->id, $course->id);
+    $groups = utils::get_course_groups($course->id);
 }
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {

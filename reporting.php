@@ -98,10 +98,8 @@ foreach ($classes as $i => $class) {
 }
 $students = array_unique($students);
 
-
-
-
 // Get groups in the course.
+//$groups = utils::get_course_groups($courseid);
 $groups = utils::get_users_course_groups($USER->id, $courseid);
 // Group navigation. 
 $allgroupsurl = clone($url);
