@@ -519,7 +519,7 @@ class utils {
     public static function get_course_groups($courseid) {
         global $DB;
 
-        $sql = "SELECT g.id
+        $sql = "SELECT g.id, g.name
                   FROM {groups} g
                  WHERE g.courseid = ?
               ORDER BY g.name ASC";
@@ -538,7 +538,7 @@ class utils {
     public static function get_users_course_groups($userid, $courseid) {
         global $DB;
 
-        $sql = "SELECT DISTINCT g.id
+        $sql = "SELECT DISTINCT g.id, g.name
                   FROM {groups} g, {groups_members} gm
                  WHERE gm.groupid = g.id 
                    AND g.courseid = ?
