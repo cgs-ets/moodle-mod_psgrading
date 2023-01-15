@@ -90,10 +90,13 @@ class cron_grade_release extends \core\task\scheduled_task {
             if (empty($criteriasum)) {
                 // Check for did not submit and comment.
                 if ($grade->didnotsubmit && !empty($grade->comment)) {
-                  // Continue to release the grade.
+                    // Continue to release the grade.
                 } else {
-                  $this->log_finish("Skipping. The rubric was not graded for this student/task: " . $grade->studentusername . "/" . $grade->taskid, 3);
-                  continue;
+                    $this->log_finish("Skipping. The rubric was not graded for this student/task: " . $grade->studentusername . "/" . $grade->taskid, 3);
+                    // Mark release skipped so we don't keep trying to release this.
+                    $grade->releaseprocessed = 2;
+                    $DB->update_record(task::TABLE_GRADES, $grade);
+                    continue;
                 }
             }
 
