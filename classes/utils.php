@@ -636,6 +636,15 @@ class utils {
         if (has_capability('moodle/grade:manage', $context)) {
             return true;
         }
+
+        // If the course has ended, past years, the grade:manage capability will be no. Use the following instead.
+        // https://docs.moodle.org/400/en/Capabilities/moodle/course:reviewotherusers
+        if ($COURSE->enddate && $COURSE->enddate < time()) {
+            if (has_capability('moodle/course:reviewotherusers', $context)) {
+                return true;
+            }
+        }
+        
         return false;
     }
 
