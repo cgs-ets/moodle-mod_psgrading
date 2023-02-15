@@ -633,7 +633,7 @@ class utils {
         global $COURSE;
 
         $context = \context_course::instance($COURSE->id);
-        if (has_capability('moodle/assign:grade', $context)) {
+        if (has_capability('mod/assign:grade', $context)) {
             return true;
         }
 
