@@ -963,7 +963,7 @@ class utils {
     public static function median($values) {
         $count = count($values);
         if ($count === 0)  return null;
-        asort($values);
+        sort($values);
         $half = floor($count / 2);
         if ($count % 2) return $values[$half];
         return ($values[$half - 1] + $values[$half]) / 2.0;
