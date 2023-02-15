@@ -670,10 +670,32 @@ class task extends persistent {
         }
     
         // Flatten to rounded averages.
+        //foreach ($subjectgrades as &$subjectgrade) {
+        //    if (count($subjectgrade)) {
+        //        $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
+        //        $subjectgrade = (int) round($subjectgrade, 0);
+        //    } else {
+        //        $subjectgrade = 0;
+        //    }
+        //}
+
+        // Get the final scores.
         foreach ($subjectgrades as &$subjectgrade) {
             if (count($subjectgrade)) {
-                $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
-                $subjectgrade = (int) round($subjectgrade, 0);
+                // Get the mean.
+                $subjectgrademean = array_sum($subjectgrade)/count($subjectgrade);
+                // Get the median.
+                $subjectgrademedian = utils::median($subjectgrade);
+                // Influenced average.
+                $influencedmean = ($subjectgrademean + $subjectgrademedian) / 2;
+                // Rounding based on influenced mean.
+                if ($influencedmean > $subjectgrademean) {
+                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                } else if ($influencedmean < $subjectgrademean) { 
+                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+                } else {
+                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                }
             } else {
                 $subjectgrade = 0;
             }
@@ -714,8 +736,6 @@ class task extends persistent {
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];*/
 
-
-
         // Calculate success/final grades --> average of task's criteria grades.
         $success = 0;
         $criteriagrades = array();
@@ -725,16 +745,31 @@ class task extends persistent {
             }
         }
         if (array_sum($criteriagrades)) {
-            $success = array_sum($criteriagrades)/count($criteriagrades);
-            $success = (int) round($success, 0);
+
+
+            //$success = array_sum($criteriagrades)/count($criteriagrades);
+            //$success = (int) round($success, 0);
+            $success = 0;
+            // Get the mean.
+            $successmean = array_sum($criteriagrades)/count($criteriagrades);
+            // Get the median.
+            $successmedian = utils::median($criteriagrades);
+            // Influenced average.
+            $influencedmean = ($successmean + $successmedian) / 2;
+            // Rounding based on influenced mean.
+            if ($influencedmean > $successmean) {
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+            } else if ($influencedmean < $successmean) { 
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+            } else {
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+            }
+
         }
         $gradelang = utils::GRADELANG[$success];
         $task->success['grade'] = $success;
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];
-
-
-
 
         // Get the releasepost
         if ($task->released) {

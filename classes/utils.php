@@ -633,11 +633,11 @@ class utils {
         global $COURSE;
 
         $context = \context_course::instance($COURSE->id);
-        if (has_capability('moodle/grade:manage', $context)) {
+        if (has_capability('moodle/assign:grade', $context)) {
             return true;
         }
 
-        // If the course has ended, past years, the grade:manage capability will be no. Use the following instead.
+        // If the course has ended, past years, the assign:grade capability will be no. Use the following instead.
         // https://docs.moodle.org/400/en/Capabilities/moodle/course:reviewotherusers
         if ($COURSE->enddate && $COURSE->enddate < time()) {
             if (has_capability('moodle/course:reviewotherusers', $context)) {
@@ -960,6 +960,13 @@ class utils {
         }
     }
 
-
+    public static function median($values) {
+        $count = count($values);
+        if ($count === 0)  return null;
+        asort($values);
+        $half = floor($count / 2);
+        if ($count % 2) return $values[$half];
+        return ($values[$half - 1] + $values[$half]) / 2.0;
+    }
 
 }
