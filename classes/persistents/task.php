@@ -628,7 +628,7 @@ class task extends persistent {
 
         $showgrades = true;
         // If task is not released yet do not show grades parents/students.
-        if (!$task->released) {
+        if (!$task->released || utils::is_hide_ps_grades()) {
             if (!$isstaff) {
                 $showgrades = false;
             }

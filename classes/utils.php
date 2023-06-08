@@ -629,6 +629,19 @@ class utils {
         return false;
     }
 
+    public static function is_hide_ps_grades() {
+        global $USER;
+        
+        profile_load_custom_fields($USER);
+        if (isset($USER->profile['hidepsgrades'])) {
+            if ($USER->profile['hidepsgrades']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function is_grader() {
         global $COURSE;
 

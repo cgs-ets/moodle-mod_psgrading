@@ -176,8 +176,8 @@ class details_exporter extends exporter {
                 unset($task->criterions[$i]);
                 continue;
             }
-            // Add selections only if task is released.
-            if (isset($gradeinfo->criterions[$criterion->id]) && $task->released) {
+            // Add selections only if task is released. And not hidden from student.
+            if (isset($gradeinfo->criterions[$criterion->id]) && $task->released && !utils::is_hide_ps_grades()) {
                 // There is a gradelevel chosen for this criterion.
                 $criterion->{'level' . $gradeinfo->criterions[$criterion->id]->gradelevel . 'selected'} = true;
             }
@@ -186,7 +186,7 @@ class details_exporter extends exporter {
         // Zero indexes so templates work.
         $task->criterions = array_values($task->criterions);
 
-        if ($task->released) {
+        if ($task->released && !utils::is_hide_ps_grades()) {
             // Get selected MyConnect grade evidences.
             $task->myconnectevidences = array();
             $task->myconnectevidencejson = '';
