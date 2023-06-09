@@ -91,7 +91,7 @@ if ($formreflection->is_cancelled()) {
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
-        reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'teacherreflection', 'form', $formdata);
+        reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'teacherreflection', 'form', $formdata->reflection);
     }
     redirect($reportingurl->out());
     exit;

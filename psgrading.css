@@ -2542,3 +2542,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-teacherreflection #fitem_id_reflection {
   margin-bottom: 15px;
 }
+#page-mod-psgrading-studentreflection #fitem_id_reflection .atto_group.files_group,
+#page-mod-psgrading-teacherreflection #fitem_id_reflection .atto_group.files_group {
+  display: none !important;
+}

@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use \mod_psgrading\persistents\task;
 use \mod_psgrading\forms\form_reflection;
+use \mod_psgrading\forms\form_treflection;
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -349,7 +350,7 @@ class reporting {
             'mod_psgrading', 
             'reflection', 
             $year . $period . $user->id,
-            form_reflection::editor_options(), 
+            form_treflection::editor_options(), 
             $reflection['text'],
         );
 
