@@ -29,7 +29,7 @@ require_once(__DIR__.'/lib.php');
 
 use \mod_psgrading\utils;
 use \mod_psgrading\reporting;
-use \mod_psgrading\forms\form_reflection;
+use \mod_psgrading\forms\form_treflection;
 
 // Course ID
 $courseid = required_param('courseid', PARAM_INT);
