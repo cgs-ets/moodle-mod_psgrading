@@ -162,7 +162,11 @@ array_multisort($sort, SORT_ASC, $students);
 $students = array_combine(array_column($students, 'username'), $students);
 
 //echo "<pre>"; var_export($students); exit;
-
+$teacherreflectionurl = new moodle_url('/mod/psgrading/teacherreflection.php', array(
+    'courseid' => $course->id,
+    'year' => $year,
+    'period' => $period,
+));
 $studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'courseid' => $course->id,
     'year' => $year,
@@ -181,7 +185,8 @@ foreach ($classes as $class) {
 
             // Add the reportelements based on the assesscode.
             $studentreflectionurl->param('user', $classstudent->id);
-            $elements = reporting::get_reportelements($class->assesscode, $classstudent->yearlevel, $studentreflectionurl);
+            $teacherreflectionurl->param('user', $classstudent->id);
+            $elements = reporting::get_reportelements($class->assesscode, $classstudent->yearlevel, $studentreflectionurl, $teacherreflectionurl);
             $students[$classstudent->id]['reportelements'] = array_merge(
                 $students[$classstudent->id]['reportelements'], 
                 $elements

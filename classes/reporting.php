@@ -123,7 +123,7 @@ class reporting {
         }
     }
 
-    public static function get_reportelements($assesscode, $yearlevel, $studentreflectionurl) {
+    public static function get_reportelements($assesscode, $yearlevel, $studentreflectionurl, $teacherreflectionurl) {
 
         $elements = array();
 
@@ -216,7 +216,9 @@ class reporting {
                     );
                     $elements[] = array(
                         'subjectarea' => 'Student reflection',
-                        'type' => 'text',
+                        //'type' => 'text',
+                        'type' => 'form',
+                        'url' => $teacherreflectionurl->out(false),
                     );
                     break;
             }
@@ -224,7 +226,9 @@ class reporting {
             if ($assesscode == 'OL') { // Core class
                 $elements[] = array(
                     'subjectarea' => 'Teacher reflection',
-                    'type' => 'text',
+                    //'type' => 'text',
+                    'type' => 'form',
+                    'url' => $teacherreflectionurl->out(false),
                 );
                 $elements[] = array(
                     'subjectarea' => 'Student reflection',
@@ -333,7 +337,7 @@ class reporting {
         return true;
     }
 
-    /*public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
+    public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
         global $DB, $USER, $CFG;
 
         $user = \core_user::get_user_by_username($username);
@@ -403,7 +407,7 @@ class reporting {
         }
         
         return true;
-    }*/
+    }
 
     public static function save_reportelement_form($context, $courseid, $year, $period, $username, $elname, $eltype, $formdata) {
         global $DB, $USER, $CFG;

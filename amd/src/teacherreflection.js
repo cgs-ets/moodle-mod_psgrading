@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides the mod_psgrading/studentreflection module
+ * Provides the mod_psgrading/teacherreflection module
  *
  * @package   mod_psgrading
  * @category  output
@@ -23,27 +23,27 @@
  */
 
 /**
- * @module mod_psgrading/studentreflection
+ * @module mod_psgrading/teacherreflection
  */
 define(['jquery', 'core/log'], 
     function($, Log) {    
     'use strict';
 
     /**
-     * Initializes the studentreflection component.
+     * Initializes the teacherreflection component.
      */
     function init() {
-        Log.debug('mod_psgrading/studentreflection: initializing');
+        Log.debug('mod_psgrading/teacherreflection: initializing');
 
-        var rootel = $('#page-mod-psgrading-studentreflection');
+        var rootel = $('#page-mod-psgrading-teacherreflection');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/studentreflection: #page-mod-psgrading-studentreflection not found!');
+            Log.error('mod_psgrading/teacherreflection: #page-mod-psgrading-teacherreflection not found!');
             return;
         }
 
-        var studentreflection = new StudentReflection(rootel);
-        studentreflection.main();
+        var teacherreflection = new TeacherReflection(rootel);
+        teacherreflection.main();
     }
 
     /**
@@ -52,17 +52,17 @@ define(['jquery', 'core/log'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function StudentReflection(rootel) {
+    function TeacherReflection(rootel) {
         var self = this;
         self.rootel = rootel;
-        self.form = rootel.find('form[data-form="psgrading-studentreflection"]');
+        self.form = rootel.find('form[data-form="psgrading-teacherreflection"]');
     }
 
     /**
      * Run the Audience Selector.
      *
      */
-     StudentReflection.prototype.main = function () {
+    TeacherReflection.prototype.main = function () {
       var self = this;
 
       // Cancel edit.
