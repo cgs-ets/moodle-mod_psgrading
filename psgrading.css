@@ -2513,7 +2513,8 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 10px;
   border: 1px solid #000;
 }
-#page-mod-psgrading-studentreflection {
+#page-mod-psgrading-studentreflection,
+#page-mod-psgrading-teacherreflection {
   /*
   #fitem_id_reflection {
     margin: 0;
@@ -2531,12 +2532,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   }
 */
 }
-#page-mod-psgrading-studentreflection .period-heading {
+#page-mod-psgrading-studentreflection .period-heading,
+#page-mod-psgrading-teacherreflection .period-heading {
   font-weight: 600;
   font-size: 20px;
   background: #dedede;
   padding: 5px 10px;
 }
-#page-mod-psgrading-studentreflection .student-info {
+#page-mod-psgrading-studentreflection .student-info,
+#page-mod-psgrading-teacherreflection .student-info {
   margin: 15px 0;
 }
