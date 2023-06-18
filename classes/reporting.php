@@ -216,13 +216,11 @@ class reporting {
                         'type' => 'text',
                     );
                     if ($yearlevel == 0) {
-                        if ($assesscode == 'OL') { // Core class
-                            $elements[] = array(
-                                'subjectarea' => 'Student reflection',
-                                'type' => 'form',
-                                'url' => $studentreflectionurl->out(false),
-                            );
-                        }
+                        $elements[] = array(
+                            'subjectarea' => 'Student reflection',
+                            'type' => 'form',
+                            'url' => $studentreflectionurl->out(false),
+                        );
                     } else {
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
