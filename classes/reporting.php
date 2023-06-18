@@ -128,7 +128,7 @@ class reporting {
 
         $elements = array();
 
-        if ($yearlevel >= 0 && $yearlevel <= 6) { // K-6.
+        if ($yearlevel >= 0 && $yearlevel <= 6) {// K-6.
             switch ($assesscode) {
                 case 'CH':
                     $elements[] = array(
@@ -215,19 +215,27 @@ class reporting {
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
                     );
-                    $elements[] = array(
-                        'subjectarea' => 'Student reflection',
-                        //'type' => 'text',
-                        'type' => 'form',
-                        'url' => $teacherreflectionurl->out(false),
-                    );
+                    if ($yearlevel == 0) {
+                        if ($assesscode == 'OL') { // Core class
+                            $elements[] = array(
+                                'subjectarea' => 'Student reflection',
+                                'type' => 'form',
+                                'url' => $studentreflectionurl->out(false),
+                            );
+                        }
+                    } else {
+                        $elements[] = array(
+                            'subjectarea' => 'Student reflection',
+                            'type' => 'form',
+                            'url' => $teacherreflectionurl->out(false),
+                        );
+                    }
                     break;
             }
         } else { // Pre-S to Pre-K
             if ($assesscode == 'OL') { // Core class
                 $elements[] = array(
                     'subjectarea' => 'Teacher reflection',
-                    //'type' => 'text',
                     'type' => 'form',
                     'url' => $teacherreflectionurl->out(false),
                 );
