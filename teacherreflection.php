@@ -131,6 +131,7 @@ $data = array(
     'user' => $user,
     'title' => $title,
     'form' => $formreflection->render(),
+    'reportingurl' => $reportingurl->out(false),
 );
 
 // Add css.

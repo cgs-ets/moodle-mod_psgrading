@@ -222,11 +222,11 @@ class reporting {
                             'url' => $studentreflectionurl->out(false),
                         );
                     } else {
-                        $teacherreflectionurl->param('title', 'Student reflection');
+                        $studentreflectionurl->param('type', 'editor');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
                             'type' => 'form',
-                            'url' => $teacherreflectionurl->out(false),
+                            'url' => $studentreflectionurl->out(false),
                         );
                     }
                     break;

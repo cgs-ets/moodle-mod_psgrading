@@ -41,30 +41,36 @@ class form_reflection extends \moodleform {
         global $CFG, $OUTPUT, $USER, $DB;
 
         $mform =& $this->_form;
+        $type = $this->_customdata['type'];
 
+
+        if ($type == 'editor') {
         /*----------------------
         *   Reflection editor
         *----------------------*/
-        //$type = 'editor';
-        //$name = 'reflection';
-        //$title = '';
-        //$mform->addElement($type, $name, $title, null, static::editor_options());
-        //$mform->setType($name, PARAM_RAW);
+            $type = 'editor';
+            $name = 'reflection';
+            $title = '';
+            $mform->addElement($type, $name, $title, null, static::editor_options());
+            $mform->setType($name, PARAM_RAW);
+        }
         
-        /*----------------------
-        *   Reflection textarea
-        *----------------------*/
-        $type = 'textarea';
-        $name = 'reflection';
-        $title = 'Text';
-        $mform->addElement($type, $name, $title, 'wrap="virtual" rows="10" cols="50"');
-        $mform->setType($name, PARAM_RAW);
+        
+        if ($type == 'image') {
+            /*----------------------
+            *   Reflection textarea
+            *----------------------*/
+            $type = 'textarea';
+            $name = 'reflection';
+            $title = 'Text';
+            $mform->addElement($type, $name, $title, 'wrap="virtual" rows="10" cols="50"');
+            $mform->setType($name, PARAM_RAW);
 
-
-        /*----------------------
-        *   Reflection image file
-        *----------------------*/
-        $mform->addElement('filemanager', 'reflectionimage', 'Image upload', null, self::image_options());
+            /*----------------------
+            *   Reflection image file
+            *----------------------*/
+            $mform->addElement('filemanager', 'reflectionimage', 'Image upload', null, self::image_options());
+        }
 
         /*----------------------
         *   Buttons

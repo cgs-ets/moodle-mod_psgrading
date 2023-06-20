@@ -36,6 +36,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $year = required_param('year', PARAM_INT);
 $period = required_param('period', PARAM_INT);
 $username = required_param('user', PARAM_INT);
+$type = optional_param('type', 'image', PARAM_TEXT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -83,7 +84,14 @@ $reportingurl = new moodle_url('/mod/psgrading/reporting.php', array(
 ));
 
 // Check to see if the page was submitted for a student reflection before continuing.
-$formreflection = new form_reflection($url->out(false), array(), 'post', '', array('data-form' => 'psgrading-studentreflection'));
+$formreflection = new form_reflection(
+    $url->out(false), 
+    array('type' => $type), 
+    'post', 
+    '', 
+    array('data-form' => 'psgrading-studentreflection')
+);
+
 if ($formreflection->is_cancelled()) {
     redirect($reportingurl->out());
     exit;
@@ -112,27 +120,31 @@ $conds = array (
     'elementtype' => 'form',
 );
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
-    // Set up reflection editor.
-    //$draftideditor = file_get_submitted_draft_itemid('reflection');
-    //$editoroptions = form_reflection::editor_options();
-    //$reflectiontext = file_prepare_draft_area($draftideditor, $coursecontext->id, 'mod_psgrading', 'reflection', $year . $period . $user->id, $editoroptions, $existing->reflection);
-    //$reflection = array(
-    //    'text' => $reflectiontext,
-    //    'format' => editors_get_preferred_format(),
-    //    'itemid' => $draftideditor
-    //);
-    //$formreflection->set_data(array('reflection' => $reflection));
-
-    // Set up draft image file manager.
-    $draftimage = file_get_submitted_draft_itemid('reflectionimage');
-    $imageoptions = form_reflection::image_options();
-    $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
-    file_prepare_draft_area($draftimage, $coursecontext->id, 'mod_psgrading', 
-        'reflectionimage', $uniqueid, $imageoptions);
-    $formreflection->set_data(array(
-        'reflection' => $existing->reflection,
-        'reflectionimage' => $draftimage
-    ));
+    if ($type == 'editor') {
+        // Set up reflection editor.
+        $draftideditor = file_get_submitted_draft_itemid('reflection');
+        $editoroptions = form_reflection::editor_options();
+        $reflectiontext = file_prepare_draft_area($draftideditor, $coursecontext->id, 'mod_psgrading', 'reflection', $year . $period . $user->id, $editoroptions, $existing->reflection);
+        $reflection = array(
+            'text' => $reflectiontext,
+            'format' => editors_get_preferred_format(),
+            'itemid' => $draftideditor
+        );
+        $formreflection->set_data(array('reflection' => $reflection));
+    }
+    
+    if ($type == 'image') {
+        // Set up draft image file manager.
+        $draftimage = file_get_submitted_draft_itemid('reflectionimage');
+        $imageoptions = form_reflection::image_options();
+        $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
+        file_prepare_draft_area($draftimage, $coursecontext->id, 'mod_psgrading', 
+            'reflectionimage', $uniqueid, $imageoptions);
+        $formreflection->set_data(array(
+            'reflection' => $existing->reflection,
+            'reflectionimage' => $draftimage
+        ));
+    }
 }
 
 $data = array(
@@ -141,6 +153,7 @@ $data = array(
     'period' => $period,
     'user' => $user,
     'form' => $formreflection->render(),
+    'reportingurl' => $reportingurl->out(false),
 );
 
 // Add css.
