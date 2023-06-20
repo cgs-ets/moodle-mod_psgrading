@@ -56,7 +56,7 @@ class form_reflection extends \moodleform {
         }
         
         
-        if ($type == 'image') {
+        if ($type == 'form') {
             /*----------------------
             *   Reflection textarea
             *----------------------*/

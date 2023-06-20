@@ -36,7 +36,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $year = required_param('year', PARAM_INT);
 $period = required_param('period', PARAM_INT);
 $username = required_param('user', PARAM_INT);
-$type = optional_param('type', 'image', PARAM_TEXT);
+$type = optional_param('type', 'form', PARAM_TEXT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -101,7 +101,7 @@ $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
         if ($type == 'editor') {
-            reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata->reflection);
+            reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'editor', $formdata->reflection);
         } else {
             reporting::save_reportelement_form($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata);
         }
@@ -122,7 +122,7 @@ $conds = array (
     'reportingperiod' => $period,
     'studentusername' => $username,
     'elementname' => 'studentreflection',
-    'elementtype' => 'form',
+    'elementtype' => $type == 'editor' ? 'editor' : 'form',
 );
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
     if ($type == 'editor') {
@@ -138,7 +138,7 @@ if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTI
         $formreflection->set_data(array('reflection' => $reflection));
     }
     
-    if ($type == 'image') {
+    if ($type == 'form') {
         // Set up draft image file manager.
         $draftimage = file_get_submitted_draft_itemid('reflectionimage');
         $imageoptions = form_reflection::image_options();
