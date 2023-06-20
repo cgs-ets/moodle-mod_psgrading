@@ -36,6 +36,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $year = required_param('year', PARAM_INT);
 $period = required_param('period', PARAM_INT);
 $username = required_param('user', PARAM_INT);
+$title = optional_param('user', 'Teacher Reflection', PARAM_TEXT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -71,7 +72,6 @@ $url = new moodle_url('/mod/psgrading/teacherreflection.php', array(
     'user' => $username,
 ));
 $PAGE->set_url($url);
-$title = 'Teacher Reflection';
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_context($coursecontext);
@@ -129,6 +129,7 @@ $data = array(
     'year' => $year,
     'period' => $period,
     'user' => $user,
+    'title' => $title,
     'form' => $formreflection->render(),
 );
 

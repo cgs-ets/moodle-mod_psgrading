@@ -222,6 +222,7 @@ class reporting {
                             'url' => $studentreflectionurl->out(false),
                         );
                     } else {
+                        $teacherreflectionurl->param('title', 'Student reflection');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
                             'type' => 'form',
