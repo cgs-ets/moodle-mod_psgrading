@@ -225,7 +225,7 @@ class reporting {
                         $studentreflectionurl->param('type', 'editor');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
-                            'type' => 'form',
+                            'type' => 'editor',
                             'url' => $studentreflectionurl->out(false),
                         );
                     }
