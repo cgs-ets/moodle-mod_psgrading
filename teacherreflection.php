@@ -36,7 +36,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $year = required_param('year', PARAM_INT);
 $period = required_param('period', PARAM_INT);
 $username = required_param('user', PARAM_INT);
-$title = optional_param('user', 'Teacher Reflection', PARAM_TEXT);
+$title = optional_param('title', 'Teacher Reflection', PARAM_TEXT);
 
 if ($courseid) {
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
