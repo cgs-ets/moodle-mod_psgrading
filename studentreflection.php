@@ -70,6 +70,7 @@ $url = new moodle_url('/mod/psgrading/studentreflection.php', array(
     'year' => $year,
     'period' => $period,
     'user' => $username,
+    'type' => $type,
 ));
 $PAGE->set_url($url);
 $title = 'Student Reflection';
@@ -99,7 +100,11 @@ if ($formreflection->is_cancelled()) {
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
-        reporting::save_reportelement_form($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata);
+        if ($type == 'editor') {
+            reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata->reflection);
+        } else {
+            reporting::save_reportelement_form($coursecontext, $course->id, $year, $period, $username, 'studentreflection', 'form', $formdata);
+        }
     }
     redirect($reportingurl->out());
     exit;

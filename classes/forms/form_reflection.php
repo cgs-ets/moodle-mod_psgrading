@@ -93,11 +93,11 @@ class form_reflection extends \moodleform {
      *
      * @return array
      */
-    /*public static function editor_options() {
+    public static function editor_options() {
         return array(
             'maxfiles' => EDITOR_UNLIMITED_FILES, 
         );
-    }*/
+    }
 
 
     /**
