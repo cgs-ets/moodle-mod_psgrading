@@ -38,12 +38,47 @@ require_capability('moodle/site:config', $context, $USER->id);
 /*$task = new \mod_psgrading\task\cron_grade_release;
 $task->execute();
 exit;*/
-
-/*$task = new \mod_psgrading\task\adhoc_gradesync();
-$mod = new stdClass();
-$mod->course = 13;
-$mod->id = 1;
-$task->set_custom_data($mod);
+/*
+$task = new \mod_psgrading\task\adhoc_gradesync();
+$task->set_custom_data([2318,1]);
 $task->set_component('mod_psgrading');
 $task->execute();
-exit;*/
+exit;
+*/
+
+
+use mod_psgrading\utils;
+use mod_psgrading\external\grade_exporter;
+use \mod_psgrading\persistents\task;
+echo "<pre>";
+// Use the grade exporter to get grades for this student.
+/*$relateds = array(
+    'courseid' => (int) 2318,
+    'userid' => 9682,
+    'isstaff' => true, // Only staff can view the report grades.
+    'includehiddentasks' => true,
+    'reportingperiod' => (int) 1,
+);
+$gradeexporter = new grade_exporter(null, $relateds);
+$output = $PAGE->get_renderer('core');
+$gradedata = $gradeexporter->export($output);*/
+
+$output = $PAGE->get_renderer('core');
+$tasks = task::compute_grades_for_course(
+    2318, //courseid
+    9682, //userid
+    true, //includehiddentasks
+    true, //isstaff
+    1, //reportingperiod
+);
+foreach ($tasks as $task) {
+	foreach ($task->subjectgrades as $subjectgrade) {
+		$subjectgrade = (object) $subjectgrade;
+		if ($subjectgrade->subjectsanitised == 'Mathsmeasurementandgeometry' && $subjectgrade->grade > 0) {
+			var_export($task->taskname);
+			var_export($subjectgrade);
+		}
+	}
+}
+
+exit;
