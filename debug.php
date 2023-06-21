@@ -25,6 +25,11 @@
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once(__DIR__.'/lib.php');
 
+
+use mod_psgrading\utils;
+use mod_psgrading\external\grade_exporter;
+use \mod_psgrading\persistents\task;
+
 $context = context_system::instance();
 
 $PAGE->set_context($context);
@@ -35,22 +40,18 @@ $PAGE->set_heading('mod_psgrading debugger');
 require_login();
 require_capability('moodle/site:config', $context, $USER->id);
 
+echo "<pre>";
+
 /*$task = new \mod_psgrading\task\cron_grade_release;
 $task->execute();
 exit;*/
-/*
-$task = new \mod_psgrading\task\adhoc_gradesync();
+
+/*$task = new \mod_psgrading\task\adhoc_gradesync();
 $task->set_custom_data([2318,1]);
 $task->set_component('mod_psgrading');
 $task->execute();
-exit;
-*/
+exit;*/
 
-
-use mod_psgrading\utils;
-use mod_psgrading\external\grade_exporter;
-use \mod_psgrading\persistents\task;
-echo "<pre>";
 // Use the grade exporter to get grades for this student.
 /*$relateds = array(
     'courseid' => (int) 2318,
@@ -63,6 +64,7 @@ $gradeexporter = new grade_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $gradedata = $gradeexporter->export($output);*/
 
+/*
 $output = $PAGE->get_renderer('core');
 $tasks = task::compute_grades_for_course(
     2318, //courseid
@@ -80,5 +82,5 @@ foreach ($tasks as $task) {
 		}
 	}
 }
-
 exit;
+*/
