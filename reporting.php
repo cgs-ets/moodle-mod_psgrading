@@ -122,12 +122,17 @@ usort($groupsnav, function($a, $b) {return strcmp($a->name, $b->name);});
 if (empty($groupid) && $nav != 'all') {
     $groupid = intval(utils::get_user_preferences($courseid, 'mod_psgrading_course_groupid', 0));
     if ($groupid) {
-        $url->param('groupid', $groupid);
-        $PAGE->set_url($url);
+        if (!in_array($groupid, $groups)) {
+            $groupid = 0;
+        } else {
+            $url->param('groupid', $groupid);
+            $PAGE->set_url($url);
+        }
     }
 } else {
     utils::set_user_preference($courseid, 'mod_psgrading_course_groupid', $groupid);
 }
+
 // Get the students in the course.
 if (empty($groupid)) {
     // Groupid = 0, get all students in course.
