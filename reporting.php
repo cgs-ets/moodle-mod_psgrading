@@ -51,7 +51,7 @@ if (empty($year)) {
 $passedp1 = time() > strtotime( $year . '-09-15' );
 
 if ($period == 0) {
-    // Try to guess reporting period. If passed July 15, then period 2.
+    // Try to guess reporting period. If passed Sept 15, then period 2.
     $period = 1;
     if ( $passedp1 ) {
         $period = 2;
