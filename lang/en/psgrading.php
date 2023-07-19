@@ -42,6 +42,8 @@ $string['dbuser'] = 'Database user';
 $string['dbpass'] = 'Database password';
 $string['staffclassessql'] = 'Staff Classes SQL';
 $string['classstudentssql'] = 'Class Students SQL';
+$string['s1cutoffmonth'] = 'Semester 1 cutoff month';
+$string['s1cutoffday'] = 'Semester 1 cutoff day';
 
 
 $string['pluginadministration'] = '';

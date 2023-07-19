@@ -43,5 +43,19 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('mod_psgrading/staffclassessql', get_string('staffclassessql', 'mod_psgrading'), '', ''));
     $settings->add(new admin_setting_configtext('mod_psgrading/classstudentssql', get_string('classstudentssql', 'mod_psgrading'), '', ''));
 
+    $name = 'mod_psgrading/s1cutoffmonth';
+    $title = get_string('s1cutoffmonth', 'mod_psgrading');
+    $default = 9;
+    $type = PARAM_INT;
+    $setting = new admin_setting_configtext($name, $title, '', $default, $type);
+    $settings->add($setting);
+
+    $name = 'mod_psgrading/s1cutoffday';
+    $title = get_string('s1cutoffday', 'mod_psgrading');
+    $default = 15;
+    $type = PARAM_INT;
+    $setting = new admin_setting_configtext($name, $title, '', $default, $type);
+    $settings->add($setting);
+
 
 }

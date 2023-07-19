@@ -99,7 +99,8 @@ class mod_psgrading_mod_form extends moodleform_mod {
         );
         $select = $mform->addElement('select', 'reportingperiod', get_string('reportingperiod', 'mod_psgrading'), $options);
         $year = date('Y');
-        $passedp1 = time() > strtotime( $year . '-09-15' );
+        $config = get_config('mod_psgrading');
+        $passedp1 = time() > strtotime( $year . '-' . $config->s1cutoffmonth . '-' . $config->s1cutoffday );
         $select->setSelected($passedp1 ? '2' : '1');
 
         $mform->addRule('reportingperiod', null, 'required', null, 'client');
