@@ -48,7 +48,8 @@ if (empty($year)) {
     $year = date('Y');
 }
 
-$passedp1 = time() > strtotime( $year . '-09-15' );
+$config = get_config('mod_psgrading');
+$passedp1 = time() > strtotime( $year . '-' . $config->s1cutoffmonth . '-' . $config->s1cutoffday );
 
 if ($period == 0) {
     // Try to guess reporting period. If passed Sept 15, then period 2.
