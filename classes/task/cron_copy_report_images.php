@@ -27,6 +27,7 @@ namespace mod_psgrading\task;
 
 defined('MOODLE_INTERNAL') || die();
 
+use mod_psgrading\utils;
 
 class cron_copy_report_images extends \core\task\scheduled_task {
 
@@ -90,6 +91,8 @@ class cron_copy_report_images extends \core\task\scheduled_task {
             $this->log("Copying " . $row->reflectionimagepath . " to " . $distinationdir . $distinationfilename, 2);
             if (file_exists($row->reflectionimagepath)) {
                 copy($row->reflectionimagepath, $distinationdir . $distinationfilename);
+                // Rotate the file if necessary.
+                utils::image_fix_orientation($distinationdir . $distinationfilename, $row->mimetype);
             }
         }
         

@@ -982,4 +982,44 @@ class utils {
         return ($values[$half - 1] + $values[$half]) / 2.0;
     }
 
+
+    function image_fix_orientation($source, $mimetype) {
+        $exif = exif_read_data($source);
+    
+        if (empty($exif['Orientation'])) {
+            return;
+        }
+
+        $image = null;
+        if ($mimetype === 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        }
+        if ($mimetype === 'image/png') {
+            $image = imagecreatefrompng($source);
+        }
+        if (!$image) {
+            return;
+        }
+
+        if (in_array($exif['Orientation'], [3, 4])) {
+            $image = imagerotate($image, 180, 0);
+        }
+        if (in_array($exif['Orientation'], [5, 6])) {
+            $image = imagerotate($image, -90, 0);
+        }
+        if (in_array($exif['Orientation'], [7, 8])) {
+            $image = imagerotate($image, 90, 0);
+        }
+        if (in_array($exif['Orientation'], [2, 5, 7, 4])) {
+            imageflip($image, IMG_FLIP_HORIZONTAL);
+        }
+
+        if ($mimetype === 'image/jpeg') {
+            imagejpeg($image, $source);
+        }
+        if ($mimetype === 'image/png') {
+            imagepng($image, $source);
+        }
+    }
+
 }
