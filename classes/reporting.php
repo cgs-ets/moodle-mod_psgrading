@@ -360,6 +360,9 @@ class reporting {
             form_treflection::editor_options(), 
             $reflection['text'],
         );
+        
+        // Remove attributes from html.
+        $reflectiontext = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $reflectiontext);
 
         $dom = new \DOMDocument();
         @$dom->loadHTML(mb_convert_encoding($reflectiontext, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
