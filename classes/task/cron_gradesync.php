@@ -44,7 +44,7 @@ class cron_gradesync extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('crontask_gradesync', 'local_gradesync');
+        return get_string('crontask_gradesync', 'mod_psgrading');
     }
 
     /**
