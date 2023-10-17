@@ -114,5 +114,6 @@ $string['dragtoreorder'] = 'Drag to reorder';
 $string['reflection'] = 'Reflection';
 $string['reflection'] = 'Reflection';
 $string['crontask_copy_report_images'] = 'Copy reflection images';
+$string['crontask_gradesync'] = 'PSGrading Sync grades';
 
 $string['nodelete'] = 'PS Grading activities cannot be deleted. Please contact the Service Desk and provide the following details in your request: `Delete Primary Grading activity CMID {$a}`';
