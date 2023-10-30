@@ -40,7 +40,7 @@ $PAGE->set_heading('mod_psgrading debugger');
 require_login();
 require_capability('moodle/site:config', $context, $USER->id);
 
-// Reporting period 2.
+
 echo "Creating adhoc_gradesync task for course 2322, reporting period 2.";
 $task = new \mod_psgrading\task\adhoc_gradesync();
 $task->set_custom_data(array(2322, 2));

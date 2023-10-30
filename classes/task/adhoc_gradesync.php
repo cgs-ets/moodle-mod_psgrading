@@ -124,9 +124,8 @@ class adhoc_gradesync extends \core\task\adhoc_task {
                    AND reportingperiod = ?";
         $grades = $DB->get_records_sql($sql, array($this->courseid, $this->reportingperiod));
         foreach ($grades as $grade) {
-            //$key = $grade->fileyear . '' . $grade->courseid . '-' . $grade->subject  . '-' . $grade->username;
             $key = "{$grade->fileyear}-{$grade->reportingperiod}-{$grade->courseid}-{$grade->subject}-{$grade->username}";
-            $this->log("Caching existing staged grades {$grade->fileyear}/{$grade->reportingperiod}/{$grade->subject} for {$grade->username}", 2);
+            $this->log("Caching existing staged grade: {$grade->fileyear}-{$grade->reportingperiod}-{$grade->courseid}-{$grade->subject}-{$grade->username}", 2);
             $this->existinggrades[$key] = $grade;
         }
     }
@@ -159,20 +158,20 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         foreach($gradedata->reportgrades as $reportgrade) {
             $reportgrade = (object) $reportgrade;
             $fileyear = date("Y");
-            //$key = $this->courseid . '-' . $reportgrade->subjectsanitised  . '-' . $username;
-            $key = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$reportgrade->subjectsanitised}-{$username}";
-            $grade = $reportgrade->subjectsanitised == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
+            $subject = strtolower($reportgrade->subjectsanitised);
+            $key = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}";
+            $grade = $subject == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
             if (empty($grade)) {
-                $this->log("Grade empty for course id {$this->courseid} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
+                $this->log("Grade empty for course id {$this->courseid} / subject {$subject} / user {$username}", 2);
                 continue;
             }
-            $this->log("Caching grade for course id {$this->courseid} / subject {$reportgrade->subjectsanitised} / user {$username}", 2);
+            $this->log("Caching grade: {$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}", 2);
             $gradeobj = new \stdClass();
             $gradeobj->courseid = $this->courseid;
             $gradeobj->username	= $username;
             $gradeobj->fileyear = $fileyear;
             $gradeobj->reportingperiod = (int) $this->reportingperiod;
-            $gradeobj->subject = strtolower($reportgrade->subjectsanitised);
+            $gradeobj->subject = $subject;
             $gradeobj->grade = $grade;
             $this->grades[$key] = $gradeobj;
         }
