@@ -40,7 +40,16 @@ $PAGE->set_heading('mod_psgrading debugger');
 require_login();
 require_capability('moodle/site:config', $context, $USER->id);
 
-echo "<pre>";
+// Reporting period 2.
+echo "Creating adhoc_gradesync task for course 2322, reporting period 2.";
+$task = new \mod_psgrading\task\adhoc_gradesync();
+$task->set_custom_data(array(2322, 2));
+$task->set_component('mod_psgrading');
+\core\task\manager::queue_adhoc_task($task);
+
+
+
+//echo "<pre>";
 
 /*$task = new \mod_psgrading\task\cron_grade_release;
 $task->execute();
