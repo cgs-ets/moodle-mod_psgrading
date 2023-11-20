@@ -68,11 +68,19 @@ class cron_copy_report_images extends \core\task\scheduled_task {
             }
         }
 
-        // Get all psgrading instances.
+        $config = get_config('mod_psgrading');
         $year = date('Y');
+        $passedp1 = time() > strtotime( $year . '-' . $config->s1cutoffmonth . '-' . $config->s1cutoffday );
+        $period = 1;
+        if ( $passedp1 ) {
+            $period = 2;
+        }
+
+        // Get all psgrading instances.
         $sql = "SELECT r.*, f.*
                 FROM {psgrading_reporting} r, {files} f
                 WHERE fileyear = " . $year . "
+                AND reportingperiod = " . $period . "
                 AND reflectionimagefileid > 0
                 AND elementname = 'studentreflection'
                 AND f.id = r.reflectionimagefileid ";
