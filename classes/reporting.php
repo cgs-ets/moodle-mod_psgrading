@@ -218,15 +218,17 @@ class reporting {
                     if ($yearlevel == 0) {
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
-                            'type' => 'form',
-                            'url' => $studentreflectionurl->out(false),
+                            'type' => 'text',
+                            //'type' => 'form',
+                            //'url' => $studentreflectionurl->out(false),
                         );
                     } else {
                         $studentreflectionurl->param('type', 'editor');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
-                            'type' => 'editor',
-                            'url' => $studentreflectionurl->out(false),
+                            'type' => 'text',
+                            //'type' => 'editor',
+                            //'url' => $studentreflectionurl->out(false),
                         );
                     }
                     break;
@@ -240,8 +242,9 @@ class reporting {
                 );
                 $elements[] = array(
                     'subjectarea' => 'Student reflection',
-                    'type' => 'form',
-                    'url' => $studentreflectionurl->out(false),
+                    'type' => 'text',
+                    //'type' => 'form',
+                    //'url' => $studentreflectionurl->out(false),
                 );
             }
         }
