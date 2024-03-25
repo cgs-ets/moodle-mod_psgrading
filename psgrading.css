@@ -2546,3 +2546,98 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-teacherreflection #fitem_id_reflection .atto_group.files_group {
   display: none !important;
 }
+/* Make site fullscreen */
+.fullscreen {
+  background-color: #fff;
+  overflow: hidden;
+  /*footer {
+    display: none;
+  }*/
+}
+.fullscreen div#topofscroll {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.fullscreen .modal-backdrop.in.show {
+  display: none !important;
+}
+.fullscreen .drawers-bottom-region-wrap {
+  margin: 0 !important;
+}
+.fullscreen .drawer {
+  display: none !important;
+}
+.fullscreen .drawer-toggler {
+  display: none;
+}
+.fullscreen #maincontent {
+  display: none;
+}
+.fullscreen #region-main {
+  border: 0 none;
+  overflow: visible;
+}
+.fullscreen nav {
+  display: none;
+}
+.fullscreen #page-header {
+  display: none;
+}
+.fullscreen #nav-drawer {
+  display: none;
+}
+.fullscreen #page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 10;
+}
+.fullscreen #page #page-content {
+  padding: 0 !important;
+}
+.fullscreen div[role="main"] {
+  padding: 0 !important;
+}
+.fullscreen .activity-header {
+  display: none;
+}
+.fullscreen .secondary-navigation {
+  display: none;
+}
+.fullscreen #topofscroll {
+  margin: 0;
+  padding: 0;
+}
+/* fullscreen toggle */
+.btn-fullscreen {
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  margin: 0 15px 0 0;
+  padding: 2px;
+}
+.btn-fullscreen .fa-compress {
+  display: none;
+}
+.fullscreen .btn-fullscreen .fa-compress {
+  display: block;
+}
+.fullscreen .btn-fullscreen .fa-expand {
+  display: none;
+}
+#quickmark-a iframe,
+#quickmark-b iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border: 0;
+}
+#quickmark-a.hidden,
+#quickmark-b.hidden {
+  display: none;
+}

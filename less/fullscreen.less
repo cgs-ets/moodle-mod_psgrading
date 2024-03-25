@@ -1,0 +1,90 @@
+/* Make site fullscreen */
+&.fullscreen {
+  background-color: #fff;
+  overflow: hidden;
+  div#topofscroll {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .modal-backdrop.in.show {
+    display: none !important;
+  }
+  .drawers-bottom-region-wrap {
+    margin: 0 !important;
+  }
+  .drawer {
+    display: none !important;
+  }
+  .drawer-toggler {
+    display: none;
+  }
+  #maincontent {
+    display: none;
+  }
+  #region-main {
+    border: 0 none;
+    overflow: visible;
+  }
+  nav {
+    display: none;
+  }
+  /*footer {
+    display: none;
+  }*/
+  #page-header {
+    display: none;
+  }
+  #nav-drawer {
+    display: none;
+  }
+  #page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 10;
+    #page-content {
+      padding: 0 !important;
+    }
+  }
+  div[role="main"] {
+    padding: 0 !important;
+  }
+  .activity-header {
+    display: none;
+  }
+  .secondary-navigation {
+    display: none;
+  }
+  #topofscroll {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
+/* fullscreen toggle */
+.btn-fullscreen {
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  margin: 0 15px 0 0;
+  padding: 2px;
+  .fa-compress {
+    display: none;
+  }
+}
+&.fullscreen {
+  .btn-fullscreen {
+    .fa-compress {
+      display: block;
+    }
+    .fa-expand {
+      display: none;
+    }
+  }
+}

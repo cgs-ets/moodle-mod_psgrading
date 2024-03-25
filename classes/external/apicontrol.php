@@ -120,6 +120,14 @@ trait apicontrol {
             return task::unrelease($taskid);
         }
 
+        if ($action == 'save_mark') {
+            $data = json_decode($data);
+            $data->didnotsubmit = isset($data->didnotsubmit) ? 1 : 0;
+            $data->replacegrader = isset($data->replacegrader) ? 1 : 0;
+            $result = task::save_task_grades_for_student($data);
+            return $result;
+        }
+
         if ($action == 'get_diff') {
             $taskid = json_decode($data);
             return task::get_diff($taskid);

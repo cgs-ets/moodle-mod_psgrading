@@ -271,4 +271,7 @@ $PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
     'taskid' => $taskid,
 ));
 
+echo $OUTPUT->render_from_template('mod_psgrading/mark_nextpage', array('url' => $data->nextstudenturl));
+
 echo $OUTPUT->footer();
+

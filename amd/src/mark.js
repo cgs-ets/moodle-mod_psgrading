@@ -116,9 +116,46 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Save and show next.
         self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
+            e.preventDefault() // Added to do this via ajax instead.
+            $(this).val('Saving... please wait');
+            $(this).prop('disabled', true);
+
+            // Original code
             window.onbeforeunload = null;
             self.regenerateCriterionJSON();
             self.rootel.find('[name="action"]').val('saveshownext');
+            // End original code
+
+            // Do it via ajax...
+            var data = $('form[data-form="psgrading-mark"]').serializeArray().reduce(function(obj, item) {
+              obj[item.name] = item.value;
+              return obj;
+            }, {});
+
+
+            data['taskid'] = self.taskid
+            data['userid'] = self.userid
+            Ajax.call([{
+              methodname: 'mod_psgrading_apicontrol',
+              args: { 
+                  action: 'save_mark',
+                  data: JSON.stringify(data),
+              },
+              done: function(response) {
+                if (response) {
+                  // Notify parent that saving is done.
+                  window.top.postMessage('saveshownext', '*')
+                }
+              },
+              fail: function(reason) {
+                alert(reason);
+                $(this).val('Save and show next');
+                $(this).prop('disabled', false);
+                Log.debug(reason);
+              }
+          }]);
+
+            console.log(data)
         });
 
         // Cancel.
@@ -219,6 +256,9 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.rootel.removeClass('didnotsubmit');
           }      
         });
+
+        
+
 
     };
 

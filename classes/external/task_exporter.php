@@ -152,7 +152,7 @@ class task_exporter extends persistent_exporter {
             'edit' => $this->data->id,
         ));
 
-        $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+        $markurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
             'userid' => $userid,
