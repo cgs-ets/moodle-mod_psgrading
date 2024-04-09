@@ -259,7 +259,7 @@ $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/masonry.p
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/imagesloaded.pkgd.min.js'), true );
 
 if ($qm == '1') {
-    $PAGE->add_body_classes(['fullscreen', 'scroll', 'padded']);
+    $PAGE->add_body_classes(['quickmark', 'fullscreen', 'scroll', 'padded']);
 }
 
 echo $OUTPUT->header();

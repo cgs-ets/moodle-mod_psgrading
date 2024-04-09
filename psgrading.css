@@ -1121,6 +1121,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   opacity: 0.5;
   pointer-events: none;
 }
+#page-mod-psgrading-mark.quickmark input#id_save,
+#page-mod-psgrading-mark.quickmark input#id_cancel {
+  display: none;
+}
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
