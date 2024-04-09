@@ -480,7 +480,7 @@ define(['jquery', 'core/log', 'core/ajax'],
         }
 
         // If page is bigger than content and there is potentially more, go ahead and load.
-        var myconnectinterval = setInterval(function() {
+        /*var myconnectinterval = setInterval(function() {
             var el = self.rootel.find('.myconnect-selector .frame');
             var windowHeight = el.innerHeight();
             var contentHeight = el[0].scrollHeight;
@@ -491,7 +491,9 @@ define(['jquery', 'core/log', 'core/ajax'],
             } else {
                 clearInterval(myconnectinterval);
             }
-        }, 3000);
+        }, 3000);*/
+
+        self.loadNextMyConnectAttachments();
         
     };
 
