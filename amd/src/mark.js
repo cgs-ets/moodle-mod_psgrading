@@ -32,7 +32,7 @@ define(['jquery', 'core/log', 'core/ajax'],
     /**
      * Initializes the mark component.
      */
-    function init(userid, taskid) {
+    function init(userid, taskid, quickmark) {
         Log.debug('mod_psgrading/mark: initializing');
 
         var rootel = $('#page-mod-psgrading-mark');
@@ -42,7 +42,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             return;
         }
 
-        var mark = new Mark(rootel, userid, taskid);
+        var mark = new Mark(rootel, userid, taskid, quickmark);
         mark.main();
     }
 
@@ -52,12 +52,13 @@ define(['jquery', 'core/log', 'core/ajax'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function Mark(rootel, userid, taskid) {
+    function Mark(rootel, userid, taskid, quickmark) {
         var self = this;
         self.rootel = rootel;
         self.form = self.rootel.find('form[data-form="psgrading-mark"]');
         self.userid = userid;
         self.taskid = taskid;
+        self.quickmark = quickmark;
         self.loadingmyconnect = false;
     }
 
@@ -116,22 +117,18 @@ define(['jquery', 'core/log', 'core/ajax'],
 
         // Save and show next.
         self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
+          if (self.quickmark == '1') {
             e.preventDefault() // Added to do this via ajax instead.
             $(this).val('Saving... please wait');
             $(this).prop('disabled', true);
-
-            // Original code
-            window.onbeforeunload = null;
             self.regenerateCriterionJSON();
-            self.rootel.find('[name="action"]').val('saveshownext');
-            // End original code
+            window.onbeforeunload = null;
 
             // Do it via ajax...
             var data = $('form[data-form="psgrading-mark"]').serializeArray().reduce(function(obj, item) {
               obj[item.name] = item.value;
               return obj;
             }, {});
-
 
             data['taskid'] = self.taskid
             data['userid'] = self.userid
@@ -143,6 +140,9 @@ define(['jquery', 'core/log', 'core/ajax'],
               },
               done: function(response) {
                 if (response) {
+                  if (response >= 1) {
+                    alert("Changes saved!")
+                  }
                   // Notify parent that saving is done.
                   window.top.postMessage('saveshownext', '*')
                 }
@@ -153,9 +153,14 @@ define(['jquery', 'core/log', 'core/ajax'],
                 $(this).prop('disabled', false);
                 Log.debug(reason);
               }
-          }]);
-
-            console.log(data)
+            }]);
+          } else {
+            // Original code
+            window.onbeforeunload = null;
+            self.regenerateCriterionJSON();
+            self.rootel.find('[name="action"]').val('saveshownext');
+            // End original code
+          }
         });
 
         // Cancel.

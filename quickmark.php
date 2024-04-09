@@ -60,6 +60,7 @@ $params = array(
     'taskid' => $taskid,
     'groupid' => $groupid,
     'userid' => $userid,
+    'qm' => '1',
 );
 $detailsurl = new moodle_url('/mod/psgrading/details.php', $params);
 if (!utils::is_grader()) {

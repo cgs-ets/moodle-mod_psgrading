@@ -797,6 +797,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .col-success .dot-box .dot-blue {
   background: blue;
 }
+.psgrading-list .col-success .quickmark-bolt {
+  display: none;
+}
+.psgrading-list .col-success:hover .quickmark-bolt {
+  display: block;
+}
 .psgrading-list .col-success.dns {
   background-color: #ddd;
 }
@@ -2612,6 +2618,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .fullscreen #topofscroll {
   margin: 0;
   padding: 0;
+}
+.fullscreen.padded section#region-main {
+  padding: 25px 35px !important;
+}
+.fullscreen.scroll {
+  overflow: visible !important;
 }
 /* fullscreen toggle */
 .btn-fullscreen {

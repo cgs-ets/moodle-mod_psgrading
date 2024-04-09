@@ -40,6 +40,7 @@ $taskid = required_param('taskid', PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
+$qm = optional_param('qm', 0, PARAM_INT);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
@@ -130,6 +131,7 @@ if (empty($userid) || !in_array($userid, $students)) {
     $markurl->param('userid', $userid);
     $PAGE->set_url($markurl);
 }
+
 // Export the data.
 $relateds = array(
     'task' => $task,
@@ -142,7 +144,6 @@ $relateds = array(
 $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
-
 
 if ( ! $data->task->published) {
     $message = get_string('taskhidden', 'mod_psgrading');
@@ -257,7 +258,17 @@ $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.cs
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/masonry.pkgd.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/imagesloaded.pkgd.min.js'), true );
 
+if ($qm == '1') {
+    $PAGE->add_body_classes(['fullscreen', 'scroll', 'padded']);
+}
+
 echo $OUTPUT->header();
+
+if ($qm == '1') {
+    echo "<style> .psgrading-header-right { display: none !important; } d</style>";
+    echo '<div class="alert alert-warning">Quick mark is in beta testing. If you have any feedback please contact the Service Desk.</div>';
+    echo "<a target='_top' class='btn btn-primary mb-3' href='{$listurl}' ><i class='fa fa-arrow-left'></i> Back to grades table</a>";
+}
 
 echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', array('formattedattachments' => $data->myconnectattachments));
 
@@ -269,6 +280,7 @@ $formmark->display();
 $PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
     'userid' => $userid,
     'taskid' => $taskid,
+    'quickmark' => $qm,
 ));
 
 echo $OUTPUT->render_from_template('mod_psgrading/mark_nextpage', array('url' => $data->nextstudenturl));

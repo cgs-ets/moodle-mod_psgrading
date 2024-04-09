@@ -335,7 +335,12 @@ class task extends persistent {
             if (! $task->get('published')) {
                 continue;
             }
-            $markurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+            $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+                'cmid' => $cmid,
+                'taskid' => $task->get('id'),
+                'userid' => $userid,
+            ));
+            $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
                 'cmid' => $cmid,
                 'taskid' => $task->get('id'),
                 'userid' => $userid,
@@ -350,6 +355,7 @@ class task extends persistent {
                 'taskname' => $task->get('taskname'),
                 'detailsurl' => $detailsurl->out(false),
                 'markurl' => $markurl->out(false),
+                'qmarkurl' => $qmarkurl->out(false),
                 'iscurrent' => ($task->get('id') == $currtaskid),
             );
         }
@@ -608,7 +614,7 @@ class task extends persistent {
         $task->criterions = static::get_criterions($task->id);
 
         // Setup details url.
-        $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+        $detailsurl = new \moodle_url('/mod/psgrading/mark.php', array(
             'cmid' => $task->cmid,
             'taskid' => $task->id,
             'userid' => $userid,

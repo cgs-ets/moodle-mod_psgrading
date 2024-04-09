@@ -63,6 +63,11 @@ class task_exporter extends persistent_exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'qmarkurl' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
             'detailsurl' => [
                 'type' => PARAM_RAW,
                 'multiple' => false,
@@ -152,7 +157,13 @@ class task_exporter extends persistent_exporter {
             'edit' => $this->data->id,
         ));
 
-        $markurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+        $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+            'cmid' => $this->data->cmid,
+            'taskid' => $this->data->id,
+            'userid' => $userid,
+        ));
+
+        $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
             'userid' => $userid,
@@ -288,6 +299,7 @@ class task_exporter extends persistent_exporter {
         return [
             'editurl' => $editurl->out(false),
             'markurl' => $markurl->out(false),
+            'qmarkurl' => $qmarkurl->out(false),
             'detailsurl' => $detailsurl->out(false),
             'readabletime' => $readabletime,
             'released' => $released,

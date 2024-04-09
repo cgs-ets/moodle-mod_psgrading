@@ -62,19 +62,21 @@ define(['jquery', 'core/log', 'core/ajax'],
      */
     QuickMark.prototype.main = function (markurls, start) {
       var self = this;
+
+      console.log(markurls)
       
       var curr = start+1
       // When the first is complete, remove it, popup the second, and load the third, and so on.
       window.onmessage = function(e) {
         if (e.data == 'saveshownext') {
-
           // Get the 2 wrapping regions.
           var a = document.getElementById("quickmark-a");
           var b = document.getElementById("quickmark-b");
 
-          // If a or b has been removed, that means the last was reached.
+          // If we've reached the last student in the list.
           if (a.classList.contains('last') || b.classList.contains('last')) {
             self.setup(markurls, 0);
+            curr = 1;
             return;
           }
 
@@ -92,12 +94,12 @@ define(['jquery', 'core/log', 'core/ajax'],
 
           // Load the next markurl if there is one.
           curr++;
-          if (markurls.length > curr) {
-            console.log('Loading next hidden url: ' + markurls[curr])
-            next.setAttribute("src", markurls[curr]);
-          } else {
-            console.log('Last user loaded: ' + markurls[curr-1])
+          if (curr >= markurls.length) {
+            console.log('Last user has been loaded: ' + markurls[curr-1])
             next.classList.add("last");
+          } else {
+            console.log('Loading next hidden url: ' + markurls[curr])
+            next.firstElementChild.setAttribute("src", markurls[curr]);
           }
         }
       };
