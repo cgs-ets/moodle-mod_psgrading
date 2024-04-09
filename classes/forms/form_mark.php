@@ -101,7 +101,7 @@ class form_mark extends \moodleform {
         $mform->setType('engagement', PARAM_RAW);
 
         // Comment.
-        $mform->addElement('textarea', 'comment', get_string("mark:comment", "mod_psgrading", $data->currstudent->firstname . $data->currstudent->lastname) . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
+        $mform->addElement('textarea', 'comment', get_string("mark:comment", "mod_psgrading", $data->currstudent->firstname . ' ' . $data->currstudent->lastname) . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');
         $mform->setType('comment', PARAM_RAW);
         $comments = task::get_comment_bank($data->task->id);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_commentbank', array('comments' => $comments)));
