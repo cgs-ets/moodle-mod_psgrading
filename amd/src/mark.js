@@ -432,7 +432,7 @@ define(['jquery', 'core/log', 'core/ajax'],
 
                 // Potentially more.
                 if (html) {
-                    page.val(page.val() + 1);
+                    page.val(parseInt(page.val()) + 1);
                 } else {
                     page.val(-1);
                 }
