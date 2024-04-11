@@ -137,14 +137,25 @@ foreach($students as $x => $student) {
     }
 }
 
-$relateds = array(
-    'task' => $task,
-    'students' => $students,
-    'userid' => $userid,
-    'markurl' => $markurl,
-    'groups' => $groups,
-    'groupid' => $groupid,
-);
+$baseurl = clone($quickmarkurl);
+$baseurl->param('groupid', 0);
+$baseurl->param('nav', 'all');
+
+// Group navigation.
+$groupsnav = array();
+if ($groups) {
+    foreach ($groups as $i => $gid) {
+        $group = utils::get_group_display_info($gid);
+        $group->markurl = clone($quickmarkurl);
+        $group->markurl->param('groupid', $gid);
+        $group->markurl = $group->markurl->out(false); // Replace markurl with string val.
+        $group->iscurrent = false;
+        if ($groupid == $group->id) {
+            $group->iscurrent = true;
+        }
+        $groupsnav[] = $group;
+    }
+}
 
 //echo "<pre>"; var_export($data); exit;
 $PAGE->add_body_classes(['fullscreen']);
@@ -153,7 +164,10 @@ $PAGE->add_body_classes(['fullscreen']);
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
 echo $OUTPUT->header();
-
+echo $OUTPUT->render_from_template('mod_psgrading/group_selector', [
+    'groups' => $groupsnav,
+    'baseurl' => $baseurl->out(false),
+]);
 echo '<div id="quickmark-a"></div>';
 echo '<div id="quickmark-b" class="hidden"></div>';
 

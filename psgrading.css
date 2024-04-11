@@ -1121,10 +1121,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   opacity: 0.5;
   pointer-events: none;
 }
-#page-mod-psgrading-mark.quickmark input#id_save,
-#page-mod-psgrading-mark.quickmark input#id_cancel {
-  display: none;
-}
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
@@ -2656,4 +2652,25 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #quickmark-a.hidden,
 #quickmark-b.hidden {
   display: none;
+}
+#page-mod-psgrading-quickmark .group-selector {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 200px;
+  z-index: 1;
+}
+body.quickmark input#id_save,
+body.quickmark input#id_cancel {
+  display: none;
+}
+body.quickmark .psgrading-header {
+  position: fixed;
+  top: 10px;
+  right: 255px;
+  z-index: 1;
+  background: #fff;
+  padding: 2px 10px 2px 2px;
+  border-radius: 23px;
+  margin: 0;
 }

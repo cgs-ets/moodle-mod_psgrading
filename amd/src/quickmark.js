@@ -38,11 +38,11 @@ define(['jquery', 'core/log', 'core/ajax'],
         var rootel = $('#page-mod-psgrading-quickmark');
 
         if (!rootel.length) {
-            Log.error('mod_psgrading/mark: #page-mod-psgrading-quickmark not found!');
+            Log.error('mod_psgrading/quickmark: #page-mod-psgrading-quickmark not found!');
             return;
         }
 
-        var mark = new QuickMark();
+        var mark = new QuickMark(rootel);
         mark.main(markurls, start);
     }
 
@@ -52,8 +52,11 @@ define(['jquery', 'core/log', 'core/ajax'],
      * @constructor
      * @param {jQuery} rootel
      */
-    function QuickMark() {
-      
+    function QuickMark(rootel) {
+      var self = this;
+      self.rootel = rootel;
+      self.rootel = rootel;
+      self.rootel = rootel;
     }
 
     /**
@@ -63,7 +66,15 @@ define(['jquery', 'core/log', 'core/ajax'],
     QuickMark.prototype.main = function (markurls, start) {
       var self = this;
 
-      console.log(markurls)
+      // Change group.
+      self.rootel.on('change', '.group-select', function(e) {
+        console.log("Changing group")
+        var select = $(this);
+        var url = select.find(':selected').data('markurl');
+        if (url) {
+            window.location.replace(url);
+        }
+      });
       
       var curr = start+1
       // When the first is complete, remove it, popup the second, and load the third, and so on.
@@ -122,6 +133,9 @@ define(['jquery', 'core/log', 'core/ajax'],
         wrap.appendChild(iframe1);
         wrap.classList.remove("hidden");
         wrap.classList.remove("last");
+        if (markurls.length == 1) { // If there is only one student...
+          wrap.classList.add("last");
+        }
       }
 
       if (markurls.length > start+1) {
