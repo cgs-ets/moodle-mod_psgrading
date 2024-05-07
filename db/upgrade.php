@@ -370,5 +370,41 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022102500, 'psgrading');
     }
 
+    if ($oldversion < 2022102502) {
+
+        // Define field reflection2 to be added to psgrading_reporting.
+        $table = new xmldb_table('psgrading_reporting');
+        $field = new xmldb_field('reflection2', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reportingperiod');
+
+        // Conditionally launch add field reflection2.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('reflection3', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reflection2');
+
+        // Conditionally launch add field reflection3.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('reflection4', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reflection3');
+
+        // Conditionally launch add field reflection4.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('reflection5', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reflection4');
+
+        // Conditionally launch add field reflection5.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2022102502, 'psgrading');
+    }
+
     return true;
 }

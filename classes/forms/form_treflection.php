@@ -41,15 +41,17 @@ class form_treflection extends \moodleform {
         global $CFG, $OUTPUT, $USER, $DB;
 
         $mform =& $this->_form;
+        $customedata = $this->_customdata;
 
         /*----------------------
         *   Reflection editor
         *----------------------*/
-        $type = 'editor';
-        $name = 'reflection';
-        $title = '';
-        $mform->addElement($type, $name, $title, null, static::editor_options());
-        $mform->setType($name, PARAM_RAW);
+        $mform->addElement('textarea', 'reflection', 'Teacher reflection', 'wrap="virtual" rows="7" cols="50"');
+        $mform->addElement('textarea', 'reflection2', '<strong>' . $customedata['name'] . '’s</strong> Learning Achievements', 'wrap="virtual" rows="7" cols="50"');
+        $mform->addElement('textarea', 'reflection3', 'Ongoing Learning Focus Learning Focus for <strong>' . $customedata['name'] . '</strong>', 'wrap="virtual" rows="7" cols="50"');
+        $mform->addElement('textarea', 'reflection4', 'Strategies that we as educators are currently using to support learning focus for <strong>' . $customedata['name'] . '</strong>', 'wrap="virtual" rows="7" cols="50"');
+        $mform->addElement('textarea', 'reflection5', 'Possible ways parents can nurture growth at home', 'wrap="virtual" rows="7" cols="50"');
+
         
         /*----------------------
         *   Buttons

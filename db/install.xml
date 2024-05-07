@@ -219,6 +219,10 @@
         <FIELD NAME="reflectionimagefileid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="fileyear" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="reportingperiod" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="reflection2" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reflection3" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reflection4" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reflection5" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

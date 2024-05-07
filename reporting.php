@@ -88,8 +88,8 @@ $PAGE->set_heading($title);
 $PAGE->set_context($coursecontext);
 
 // Get classes based on user.
-$classes = reporting::get_staff_classes($USER->username, $year, $period);
-//$classes = reporting::get_staff_classes('57355', $year, $period);
+//$classes = reporting::get_staff_classes($USER->username, $year, $period);
+$classes = reporting::get_staff_classes('43404', $year, $period);
 
 // Get students from classes.
 $students = array();

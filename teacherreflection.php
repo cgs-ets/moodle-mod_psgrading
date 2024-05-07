@@ -83,8 +83,23 @@ $reportingurl = new moodle_url('/mod/psgrading/reporting.php', array(
     'period' => $period,
 ));
 
+$user = \core_user::get_user_by_username($username);
+if (!empty($user)) {
+    utils::load_user_display_info($user);
+}
+
 // Check to see if the page was submitted for a teacher reflection before continuing.
-$formreflection = new form_treflection($url->out(false), array(), 'post', '', array('data-form' => 'psgrading-teacherreflection'));
+$formreflection = new form_treflection(
+    $url->out(false), 
+    array(
+        'name' => $user->firstname,
+    ),
+    'post', 
+    '', 
+    array(
+        'data-form' => 'psgrading-teacherreflection'
+    )
+);
 if ($formreflection->is_cancelled()) {
     redirect($reportingurl->out());
     exit;
@@ -92,15 +107,11 @@ if ($formreflection->is_cancelled()) {
 $formdata = $formreflection->get_data();
 if (!empty($formdata)) {
     if ($formdata->action == 'save') {
+        echo "<pre>"; var_export( $formdata); exit;
         reporting::save_reportelement_editor($coursecontext, $course->id, $year, $period, $username, 'teacherreflection', 'form', $formdata->reflection);
     }
     redirect($reportingurl->out());
     exit;
-}
-
-$user = \core_user::get_user_by_username($username);
-if (!empty($user)) {
-    utils::load_user_display_info($user);
 }
 
 // Load in existing reflection.
