@@ -133,7 +133,6 @@ if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTI
     //    'format' => editors_get_preferred_format(),
     //    'itemid' => $draftideditor
     //);
-    var_export($existing); exit;
     $formreflection->set_data(array(
         'reflection' => $existing->reflection,
         'reflection2' => $existing->reflection2,
