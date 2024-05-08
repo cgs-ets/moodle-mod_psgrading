@@ -223,7 +223,7 @@ class reporting {
                             //'url' => $studentreflectionurl->out(false),
                         );
                     } else {
-                        $studentreflectionurl->param('type', 'editor');
+                        //$studentreflectionurl->param('type', 'editor');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
                             'type' => 'text',
@@ -300,7 +300,6 @@ class reporting {
             // Update
             $existing->grade = $grade;
             $existing->reflection = '';
-            $existing->reflectionbase64 = '';
             $existing->graderusername = $USER->username;
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
@@ -308,7 +307,6 @@ class reporting {
             $data['graderusername'] = $USER->username;
             $data['grade'] = $grade;
             $data['reflection'] = '';
-            $data['reflectionbase64'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
         
@@ -333,14 +331,12 @@ class reporting {
             // Update
             $existing->graderusername = $USER->username;
             $existing->reflection = $reflection;
-            $existing->reflectionbase64 = $reflection;
             $existing->grade = '';
             $DB->update_record(static::TABLE_REPORTING, $existing);
         } else {
             // Insert
             $data['graderusername'] = $USER->username;
             $data['reflection'] = $reflection;
-            $data['reflectionbase64'] = $reflection;
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
@@ -348,7 +344,45 @@ class reporting {
         return true;
     }
 
-    public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
+    public static function save_reportelement_textareas($context, $courseid, $year, $period, $username, $elname, $eltype, $formdata) {
+        global $DB, $USER, $CFG;
+
+        $user = \core_user::get_user_by_username($username);
+
+        $data = array (
+            'courseid' => $courseid,
+            'fileyear' => $year,
+            'reportingperiod' => $period,
+            'studentusername' => $username,
+            'elementname' => $elname,
+            'elementtype' => $eltype,
+        );
+        if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
+            // Update
+            $existing->graderusername = $USER->username;
+            $existing->reflection = $formdata->reflection;
+            $existing->reflection2 = $formdata->reflection2;
+            $existing->reflection3 = $formdata->reflection3;
+            $existing->reflection4 = $formdata->reflection4;
+            $existing->reflection5 = $formdata->reflection5;
+            $existing->grade = '';
+            $DB->update_record(static::TABLE_REPORTING, $existing);
+        } else {
+            // Insert
+            $data['graderusername'] = $USER->username;
+            $data['reflection'] = $formdata->reflection;
+            $data['reflection2'] = $formdata->reflection2;
+            $data['reflection3'] = $formdata->reflection3;
+            $data['reflection4'] = $formdata->reflection4;
+            $data['reflection5'] = $formdata->reflection5;
+            $data['grade'] = '';
+            $DB->insert_record(static::TABLE_REPORTING, $data);
+        }
+        
+        return true;
+    }
+
+    /*public static function save_reportelement_editor($context, $courseid, $year, $period, $username, $elname, $eltype, $reflection) {
         global $DB, $USER, $CFG;
 
         $user = \core_user::get_user_by_username($username);
@@ -421,7 +455,7 @@ class reporting {
         }
         
         return true;
-    }
+    }*/
 
     public static function save_reportelement_form($context, $courseid, $year, $period, $username, $elname, $eltype, $formdata) {
         global $DB, $USER, $CFG;
