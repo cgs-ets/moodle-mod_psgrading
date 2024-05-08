@@ -125,15 +125,22 @@ $conds = array (
 );
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
     // Set up reflection editor.
-    $draftideditor = file_get_submitted_draft_itemid('reflection');
-    $editoroptions = form_treflection::editor_options();
-    $reflectiontext = file_prepare_draft_area($draftideditor, $coursecontext->id, 'mod_psgrading', 'reflection', $year . $period . $user->id, $editoroptions, $existing->reflection);
-    $reflection = array(
-        'text' => $reflectiontext,
-        'format' => editors_get_preferred_format(),
-        'itemid' => $draftideditor
-    );
-    $formreflection->set_data(array('reflection' => $reflection));
+    //$draftideditor = file_get_submitted_draft_itemid('reflection');
+    //$editoroptions = form_treflection::editor_options();
+    //$reflectiontext = file_prepare_draft_area($draftideditor, $coursecontext->id, 'mod_psgrading', 'reflection', $year . $period . $user->id, $editoroptions, $existing->reflection);
+    //$reflection = array(
+    //    'text' => $reflectiontext,
+    //    'format' => editors_get_preferred_format(),
+    //    'itemid' => $draftideditor
+    //);
+    var_export($existing); exit;
+    $formreflection->set_data(array(
+        'reflection' => $existing->reflection,
+        'reflection2' => $existing->reflection2,
+        'reflection3' => $existing->reflection3,
+        'reflection4' => $existing->reflection4,
+        'reflection5' => $existing->reflection5,
+    ));
 }
 
 $data = array(
