@@ -23,7 +23,7 @@
  *
  */
 // Based on teacher's classes, log in as to test.
-// .../mod/psgrading/reporting.php?courseid=13
+// See testing comment line 93.
 
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
@@ -88,8 +88,9 @@ $PAGE->set_heading($title);
 $PAGE->set_context($coursecontext);
 
 // Get classes based on user.
-//$classes = reporting::get_staff_classes($USER->username, $year, $period);
-$classes = reporting::get_staff_classes('43404', $year, $period);
+$classes = reporting::get_staff_classes($USER->username, $year, $period);
+// Testing - https://moodleuat2.cgs.act.edu.au/mod/psgrading/reporting.php?courseid=2317&year=2024&period=1
+// $classes = reporting::get_staff_classes('43404', $year, $period);
 
 // Get students from classes.
 $students = array();

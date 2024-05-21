@@ -215,14 +215,14 @@ class reporting {
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
                     );
-                    if ($yearlevel == 0) {
+                    if ($yearlevel < 3) { // K - Year 2.
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
                             'type' => 'text',
-                            //'type' => 'form',
-                            //'url' => $studentreflectionurl->out(false),
+                            'type' => 'form',
+                            'url' => $studentreflectionurl->out(false),
                         );
-                    } else {
+                    } else { // Year 3 - 6.
                         //$studentreflectionurl->param('type', 'editor');
                         $elements[] = array(
                             'subjectarea' => 'Student reflection',
@@ -240,11 +240,12 @@ class reporting {
                     'type' => 'form',
                     'url' => $teacherreflectionurl->out(false),
                 );
+                
                 $elements[] = array(
                     'subjectarea' => 'Student reflection',
                     'type' => 'text',
-                    //'type' => 'form',
-                    //'url' => $studentreflectionurl->out(false),
+                    'type' => 'form',
+                    'url' => $studentreflectionurl->out(false),
                 );
             }
         }
@@ -597,8 +598,5 @@ class reporting {
         $html = $OUTPUT->render_from_template('mod_psgrading/reporting_help', array('tasks' => array_values($relevanttasks)));
         return $html;
     }
-
-
-    
 
 }        
