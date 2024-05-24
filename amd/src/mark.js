@@ -118,10 +118,9 @@ define(['jquery', 'core/log', 'core/ajax'],
         
         self.rootel.on('click', '#quickmarksave', function(e) {
             e.preventDefault(); // Added to do this via ajax instead.
-            $(this).val('Saving... please wait');
+            $(this).html('Saving... please wait');
             $(this).prop('disabled', true);
             self.regenerateCriterionJSON();
-            window.onbeforeunload = null;
 
             // Do it via ajax...
             var data = $('form[data-form="psgrading-mark"]').serializeArray().reduce(function(obj, item) {
@@ -148,7 +147,7 @@ define(['jquery', 'core/log', 'core/ajax'],
               },
               fail: function(reason) {
                 alert(reason);
-                $(this).val('Save and show next');
+                $(this).html('Save and show next');
                 $(this).prop('disabled', false);
                 Log.debug(reason);
               }

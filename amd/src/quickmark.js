@@ -110,7 +110,13 @@ define(['jquery', 'core/log', 'core/ajax'],
             next.classList.add("last");
           } else {
             console.log('Loading next hidden url: ' + markurls[curr])
-            next.firstElementChild.setAttribute("src", markurls[curr]);
+            //window.onbeforeunload = null;
+            //next.firstElementChild.setAttribute("src", markurls[curr]);
+            // Delete and recreate to avoid 
+            next.innerHTML = '';
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src", markurls[curr]);
+            next.appendChild(iframe);
           }
         }
       };
