@@ -166,7 +166,13 @@ $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl
     //Cannot instantiate empty as data needed for replacegrader checkbox to register properly.
     //$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 // Instantiate the form with data.
-$formmark = new form_mark($markurl->out(false), array('data' => $data),'post', '', array('data-form' => 'psgrading-mark'));
+$formmark = new form_mark(
+    $markurl->out(false), 
+    array('data' => $data, 'quickmark' => $qm),
+    'post', 
+    '', 
+    array('data-form' => 'psgrading-mark')
+);
 
 if ($formmark->is_cancelled()) {
     redirect($listurl->out(false));

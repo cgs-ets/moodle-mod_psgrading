@@ -60,6 +60,7 @@ class form_mark extends \moodleform {
 
         $mform =& $this->_form;
         $data = $this->_customdata['data'];
+        $quickmark = $this->_customdata['quickmark'];
 
         /*if (empty($data)) {
             // create a stub so that the fields can be setup properly.
@@ -113,11 +114,15 @@ class form_mark extends \moodleform {
         }
 
         // Buttons.
-        $buttonarray = array();
-        $buttonarray[] = &$mform->createElement('submit','save', get_string('mark:save', 'mod_psgrading'));
-        $buttonarray[] = &$mform->createElement('submit','saveshownext', get_string('mark:saveshownext', 'mod_psgrading'));
-        $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        if ($quickmark) {
+            $mform->addElement('html', '<a class="btn btn-primary" href="#" id="quickmarksave">Save and show next</a>');
+        } else {
+            $buttonarray = array();
+            $buttonarray[] = &$mform->createElement('submit','save', get_string('mark:save', 'mod_psgrading'));
+            $buttonarray[] = &$mform->createElement('submit','saveshownext', get_string('mark:saveshownext', 'mod_psgrading'));
+            $buttonarray[] = &$mform->createElement('cancel');
+            $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        }
 
         // Hidden.
         $mform->addElement('hidden', 'action');

@@ -115,10 +115,9 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.rootel.find('[name="action"]').val('save');
         });
 
-        // Save and show next.
-        self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
-          if (self.quickmark == '1') {
-            e.preventDefault() // Added to do this via ajax instead.
+        
+        self.rootel.on('click', '#quickmarksave', function(e) {
+            e.preventDefault(); // Added to do this via ajax instead.
             $(this).val('Saving... please wait');
             $(this).prop('disabled', true);
             self.regenerateCriterionJSON();
@@ -154,13 +153,14 @@ define(['jquery', 'core/log', 'core/ajax'],
                 Log.debug(reason);
               }
             }]);
-          } else {
-            // Original code
-            window.onbeforeunload = null;
-            self.regenerateCriterionJSON();
-            self.rootel.find('[name="action"]').val('saveshownext');
-            // End original code
-          }
+        });
+
+
+        // Save and show next.
+        self.rootel.on('click', 'input[name="saveshownext"]', function(e) {
+          window.onbeforeunload = null;
+          self.regenerateCriterionJSON();
+          self.rootel.find('[name="action"]').val('saveshownext');
         });
 
         // Cancel.
