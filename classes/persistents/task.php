@@ -273,9 +273,13 @@ class task extends persistent {
         global $DB;
 
         $criterions = array();
-        $sql = "SELECT *
-                  FROM {" . static::TABLE_GRADE_CRITERIONS . "}
-                 WHERE gradeid = ?";
+        //$sql = "SELECT *
+        //          FROM {" . static::TABLE_GRADE_CRITERIONS . "}
+        //         WHERE gradeid = ?";
+        $sql = "SELECT gc.*
+                FROM mdl_psgrading_grade_criterions gc
+                INNER JOIN mdl_psgrading_task_criterions tc on tc.id = gc.criterionid
+                WHERE gc.gradeid = ?";
         $params = array($gradeid);
         $criterionrecs = $DB->get_records_sql($sql, $params);
         foreach ($criterionrecs as $rec) {
@@ -751,8 +755,6 @@ class task extends persistent {
             }
         }
         if (array_sum($criteriagrades)) {
-
-
             //$success = array_sum($criteriagrades)/count($criteriagrades);
             //$success = (int) round($success, 0);
             $success = 0;
