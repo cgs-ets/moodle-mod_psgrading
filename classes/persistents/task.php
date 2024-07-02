@@ -618,7 +618,7 @@ class task extends persistent {
         $task->criterions = static::get_criterions($task->id);
 
         // Setup details url.
-        $detailsurl = new \moodle_url('/mod/psgrading/mark.php', array(
+        $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
             'cmid' => $task->cmid,
             'taskid' => $task->id,
             'userid' => $userid,
