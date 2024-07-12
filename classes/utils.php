@@ -983,7 +983,7 @@ class utils {
     }
 
 
-    function image_fix_orientation($source, $mimetype) {
+    public static function image_fix_orientation($source, $mimetype) {
         $exif = exif_read_data($source);
     
         if (empty($exif['Orientation'])) {
