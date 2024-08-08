@@ -2566,6 +2566,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 0 !important;
   margin: 0 !important;
 }
+.fullscreen .drawers-top-region-wrap.mb-4 {
+  margin: 0 !important;
+}
 .fullscreen .modal-backdrop.in.show {
   display: none !important;
 }

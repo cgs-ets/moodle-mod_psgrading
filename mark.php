@@ -272,7 +272,7 @@ echo $OUTPUT->header();
 
 if ($qm == '1') {
     echo "<style> .psgrading-header-right { display: none !important; } d</style>";
-    echo '<div><div class="alert alert-warning d-inline-block">Alt mark is an experiemental feature in beta testing. If you would like to pass on any feedback please direct it to <a href="mailto:michael.vangelovski@cgs.act.edu.au" style="text-decoration: underline;">MV</a>.</div></div>';
+    //echo '<div><div class="alert alert-warning d-inline-block">Alt mark is an experiemental feature in beta testing. If you would like to pass on any feedback please direct it to <a href="mailto:michael.vangelovski@cgs.act.edu.au" style="text-decoration: underline;">MV</a>.</div></div>';
     echo "<a target='_top' class='btn btn-primary mb-3' href='{$listurl}' ><i class='fa fa-arrow-left'></i> Back to grades table</a>";
 }
 
