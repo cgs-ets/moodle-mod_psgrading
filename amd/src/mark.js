@@ -118,8 +118,9 @@ define(['jquery', 'core/log', 'core/ajax'],
         
         self.rootel.on('click', '#quickmarksave', function(e) {
             e.preventDefault(); // Added to do this via ajax instead.
-            $(this).html('Saving... please wait');
-            $(this).prop('disabled', true);
+            var btn = $(this);
+            btn.html('Saving... please wait');
+            btn.prop('disabled', true);
             self.regenerateCriterionJSON();
 
             // Do it via ajax...
@@ -139,16 +140,22 @@ define(['jquery', 'core/log', 'core/ajax'],
               done: function(response) {
                 if (response) {
                   if (response >= 1) {
-                    alert("Changes saved!")
+                    btn.html('Success');
+                    btn.addClass('btn-success');
+                    setTimeout(function(){
+                      btn.removeClass('btn-success');
+                      btn.html('Save and show next');
+                      btn.prop('disabled', false);
+                      // Notify parent that saving is done.
+                      window.top.postMessage('saveshownext', '*')
+                    }, 800);
                   }
-                  // Notify parent that saving is done.
-                  window.top.postMessage('saveshownext', '*')
                 }
               },
               fail: function(reason) {
                 alert(reason);
-                $(this).html('Save and show next');
-                $(this).prop('disabled', false);
+                btn.html('Save and show next');
+                btn.prop('disabled', false);
                 Log.debug(reason);
               }
             }]);
