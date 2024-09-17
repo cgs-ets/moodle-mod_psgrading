@@ -440,7 +440,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 }
             });
 
-            self.recalculateHeaderWidth(trackTasksPerCM, trackHiddenTaskPerCM, true);
+
+            if (trackHiddenTaskPerCM.size > 0 && trackTasksPerCM.size > 0) {
+                self.recalculateHeaderWidth(trackTasksPerCM, trackHiddenTaskPerCM, true);
+            }
         };
 
         /**
@@ -467,7 +470,9 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 }
             });
 
-            self.recalculateHeaderWidth(trackTasksPerCM, trackHiddenTaskPerCM, false)
+            if (trackHiddenTaskPerCM.size > 0 && trackTasksPerCM.size > 0) {
+                self.recalculateHeaderWidth(trackTasksPerCM, trackHiddenTaskPerCM, false)
+            }
         };
         /**
         * Helper function for the toggle
@@ -476,11 +481,12 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
 
             document.querySelectorAll('.column.col-cm').forEach(function (task) {
                 var cmid = task.getAttribute('data-cmid');
-                var newWidth = 0;
-                if (hide) {
-                    newWidth = trackTasksPerCM.get(cmid) - trackHiddenTaskPerCM.get(cmid);
-                } else {
-                    newWidth = trackTasksPerCM.get(cmid);
+                var newWidth = undefined;
+                var allTasks = trackTasksPerCM.get(cmid);
+                var hiddenTasks = trackHiddenTaskPerCM.get(cmid);
+
+                if (allTasks != undefined && hiddenTasks != undefined) {
+                    newWidth = hide ? allTasks - hiddenTasks : allTasks
                 }
 
                 if (newWidth == 0) {
@@ -488,7 +494,10 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                 } else {
                     task.classList.remove('toggleon')
                 }
-                task.style.width = 'calc(90px * ' + newWidth + ')';
+
+                if (newWidth != undefined) {
+                    task.style.width = 'calc(90px * ' + newWidth + ')';
+                }
             });
         }
 
