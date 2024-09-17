@@ -823,6 +823,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #00812F;
   color: #fff;
 }
+.psgrading-list .toggleon {
+  display: none;
+}
 #page-mod-psgrading-courseoverview .psgrading-list .col-taskname .actions a.action-delete {
   position: absolute;
   bottom: 0px;
@@ -2564,9 +2567,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .fullscreen div#topofscroll {
   padding: 0 !important;
-  margin: 0 !important;
-}
-.fullscreen .drawers-top-region-wrap.mb-4 {
   margin: 0 !important;
 }
 .fullscreen .modal-backdrop.in.show {
