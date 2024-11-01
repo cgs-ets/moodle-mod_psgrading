@@ -37,12 +37,13 @@ class form_task extends \moodleform {
      *
      * @return void
      */
-    function definition() {
+    public function definition() {
         global $CFG, $OUTPUT, $USER, $DB;
 
         $mform =& $this->_form;
         $edit = (isset($this->_customdata['edit'])) ? $this->_customdata['edit'] : 0;
         $criteriondata = (isset($this->_customdata['criteriondata'])) ? $this->_customdata['criteriondata'] : [];
+        $engagementdata = (isset($this->_customdata['engagementdata'])) ? $this->_customdata['engagementdata'] : [];
         $evidencedata = (isset($this->_customdata['evidencedata'])) ? $this->_customdata['evidencedata'] : [];
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
 
@@ -104,17 +105,39 @@ class form_task extends \moodleform {
         // Section title
         $mform->addElement('header', 'criterionsection', get_string("task:criteria", "mod_psgrading"));
         $mform->setExpanded('criterionsection', true, true);
-        // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
+        // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it.
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         // Render the criterion from json.
         $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array(
-            'criterions' => $criteriondata, 
+            'criterions' => $criteriondata,
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
         ));
         $mform->addElement('html', $criterionhtml);
 
+        /*----------------------
+         *   Engagement
+         *----------------------*/
+        // A custom JS driven component.
+        // Section title
+        $mform->addElement('header', 'engagementsection', get_string("mark:engagement", "mod_psgrading"));
+        $mform->setExpanded('engagementsection', true, true);
+         // The hidden value field. The field is a text field hidden
+         //by css rather than a hidden field so that we can attach validation to it.
+         $mform->addElement('text', 'engagementjson', 'Engagement Criterion JSON');
+         $mform->setType('engagementjson', PARAM_RAW);
+        $engagementhtml = $OUTPUT->render_from_template('mod_psgrading/engagement_selector', array(
+            'engagements' => $engagementdata,
+            // 'enableweights' => $enableweights,
+            'engagementstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
+        ));
+        $mform->addElement('html', $engagementhtml);
+
+        //   echo '<pre>';
+        //     print_r($engagementhtml);
+        //     echo '</pre>';
+        //     exit;
         /*----------------------
          *   Evidence
          *----------------------*/
@@ -122,7 +145,7 @@ class form_task extends \moodleform {
         // Section title
         $mform->addElement('header', 'evidencesection', get_string("task:evidence", "mod_psgrading"));
         $mform->setExpanded('evidencesection', true, true);
-        // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it. 
+        // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it.
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
         $mform->setType('evidencejson', PARAM_RAW);
         // Render the evidence from json.
@@ -178,15 +201,15 @@ class form_task extends \moodleform {
         if (empty($data['taskname'])) {
             $errors['taskname'] = get_string('required');
         }
-        
+
         if (empty($data['pypuoi'])) {
             $errors['pypuoi'] = get_string('required');
         }
-        
+
         if (empty($data['outcomes'])) {
             $errors['outcomes'] = get_string('required');
         }
-        
+
         $criterion = json_decode($data['criterionjson']);
         if (empty($criterion)) {
             $errors['criterionjson'] = get_string('required');
@@ -238,7 +261,7 @@ class form_task extends \moodleform {
      */
     public static function editor_options() {
         return array(
-            'maxfiles' => EDITOR_UNLIMITED_FILES, 
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
         );
     }
 

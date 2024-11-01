@@ -205,9 +205,20 @@ class mark_exporter extends exporter {
             }
         }
 
+         // Load task engagemet.
+         $task->engagements = task::get_engagement($task->id);
+         foreach ($task->engagements as $engagement) {
+             // add marks to criterion definitions.
+             if (isset($gradeinfo->engagements[$engagement->id])) {
+                 // There is a gradelevel chosen for this criterion.
+                 $engagement->{'level' . $gradeinfo->engagements[$engagement->id]->gradelevel . 'selected'} = true;
+             }
+         }
+
         // Zero indexes so templates work.
         $task->criterions = array_values($task->criterions);
-        
+        $task->engagements = array_values($task->engagements);
+
         $baseurl->param('groupid', 0);
         $baseurl->param('nav', 'all');
 
@@ -245,9 +256,9 @@ class mark_exporter extends exporter {
 
         //echo "<pre>";
         //echo "pre selected<hr>";
-        //var_export($task->myconnectevidences); 
+        //var_export($task->myconnectevidences);
         //echo "everything<hr>";
-        //var_export($myconnect); 
+        //var_export($myconnect);
         //exit;
 
         return array(

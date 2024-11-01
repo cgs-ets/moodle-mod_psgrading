@@ -336,20 +336,20 @@ class utils {
                 continue;
             }
             $cmrec = $cm->get_course_module_record(true);
-            
+
             // Don't include deleted activities.
             if ($cmrec->deletioninprogress) {
                 continue;
             }
-    
+
             // Don't include self, and resources.
             /*if (in_array($cmrec->modname, array(
-                    'psgrading', 
-                    'resource', 
-                    'folder', 
-                    'book', 
-                    'label', 
-                    'page', 
+                    'psgrading',
+                    'resource',
+                    'folder',
+                    'book',
+                    'label',
+                    'page',
                     'url',
                     'clickview',
                     'unilabel',
@@ -378,7 +378,7 @@ class utils {
 
                 // Get the chapters.
                 $chapters = [];
-                $sql = "SELECT * 
+                $sql = "SELECT *
                           FROM {giportfolio_chapters}
                          WHERE giportfolioid = ?
                            AND userid = 0";
@@ -413,8 +413,8 @@ class utils {
                 }
                 $activities[] = $cmrec;
             }
-            
-            
+
+
         }
         return $activities;
     }
@@ -428,12 +428,12 @@ class utils {
     public static function get_enrolled_students($courseid, $excludeusers = []) {
         global $DB;
         $context = \context_course::instance($courseid);
-        
+
         // 5 is student.
         $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
         $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
-        
-        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) { 
+
+        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) {
             return !in_array($u->username, $excludeusers);
         });
 
@@ -453,11 +453,11 @@ class utils {
         $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
         $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
 
-        $filteredusers = array_filter( $users, function( $u ) use($usernames) { 
+        $filteredusers = array_filter( $users, function( $u ) use($usernames) {
             return in_array($u->username, $usernames);
         });
 
-        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) { 
+        $filteredusers = array_filter( $users, function( $u ) use($excludeusers) {
             return !in_array($u->username, $excludeusers);
         });
 
@@ -540,7 +540,7 @@ class utils {
 
         $sql = "SELECT DISTINCT g.id, g.name
                   FROM {groups} g, {groups_members} gm
-                 WHERE gm.groupid = g.id 
+                 WHERE gm.groupid = g.id
                    AND g.courseid = ?
                    AND gm.userid = ?
               ORDER BY g.name ASC";
@@ -592,7 +592,7 @@ class utils {
         return $students;
     }
 
-    
+
     /**
      * Helper function to get the students enrolled.
      *
@@ -619,7 +619,7 @@ class utils {
 
     public static function is_staff_profile() {
         global $USER;
-        
+
         profile_load_custom_fields($USER);
         $campusroles = strtolower($USER->profile['CampusRoles']);
         if (strpos($campusroles, 'staff') !== false) {
@@ -631,7 +631,7 @@ class utils {
 
     public static function is_hide_ps_grades() {
         global $USER;
-        
+
         profile_load_custom_fields($USER);
         if (isset($USER->profile['hidepsgrades'])) {
             if ($USER->profile['hidepsgrades']) {
@@ -657,7 +657,7 @@ class utils {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -712,7 +712,7 @@ class utils {
                         WHERE ra.userid = :mentorid
                           AND ra.contextid = c.id
                           AND c.instanceid = u.id
-                          AND c.contextlevel = :contextlevel";     
+                          AND c.contextlevel = :contextlevel";
         $menteesparams = array(
             'mentorid' => $userid,
             'contextlevel' => CONTEXT_USER
@@ -747,7 +747,7 @@ class utils {
             ];
             $timeline = new \local_myconnect\external\timeline_exporter(null, $relateds);
             $myconnect = $timeline->export($OUTPUT);
-            
+
             $releasepostids = task::get_grade_release_posts($gradeid);
 
             // Convert posts to attachments array.
@@ -770,7 +770,7 @@ class utils {
                             unset($attachments[$i]);
                         }
                     }
-                }    
+                }
             }
         }
 
@@ -835,7 +835,7 @@ class utils {
         $newfile->filearea = 'attachment';
         $newfile->itemid = $postid;
         $newfile->pathnamehash = sha1("/$newfile->contextid/$newfile->component/$newfile->filearea/$newfile->itemid/$newfile->filename");
-        
+
         $fs = get_file_storage();
         $reference = $fs->pack_reference($file); // Setup the reference to original file.
         $aliasfile = $fs->create_file_from_reference($newfile, 2, $reference); // Create the reference. Use "local" repository.
@@ -923,7 +923,7 @@ class utils {
     public static function invalidate_cache($cmid, $name) {
         global $DB;
         if ($name) {
-            $sql = "DELETE 
+            $sql = "DELETE
                       FROM {" . task::TABLE_GRADES_CACHE . "}
                      WHERE " . $DB->sql_like('name', ':name') . "
                        AND cmid = :cmid";
@@ -932,7 +932,7 @@ class utils {
             // invalidate the course too.
             if ($name == 'list-%') {
                 $courseid = $DB->get_field('course_modules', 'course', array('id' => $cmid));
-                $sql = "DELETE 
+                $sql = "DELETE
                           FROM {" . task::TABLE_GRADES_CACHE . "}
                          WHERE " . $DB->sql_like('name', ':name') . "
                            AND cmid = :cmid";
@@ -985,7 +985,7 @@ class utils {
 
     public static function image_fix_orientation($source, $mimetype) {
         $exif = exif_read_data($source);
-    
+
         if (empty($exif['Orientation'])) {
             return;
         }

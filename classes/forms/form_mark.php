@@ -71,7 +71,9 @@ class form_mark extends \moodleform {
             $data->myconnectattachments = null;
             $data->currstudent = null;
         }*/
-
+        // echo '<pre>';
+        // echo print_r($data->task);
+        // echo '</pre>'; exit;
         /****
         * Notes:
         * - Can't use client validation when using custom action buttons. Validation is done on server in mark.php.
@@ -79,27 +81,45 @@ class form_mark extends \moodleform {
 
         $mform->addElement('checkbox', 'didnotsubmit', get_string('mark:didnotsubmit', 'mod_psgrading'), '');
 
-        // Critions.
+        // Criterions.
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
-        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_criterions', 
+        $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_criterions',
             array('criterions' => $data->task->criterions))
         );
 
+        // Engagement. New way
+        if (get_config('mod_psgrading')->version > 2022102502) {
+
+            $mform->addElement('text', 'engagementjson', 'Engagement JSON');
+            $mform->setType('engagementjson', PARAM_RAW);
+            $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_engagement',
+                array('engagements' => $data->task->engagements))
+            );
+        }
+
         // Evidence.
-        $mform->addElement('html', 
+        $mform->addElement('html',
             $OUTPUT->render_from_template('mod_psgrading/mark_evidence', array(
                 'task' => $data->task,
                 'myconnectattachments' => $data->myconnectattachments,
                 'currstudent' => $data->currstudent,
             ))
         );
+
         // Evidences filemanager.
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
 
-        // Engagement.
+        // Engagement. Old way.
         $mform->addElement('select', 'engagement', get_string("mark:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
         $mform->setType('engagement', PARAM_RAW);
+
+        if (get_config('mod_psgrading')->version > 2022102502) {
+            $element = $mform->getElement('engagement');
+            $attributes = $element->getAttributes();
+            $attributes['class'] = isset($attributes['class']) ? $attributes['class'] . ' hide-engagement' : 'hide-engagement';
+            $element->setAttributes($attributes);
+        }
 
         // Comment.
         $mform->addElement('textarea', 'comment', get_string("mark:comment", "mod_psgrading", $data->currstudent->firstname . ' ' . $data->currstudent->lastname) . '<a title="Save to comment bank" id="save-to-comment-bank" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>', 'wrap="virtual" rows="4" cols="51"');

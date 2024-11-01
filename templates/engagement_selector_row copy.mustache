@@ -1,0 +1,77 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2020 Michael Vangelovski
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/engagement_selector_row
+
+    View for the engagement selector component.
+}}
+{{#engagements}}
+    <ul class="tbl-tr {{#hidden}}criterion-hidden{{/hidden}}" data-id="{{#id}}{{id}}{{/id}}{{^id}}-1{{/id}}">
+        <li class="tbl-col tbl-col-1 tbl-col-first">
+            <textarea name="description" class="form-control">{{description}}</textarea>
+        </li>
+        <li class="tbl-col tbl-col-2">
+            <div class="label">Need improvement</div>
+            <textarea name="level4" class="form-control">{{level4}}</textarea>
+        </li>
+        <li class="tbl-col tbl-col-3">
+            <div class="label">Average</div>
+            <textarea name="level3" class="form-control">{{level3}}</textarea>
+        </li>
+        <li class="tbl-col tbl-col-4">
+            <div class="label">Very good</div>
+            <textarea name="level2" class="form-control">{{level2}}</textarea>
+        </li>
+        <li class="tbl-col tbl-col-5">
+            <div class="label">Excellent</div>
+            <textarea name="level1" class="form-control">{{level1}}</textarea>
+        </li>
+        
+        <li class="tbl-col tbl-col-7 tbl-col-last">
+            <div>
+                <select name="subject" class="form-control">
+                    {{#subject.options}}
+                        <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                    {{/subject.options}}
+                </select>
+            </div>
+            {{#enableweights}}
+                <div>
+                    <select name="weight" class="form-control">
+                        {{#weight.options}}
+                            <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
+                        {{/weight.options}}
+                    </select>
+                </div>
+            {{/enableweights}}
+            <div>
+                <div class="hidden-control">
+                    <input name="hidden" type="checkbox" {{^hidden}}checked="true"{{/hidden}}/>
+                    <span class="toggle t-engagement"></span>
+                    <span class="desc">{{#hidden}}Hidden from students{{/hidden}}{{^hidden}}Visible{{/hidden}}</span>
+                </div>
+
+                <a class="btn-delete-engagement btn-delete"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+                <a class="btn-reorder-engagement btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
+            </div>
+        </li>
+    </ul>
+{{/engagements}}

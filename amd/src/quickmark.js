@@ -25,25 +25,25 @@
 /**
  * @module mod_psgrading/quickmark
  */
-define(['jquery', 'core/log', 'core/ajax'], 
-    function($, Log) {    
+define(['jquery', 'core/log', 'core/ajax'],
+  function ($, Log) {
     'use strict';
 
     /**
      * Initializes the mark component.
      */
     function init(markurls, start) {
-        Log.debug('mod_psgrading/quickmark: initializing');
+      Log.debug('mod_psgrading/quickmark: initializing');
 
-        var rootel = $('#page-mod-psgrading-quickmark');
+      var rootel = $('#page-mod-psgrading-quickmark');
 
-        if (!rootel.length) {
-            Log.error('mod_psgrading/quickmark: #page-mod-psgrading-quickmark not found!');
-            return;
-        }
+      if (!rootel.length) {
+        Log.error('mod_psgrading/quickmark: #page-mod-psgrading-quickmark not found!');
+        return;
+      }
 
-        var mark = new QuickMark(rootel);
-        mark.main(markurls, start);
+      var mark = new QuickMark(rootel);
+      mark.main(markurls, start);
     }
 
     /**
@@ -67,18 +67,18 @@ define(['jquery', 'core/log', 'core/ajax'],
       var self = this;
 
       // Change group.
-      self.rootel.on('change', '.group-select', function(e) {
+      self.rootel.on('change', '.group-select', function (e) {
         console.log("Changing group")
         var select = $(this);
         var url = select.find(':selected').data('markurl');
         if (url) {
-            window.location.replace(url);
+          window.location.replace(url);
         }
       });
-      
-      var curr = start+1
+
+      var curr = start + 1
       // When the first is complete, remove it, popup the second, and load the third, and so on.
-      window.onmessage = function(e) {
+      window.onmessage = function (e) {
         if (e.data == 'saveshownext') {
           // Get the 2 wrapping regions.
           var a = document.getElementById("quickmark-a");
@@ -106,13 +106,13 @@ define(['jquery', 'core/log', 'core/ajax'],
           // Load the next markurl if there is one.
           curr++;
           if (curr >= markurls.length) {
-            console.log('Last user has been loaded: ' + markurls[curr-1])
+            console.log('Last user has been loaded: ' + markurls[curr - 1])
             next.classList.add("last");
           } else {
             console.log('Loading next hidden url: ' + markurls[curr])
             //window.onbeforeunload = null;
             //next.firstElementChild.setAttribute("src", markurls[curr]);
-            // Delete and recreate to avoid 
+            // Delete and recreate to avoid
             next.innerHTML = '';
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", markurls[curr]);
@@ -144,9 +144,9 @@ define(['jquery', 'core/log', 'core/ajax'],
         }
       }
 
-      if (markurls.length > start+1) {
+      if (markurls.length > start + 1) {
         var iframe2 = document.createElement("iframe");
-        iframe2.setAttribute("src", markurls[start+1]);
+        iframe2.setAttribute("src", markurls[start + 1]);
         var wrap = document.getElementById("quickmark-b");
         wrap.innerHTML = '';
         wrap.appendChild(iframe2);
@@ -157,6 +157,6 @@ define(['jquery', 'core/log', 'core/ajax'],
 
 
     return {
-        init: init
+      init: init
     };
-});
+  });

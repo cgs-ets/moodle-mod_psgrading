@@ -1,0 +1,44 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    @package   mod_psgrading
+    @copyright 2024 Veronica Bermegui
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template mod_psgrading/engagement_selector
+
+    View for the engagement selector component.
+}}
+
+<div class="engagement-selector criterion-selector" data-stub="{{criterionstub}}">
+    <div class="headings">
+        <ul class="tbl-th">
+            <li class="tbl-col tbl-col-1 tbl-col-first">Descriptor</li>
+            <li class="tbl-col tbl-col-2">Need improvement</li>
+            <li class="tbl-col tbl-col-3">Average</li>
+            <li class="tbl-col tbl-col-4">Very good</li>
+            <li class="tbl-col tbl-col-5">Excellent</li>
+            <li class="tbl-col tbl-col-7 tbl-col-last"></li>
+        </ul>
+    </div>
+    <div id="task-engagement" class="engagements">
+        {{>mod_psgrading/engagement_selector_row}}
+    </div>
+    <div class="foot">
+        <a id="btn-addengagement" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addengagementcriterion, mod_psgrading{{/str}}</a>
+    </div>
+</div>

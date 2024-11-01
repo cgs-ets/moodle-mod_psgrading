@@ -186,6 +186,23 @@ class details_exporter extends exporter {
         // Zero indexes so templates work.
         $task->criterions = array_values($task->criterions);
 
+        // Load task engagements.
+        $task->engagements = task::get_engagement($task->id);
+        foreach ($task->engagements as $i => $engagement) {
+            if ($engagement->hidden) {
+                unset($task->engagements[$i]);
+                continue;
+            }
+            // Add selections only if task is released. And not hidden from student.
+            if (isset($gradeinfo->engagements[$engagement->id]) && $task->released && !utils::is_hide_ps_grades()) {
+                // There is a gradelevel chosen for this engagement.
+                $engagement->{'level' . $gradeinfo->engagements[$engagement->id]->gradelevel . 'selected'} = true;
+            }
+        }
+
+        // Zero indexes so templates work.
+        $task->engagements = array_values($task->engagements);
+
         if ($task->released && !utils::is_hide_ps_grades()) {
             // Get selected MyConnect grade evidences.
             $task->myconnectevidences = array();

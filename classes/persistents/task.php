@@ -25,14 +25,11 @@ namespace mod_psgrading\persistents;
 
 defined('MOODLE_INTERNAL') || die();
 
-use \mod_psgrading\utils;
-use \core\persistent;
-use \core_user;
-use \context_user;
-use \context_course;
-use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\forms\form_task;
-use \mod_psgrading\external\task_exporter;
+use mod_psgrading\utils;
+use core\persistent;
+use mod_psgrading\forms\form_mark;
+use mod_psgrading\forms\form_task;
+use mod_psgrading\external\task_exporter;
 
 /**
  * Persistent model representing a single task.
@@ -44,11 +41,14 @@ class task extends persistent {
     const TABLE_TASK_LOGS = 'psgrading_task_logs';
     const TABLE_TASK_EVIDENCES = 'psgrading_task_evidences';
     const TABLE_TASK_CRITERIONS = 'psgrading_task_criterions';
+    const TABLE_TASK_ENGAGEMENT = 'psgrading_task_engagement';
     const TABLE_GRADES = 'psgrading_grades';
     const TABLE_GRADE_CRITERIONS = 'psgrading_grade_criterions';
+    const TABLE_GRADE_ENGAGEMENT = 'psgrading_grade_engagement';
     const TABLE_GRADE_EVIDENCES = 'psgrading_grade_evidences';
     const TABLE_RELEASE_POSTS = 'psgrading_release_posts';
     const TABLE_GRADES_CACHE = 'psgrading_grades_cache';
+
 
     /**
      * Return the definition of the properties of this model.
@@ -84,6 +84,7 @@ class task extends persistent {
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
+
             "published" => [
                 'type' => PARAM_INT,
                 'default' => 0,
@@ -112,6 +113,10 @@ class task extends persistent {
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
+            "engagementjson" => [
+                'type' => PARAM_RAW,
+                'default' => '',
+            ],
         ];
     }
 
@@ -127,6 +132,7 @@ class task extends persistent {
         $data->proposedrelease = intval($formdata->proposedrelease);
         $data->criterionjson = $formdata->criterionjson;
         $data->evidencejson = $formdata->evidencejson;
+        $data->engagementjson = $formdata->engagementjson;
 
         $editing = false;
         if ($id > 0) {
@@ -147,6 +153,7 @@ class task extends persistent {
         $task->set('outcomes', $data->outcomes);
         $task->set('criterionjson', $data->criterionjson);
         $task->set('evidencejson', $data->evidencejson);
+        $task->set('engagementjson', $data->engagementjson);
         $task->set('notes', '');
         $task->set('proposedrelease', $data->proposedrelease);
         if ($editing) {
@@ -169,12 +176,12 @@ class task extends persistent {
         $context = \context_module::instance($cmid);
         $editor = $formdata->notes;
         $notestext = file_save_draft_area_files(
-            $editor['itemid'], 
-            $context->id, 
-            'mod_psgrading', 
-            'notes', 
-            $id, 
-            form_task::editor_options(), 
+            $editor['itemid'],
+            $context->id,
+            'mod_psgrading',
+            'notes',
+            $id,
+            form_task::editor_options(),
             $editor['text'],
         );
         $task->set('notes', $notestext);
@@ -188,7 +195,7 @@ class task extends persistent {
         $log->formjson = json_encode($data);
         $log->status = 1; // published log.
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
-        
+
         // Create/update criterions.
         $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $id));
         $criterions = json_decode($data->criterionjson);
@@ -203,7 +210,7 @@ class task extends persistent {
             if (!in_array($criterion->id, array_keys($existingcriterions))) {
                 $criterion->id = $DB->insert_record(static::TABLE_TASK_CRITERIONS, $criterion);
             } else {
-                // Update existing criterion. 
+                // Update existing criterion.
                 $DB->update_record(static::TABLE_TASK_CRITERIONS, $criterion);
                 unset($existingcriterions[$criterion->id]);
             }
@@ -211,6 +218,30 @@ class task extends persistent {
         }
         // Regenerate criterionjson from real criterion records so that they include ids and other cols.
         $task->set('criterionjson', json_encode($criterions));
+        $task->save();
+
+        // Create/update engagement.
+        $existingengagement = $DB->get_records(static::TABLE_TASK_ENGAGEMENT, ['taskid' => $id]);
+        $engagements = json_decode($data->engagementjson);
+        $seq = 0;
+        foreach ($engagements as &$engagement) {
+            $engagement->taskid = $id;
+            $engagement->seq = $seq;
+            if (!isset($engagement->weight)) {
+                $engagement->weight = 100;
+            }
+            // Engagement does not already exist.
+            if (!in_array($engagement->id, array_keys($existingengagement))) {
+                $engagement->id = $DB->insert_record(static::TABLE_TASK_ENGAGEMENT, $engagement);
+            } else {
+                // Update existing engagement.
+                $DB->update_record(static::TABLE_TASK_ENGAGEMENT, $engagement);
+                unset($existingengagement[$engagement->id]);
+            }
+            $seq++;
+        }
+        // Regenerate Engagementjson from real criterion records so that they include ids and other cols.
+        $task->set('engagementjson', json_encode($engagements));
         $task->save();
 
         // Delete leftovers.
@@ -251,7 +282,7 @@ class task extends persistent {
 
     public static function get_for_coursemodule($cmid) {
         global $DB;
-        
+
         $sql = "SELECT *
                   FROM {" . static::TABLE . "}
                  WHERE deleted = 0
@@ -289,6 +320,25 @@ class task extends persistent {
         return $criterions;
     }
 
+    public static function get_grade_engagement_selections($gradeid) {
+        global $DB;
+
+        $engagements = [];
+
+        $sql = "SELECT gce.*
+                FROM mdl_psgrading_grade_engagement gce
+                INNER JOIN mdl_psgrading_task_engagement te on te.id = gce.engagementid
+                WHERE gce.gradeid = ?";
+        $params = [$gradeid];
+        $engagementrecs = $DB->get_records_sql($sql, $params);
+
+        foreach ($engagementrecs as $rec) {
+            $engagements[$rec->engagementid] = (object) [ 'gradelevel' => $rec->gradelevel, 'engagementid' => $rec->engagementid ];
+        }
+
+        return $engagements;
+    }
+
     public static function get_printurl($taskid) {
         $task = new static($taskid);
         $printurl = new \moodle_url('/mod/psgrading/print.php', array(
@@ -319,9 +369,10 @@ class task extends persistent {
 
         if ($gradeinfo) {
             $gradeinfo->criterions = static::get_grade_criterion_selections($gradeinfo->id);
+            $gradeinfo->engagements = static::get_grade_engagement_selections($gradeinfo->id);
             $gradeinfo->engagementlang = '';
             if ($gradeinfo->engagement && isset(utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement])) {
-                $gradeinfo->engagementlang =  utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement];
+                $gradeinfo->engagementlang = utils::ENGAGEMENTOPTIONS[$gradeinfo->engagement];
             }
             return $gradeinfo;
         }
@@ -385,6 +436,24 @@ class task extends persistent {
         return $criterions;
     }
 
+    public static function get_engagement($taskid) {
+        global $DB;
+
+        $sql = "SELECT *
+                  FROM {" . static::TABLE_TASK_ENGAGEMENT . "}
+                 WHERE taskid = ?
+              ORDER BY seq ASC";
+        $params = [$taskid];
+
+        $records = $DB->get_records_sql($sql, $params);
+        $engagements = [];
+        foreach ($records as $record) {
+            $engagements[$record->id] = $record;
+        }
+
+        return $engagements;
+    }
+
     public static function get_evidences($taskid) {
         global $DB;
 
@@ -439,7 +508,7 @@ class task extends persistent {
 
     public static function save_task_grades_for_student($data) {
         global $DB, $USER;
-        
+
         // Some validation.
         if (empty($data->taskid) || empty($data->userid)) {
             return;
@@ -454,11 +523,11 @@ class task extends persistent {
             $evidenceoptions = form_mark::evidence_options();
             $uniqueid = sprintf( "%d%d", $data->taskid, $data->userid ); // Join the taskid and userid to make a unique itemid.
             file_save_draft_area_files(
-                $data->evidences, 
-                $modulecontext->id, 
-                'mod_psgrading', 
-                'evidences', 
-                $uniqueid, 
+                $data->evidences,
+                $modulecontext->id,
+                'mod_psgrading',
+                'evidences',
+                $uniqueid,
                 $evidenceoptions
             );
         }
@@ -509,6 +578,20 @@ class task extends persistent {
                 }
             }
 
+            // Recreate engagement grades.
+            $DB->delete_records(static::TABLE_GRADE_ENGAGEMENT, ['gradeid' => $graderec->id]);
+            $engagements = json_decode($data->engagementjson);
+            if ($engagements) {
+                foreach ($engagements as $selection) {
+                    $engagement = new \stdClass();
+                    $engagement->taskid = $data->taskid;
+                    $engagement->engagementid = $selection->id;
+                    $engagement->gradeid = $graderec->id;
+                    $engagement->gradelevel = $selection->selectedlevel;
+                    $DB->insert_record(static::TABLE_GRADE_ENGAGEMENT, $engagement);
+                }
+            }
+
             // Recreate myconnect links.
             $DB->delete_records(static::TABLE_GRADE_EVIDENCES, array(
                 'gradeid' => $graderec->id,
@@ -538,7 +621,7 @@ class task extends persistent {
     }
 
     public static function compute_grades_for_course($courseid, $userid, $includehiddentasks, $isstaff, $reportingperiod = 1) {
-        global $OUTPUT, $DB;
+        global  $DB;
 
         // Get all psgrading instances for this course.
         $sql = "SELECT id, restrictto, excludeusers
@@ -548,7 +631,7 @@ class task extends persistent {
         $modinstances = $DB->get_records_sql($sql, array($courseid, $reportingperiod));
         $courseinstances = array();
         // Don't include instances that are restricted to specific users.
-        foreach($modinstances as $inst) {
+        foreach ($modinstances as $inst) {
             if (empty($inst->restrictto)) {
                 $courseinstances[] = $inst->id;
             }
@@ -594,7 +677,7 @@ class task extends persistent {
 
         foreach ($cmtasks as $task) {
             // TODO: Check that the task applies to this user based on setting.
-            
+
             $taskexporter = new task_exporter($task, array('userid' => $userid));
             $task = $taskexporter->export($OUTPUT);
             if (!$task->published && !$includehiddentasks) {
@@ -644,7 +727,7 @@ class task extends persistent {
             }
         }
 
-        // Check if there is gradeinfo / whether task is released. 
+        // Check if there is gradeinfo / whether task is released.
         // Check if student `didnosubmit`
         if (empty($gradeinfo) || !$showgrades || $gradeinfo->didnotsubmit) {
             // Skip over the calculations, but define empty structure required by template.
@@ -678,7 +761,7 @@ class task extends persistent {
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
             }
         }
-    
+
         // Flatten to rounded averages.
         //foreach ($subjectgrades as &$subjectgrade) {
         //    if (count($subjectgrade)) {
@@ -701,7 +784,7 @@ class task extends persistent {
                 // Rounding based on influenced mean.
                 if ($influencedmean > $subjectgrademean) {
                     $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
-                } else if ($influencedmean < $subjectgrademean) { 
+                } else if ($influencedmean < $subjectgrademean) {
                     $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
                 } else {
                     $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
@@ -715,7 +798,7 @@ class task extends persistent {
         foreach (utils::SUBJECTOPTIONS as $subject) {
             if ($subject['val']) {
                 $grade = 0;
-                if ( ! empty($subjectgrades[$subject['val']]) ) {  
+                if ( ! empty($subjectgrades[$subject['val']]) ) {
                     $grade = $subjectgrades[$subject['val']];
                 }
                 $gradelang = utils::GRADELANG[$grade];
@@ -767,7 +850,7 @@ class task extends persistent {
             // Rounding based on influenced mean.
             if ($influencedmean > $successmean) {
                 $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
-            } else if ($influencedmean < $successmean) { 
+            } else if ($influencedmean < $successmean) {
                 $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
             } else {
                 $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
@@ -938,6 +1021,7 @@ class task extends persistent {
             // Delete everything...
             $DB->delete_records(static::TABLE_GRADES, array('id' => $graderec->id));
             $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+            $DB->delete_records(static::TABLE_GRADE_ENGAGEMENT, ['gradeid' => $graderec->id]);
             // Delete evidence files.
             $fs = get_file_storage();
             $uniqueid = sprintf( "%d%d", $data->taskid, $data->userid ); // Join the taskid and userid to make a unique itemid.
@@ -968,7 +1052,7 @@ class task extends persistent {
 
     public static function get_comment_bank($taskid) {
         global $DB, $USER;
-        
+
         $sql = "SELECT *
                   FROM {psgrading_comment_bank}
                  WHERE taskid = ?
@@ -1012,7 +1096,12 @@ class task extends persistent {
 
     public static function publish($id) {
         $task = new static($id);
+        // For previous records that have this column in null is throwing an error.
+        if (empty($task->get('engagementjson') )) {
+            $task->set('engagementjson', '');
+        }
         $task->set('published', 1);
+
         $task->update();
 
         // Invalidate list html cache.
@@ -1057,7 +1146,7 @@ class task extends persistent {
 
     /*public static function get_diff($id) {
         $task = new static($id);
-        return utils::diff_versions(utils::get_task_as_json($task), $task->get('draftjson')); 
+        return utils::diff_versions(utils::get_task_as_json($task), $task->get('draftjson'));
     }*/
 
     public static function get_release_info($id) {

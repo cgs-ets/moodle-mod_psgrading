@@ -64,7 +64,7 @@ function xmldb_psgrading_upgrade($oldversion) {
         $table->add_field('taskid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('gradeid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('postid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-       
+
         // Adding keys to table psgrading_release_posts.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, array('taskid'), 'psgrading_tasks', array('id'));
@@ -405,6 +405,69 @@ function xmldb_psgrading_upgrade($oldversion) {
         // Psgrading savepoint reached.
         upgrade_mod_savepoint(true, 2022102502, 'psgrading');
     }
+
+    if ($oldversion < 2024092701) {
+
+         // Define field engagementjson to be added to psgrading_tasks.
+         $table = new xmldb_table('psgrading_tasks');
+         $field = new xmldb_field('engagementjson', XMLDB_TYPE_TEXT, null, null, null, null, null, 'notes');
+
+         // Conditionally launch add field engagementjson.
+         if (!$dbman->field_exists($table, $field)) {
+             $dbman->add_field($table, $field);
+         }
+
+        // Define table psgrading_task_engagement to be created.
+             // Define table psgrading_task_engagement to be created.
+        $table = new xmldb_table('psgrading_task_engagement');
+
+        // Adding fields to table psgrading_task_engagement.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('taskid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('level4', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('level3', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('level2', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('level1', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('subject', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('weight', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('seq', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('hidden', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table psgrading_task_engagement.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, ['taskid'], 'psgrading_tasks', ['id']);
+
+        // Conditionally launch create table for psgrading_task_engagement.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table psgrading_grade_engagement to be created.
+        $table = new xmldb_table('psgrading_grade_engagement');
+
+        // Adding fields to table psgrading_grade_engagement.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('taskid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('engagementid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gradeid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('gradelevel', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table psgrading_grade_engagement.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, ['taskid'], 'psgrading_tasks', ['id']);
+        $table->add_key('fk_engagementid', XMLDB_KEY_FOREIGN, ['engagementid'], 'psgrading_task_engagement', ['id']);
+        $table->add_key('fk_gradeid', XMLDB_KEY_FOREIGN, ['gradeid'], 'psgrading_grades', ['id']);
+
+        // Conditionally launch create table for psgrading_grade_engagement.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2024092701, 'psgrading');
+    }
+
 
     return true;
 }

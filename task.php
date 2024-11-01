@@ -62,16 +62,18 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 $task = new task($edit);
-
+// echo '<pre>';
+// echo print_r($task);
+// echo '</pre>'; exit;
 // Check task exists.
-if (!empty($edit)) { 
+if (!empty($edit)) {
     $exists = task::record_exists($edit);
     if (!$exists || $task->get('deleted')) {
         redirect($listurl->out(false));
         exit;
     }
 }
-        
+
 // Instantiate the form.
 $formtask = new form_task($editurl->out(false), array(),'post', '', []);
 
@@ -84,7 +86,7 @@ $formdata = $formtask->get_data();
 
 // Check whether loading page or submitting page.
 if (empty($formdata)) { // loading page for edit (not submitted).
-    
+
     // Check if PS Grading activity is locked.
     if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
         $message = get_string('activitylocked', 'mod_psgrading');
@@ -106,6 +108,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $outcomes = $task->get('outcomes');
     $criterionjson = $task->get('criterionjson');
     $evidencejson = $task->get('evidencejson');
+    $engagementjson = $task->get('engagementjson');
     $published = $task->get('published');
     $proposedrelease = $task->get('proposedrelease');
     $notestext = $task->get('notes');
@@ -121,8 +124,19 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $criteriondata = utils::decorate_subjectdata($criteriondata);
     $criteriondata = utils::decorate_weightdata($criteriondata);
 
+
+    // Get and decorate engagement data.
+    $engagementdata = json_decode($engagementjson);
+    if (empty($engagementdata)) {
+        $engagementdata = array(utils::get_stub_criterion()); // Add a default empty criterion.
+
+    }
+    $engagementdata = utils::decorate_subjectdata($engagementdata);
+    $engagementdata = utils::decorate_weightdata($engagementdata);
+
+
     // Reinstantiate the form with needed data.
-    $formtask = new form_task($editurl->out(false), 
+    $formtask = new form_task($editurl->out(false),
         array(
             'edit' => $edit,
             'criteriondata' => $criteriondata,
@@ -130,7 +144,8 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'published' => $published,
             'proposedrelease' => $proposedrelease,
             'enableweights' => $moduleinstance->enableweights,
-        ), 
+            'engagementdata' => $engagementdata,
+        ),
         'post', '', array('data-form' => 'psgrading-task')
     );
 
@@ -156,6 +171,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'proposedrelease' => $proposedrelease,
             'criterionjson' => $criterionjson,
             'evidencejson' => $evidencejson,
+            'engagementjson' => $engagementjson,
             'notes' => $notes,
         )
     );
@@ -183,7 +199,9 @@ if (empty($formdata)) { // loading page for edit (not submitted).
         exit;
     }
 
-
+    //   echo '<pre>';
+    //     echo print_r($formdata);
+    //     echo '</pre>'; exit;
     if ($formdata->action == 'save') {
         $result = task::save_from_data($edit, $cm->id, $formdata);
         if ($result) {
@@ -204,7 +222,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             );
         }
     }
-    
+
 }
 
 // Add css.

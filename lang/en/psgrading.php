@@ -91,6 +91,7 @@ $string['activitylocked'] = 'The reporting period for this is over and the gradi
 $string['list:notasks'] = 'There are no tasks yet.';
 $string['overview'] = 'Student overview';
 $string['addcriterion'] = 'Add criterion';
+$string['addengagementcriterion'] = 'Add engagement criterion';
 $string['addevidence'] = 'Select any course activities that form part of this task';
 
 // Settings
@@ -117,3 +118,4 @@ $string['crontask_copy_report_images'] = 'Copy reflection images';
 $string['crontask_gradesync'] = 'PSGrading Sync grades';
 
 $string['nodelete'] = 'PS Grading activities cannot be deleted. Please contact the Service Desk and provide the following details in your request: `Delete Primary Grading activity CMID {$a}`';
+

@@ -143,7 +143,7 @@
     top: auto;
   }
 
-  
+
 
   .selector-label {
     position: absolute;
@@ -239,18 +239,22 @@ form[data-form="psgrading-task"] input#id_delete {
   border-color: #ca3120;
 }
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
-#page-mod-psgrading-task #fitem_id_criterionjson {
+#page-mod-psgrading-task #fitem_id_criterionjson,
+#page-mod-psgrading-task #fitem_id_engagementjson {
   display: none;
 }
-#page-mod-psgrading-task #fitem_id_criterionjson > div {
+#page-mod-psgrading-task #fitem_id_criterionjson > div,
+#page-mod-psgrading-task #fitem_id_engagementjson > div {
   display: none;
 }
-#page-mod-psgrading-task #fitem_id_criterionjson.has-danger {
+#page-mod-psgrading-task #fitem_id_criterionjson.has-danger,
+#page-mod-psgrading-task #fitem_id_engagementjson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-#page-mod-psgrading-task #fitem_id_criterionjson.has-danger:before {
+#page-mod-psgrading-task #fitem_id_criterionjson.has-danger:before,
+#page-mod-psgrading-task #fitem_id_engagementjson.has-danger:before {
   content: "You must complete the criterion. All fields are mandatory.";
   color: red;
   width: 100%;
@@ -860,7 +864,8 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-mark .fdescription.required {
   display: none;
 }
-#page-mod-psgrading-mark #fitem_id_criterionjson {
+#page-mod-psgrading-mark #fitem_id_criterionjson,
+#page-mod-psgrading-mark #fitem_id_engagementjson {
   display: none;
 }
 #page-mod-psgrading-mark.path-mod-psgrading .header .task-selector {
@@ -949,6 +954,11 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     text-align: right;
   }
 }
+#page-mod-psgrading-mark .marking-engagements .heading {
+  font-weight: 600;
+  font-size: 120%;
+  padding-bottom: 5px;
+}
 #page-mod-psgrading-mark .outcomes {
   border-bottom: 1px solid #ddd;
   margin: 20px;
@@ -1030,6 +1040,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-mark #fitem_id_engagement select {
   width: 100%;
   max-width: 500px;
+}
+#page-mod-psgrading-mark #fitem_id_engagement.hide-engagement {
+  display: none;
 }
 #page-mod-psgrading-mark #fitem_id_comment {
   margin: 0;
