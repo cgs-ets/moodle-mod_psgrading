@@ -32,7 +32,7 @@
         </div>
 
         <div class="psgrading-header-right">
-        
+
           <!-- TASK SELECTOR -->
           <div class="task-selector">
               {{#currstudent.othertasks.0}}
@@ -74,7 +74,10 @@
             {{#gradeinfo.engagement}}
                 <div class="details-engagement">
                     <div class="heading">{{#str}}mark:engagement, mod_psgrading{{/str}}</div>
-                    {{gradeinfo.engagementlang}}
+                    <br>
+                     <strong>{{ gradeinfo.engagementlang}} </strong>
+                     <br><br>
+                    {{>mod_psgrading/details_engagement}}
                 </div>
             {{/gradeinfo.engagement}}
             {{>mod_psgrading/details_evidence}}
