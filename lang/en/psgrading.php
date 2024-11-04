@@ -84,6 +84,13 @@ $string['mark:myconnectattachments'] = 'MyConnect attachments';
 $string['mark:didnotsubmit'] = 'Did not submit';
 $string['mark:dns'] = 'DNS';
 $string['mark:replacegrader'] = '<b>{$a}</b> will appear as the grader when this grade is released. Tick this option to become the grader. Leave this option unticked to keep the current grader.';
+$string['mark:descriptor'] = 'Descriptor';
+$string['mark:ny'] = 'Not Yet';
+$string['mark:gs'] = 'Good Start';
+$string['mark:ms'] = 'Making Strides';
+$string['mark:grwi'] = 'Go Run With It';
+$string['mark:fh'] = 'Fly High';
+
 
 $string['taskalreadygraded'] = 'Some students have already been graded. Changing the rubric may require tasks to be regraded.';
 $string['activitylocked'] = 'The reporting period for this is over and the grading actiity has been locked. Changes to tasks and grades will not be saved.';

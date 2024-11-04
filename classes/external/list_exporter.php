@@ -99,7 +99,7 @@ class list_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $DB;
 
-        // Group navigation. 
+        // Group navigation.
         $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
             'id' => $this->related['cmid']
         ));
@@ -153,11 +153,11 @@ class list_exporter extends exporter {
             $cms = array();
             if (!empty($studentoverviews)) {
                 $cmtitle = $DB->get_field_sql(
-                    'SELECT p.name 
+                    'SELECT p.name
                      FROM {psgrading} p, {course_modules} c
                      WHERE c.id = ?
                      AND c.course = p.course
-                     AND c.instance = p.id', 
+                     AND c.instance = p.id',
                      array($this->related['cmid'])
                 );
                 $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
@@ -183,7 +183,7 @@ class list_exporter extends exporter {
                 utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
             }
         }
-        
+
         $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', array(
             'courseid' => $this->related['courseid'],
             'year' => date('Y'),

@@ -26,20 +26,20 @@
 <table class="criterions">
     <tr>
         <th>Description</th>
-        <th>Good start</th>
-        <th>Making strides</th>
         <th>Go run with it</th>
+        <th>Making strides</th>
+        <th>Good start</th>
         <th>Subject</th>
         <th>Options</th>
     </tr>
     {{#criterions}}
         <tr>
             <td class="description">{{description}}</td>
-            <td class="level5">{{level5}}</td>
-            <td class="level4">{{level4}}</td>
-            <td class="level3">{{level3}}</td>
-            <td class="level2">{{level2}}</td>
             <td class="level1">{{level1}}</td>
+            <td class="level2">{{level2}}</td>
+            <td class="level3">{{level3}}</td>
+            <td class="level4">{{level4}}</td>
+            <td class="level5">{{level5}}</td>
             <td class="subject">{{subject}}</td>
             <td class="options">{{#enableweights}}{{weight}}, {{/enableweights}} {{#hidden}}Hidden{{/hidden}}{{^hidden}}Visible{{/hidden}}</td>
         </tr>

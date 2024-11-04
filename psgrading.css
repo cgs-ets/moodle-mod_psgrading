@@ -872,24 +872,33 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   top: -115px;
 }
 #page-mod-psgrading-mark .marking-criterions .headings,
-#page-mod-psgrading-mark .marking-criterions .criterions {
+#page-mod-psgrading-mark .marking-engagements .headings,
+#page-mod-psgrading-mark .marking-criterions .criterions,
+#page-mod-psgrading-mark .marking-engagements .criterions,
+#page-mod-psgrading-mark .marking-criterions .engagements,
+#page-mod-psgrading-mark .marking-engagements .engagements {
   display: table;
   width: 100%;
   border-collapse: collapse;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-th,
-#page-mod-psgrading-mark .marking-criterions .tbl-tr {
+#page-mod-psgrading-mark .marking-engagements .tbl-th,
+#page-mod-psgrading-mark .marking-criterions .tbl-tr,
+#page-mod-psgrading-mark .marking-engagements .tbl-tr {
   display: table-row;
   padding: 0;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-th {
+#page-mod-psgrading-mark .marking-criterions .tbl-th,
+#page-mod-psgrading-mark .marking-engagements .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-th .tbl-col {
+#page-mod-psgrading-mark .marking-criterions .tbl-th .tbl-col,
+#page-mod-psgrading-mark .marking-engagements .tbl-th .tbl-col {
   border: 0 none;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col {
+#page-mod-psgrading-mark .marking-criterions .tbl-col,
+#page-mod-psgrading-mark .marking-engagements .tbl-col {
   display: table-cell;
   width: 16%;
   padding: 5px 5px 5px 5px;
@@ -897,57 +906,71 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   border: 1px dashed #ccc;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.tbl-col-first {
   padding-left: 0;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col .box {
+#page-mod-psgrading-mark .marking-criterions .tbl-col .box,
+#page-mod-psgrading-mark .marking-engagements .tbl-col .box {
   width: 100%;
   padding: 10px;
   font-size: 90%;
   border-radius: 2px;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.descriptor {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.descriptor,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.descriptor {
   border: 1px solid #ccc;
   background: #f2f4f6;
   border-right: 1px solid #ccc;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.selectable {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.selectable,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.selectable {
   cursor: pointer;
   transition: background 0.2s;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level:hover {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level:hover,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level:hover {
   background-color: #fafafa;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level5.selected {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level5.selected,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level5.selected {
   background-color: #D90617;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level4.selected {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level4.selected,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level4.selected {
   background-color: #F97D01;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level3.selected {
   background-color: #FFDB00;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level2.selected {
   background-color: #6BB82E;
 }
-#page-mod-psgrading-mark .marking-criterions .tbl-col.level1.selected {
+#page-mod-psgrading-mark .marking-criterions .tbl-col.level1.selected,
+#page-mod-psgrading-mark .marking-engagements .tbl-col.level1.selected {
   background-color: #00812F;
 }
 @media only screen and (max-width: 1160px) {
-  #page-mod-psgrading-mark .marking-criterions .headings {
+  #page-mod-psgrading-mark .marking-criterions .headings,
+  #page-mod-psgrading-mark .marking-engagements .headings {
     display: none;
   }
-  #page-mod-psgrading-mark .marking-criterions .tbl-tr {
+  #page-mod-psgrading-mark .marking-criterions .tbl-tr,
+  #page-mod-psgrading-mark .marking-engagements .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 10px;
     border-radius: 4px;
   }
-  #page-mod-psgrading-mark .marking-criterions .tbl-col {
+  #page-mod-psgrading-mark .marking-criterions .tbl-col,
+  #page-mod-psgrading-mark .marking-engagements .tbl-col {
     display: block;
     width: 100% !important;
   }
-  #page-mod-psgrading-mark .marking-criterions .tbl-col .label {
+  #page-mod-psgrading-mark .marking-criterions .tbl-col .label,
+  #page-mod-psgrading-mark .marking-engagements .tbl-col .label {
     display: block;
     position: absolute;
     right: 10px;
@@ -1131,6 +1154,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   clear: both;
 }
 #page-mod-psgrading-mark.didnotsubmit .marking-criterions,
+#page-mod-psgrading-mark.didnotsubmit .marking-engagements,
 #page-mod-psgrading-mark.didnotsubmit .marking-evidences,
 #page-mod-psgrading-mark.didnotsubmit #fitem_id_evidences,
 #page-mod-psgrading-mark.didnotsubmit #fitem_id_engagement {
@@ -2132,35 +2156,55 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin-bottom: 25px;
 }
 #page-mod-psgrading-details .details-criterions,
-#page-mod-psgrading-print .details-criterions {
+#page-mod-psgrading-print .details-criterions,
+#page-mod-psgrading-details .details-engagements,
+#page-mod-psgrading-print .details-engagements {
   margin-bottom: 30px;
 }
 #page-mod-psgrading-details .details-criterions .headings,
 #page-mod-psgrading-print .details-criterions .headings,
+#page-mod-psgrading-details .details-engagements .headings,
+#page-mod-psgrading-print .details-engagements .headings,
 #page-mod-psgrading-details .details-criterions .criterions,
-#page-mod-psgrading-print .details-criterions .criterions {
+#page-mod-psgrading-print .details-criterions .criterions,
+#page-mod-psgrading-details .details-engagements .criterions,
+#page-mod-psgrading-print .details-engagements .criterions,
+#page-mod-psgrading-details .details-criterions .engagements,
+#page-mod-psgrading-print .details-criterions .engagements,
+#page-mod-psgrading-details .details-engagements .engagements,
+#page-mod-psgrading-print .details-engagements .engagements {
   display: table;
   width: 100%;
   border-collapse: collapse;
 }
 #page-mod-psgrading-details .details-criterions .tbl-th,
 #page-mod-psgrading-print .details-criterions .tbl-th,
+#page-mod-psgrading-details .details-engagements .tbl-th,
+#page-mod-psgrading-print .details-engagements .tbl-th,
 #page-mod-psgrading-details .details-criterions .tbl-tr,
-#page-mod-psgrading-print .details-criterions .tbl-tr {
+#page-mod-psgrading-print .details-criterions .tbl-tr,
+#page-mod-psgrading-details .details-engagements .tbl-tr,
+#page-mod-psgrading-print .details-engagements .tbl-tr {
   display: table-row;
   padding: 0;
 }
 #page-mod-psgrading-details .details-criterions .tbl-th,
-#page-mod-psgrading-print .details-criterions .tbl-th {
+#page-mod-psgrading-print .details-criterions .tbl-th,
+#page-mod-psgrading-details .details-engagements .tbl-th,
+#page-mod-psgrading-print .details-engagements .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
 #page-mod-psgrading-details .details-criterions .tbl-th .tbl-col,
-#page-mod-psgrading-print .details-criterions .tbl-th .tbl-col {
+#page-mod-psgrading-print .details-criterions .tbl-th .tbl-col,
+#page-mod-psgrading-details .details-engagements .tbl-th .tbl-col,
+#page-mod-psgrading-print .details-engagements .tbl-th .tbl-col {
   border: 0 none;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col,
-#page-mod-psgrading-print .details-criterions .tbl-col {
+#page-mod-psgrading-print .details-criterions .tbl-col,
+#page-mod-psgrading-details .details-engagements .tbl-col,
+#page-mod-psgrading-print .details-engagements .tbl-col {
   display: table-cell;
   width: 20%;
   padding: 5px 5px 5px 5px;
@@ -2169,67 +2213,95 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border: 1px dashed #ccc;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.tbl-col-first,
-#page-mod-psgrading-print .details-criterions .tbl-col.tbl-col-first {
+#page-mod-psgrading-print .details-criterions .tbl-col.tbl-col-first,
+#page-mod-psgrading-details .details-engagements .tbl-col.tbl-col-first,
+#page-mod-psgrading-print .details-engagements .tbl-col.tbl-col-first {
   padding-left: 0;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level1,
 #page-mod-psgrading-print .details-criterions .tbl-col.level1,
+#page-mod-psgrading-details .details-engagements .tbl-col.level1,
+#page-mod-psgrading-print .details-engagements .tbl-col.level1,
 #page-mod-psgrading-details .details-criterions .tbl-col.level5,
-#page-mod-psgrading-print .details-criterions .tbl-col.level5 {
+#page-mod-psgrading-print .details-criterions .tbl-col.level5,
+#page-mod-psgrading-details .details-engagements .tbl-col.level5,
+#page-mod-psgrading-print .details-engagements .tbl-col.level5 {
   width: 10%;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col .box,
-#page-mod-psgrading-print .details-criterions .tbl-col .box {
+#page-mod-psgrading-print .details-criterions .tbl-col .box,
+#page-mod-psgrading-details .details-engagements .tbl-col .box,
+#page-mod-psgrading-print .details-engagements .tbl-col .box {
   width: 100%;
   padding: 10px;
   font-size: 90%;
   border-radius: 2px;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.descriptor,
-#page-mod-psgrading-print .details-criterions .tbl-col.descriptor {
+#page-mod-psgrading-print .details-criterions .tbl-col.descriptor,
+#page-mod-psgrading-details .details-engagements .tbl-col.descriptor,
+#page-mod-psgrading-print .details-engagements .tbl-col.descriptor {
   border: 1px solid #ccc;
   background: #f2f4f6;
   border-right: 1px solid #ccc;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level5.selected,
-#page-mod-psgrading-print .details-criterions .tbl-col.level5.selected {
+#page-mod-psgrading-print .details-criterions .tbl-col.level5.selected,
+#page-mod-psgrading-details .details-engagements .tbl-col.level5.selected,
+#page-mod-psgrading-print .details-engagements .tbl-col.level5.selected {
   background-color: #D90617;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level4.selected,
-#page-mod-psgrading-print .details-criterions .tbl-col.level4.selected {
+#page-mod-psgrading-print .details-criterions .tbl-col.level4.selected,
+#page-mod-psgrading-details .details-engagements .tbl-col.level4.selected,
+#page-mod-psgrading-print .details-engagements .tbl-col.level4.selected {
   background-color: #F97D01;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level3.selected,
-#page-mod-psgrading-print .details-criterions .tbl-col.level3.selected {
+#page-mod-psgrading-print .details-criterions .tbl-col.level3.selected,
+#page-mod-psgrading-details .details-engagements .tbl-col.level3.selected,
+#page-mod-psgrading-print .details-engagements .tbl-col.level3.selected {
   background-color: #FFDB00;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level2.selected,
-#page-mod-psgrading-print .details-criterions .tbl-col.level2.selected {
+#page-mod-psgrading-print .details-criterions .tbl-col.level2.selected,
+#page-mod-psgrading-details .details-engagements .tbl-col.level2.selected,
+#page-mod-psgrading-print .details-engagements .tbl-col.level2.selected {
   background-color: #6BB82E;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level1.selected,
-#page-mod-psgrading-print .details-criterions .tbl-col.level1.selected {
+#page-mod-psgrading-print .details-criterions .tbl-col.level1.selected,
+#page-mod-psgrading-details .details-engagements .tbl-col.level1.selected,
+#page-mod-psgrading-print .details-engagements .tbl-col.level1.selected {
   background-color: #00812F;
 }
 @media only screen and (max-width: 1160px) {
   #page-mod-psgrading-details .details-criterions .headings,
-  #page-mod-psgrading-print .details-criterions .headings {
+  #page-mod-psgrading-print .details-criterions .headings,
+  #page-mod-psgrading-details .details-engagements .headings,
+  #page-mod-psgrading-print .details-engagements .headings {
     display: none;
   }
   #page-mod-psgrading-details .details-criterions .tbl-tr,
-  #page-mod-psgrading-print .details-criterions .tbl-tr {
+  #page-mod-psgrading-print .details-criterions .tbl-tr,
+  #page-mod-psgrading-details .details-engagements .tbl-tr,
+  #page-mod-psgrading-print .details-engagements .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 10px;
     border-radius: 4px;
   }
   #page-mod-psgrading-details .details-criterions .tbl-col,
-  #page-mod-psgrading-print .details-criterions .tbl-col {
+  #page-mod-psgrading-print .details-criterions .tbl-col,
+  #page-mod-psgrading-details .details-engagements .tbl-col,
+  #page-mod-psgrading-print .details-engagements .tbl-col {
     display: block;
     width: 100% !important;
   }
   #page-mod-psgrading-details .details-criterions .tbl-col .label,
-  #page-mod-psgrading-print .details-criterions .tbl-col .label {
+  #page-mod-psgrading-print .details-criterions .tbl-col .label,
+  #page-mod-psgrading-details .details-engagements .tbl-col .label,
+  #page-mod-psgrading-print .details-engagements .tbl-col .label {
     display: block;
     position: absolute;
     right: 10px;
@@ -2266,28 +2338,37 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #dfd;
 }
 .modal-DIFF table.task-diff table.criterions td,
-.modal-DIFF table.task-diff table.criterions th {
+.modal-DIFF table.task-diff table.engagements td,
+.modal-DIFF table.task-diff table.criterions th,
+.modal-DIFF table.task-diff table.engagements th {
   border: 1px solid #ddd;
 }
-.modal-DIFF table.task-diff table.criterions td.level5 {
+.modal-DIFF table.task-diff table.criterions td.level5,
+.modal-DIFF table.task-diff table.engagements td.level5 {
   width: 14%;
 }
-.modal-DIFF table.task-diff table.criterions td.level4 {
+.modal-DIFF table.task-diff table.criterions td.level4,
+.modal-DIFF table.task-diff table.engagements td.level4 {
   width: 14%;
 }
-.modal-DIFF table.task-diff table.criterions td.level3 {
+.modal-DIFF table.task-diff table.criterions td.level3,
+.modal-DIFF table.task-diff table.engagements td.level3 {
   width: 14%;
 }
-.modal-DIFF table.task-diff table.criterions td.level2 {
+.modal-DIFF table.task-diff table.criterions td.level2,
+.modal-DIFF table.task-diff table.engagements td.level2 {
   width: 14%;
 }
-.modal-DIFF table.task-diff table.criterions td.level1 {
+.modal-DIFF table.task-diff table.criterions td.level1,
+.modal-DIFF table.task-diff table.engagements td.level1 {
   width: 14%;
 }
-.modal-DIFF table.task-diff table.criterions td.subject {
+.modal-DIFF table.task-diff table.criterions td.subject,
+.modal-DIFF table.task-diff table.engagements td.subject {
   width: 10%;
 }
-.modal-DIFF table.task-diff table.criterions td.options {
+.modal-DIFF table.task-diff table.criterions td.options,
+.modal-DIFF table.task-diff table.engagements td.options {
   width: 10%;
 }
 #page-mod-psgrading-reporting #region-main {

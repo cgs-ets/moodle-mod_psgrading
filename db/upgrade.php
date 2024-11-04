@@ -406,19 +406,25 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022102502, 'psgrading');
     }
 
-    if ($oldversion < 2024092701) {
+    if ($oldversion < 2024110400) {
 
          // Define field engagementjson to be added to psgrading_tasks.
          $table = new xmldb_table('psgrading_tasks');
          $field = new xmldb_field('engagementjson', XMLDB_TYPE_TEXT, null, null, null, null, null, 'notes');
 
          // Conditionally launch add field engagementjson.
-         if (!$dbman->field_exists($table, $field)) {
-             $dbman->add_field($table, $field);
-         }
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+         $field = new xmldb_field('oldorder', XMLDB_TYPE_INTEGER, '1', null, null, null, '1', 'engagementjson');
+
+        // Conditionally launch add field oldorder.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
 
         // Define table psgrading_task_engagement to be created.
-             // Define table psgrading_task_engagement to be created.
         $table = new xmldb_table('psgrading_task_engagement');
 
         // Adding fields to table psgrading_task_engagement.
@@ -465,9 +471,8 @@ function xmldb_psgrading_upgrade($oldversion) {
         }
 
         // Psgrading savepoint reached.
-        upgrade_mod_savepoint(true, 2024092701, 'psgrading');
+        upgrade_mod_savepoint(true, 2024110400, 'psgrading');
     }
-
 
     return true;
 }

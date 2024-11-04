@@ -88,15 +88,21 @@ $task->criterions = utils::decorate_subjectdata($task->criterions);
 $task->criterions = utils::decorate_weightdata($task->criterions);
 $task->showmeta = true;
 
+// Get and decorate engagement data.
+$task->engagements = json_decode($task->engagementjson);
+$task->engagements = utils::decorate_subjectdata($task->engagements);
+$task->engagements = utils::decorate_weightdata($task->engagements);
+$task->showmeta = true;
+
 // Add css.
 $PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
 
 $output = $OUTPUT->header();
 
-/*echo "<h3>Render me!</h3>";
-echo "<pre>";
-var_export($task->criterions);
-exit;*/
+// echo "<h3>Render me!</h3>";
+// echo "<pre>";
+// var_export($task);
+// exit;
 
 $output .= $OUTPUT->render_from_template('mod_psgrading/print', array('task' => $task));
 

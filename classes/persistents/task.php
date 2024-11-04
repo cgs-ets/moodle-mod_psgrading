@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides the {@link mod_psgrading\persistents\task} class.
  *
@@ -117,6 +118,10 @@ class task extends persistent {
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
+            "oldorder" => [
+                'type' => PARAM_INT,
+                'default' => 1,
+            ],
         ];
     }
 
@@ -167,6 +172,7 @@ class task extends persistent {
             $task->set('cmid', $cmid);
             $task->set('creatorusername', $USER->username);
             $task->set('deleted', 0);
+            $task->set('oldorder', 0);
             $task->set('published', $data->published);
         }
         $task->save();
@@ -224,6 +230,7 @@ class task extends persistent {
         $existingengagement = $DB->get_records(static::TABLE_TASK_ENGAGEMENT, ['taskid' => $id]);
         $engagements = json_decode($data->engagementjson);
         $seq = 0;
+
         foreach ($engagements as &$engagement) {
             $engagement->taskid = $id;
             $engagement->seq = $seq;
@@ -247,6 +254,11 @@ class task extends persistent {
         // Delete leftovers.
         foreach ($existingcriterions as $existing) {
             $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('id' => $existing->id));
+        }
+
+        // Delete leftovers.
+        foreach ($existingengagement as $existing) {
+            $DB->delete_records(static::TABLE_TASK_ENGAGEMENT, array('id' => $existing->id));
         }
 
         // Create evidences.
@@ -304,9 +316,7 @@ class task extends persistent {
         global $DB;
 
         $criterions = array();
-        //$sql = "SELECT *
-        //          FROM {" . static::TABLE_GRADE_CRITERIONS . "}
-        //         WHERE gradeid = ?";
+
         $sql = "SELECT gc.*
                 FROM mdl_psgrading_grade_criterions gc
                 INNER JOIN mdl_psgrading_task_criterions tc on tc.id = gc.criterionid
@@ -381,10 +391,7 @@ class task extends persistent {
     }
 
     public static function get_cm_user_taskinfo($cmid, $userid, $currtaskid = -1) {
-        global $DB;
-
         $taskinfo = array();
-
         $tasks = static::get_for_coursemodule($cmid);
         foreach ($tasks as $task) {
             if (! $task->get('published')) {
@@ -752,6 +759,7 @@ class task extends persistent {
 
         // Extract subject grades from criterion grades.
         $subjectgrades = array();
+        error_log(print_r($gradeinfo, true));
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {

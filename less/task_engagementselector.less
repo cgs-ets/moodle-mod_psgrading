@@ -1,0 +1,234 @@
+/* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
+#page-mod-psgrading-task {
+
+	#fitem_id_engagementjson {
+		display: none;
+
+		&>div {
+			display: none;
+		}
+
+		&.has-danger {
+			display: block;
+			height: 22px;
+			overflow: hidden;
+
+			&:before {
+				content: "You must complete the engagement. All fields are mandatory.";
+				color: red;
+				width: 100%;
+				height: 22px;
+				margin-left: 15px;
+			}
+		}
+	}
+}
+
+/* Component styling */
+form[data-form="psgrading-task"] {
+	.engagement-selector {
+		background-color: #f0f4f8;
+		padding: 25px 20px 25px 25px;
+
+		.headings,
+		.engagements {
+			display: table;
+			width: 100%;
+		}
+
+		.tbl-th,
+		.tbl-tr {
+			display: table-row;
+			padding: 0;
+		}
+
+		.tbl-th {
+			font-weight: 600;
+			font-size: 110%;
+		}
+
+		.tbl-tr.reordering {
+			background-color: #cce5ff;
+			box-shadow: 0 0 2px 0px #004085;
+		}
+
+		.tbl-col {
+			display: table-cell;
+			//width: 20%;
+			width: 14%;
+			padding: 5px 5px 5px 5px;
+			vertical-align: top;
+			position: relative;
+
+			.label {
+				display: none;
+			}
+
+			textarea,
+			input,
+			select,
+			a {
+				&:focus {
+					outline: none;
+					box-shadow: none;
+				}
+			}
+
+			textarea {
+				width: 100%;
+				height: 140px;
+				border: 1px solid #ddd;
+				border-radius: 2px;
+				padding: 10px;
+				font-size: 90%;
+			}
+
+			input,
+			select {
+				margin-bottom: 3px;
+				width: 100%;
+				border: 1px solid #ddd;
+				border-radius: 2px;
+				padding: 7px 10px;
+				font-size: 90%;
+				height: calc(1.5em + .75rem + 4px);
+			}
+
+			select {
+				color: #aaa;
+
+				&.selected {
+					color: #000;
+				}
+
+				option {
+					color: #000;
+
+					&:disabled {
+						color: #aaa;
+					}
+				}
+			}
+
+			&.tbl-col-last {
+				padding-right: 30px;
+			}
+		}
+
+		a.btn-delete {
+			position: absolute;
+			top: 35px;
+			right: 0;
+			cursor: pointer;
+			color: #005b94;
+		}
+
+		a.btn-reorder {
+			position: absolute;
+			top: 5px;
+			right: 0px;
+			width: 20px;
+			text-align: center;
+			cursor: pointer;
+			color: #005b94;
+		}
+
+		// Hidden toggle.
+		.hidden-control {
+			margin-top: 5px;
+			display: flex;
+
+			input[type=checkbox] {
+				height: 0;
+				width: 0;
+				visibility: hidden;
+				position: absolute;
+				left: -9999px;
+			}
+
+			.toggle {
+				cursor: pointer;
+				text-indent: -9999px;
+				width: 32px;
+				height: 19px;
+				background: grey;
+				display: inline-block;
+				border-radius: 100px;
+				position: relative;
+				margin-right: 3px;
+			}
+
+			.toggle:after {
+				content: '';
+				position: absolute;
+				top: 3px;
+				left: 3px;
+				width: 13px;
+				height: 13px;
+				background: #fff;
+				border-radius: 90px;
+				transition: 0.3s;
+			}
+
+			input:checked+.toggle {
+				background: #005b94;
+			}
+
+			input:checked+.toggle:after {
+				left: calc(100% - 5px);
+				transform: translateX(-100%);
+			}
+
+			.desc {
+				font-size: 82%;
+				margin-left: 4px;
+				line-height: 19px;
+			}
+		}
+
+		.engagement-hidden {
+
+			input,
+			textarea,
+			select {
+				background-color: #f2f2f2;
+
+				&:focus {
+					background: #fff;
+				}
+			}
+		}
+
+		.foot {
+			padding: 5px;
+		}
+
+		@media only screen and (max-width: 1160px) {
+			padding: 0px 0px 25px 0px;
+			background-color: #fff;
+
+			.headings {
+				display: none;
+			}
+
+			.tbl-tr {
+				display: block;
+				background-color: #f0f4f8;
+				padding: 20px 10px 20px 20px;
+				border-radius: 4px;
+			}
+
+			.tbl-col {
+				display: block;
+				width: 100%;
+
+				.label {
+					display: block;
+					position: absolute;
+					right: 10px;
+					text-align: right;
+				}
+			}
+		}
+	}
+}

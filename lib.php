@@ -174,7 +174,7 @@ function psgrading_extend_settings_navigation($settingsnav, $psgradingnode = nul
 * @param stdClass $cm The course module record.
 */
 //function mod_psgrading_pre_course_module_delete($cm) {
-    // IMPORTANT! Running the below code caused "\core_course\task\course_delete_modules" to fail. The activity module could be 
+    // IMPORTANT! Running the below code caused "\core_course\task\course_delete_modules" to fail. The activity module could be
     // deleted in ways other than a manual user deletion. Possibly via course deletion, and also course rollover actions.
     // When this fails it holds up the entire task_adhoc queue.
     //echo get_string('nodelete', 'mod_psgrading', $cm->id);

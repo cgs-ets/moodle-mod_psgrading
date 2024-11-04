@@ -72,7 +72,8 @@ class form_mark extends \moodleform {
             $data->currstudent = null;
         }*/
         // echo '<pre>';
-        // echo print_r($data->task);
+        // echo print_r(gettype($data->task), true);
+        error_log(print_r($data->task->criterions, true));
         // echo '</pre>'; exit;
         /****
         * Notes:
@@ -85,7 +86,7 @@ class form_mark extends \moodleform {
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_criterions',
-            array('criterions' => $data->task->criterions))
+            ['criterions' => $data->task->criterions, 'oldorder' => (int)($data->task->oldorder)])
         );
 
         // Engagement. New way
@@ -94,7 +95,7 @@ class form_mark extends \moodleform {
             $mform->addElement('text', 'engagementjson', 'Engagement JSON');
             $mform->setType('engagementjson', PARAM_RAW);
             $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_engagement',
-                array('engagements' => $data->task->engagements))
+               ['engagements' => $data->task->engagements])
             );
         }
 

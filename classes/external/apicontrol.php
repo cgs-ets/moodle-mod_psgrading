@@ -150,22 +150,22 @@ trait apicontrol {
             $data = json_decode($data);
             if (property_exists($data, 'reflection')) {
                 return reporting::save_reportelement_text(
-                    $data->courseid, 
-                    $data->year, 
-                    $data->period, 
-                    $data->username, 
-                    $data->subjectarea, 
-                    $data->type, 
+                    $data->courseid,
+                    $data->year,
+                    $data->period,
+                    $data->username,
+                    $data->subjectarea,
+                    $data->type,
                     $data->reflection
                 );
-            } elseif (property_exists($data, 'grade')) {
+            } else if (property_exists($data, 'grade')) {
                 return reporting::save_reportelement_effort(
-                    $data->courseid, 
-                    $data->year, 
-                    $data->period, 
-                    $data->username, 
-                    $data->subjectarea, 
-                    $data->type, 
+                    $data->courseid,
+                    $data->year,
+                    $data->period,
+                    $data->username,
+                    $data->subjectarea,
+                    $data->type,
                     $data->grade
                 );
             }
@@ -174,14 +174,14 @@ trait apicontrol {
         if ($action == 'reporting_help') {
             $data = json_decode($data);
             return reporting::get_reportelement_help(
-                $data->courseid, 
-                $data->year, 
-                $data->period, 
-                $data->username, 
-                $data->subjectarea, 
+                $data->courseid,
+                $data->year,
+                $data->period,
+                $data->username,
+                $data->subjectarea,
             );
         }
-        
+
 
 
         return 0;

@@ -113,6 +113,7 @@ class form_task extends \moodleform {
             'criterions' => $criteriondata,
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
+            'oldorder' =>  (get_config('mod_psgrading')->version > 2022102502) ? 0 : 1,
         ));
         $mform->addElement('html', $criterionhtml);
 
@@ -120,24 +121,19 @@ class form_task extends \moodleform {
          *   Engagement
          *----------------------*/
         // A custom JS driven component.
-        // Section title
+        // Section title.
         $mform->addElement('header', 'engagementsection', get_string("mark:engagement", "mod_psgrading"));
         $mform->setExpanded('engagementsection', true, true);
          // The hidden value field. The field is a text field hidden
-         //by css rather than a hidden field so that we can attach validation to it.
+         // by css rather than a hidden field so that we can attach validation to it.
          $mform->addElement('text', 'engagementjson', 'Engagement Criterion JSON');
          $mform->setType('engagementjson', PARAM_RAW);
         $engagementhtml = $OUTPUT->render_from_template('mod_psgrading/engagement_selector', array(
             'engagements' => $engagementdata,
-            // 'enableweights' => $enableweights,
             'engagementstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
         ));
         $mform->addElement('html', $engagementhtml);
 
-        //   echo '<pre>';
-        //     print_r($engagementhtml);
-        //     echo '</pre>';
-        //     exit;
         /*----------------------
          *   Evidence
          *----------------------*/

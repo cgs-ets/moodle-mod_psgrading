@@ -109,6 +109,18 @@ define(['jquery', 'core/log', 'core/ajax'],
                 }
             });
 
+            // Engagement level select.
+            self.rootel.on('click', '.engagements .level', function (e) {
+                e.preventDefault();
+                var level = $(this);
+                self.selectEngagementLevel(level);
+                // Trigger check if user attempts to leave page.
+                Log.debug("Adding leave page check...");
+                window.onbeforeunload = function () {
+                    return 'You have unsaved changes!';
+                }
+            });
+
             // Save.
             self.rootel.on('click', 'input[name="save"]', function (e) {
                 window.onbeforeunload = null;
@@ -300,6 +312,25 @@ define(['jquery', 'core/log', 'core/ajax'],
             }
         };
 
+        /**
+         * Select a engagement level
+         *
+         * @method
+         */
+        Mark.prototype.selectEngagementLevel = function (level) {
+            var self = this;
+
+            var engagement = level.closest('.engagement');
+
+            // If already selected, remove selection.
+            if (level.hasClass('selected')) {
+                engagement.find('.level').removeClass('selected');
+            } else {
+                engagement.find('.level').removeClass('selected');
+                level.addClass('selected');
+            }
+        };
+
 
         /**
          * Regenerate criterion json.
@@ -310,9 +341,9 @@ define(['jquery', 'core/log', 'core/ajax'],
             var self = this;
             var criterionjson = $('input[name="criterionjson"]');
             var criterions = new Array();
-
             self.rootel.find('.criterion.tbl-tr').each(function () {
                 var row = $(this);
+
                 var selectedlevel = row.find('.level.selected').first().data('level');
                 if (typeof selectedlevel === 'undefined') {
                     selectedlevel = 0;
@@ -350,6 +381,7 @@ define(['jquery', 'core/log', 'core/ajax'],
             self.rootel.find('.engagement.tbl-tr').each(function () {
                 var row = $(this);
                 var selectedlevel = row.find('.level.selected').first().data('level');
+
                 if (typeof selectedlevel === 'undefined') {
                     selectedlevel = 0;
                 }

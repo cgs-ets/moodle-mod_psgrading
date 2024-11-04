@@ -27,10 +27,8 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\external\mark_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
@@ -84,6 +82,9 @@ $PAGE->set_heading(format_string($moduleinstance->name));
 $exists = task::record_exists($taskid);
 if ($exists) {
     $task = new task($taskid);
+    // echo '<pre>';
+    // echo print_r($task, true);
+    // echo '</pre>';; exit;
     $title = $task->get('taskname') . ' (' . $task->get('pypuoi') . ')';
     $PAGE->set_title(format_string($title));
     $PAGE->set_heading(format_string($title));
@@ -98,7 +99,6 @@ $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
     // Get groups in the course.
-    //$groups = utils::get_users_course_groups($USER->id, $course->id);
     $groups = utils::get_course_groups($course->id);
 }
 
@@ -129,7 +129,7 @@ if (empty($students)) {
 // Generate mark urls for each student.
 $markurls = [];
 $start = 0;
-foreach($students as $x => $student) {
+foreach ($students as $x => $student) {
     $markurl->param('userid', $student);
     $markurls[] = $markurl->out(false);
     if ($student == $userid) {

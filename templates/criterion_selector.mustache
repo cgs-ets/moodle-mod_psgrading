@@ -23,6 +23,8 @@
 
     View for the criterion selector component.
 }}
+
+{{#oldversion}}
 <div class="criterion-selector" data-stub="{{criterionstub}}">
     <div class="headings">
         <ul class="tbl-th">
@@ -42,3 +44,27 @@
         <a id="btn-addcriterion" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addcriterion, mod_psgrading{{/str}}</a>
     </div>
 </div>
+{{/oldversion}}
+
+
+{{^oldversion}}
+<div class="criterion-selector" data-stub="{{criterionstub}}">
+    <div class="headings">
+        <ul class="tbl-th">
+            <li class="tbl-col tbl-col-1 tbl-col-first">Descriptor</li>
+            <li class="tbl-col tbl-col-2">Fly High</li>
+            <li class="tbl-col tbl-col-3">Go Run With It</li>
+            <li class="tbl-col tbl-col-4">Making Strides</li>
+            <li class="tbl-col tbl-col-5">Good Start</li>
+            <li class="tbl-col tbl-col-6">Not Yet</li>
+            <li class="tbl-col tbl-col-7 tbl-col-last"></li>
+        </ul>
+    </div>
+    <div id="task-criterions" class="criterions">
+        {{>mod_psgrading/criterion_selector_row}}
+    </div>
+    <div class="foot">
+        <a id="btn-addcriterion" class="btn btn-secondary" href="#"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}addcriterion, mod_psgrading{{/str}}</a>
+    </div>
+</div>
+{{/oldversion}}
