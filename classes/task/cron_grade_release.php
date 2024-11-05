@@ -54,8 +54,6 @@ class cron_grade_release extends \core\task\scheduled_task {
         }
 
         //$config = get_config('mod_psgrading');
-
-
         // Get grades that need to be processed, from tasks that are released.
         $this->log_finish("Looking for grades to process");
         $sql = "SELECT tg.*, t.cmid
@@ -175,7 +173,7 @@ class cron_grade_release extends \core\task\scheduled_task {
                         }
                     }
                 }
-                
+
                 // Set the display type now that the post has files.
                 \local_myconnect\persistents\post::determine_attachment_display_type($postid);
 

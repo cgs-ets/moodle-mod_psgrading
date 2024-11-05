@@ -82,9 +82,6 @@ $PAGE->set_heading(format_string($moduleinstance->name));
 $exists = task::record_exists($taskid);
 if ($exists) {
     $task = new task($taskid);
-    // echo '<pre>';
-    // echo print_r($task, true);
-    // echo '</pre>';; exit;
     $title = $task->get('taskname') . ' (' . $task->get('pypuoi') . ')';
     $PAGE->set_title(format_string($title));
     $PAGE->set_heading(format_string($title));

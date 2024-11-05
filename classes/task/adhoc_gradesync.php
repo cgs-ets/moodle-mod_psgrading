@@ -108,7 +108,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
         // Delete remaining grades to complete the sync.
         $this->log("Deleting old grades.", 1);
         $this->delete_grades();
-        
+
         $this->log_finish("Done");
     }
 
@@ -175,7 +175,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             $gradeobj->grade = $grade;
             $this->grades[$key] = $gradeobj;
         }
-        
+
     }
 
     /**

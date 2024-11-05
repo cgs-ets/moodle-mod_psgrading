@@ -33,7 +33,7 @@ $tasks = array(
         'hour' => '*',
         'day' => '*',
         'month' => '*',
-        'dayofweek' => '*'
+        'dayofweek' => '*',
     ),
     array(
         'classname' => 'mod_psgrading\task\cron_gradesync',
@@ -42,7 +42,7 @@ $tasks = array(
         'hour' => '4',
         'day' => '*',
         'month' => '*',
-        'dayofweek' => '*'
+        'dayofweek' => '*',
     ),
     array(
         'classname' => 'mod_psgrading\task\cron_copy_report_images',
@@ -51,6 +51,6 @@ $tasks = array(
         'hour' => '3',
         'day' => '*',
         'month' => '*',
-        'dayofweek' => '*'
+        'dayofweek' => '*',
     ),
 );

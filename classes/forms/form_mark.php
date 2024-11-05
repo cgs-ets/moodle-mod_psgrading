@@ -71,10 +71,7 @@ class form_mark extends \moodleform {
             $data->myconnectattachments = null;
             $data->currstudent = null;
         }*/
-        // echo '<pre>';
-        // echo print_r(gettype($data->task), true);
-        error_log(print_r($data->task->criterions, true));
-        // echo '</pre>'; exit;
+
         /****
         * Notes:
         * - Can't use client validation when using custom action buttons. Validation is done on server in mark.php.
@@ -89,7 +86,7 @@ class form_mark extends \moodleform {
             ['criterions' => $data->task->criterions, 'oldorder' => (int)($data->task->oldorder)])
         );
 
-        // Engagement. New way
+        // Engagement. New way.
         if (get_config('mod_psgrading')->version > 2022102502) {
 
             $mform->addElement('text', 'engagementjson', 'Engagement JSON');
@@ -139,8 +136,8 @@ class form_mark extends \moodleform {
             $mform->addElement('html', '<a class="btn btn-primary" href="#" id="quickmarksave">Save and show next</a>');
         } else {
             $buttonarray = array();
-            $buttonarray[] = &$mform->createElement('submit','save', get_string('mark:save', 'mod_psgrading'));
-            $buttonarray[] = &$mform->createElement('submit','saveshownext', get_string('mark:saveshownext', 'mod_psgrading'));
+            $buttonarray[] = &$mform->createElement('submit', 'save', get_string('mark:save', 'mod_psgrading'));
+            $buttonarray[] = &$mform->createElement('submit', 'saveshownext', get_string('mark:saveshownext', 'mod_psgrading'));
             $buttonarray[] = &$mform->createElement('cancel');
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
         }

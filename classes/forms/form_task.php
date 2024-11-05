@@ -138,7 +138,7 @@ class form_task extends \moodleform {
          *   Evidence
          *----------------------*/
         // A custom JS driven component.
-        // Section title
+        // Section title.
         $mform->addElement('header', 'evidencesection', get_string("task:evidence", "mod_psgrading"));
         $mform->setExpanded('evidencesection', true, true);
         // The hidden value field. The field is a text field hidden by css rather than a hidden field so that we can attach validation to it.
@@ -153,7 +153,7 @@ class form_task extends \moodleform {
         /*----------------------
         *   Notes
         *----------------------*/
-        // Section title
+        // Section title.
         $mform->addElement('header', 'othersection', 'Other');
         $mform->setExpanded('othersection', true, true);
         $type = 'editor';

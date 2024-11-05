@@ -45,17 +45,17 @@ class form_reflection extends \moodleform {
 
 
         if ($type == 'editor') {
-        /*----------------------
-        *   Reflection editor
-        *----------------------*/
+            /*----------------------
+            *   Reflection editor
+            *----------------------*/
             $type = 'editor';
             $name = 'reflection';
             $title = '';
             $mform->addElement($type, $name, $title, null, static::editor_options());
             $mform->setType($name, PARAM_RAW);
         }
-        
-        
+
+
         if ($type == 'form') {
             /*----------------------
             *   Reflection textarea
@@ -95,7 +95,7 @@ class form_reflection extends \moodleform {
      */
     public static function editor_options() {
         return array(
-            'maxfiles' => EDITOR_UNLIMITED_FILES, 
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
         );
     }
 
@@ -112,8 +112,8 @@ class form_reflection extends \moodleform {
             'subdirs' => 0,
             'maxfiles' => 1,
             'maxbytes' => $CFG->maxbytes,
-            'accepted_types' => array('.jpeg','.jpg','.png'),
-            'return_types'=> FILE_INTERNAL | FILE_CONTROLLED_LINK,
+            'accepted_types' => array('.jpeg', '.jpg', '.png'),
+            'return_types' => FILE_INTERNAL | FILE_CONTROLLED_LINK,
         );
     }
 

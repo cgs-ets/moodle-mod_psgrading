@@ -43,7 +43,7 @@
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="notes" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="engagementjson" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="oldorder" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Old order of the criterion levels: 1 Not Yet 2 Good Start 3 Making Strides 4 Go Run with it and 5 Fly high. New Order: 1 Fly high 2 Go run with it 3 Making Strides 4 Good Start 5 Not yet"/>
+        <FIELD NAME="oldorder" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Does this task has the old order of the criterion levels"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
