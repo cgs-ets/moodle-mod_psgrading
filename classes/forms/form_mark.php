@@ -60,6 +60,7 @@ class form_mark extends \moodleform {
 
         $mform =& $this->_form;
         $data = $this->_customdata['data'];
+        
         $quickmark = $this->_customdata['quickmark'];
 
         /*if (empty($data)) {
@@ -107,12 +108,9 @@ class form_mark extends \moodleform {
 
         // Evidences filemanager.
         $mform->addElement('filemanager', 'evidences', '', null, self::evidence_options());
-        
-        if ($oldorder === 1) {
-            // Engagement. Old way.
-            $mform->addElement('select', 'engagement', get_string("mark:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
-            $mform->setType('engagement', PARAM_RAW);
-        }
+        // Engagement. Old way. Do not delete. 
+        $mform->addElement('select', 'engagement', get_string("mark:engagement", "mod_psgrading"), utils::ENGAGEMENTOPTIONS);
+        $mform->setType('engagement', PARAM_RAW);
 
         if ($oldorder  == 0) {
             $element = $mform->getElement('engagement');

@@ -46,6 +46,8 @@ class form_task extends \moodleform {
         $engagementdata = (isset($this->_customdata['engagementdata'])) ? $this->_customdata['engagementdata'] : [];
         $evidencedata = (isset($this->_customdata['evidencedata'])) ? $this->_customdata['evidencedata'] : [];
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
+        $oldorder = (isset($this->_customdata['oldorder'])) ? $this->_customdata['oldorder'] : 0;
+        
 
         /****
         * Notes:
@@ -113,7 +115,7 @@ class form_task extends \moodleform {
             'criterions' => $criteriondata,
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
-            'oldorder' =>  (get_config('mod_psgrading')->version > 2022102502) ? 0 : 1,
+            'oldorder' =>  $oldorder,
         ));
         $mform->addElement('html', $criterionhtml);
 

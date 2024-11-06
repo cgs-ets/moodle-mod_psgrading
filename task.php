@@ -62,9 +62,7 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 $task = new task($edit);
-// echo '<pre>';
-// echo print_r($task);
-// echo '</pre>'; exit;
+
 // Check task exists.
 if (!empty($edit)) {
     $exists = task::record_exists($edit);
@@ -86,7 +84,7 @@ $formdata = $formtask->get_data();
 
 // Check whether loading page or submitting page.
 if (empty($formdata)) { // loading page for edit (not submitted).
-
+   
     // Check if PS Grading activity is locked.
     if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
         $message = get_string('activitylocked', 'mod_psgrading');
@@ -112,7 +110,11 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $published = $task->get('published');
     $proposedrelease = $task->get('proposedrelease');
     $notestext = $task->get('notes');
+    $oldorder = $task->get('oldorder');
 
+//     echo '<pre>';
+// echo print_r($task->get('oldorder'), true);
+// echo '</pre>'; exit;
     // Course activities that can be selected as evidence.
     $evidencedata = utils::get_evidencedata($course, $evidencejson);
 
@@ -145,6 +147,8 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'proposedrelease' => $proposedrelease,
             'enableweights' => $moduleinstance->enableweights,
             'engagementdata' => $engagementdata,
+            'oldorder' => $oldorder,
+
         ),
         'post', '', array('data-form' => 'psgrading-task')
     );
@@ -173,6 +177,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'evidencejson' => $evidencejson,
             'engagementjson' => $engagementjson,
             'notes' => $notes,
+            'oldorder' => $oldorder, // From now on the tasks will have the new ordering and engagement rubric
         )
     );
 

@@ -120,7 +120,8 @@ class task extends persistent {
             ],
             "oldorder" => [
                 'type' => PARAM_INT,
-                'default' => 1,
+                'null' => NULL_ALLOWED,
+                'default' => 0,
             ],
         ];
     }
@@ -161,6 +162,7 @@ class task extends persistent {
         $task->set('engagementjson', $data->engagementjson);
         $task->set('notes', '');
         $task->set('proposedrelease', $data->proposedrelease);
+        
         if ($editing) {
             // Editing.
             list($released, $countdown) = static::get_release_info($id);
@@ -172,8 +174,8 @@ class task extends persistent {
             $task->set('cmid', $cmid);
             $task->set('creatorusername', $USER->username);
             $task->set('deleted', 0);
-            $task->set('oldorder', 0);
             $task->set('published', $data->published);
+            $task->set('oldorder', 0);
         }
         $task->save();
         $id = $task->get('id');
@@ -759,7 +761,7 @@ class task extends persistent {
 
         // Extract subject grades from criterion grades.
         $subjectgrades = array();
-        error_log(print_r($gradeinfo, true));
+        
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {
@@ -1105,14 +1107,16 @@ class task extends persistent {
     public static function publish($id) {
         $task = new static($id);
         // For previous records that have this column in null is throwing an error.
-        if (empty($task->get('engagementjson') )) {
+        if ($task->get('engagementjson') === NULL ) {
             $task->set('engagementjson', '');
         }
-        
-        if (empty($task->get('oldorder') )) {
-            $task->set('oldorder', 1 );
+
+        $value = $task->get('oldorder');
+
+        if (is_null($value) || $value === '') {
+            $task->set('oldorder', 1);
         }
-        
+
         $task->set('published', 1);
 
         $task->update();
