@@ -1108,6 +1108,11 @@ class task extends persistent {
         if (empty($task->get('engagementjson') )) {
             $task->set('engagementjson', '');
         }
+        
+        if (empty($task->get('oldorder') )) {
+            $task->set('oldorder', 1 );
+        }
+        
         $task->set('published', 1);
 
         $task->update();

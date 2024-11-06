@@ -42,6 +42,7 @@ $userid = optional_param('userid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
 $qm = optional_param('qm', 0, PARAM_INT);
 
+
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
     $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
@@ -156,7 +157,7 @@ if ( ! $data->task->published) {
     );
 }
 
-//echo "<pre>"; var_export($data); exit;
+// echo "<pre>"; var_export($data); exit;
 
 // Add task edit, and overview to nav.
 $PAGE->navbar->add($data->task->taskname, $data->task->editurl);
@@ -205,6 +206,7 @@ if (empty($formdata)) {
         'comment' => isset($data->gradeinfo->comment) ? $data->gradeinfo->comment : '',
         'myconnectevidencejson' => $data->task->myconnectevidencejson,
         'selectedmyconnectjson' => $data->task->myconnectevidencejson,
+        'oldorder' => $data->task->oldorder,
     ));
 
     // Run get_data again to trigger validation and set errors.
