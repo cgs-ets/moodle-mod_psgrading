@@ -147,7 +147,10 @@ define(['jquery', 'core/log', 'core/ajax'],
 
                 data['taskid'] = self.taskid
                 data['userid'] = self.userid
-                data['engagement'] = avgEngagement
+
+                if (avgEngagement != '') {
+                    data['engagement'] = avgEngagement
+                }
 
                 Ajax.call([{
                     methodname: 'mod_psgrading_apicontrol',
