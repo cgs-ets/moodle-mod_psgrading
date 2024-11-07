@@ -84,7 +84,7 @@ $formdata = $formtask->get_data();
 
 // Check whether loading page or submitting page.
 if (empty($formdata)) { // loading page for edit (not submitted).
-   
+
     // Check if PS Grading activity is locked.
     if ($moduleinstance->timelocked && $moduleinstance->timelocked < time()) {
         $message = get_string('activitylocked', 'mod_psgrading');
@@ -148,6 +148,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'enableweights' => $moduleinstance->enableweights,
             'engagementdata' => $engagementdata,
             'oldorder' => $oldorder,
+            'hasgrades' => $exported->hasgrades,
 
         ),
         'post', '', array('data-form' => 'psgrading-task')
@@ -177,7 +178,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'evidencejson' => $evidencejson,
             'engagementjson' => $engagementjson,
             'notes' => $notes,
-            'oldorder' => $oldorder, // From now on the tasks will have the new ordering and engagement rubric
+            'oldorder' => $oldorder, // From now on the tasks will have the new ordering and engagement rubric.
         )
     );
 

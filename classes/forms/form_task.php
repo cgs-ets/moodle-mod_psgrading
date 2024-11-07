@@ -47,7 +47,8 @@ class form_task extends \moodleform {
         $evidencedata = (isset($this->_customdata['evidencedata'])) ? $this->_customdata['evidencedata'] : [];
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
         $oldorder = (isset($this->_customdata['oldorder'])) ? $this->_customdata['oldorder'] : 0;
-        
+        $hasgrades = (isset($this->_customdata['hasgrades'])) ? $this->_customdata['hasgrades'] : 0;
+
 
         /****
         * Notes:
@@ -116,6 +117,7 @@ class form_task extends \moodleform {
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
             'oldorder' =>  $oldorder,
+            'hasgrades' => $hasgrades,
         ));
         $mform->addElement('html', $criterionhtml);
 
