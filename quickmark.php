@@ -41,11 +41,11 @@ $nav = optional_param('nav', '', PARAM_RAW);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -53,13 +53,13 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$params = array(
+$params = [
     'cmid' => $cm->id,
     'taskid' => $taskid,
     'groupid' => $groupid,
     'userid' => $userid,
     'qm' => '1',
-);
+];
 $detailsurl = new moodle_url('/mod/psgrading/details.php', $params);
 if (!utils::is_grader()) {
     redirect($detailsurl->out(false));
@@ -68,9 +68,9 @@ if (!utils::is_grader()) {
 
 $quickmarkurl = new moodle_url('/mod/psgrading/quickmark.php', $params);
 $markurl = new moodle_url('/mod/psgrading/mark.php', $params);
-$listurl = new moodle_url('/mod/psgrading/view.php', array(
+$listurl = new moodle_url('/mod/psgrading/view.php', [
     'id' => $cm->id,
-));
+]);
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -139,7 +139,7 @@ $baseurl->param('groupid', 0);
 $baseurl->param('nav', 'all');
 
 // Group navigation.
-$groupsnav = array();
+$groupsnav = [];
 if ($groups) {
     foreach ($groups as $i => $gid) {
         $group = utils::get_group_display_info($gid);
@@ -154,11 +154,11 @@ if ($groups) {
     }
 }
 
-//echo "<pre>"; var_export($data); exit;
+// echo "<pre>"; var_export($data); exit;
 $PAGE->add_body_classes(['fullscreen']);
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('mod_psgrading/group_selector', [
@@ -169,10 +169,10 @@ echo '<div id="quickmark-a"></div>';
 echo '<div id="quickmark-b" class="hidden"></div>';
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/quickmark', 'init', array(
+$PAGE->requires->js_call_amd('mod_psgrading/quickmark', 'init', [
     'markurls' => $markurls,
     'start' => $start,
-));
+]);
 
 echo $OUTPUT->footer();
 

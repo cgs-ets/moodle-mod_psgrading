@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\list_exporter} class.
  *
@@ -27,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -36,12 +37,12 @@ use \mod_psgrading\persistents\task;
 class list_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'listhtml' => [
@@ -73,12 +74,12 @@ class list_exporter extends exporter {
     }
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'courseid' => 'int',
@@ -100,10 +101,10 @@ class list_exporter extends exporter {
         global $DB;
 
         // Group navigation.
-        $baseurl = new \moodle_url('/mod/psgrading/view.php', array(
-            'id' => $this->related['cmid']
-        ));
-        $groups = array();
+        $baseurl = new \moodle_url('/mod/psgrading/view.php', [
+            'id' => $this->related['cmid'],
+        ]);
+        $groups = [];
         foreach ($this->related['groups'] as $i => $groupid) {
             $group = utils::get_group_display_info($groupid);
             $group->viewurl = clone($baseurl);
@@ -119,38 +120,39 @@ class list_exporter extends exporter {
         $basenavurl->param('groupid', 0);
         $basenavurl->param('nav', 'all');
 
-        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', array(
+        $taskcreateurl = new \moodle_url('/mod/psgrading/task.php', [
             'cmid' => $this->related['cmid'],
             'edit' => 0,
-        ));
+        ]);
 
         // Check if there is a cached version of the student rows.
         $listhtml = null;
         $cache = utils::get_cache($this->related['cmid'], 'list-' . $this->related['groupid']);
+
         if ($cache) {
             $listhtml = $cache->value;
         } else {
-            $studentoverviews = array();
+            $studentoverviews = [];
             // Export the grade overviews afresh.
             foreach ($this->related['students'] as $studentid) {
-                $relateds = array(
+                $relateds = [
                     'cmid' => $this->related['cmid'],
                     'userid' => $studentid,
                     'isstaff' => true, // Only staff can view the class list page.
                     'includehiddentasks' => true,
-                );
+                ];
                 $gradeexporter = new grade_exporter(null, $relateds);
                 $gradedata = $gradeexporter->export($output);
                 $studentoverviews[] = $gradedata;
             }
-            $courseoverviewurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
+            $courseoverviewurl = new \moodle_url('/mod/psgrading/courseoverview.php', [
                 'courseid' => $this->related['courseid'],
                 'groupid' => $this->related['groupid'],
                 'reporting' => $this->related['moduleinstance']->reportingperiod,
-            ));
+            ]);
 
             // Add psgrading instance titles above tasks.
-            $cms = array();
+            $cms = [];
             if (!empty($studentoverviews)) {
                 $cmtitle = $DB->get_field_sql(
                     'SELECT p.name
@@ -158,45 +160,45 @@ class list_exporter extends exporter {
                      WHERE c.id = ?
                      AND c.course = p.course
                      AND c.instance = p.id',
-                     array($this->related['cmid'])
+                     [$this->related['cmid']]
                 );
-                $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
+                $viewurl = new \moodle_url('/mod/psgrading/view.php', [
                     'id' => $this->related['cmid'],
-                    'groupid' =>$this->related['groupid'],
-                ));
-                $cms[] = array(
+                    'groupid' => $this->related['groupid'],
+                ]);
+                $cms[] = [
                     'cmid' => $this->related['cmid'],
                     'overviewurl' => $viewurl->out(false),
                     'title' => $cmtitle,
                     'width' => count($studentoverviews[0]->tasks),
-                );
+                ];
             }
 
             // Prerender and cache it.
-            $listhtml = $output->render_from_template('mod_psgrading/list_table', array(
+            $listhtml = $output->render_from_template('mod_psgrading/list_table', [
                 'studentoverviews' => $studentoverviews,
                 'cms' => $cms,
                 'taskcreateurl' => $taskcreateurl->out(false),
                 'courseoverviewurl' => $courseoverviewurl->out(false),
-            ));
+            ]);
             if ($listhtml) {
                 utils::save_cache($this->related['cmid'], 'list-' . $this->related['groupid'], $listhtml);
             }
         }
 
-        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', array(
+        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', [
             'courseid' => $this->related['courseid'],
             'year' => date('Y'),
             'period' => $this->related['moduleinstance']->reportingperiod,
-        ));
+        ]);
 
-        return array(
+        return [
             'listhtml' => $listhtml,
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),
             'reportingurl' => $reportingurl->out(false),
-        );
+        ];
 
     }
 

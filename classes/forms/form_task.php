@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Form definition for posting.
  * *
@@ -27,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
 
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
 
 class form_task extends \moodleform {
 
@@ -48,7 +49,6 @@ class form_task extends \moodleform {
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
         $oldorder = (isset($this->_customdata['oldorder'])) ? $this->_customdata['oldorder'] : 0;
         $hasgrades = (isset($this->_customdata['hasgrades'])) ? $this->_customdata['hasgrades'] : 0;
-
 
         /****
         * Notes:
@@ -88,12 +88,12 @@ class form_task extends \moodleform {
         $name = 'published';
         $label = get_string("task:visibility", "mod_psgrading");
         $desc = get_string("task:visibledesc", "mod_psgrading");
-        $options = array('');
+        $options = [''];
         list($released, $countdown) = task::get_release_info($edit);
         if ($released) {
-            $options = array('disabled' => 'disabled');
+            $options = ['disabled' => 'disabled'];
         }
-        $values = array(0, 1);
+        $values = [0, 1];
         $mform->addElement($type, $name, $label, $desc, $options, $values);
 
         /*----------------------
@@ -112,13 +112,13 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         // Render the criterion from json.
-        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', array(
+        $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', [
             'criterions' => $criteriondata,
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
-            'oldorder' =>  $oldorder,
+            'oldorder' => $oldorder,
             'hasgrades' => $hasgrades,
-        ));
+        ]);
         $mform->addElement('html', $criterionhtml);
 
         /*----------------------
@@ -132,10 +132,10 @@ class form_task extends \moodleform {
          // by css rather than a hidden field so that we can attach validation to it.
          $mform->addElement('text', 'engagementjson', 'Engagement Criterion JSON');
          $mform->setType('engagementjson', PARAM_RAW);
-        $engagementhtml = $OUTPUT->render_from_template('mod_psgrading/engagement_selector', array(
+        $engagementhtml = $OUTPUT->render_from_template('mod_psgrading/engagement_selector', [
             'engagements' => $engagementdata,
             'engagementstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
-        ));
+        ]);
         $mform->addElement('html', $engagementhtml);
 
         /*----------------------
@@ -149,9 +149,9 @@ class form_task extends \moodleform {
         $mform->addElement('text', 'evidencejson', 'Evidence JSON');
         $mform->setType('evidencejson', PARAM_RAW);
         // Render the evidence from json.
-        $evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', array(
+        $evidencehtml = $OUTPUT->render_from_template('mod_psgrading/evidence_selector', [
             'evidences' => (array) $evidencedata,
-        ));
+        ]);
         $mform->addElement('html', $evidencehtml);
 
         /*----------------------
@@ -169,8 +169,8 @@ class form_task extends \moodleform {
         /*----------------------
          *   Buttons.
          *----------------------*/
-        $buttonarray = array();
-        $buttonarray[] = &$mform->createElement('submit','save',get_string('task:save', 'mod_psgrading'));
+        $buttonarray = [];
+        $buttonarray[] = &$mform->createElement('submit', 'save', get_string('task:save', 'mod_psgrading'));
         $buttonarray[] = &$mform->createElement('cancel');
         if (!$released && $edit) {
             $buttonarray[] = &$mform->createElement(
@@ -179,8 +179,7 @@ class form_task extends \moodleform {
                 get_string('task:delete', 'mod_psgrading'),
             );
         }
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
 
         // Hidden fields
         $mform->addElement('hidden', 'edit');
@@ -260,9 +259,9 @@ class form_task extends \moodleform {
      * @return array
      */
     public static function editor_options() {
-        return array(
+        return [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
-        );
+        ];
     }
 
 }

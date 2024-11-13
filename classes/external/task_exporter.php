@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\task_exporter} class.
  *
@@ -36,21 +37,21 @@ use mod_psgrading\utils;
 class task_exporter extends persistent_exporter {
 
     /**
-    * Returns the specific class the persistent should be an instance of.
-    *
-    * @return string
-    */
+     * Returns the specific class the persistent should be an instance of.
+     *
+     * @return string
+     */
     protected static function define_class() {
-        return task::class; 
+        return task::class;
     }
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'editurl' => [
@@ -108,19 +109,19 @@ class task_exporter extends persistent_exporter {
 
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'userid' => 'int?',
         ];
     }
 
-    /* 
+    /*
     * Check if the cm is available to the student.
     */
     private function is_cm_available_for_userid($cm, $userid) {
@@ -151,35 +152,35 @@ class task_exporter extends persistent_exporter {
         global $USER, $DB;
 
         $userid = isset($this->related['userid']) ? $this->related['userid'] : 0;
-        
-        $editurl = new \moodle_url('/mod/psgrading/task.php', array(
+
+        $editurl = new \moodle_url('/mod/psgrading/task.php', [
             'cmid' => $this->data->cmid,
             'edit' => $this->data->id,
-        ));
+        ]);
 
-        $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+        $markurl = new \moodle_url('/mod/psgrading/mark.php', [
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
             'userid' => $userid,
-        ));
+        ]);
 
-        $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+        $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', [
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
             'userid' => $userid,
-        ));
+        ]);
 
-        $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
+        $detailsurl = new \moodle_url('/mod/psgrading/details.php', [
             'cmid' => $this->data->cmid,
             'taskid' => $this->data->id,
             'userid' => $userid,
-        ));
+        ]);
 
         $readabletime = date('j M Y, g:ia', $this->data->timemodified);
 
         // Check if released. Time must be in the past but not 0.
         list($released, $releasecountdown) = task::get_release_info($this->data->id);
-        
+
         // Used to determine URLs below.
         $isstaff = utils::is_grader();
 
@@ -208,7 +209,7 @@ class task_exporter extends persistent_exporter {
                     $sql = "SELECT * 
                             FROM {giportfolio_chapters}
                             WHERE id = ?";
-                    $chapter = $DB->get_record_sql($sql, array($chapterid));
+                    $chapter = $DB->get_record_sql($sql, [$chapterid]);
                     if (empty($chapter)) {
                         unset($evidences[$i]);
                         continue;
@@ -218,14 +219,14 @@ class task_exporter extends persistent_exporter {
                     // Name
                     $evidence->name = $cm->name . ' → ' . $chapter->title;
                     // URL
-                    $evidence->url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                    $evidence->url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', [
                         'id' => $cmid,
                         'chapterid' => $chapterid,
                         'mentee' => $userid,
-                    ));
+                    ]);
                     $evidence->url = $evidence->url->out(false);
                 }
-                else 
+                else
                 {
                     // Evidence type is "cm" or "cm_something" but these are handled the same
                     // get the cm data
@@ -233,7 +234,7 @@ class task_exporter extends persistent_exporter {
                     $modinfo = get_fast_modinfo($cm->course, $USER->id);
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$evidence->refdata];
-                    
+
                     if ( ! $this->is_cm_available_for_userid($cm, $userid)) {
                         unset($evidences[$i]);
                         continue;
@@ -247,15 +248,15 @@ class task_exporter extends persistent_exporter {
                     $evidence->url = clone($cm->url);
 
                     // Based on activity.
-                    switch ($cm->modname) 
+                    switch ($cm->modname)
                     {
                         // For historical purposes. The overarching activity cannot be selected anymore.
                         case 'giportfolio':
                             // Custom URL for all users.
-                            $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', array(
+                            $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', [
                                 'id' => $cm->id,
                                 'userid' => $userid,
-                            ));
+                            ]);
                             break;
 
                         case 'googledocs':
@@ -266,11 +267,11 @@ class task_exporter extends persistent_exporter {
                             // Use default view page for students/parents.
                             if ($isstaff) {
                                 // Custom URL for staff.
-                                $evidence->url = new \moodle_url('/mod/assign/view.php', array(
+                                $evidence->url = new \moodle_url('/mod/assign/view.php', [
                                     'id' => $cm->id,
                                     'action' => 'grader',
                                     'userid' => $userid,
-                                ));
+                                ]);
                             }
                             break;
 
@@ -278,10 +279,10 @@ class task_exporter extends persistent_exporter {
                             // Use default view page for students/parents.
                             if ($isstaff) {
                                 // Custom URL for staff.
-                                $evidence->url = new \moodle_url('/mod/quiz/grade.php', array(
+                                $evidence->url = new \moodle_url('/mod/quiz/grade.php', [
                                     'id' => $cm->id,
                                     'userid' => $userid,
-                                ));
+                                ]);
                             }
                             break;
                     }

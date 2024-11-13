@@ -24,9 +24,9 @@ namespace mod_psgrading;
 
 defined('MOODLE_INTERNAL') || die();
 
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\forms\form_reflection;
-use \mod_psgrading\forms\form_treflection;
+use mod_psgrading\persistents\task;
+use mod_psgrading\forms\form_reflection;
+use mod_psgrading\forms\form_treflection;
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -43,32 +43,32 @@ class reporting {
 
     const TABLE_REPORTING = 'psgrading_reporting';
 
-    const REPORTENGAGEMENTOPTIONS = array (
-        '0' => array (
+    const REPORTENGAGEMENTOPTIONS = [
+        '0' => [
             'full' => '',
             'minimal' => '',
-        ),
-        '1' => array (
+        ],
+        '1' => [
             'full' => 'Limited Participation',
             'minimal' => 'LP',
-        ),
-        '2' => array (
+        ],
+        '2' => [
             'full' => 'Needs Improvement',
             'minimal' => 'NI',
-        ),
-        '3' => array (
+        ],
+        '3' => [
             'full' => 'Acceptable',
             'minimal' => 'A',
-        ),
-        '4' => array (
+        ],
+        '4' => [
             'full' => 'Very Good',
             'minimal' => 'VG',
-        ),
-        '5' => array (
+        ],
+        '5' => [
             'full' => 'Excellent',
             'minimal' => 'E',
-        ),
-    );
+        ],
+    ];
 
     public static function get_staff_classes($username, $year, $period) {
 
@@ -78,17 +78,17 @@ class reporting {
             if (empty($config->staffclassessql)) {
                 return [];
             }
-            $externalDB = \moodle_database::get_driver_instance($config->dbtype, 'native', true);
-            $externalDB->connect($config->dbhost, $config->dbuser, $config->dbpass, $config->dbname, '');
+            $externaldb = \moodle_database::get_driver_instance($config->dbtype, 'native', true);
+            $externaldb->connect($config->dbhost, $config->dbuser, $config->dbpass, $config->dbname, '');
 
             $sql = $config->staffclassessql . ' :year, :period, :username';
-            $params = array(
+            $params = [
                 'year' => $year,
                 'period' => $period,
-                'username' => $username, //41804
-            );
+                'username' => $username, // 41804
+            ];
 
-            $staffclasses = $externalDB->get_records_sql($sql, $params);
+            $staffclasses = $externaldb->get_records_sql($sql, $params);
 
             return array_values($staffclasses);
 
@@ -105,17 +105,17 @@ class reporting {
             if (empty($config->classstudentssql)) {
                 return [];
             }
-            $externalDB = \moodle_database::get_driver_instance($config->dbtype, 'native', true);
-            $externalDB->connect($config->dbhost, $config->dbuser, $config->dbpass, $config->dbname, '');
+            $externaldb = \moodle_database::get_driver_instance($config->dbtype, 'native', true);
+            $externaldb->connect($config->dbhost, $config->dbuser, $config->dbpass, $config->dbname, '');
 
             $sql = $config->classstudentssql . ' :year, :period, :classcode';
-            $params = array(
+            $params = [
                 'year' => $year,
                 'period' => $period,
-                'classcode' => $classcode
-            );
+                'classcode' => $classcode,
+            ];
 
-            $classstudents = $externalDB->get_records_sql($sql, $params);
+            $classstudents = $externaldb->get_records_sql($sql, $params);
 
             return array_values($classstudents);
 
@@ -126,127 +126,127 @@ class reporting {
 
     public static function get_reportelements($assesscode, $yearlevel, $studentreflectionurl, $teacherreflectionurl) {
 
-        $elements = array();
+        $elements = [];
 
         if ($yearlevel >= 0 && $yearlevel <= 6) {// K-6.
             switch ($assesscode) {
                 case 'CH':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Chinese',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'EN':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'English – reading and viewing',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'English – speaking and listening',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'English – writing',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'IN':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'HASS',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Science',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Technology',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Media Arts',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Drama',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'MA':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Maths – measurement and geometry',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Maths – number and algebra',
                         'type' => 'effort',
-                    );
-                    $elements[] = array(
+                    ];
+                    $elements[] = [
                         'subjectarea' => 'Maths – statistics and probability',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'MU':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Music',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'ND':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Indonesian',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'PE':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'H&PE',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'VA':
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Visual Arts',
                         'type' => 'effort',
-                    );
+                    ];
                     break;
                 case 'OL': // Core class
-                    $elements[] = array(
+                    $elements[] = [
                         'subjectarea' => 'Teacher reflection',
                         'type' => 'text',
-                    );
+                    ];
                     if ($yearlevel < 3) { // K - Year 2.
-                        $elements[] = array(
+                        $elements[] = [
                             'subjectarea' => 'Student reflection',
                             'type' => 'text',
                             'type' => 'form',
                             'url' => $studentreflectionurl->out(false),
-                        );
+                        ];
                     } else { // Year 3 - 6.
-                        //$studentreflectionurl->param('type', 'editor');
-                        $elements[] = array(
+                        // $studentreflectionurl->param('type', 'editor');
+                        $elements[] = [
                             'subjectarea' => 'Student reflection',
                             'type' => 'text',
-                            //'type' => 'editor',
-                            //'url' => $studentreflectionurl->out(false),
-                        );
+                            // 'type' => 'editor',
+                            // 'url' => $studentreflectionurl->out(false),
+                        ];
                     }
                     break;
             }
         } else { // Pre-S to Pre-K
             if ($assesscode == 'OL') { // Core class
-                $elements[] = array(
+                $elements[] = [
                     'subjectarea' => 'Teacher reflection',
                     'type' => 'form',
                     'url' => $teacherreflectionurl->out(false),
-                );
-                
-                $elements[] = array(
+                ];
+
+                $elements[] = [
                     'subjectarea' => 'Student reflection',
                     'type' => 'text',
                     'type' => 'form',
                     'url' => $studentreflectionurl->out(false),
-                );
+                ];
             }
         }
 
@@ -258,27 +258,27 @@ class reporting {
 
         foreach ($students as &$sdata) {
             foreach($sdata['reportelements'] as &$element) {
-                $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $element['subjectarea']));
-                $conds = array (
+                $subjectsanitised = strtolower(str_replace([' ', '&', '–'], '', $element['subjectarea']));
+                $conds = [
                     'courseid' => $courseid,
                     'fileyear' => $year,
                     'reportingperiod' => $period,
                     'studentusername' => $sdata['user']->username,
                     'elementname' => $subjectsanitised,
                     'elementtype' => $element['type'],
-                );
+                ];
                 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
                     // Incorporate existing.
                     if ($existing->elementtype == 'effort') {
                         $element['grade'] = $existing->grade;
                         $element['minimal'] = static::REPORTENGAGEMENTOPTIONS[$existing->grade]['minimal'];
                     } else {
-                        if (!empty($existing->reflection) || 
-                            !empty($existing->reflectionimagepath) || 
-                            !empty($existing->reflection2) || 
-                            !empty($existing->reflection3) || 
+                        if (!empty($existing->reflection) ||
+                            !empty($existing->reflectionimagepath) ||
+                            !empty($existing->reflection2) ||
+                            !empty($existing->reflection3) ||
                             !empty($existing->reflection4) ||
-                            !empty($existing->reflection5) 
+                            !empty($existing->reflection5)
                         ) {
                             $element['reflection'] = $existing->reflection;
                             $element['grade'] = 'text_graded';
@@ -293,16 +293,16 @@ class reporting {
     public static function save_reportelement_effort($courseid, $year, $period, $username, $elname, $eltype, $grade) {
         global $DB, $USER;
 
-        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
+        $subjectsanitised = strtolower(str_replace([' ', '&', '–'], '', $elname));
 
-        $data = array (
+        $data = [
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
             'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
-        );
+        ];
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
             $existing->grade = $grade;
@@ -316,7 +316,7 @@ class reporting {
             $data['reflection'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
-        
+
         return true;
 
     }
@@ -324,16 +324,16 @@ class reporting {
     public static function save_reportelement_text($courseid, $year, $period, $username, $elname, $eltype, $reflection) {
         global $DB, $USER;
 
-        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
+        $subjectsanitised = strtolower(str_replace([' ', '&', '–'], '', $elname));
 
-        $data = array (
+        $data = [
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
             'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
-        );
+        ];
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
             $existing->graderusername = $USER->username;
@@ -347,7 +347,7 @@ class reporting {
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
-        
+
         return true;
     }
 
@@ -356,14 +356,14 @@ class reporting {
 
         $user = \core_user::get_user_by_username($username);
 
-        $data = array (
+        $data = [
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
             'elementname' => $elname,
             'elementtype' => $eltype,
-        );
+        ];
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
             $existing->graderusername = $USER->username;
@@ -385,7 +385,7 @@ class reporting {
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
-        
+
         return true;
     }
 
@@ -396,15 +396,15 @@ class reporting {
 
         // Store editor files to permanent file area and get text.
         $reflectiontext = file_save_draft_area_files(
-            $reflection['itemid'], 
-            $context->id, 
-            'mod_psgrading', 
-            'reflection', 
+            $reflection['itemid'],
+            $context->id,
+            'mod_psgrading',
+            'reflection',
             $year . $period . $user->id,
-            form_treflection::editor_options(), 
+            form_treflection::editor_options(),
             $reflection['text'],
         );
-        
+
         // Remove attributes from html.
         $reflectiontext = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $reflectiontext);
 
@@ -420,9 +420,9 @@ class reporting {
             }
 
             // Determine the physical location of the file.
-            $dir = str_replace('\\\\', '\\', $CFG->dataroot) . 
-            '\filedir\\' . substr($file->get_contenthash(), 0, 2) . 
-            '\\' . substr($file->get_contenthash(), 2, 2) . 
+            $dir = str_replace('\\\\', '\\', $CFG->dataroot) .
+            '\filedir\\' . substr($file->get_contenthash(), 0, 2) .
+            '\\' . substr($file->get_contenthash(), 2, 2) .
             '\\';
             $physicalpath = $dir . $file->get_contenthash();
 
@@ -432,7 +432,7 @@ class reporting {
             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
             // Update the src.
-            $img->setAttribute( 'src', $base64 ); 
+            $img->setAttribute( 'src', $base64 );
         }
 
         $reflectionbase64 = $dom->saveHTML();
@@ -460,7 +460,7 @@ class reporting {
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
-        
+
         return true;
     }*/
 
@@ -473,11 +473,11 @@ class reporting {
         if (isset($formdata->reflectionimage)) {
             $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id ); // Join the year, period and userid to make a unique itemid.
             file_save_draft_area_files(
-                $formdata->reflectionimage, 
-                $context->id, 
-                'mod_psgrading', 
-                'reflectionimage', 
-                $uniqueid, 
+                $formdata->reflectionimage,
+                $context->id,
+                'mod_psgrading',
+                'reflectionimage',
+                $uniqueid,
                 form_reflection::image_options()
             );
         }
@@ -491,25 +491,24 @@ class reporting {
             // Get first file. Should only be one.
             $file = reset($files);
             // Determine the physical location of the file.
-            $dir = str_replace('\\\\', '\\', $CFG->dataroot) . 
-            '\filedir\\' . substr($file->get_contenthash(), 0, 2) . 
-            '\\' . substr($file->get_contenthash(), 2, 2) . 
+            $dir = str_replace('\\\\', '\\', $CFG->dataroot) .
+            '\filedir\\' . substr($file->get_contenthash(), 0, 2) .
+            '\\' . substr($file->get_contenthash(), 2, 2) .
             '\\';
             $reflectionimagepath = $dir . $file->get_contenthash();
             $reflectionimagefileid = $file->get_id();
         }
 
+        $subjectsanitised = strtolower(str_replace([' ', '&', '–'], '', $elname));
 
-        $subjectsanitised = strtolower(str_replace(array(' ', '&', '–'), '', $elname));
-
-        $data = array (
+        $data = [
             'courseid' => $courseid,
             'fileyear' => $year,
             'reportingperiod' => $period,
             'studentusername' => $username,
             'elementname' => $subjectsanitised,
             'elementtype' => $eltype,
-        );
+        ];
 
         if ($existing = $DB->get_record('psgrading_reporting', $data, '*', IGNORE_MULTIPLE)) {
             // Update
@@ -528,7 +527,7 @@ class reporting {
             $data['grade'] = '';
             $DB->insert_record(static::TABLE_REPORTING, $data);
         }
-        
+
         return true;
     }
 
@@ -549,9 +548,9 @@ class reporting {
                 FROM {psgrading}
                 WHERE course = ?
                   AND reportingperiod = ?";
-        $modinstances = $DB->get_records_sql($sql, array($courseid, $period));
+        $modinstances = $DB->get_records_sql($sql, [$courseid, $period]);
 
-        $courseinstances = array();
+        $courseinstances = [];
         // Don't include instances that are restricted to specific users.
         foreach($modinstances as $inst) {
             if (empty($inst->restrictto)) {
@@ -563,22 +562,21 @@ class reporting {
         }
 
         // Get the cmids for the mod instances.
-        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
+        $moduleid = $DB->get_field('modules', 'id', ['name' => 'psgrading']);
         list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
         $sql = "SELECT id
                   FROM {course_modules}
                  WHERE course = ?
                    AND module = ?
                    AND instance $insql";
-        $params = array($courseid, $moduleid);
+        $params = [$courseid, $moduleid];
         $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
         if (empty($cms)) {
             return '';
         }
 
-
         // Get student engagement for tasks that have this subject in the rubric.
-        $relevanttasks = array();
+        $relevanttasks = [];
         foreach ($cms as $cm) {
             $sql = "SELECT t.id, t.taskname, tg.engagement
                       FROM {psgrading_tasks} t
@@ -589,14 +587,14 @@ class reporting {
                        AND t.published = 1
                        AND t.deleted = 0
                        AND tg.studentusername = ?";
-            $params = array($subjectarea, $cm->id, $username);
+            $params = [$subjectarea, $cm->id, $username];
             $cmtasks = $DB->get_records_sql($sql, $params);
             $relevanttasks = array_merge($relevanttasks, $cmtasks);
         }
 
         // Render as html table.
-        $html = $OUTPUT->render_from_template('mod_psgrading/reporting_help', array('tasks' => array_values($relevanttasks)));
+        $html = $OUTPUT->render_from_template('mod_psgrading/reporting_help', ['tasks' => array_values($relevanttasks)]);
         return $html;
     }
 
-}        
+}

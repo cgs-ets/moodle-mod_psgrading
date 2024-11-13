@@ -44,4 +44,22 @@ $functions = [
         'loginrequired' => true,
         'ajax'          => true,
     ],
+    'mod_psgrading_get_activities_in_course' => [
+        'classname'     => 'mod_psgrading\external\api',
+        'methodname'    => 'get_activities_in_course',
+        'classpath'     => '',
+        'description'   => 'Get the PS grading activities for a given course',
+        'type'          => 'read',
+        'loginrequired' => true,
+        'ajax'          => true,
+    ],
+    'mod_psgrading_get_tasks_in_activity' => [
+        'classname'     => 'mod_psgrading\external\api',
+        'methodname'    => 'get_tasks_in_activity',
+        'classpath'     => '',
+        'description'   => 'Get the tasks associated to an activity',
+        'type'          => 'read',
+        'loginrequired' => true,
+        'ajax'          => true,
+    ],
 ];

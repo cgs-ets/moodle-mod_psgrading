@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\mark_exporter} class.
  *
@@ -27,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -36,12 +37,12 @@ use \mod_psgrading\persistents\task;
 class mark_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'task' => [
@@ -93,12 +94,12 @@ class mark_exporter extends exporter {
     }
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'task' => 'mod_psgrading\persistents\task',
@@ -121,11 +122,11 @@ class mark_exporter extends exporter {
 
         $baseurl = clone($this->related['markurl']);
 
-		$taskexporter = new task_exporter($this->related['task'], array('userid' => $this->related['userid']));
-		$task = $taskexporter->export($output);
+        $taskexporter = new task_exporter($this->related['task'], ['userid' => $this->related['userid']]);
+        $task = $taskexporter->export($output);
 
         // Group navigation.
-        $groups = array();
+        $groups = [];
         if ($this->related['groups']) {
             foreach ($this->related['groups'] as $i => $groupid) {
                 $group = utils::get_group_display_info($groupid);
@@ -144,7 +145,7 @@ class mark_exporter extends exporter {
         $currstudent = null;
         $nextstudenturl = null;
         $prevstudenturl = null;
-        $students = array();
+        $students = [];
         foreach ($this->related['students'] as $i => $studentid) {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
@@ -152,10 +153,10 @@ class mark_exporter extends exporter {
             $student->markurl = clone($baseurl);
             $student->markurl->param('userid', $student->id);
             $student->markurl = $student->markurl->out(false); // Replace markurl with string val.
-            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', [
                 'cmid' => $task->cmid,
                 'userid' => $student->id,
-            ));
+            ]);
             $student->overviewurl = $overviewurl->out(false);
             if ($this->related['userid'] == $student->id) {
                 $student->iscurrent = true;
@@ -207,13 +208,13 @@ class mark_exporter extends exporter {
 
          // Load task engagemet.
          $task->engagements = task::get_engagement($task->id);
-         foreach ($task->engagements as $engagement) {
-             // add marks to criterion definitions.
-             if (isset($gradeinfo->engagements[$engagement->id])) {
-                 // There is a gradelevel chosen for this criterion.
-                 $engagement->{'level' . $gradeinfo->engagements[$engagement->id]->gradelevel . 'selected'} = true;
-             }
-         }
+        foreach ($task->engagements as $engagement) {
+            // add marks to criterion definitions.
+            if (isset($gradeinfo->engagements[$engagement->id])) {
+                // There is a gradelevel chosen for this criterion.
+                $engagement->{'level' . $gradeinfo->engagements[$engagement->id]->gradelevel . 'selected'} = true;
+            }
+        }
 
         // Zero indexes so templates work.
         $task->criterions = array_values($task->criterions);
@@ -223,9 +224,9 @@ class mark_exporter extends exporter {
         $baseurl->param('nav', 'all');
 
         // Get selected MyConnect grade evidences.
-        $task->myconnectevidences = array();
+        $task->myconnectevidences = [];
         $task->myconnectevidencejson = '';
-        $myconnectfileids = array();
+        $myconnectfileids = [];
         $excludegradeposts = 0;
         if ($gradeinfo) {
             // Get selected ids
@@ -254,14 +255,14 @@ class mark_exporter extends exporter {
             $gradeinfo->graderisdiff = true;
         }
 
-        //echo "<pre>";
-        //echo "pre selected<hr>";
-        //var_export($task->myconnectevidences);
-        //echo "everything<hr>";
-        //var_export($myconnect);
-        //exit;
+        // echo "<pre>";
+        // echo "pre selected<hr>";
+        // var_export($task->myconnectevidences);
+        // echo "everything<hr>";
+        // var_export($myconnect);
+        // exit;
 
-        return array(
+        return [
             'task' => $task,
             'students' => $students,
             'groups' => $groups,
@@ -271,7 +272,7 @@ class mark_exporter extends exporter {
             'prevstudenturl' => $prevstudenturl,
             'gradeinfo' => $gradeinfo,
             'myconnectattachments' => $myconnectattachments,
-        );
+        ];
     }
 
 }

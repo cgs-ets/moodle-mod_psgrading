@@ -26,9 +26,9 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\external\overview_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\external\overview_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
@@ -40,11 +40,11 @@ $viewas = optional_param('viewas', '', PARAM_RAW);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -52,15 +52,15 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$overviewurl = new moodle_url('/mod/psgrading/overview.php', array(
+$overviewurl = new moodle_url('/mod/psgrading/overview.php', [
     'cmid' => $cm->id,
     'groupid' => $groupid,
     'userid' => $userid,
     'nav' => $nav,
-));
-$listurl = new moodle_url('/mod/psgrading/view.php', array(
+]);
+$listurl = new moodle_url('/mod/psgrading/view.php', [
     'id' => $cm->id,
-));
+]);
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -73,7 +73,7 @@ $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
     // Get groups in the course.
-    //$groups = utils::get_users_course_groups($USER->id, $course->id);
+    // $groups = utils::get_users_course_groups($USER->id, $course->id);
     $groups = utils::get_course_groups($course->id);
 }
 // If group is not specified, check if preference is set.
@@ -108,19 +108,19 @@ if (empty($userid) || (!in_array($userid, $students))) {
 }
 
 // Export the data for this page.
-$relateds = array(
+$relateds = [
     'cmid' => (int) $cm->id,
     'groups' => $groups,
     'students' => $students,
     'userid' => $userid,
     'groupid' => $groupid,
     'isstaff' => $viewas ? false : utils::is_grader(),
-);
+];
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 if (empty($data->tasks)) {
-    //echo "TODO: No graded tasks for this user."; exit;
+    // echo "TODO: No graded tasks for this user."; exit;
 }
 // Make some adjustments if viewing as.
 if ($viewas) {
@@ -129,7 +129,7 @@ if ($viewas) {
 }
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 $output = $OUTPUT->header();
 $output .= $OUTPUT->render_from_template('mod_psgrading/overview', $data);

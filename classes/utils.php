@@ -24,7 +24,7 @@ namespace mod_psgrading;
 
 defined('MOODLE_INTERNAL') || die();
 
-use \mod_psgrading\persistents\task;
+use mod_psgrading\persistents\task;
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -40,216 +40,216 @@ require_once(__DIR__.'/vendor/PHP-FineDiff/finediff.php');
  */
 class utils {
 
-    const SUBJECTOPTIONS = array (
-        array (
+    const SUBJECTOPTIONS = [
+         [
             'txt' => 'Subject',
             'val' => '',
             'attrs' => 'disabled selected',
-        ),
-        array (
+         ],
+         [
             'txt' => 'English – reading and viewing',
             'val' => 'English – reading and viewing',
-        ),
-        array (
+         ],
+         [
             'txt' => 'English – speaking and listening',
             'val' => 'English – speaking and listening',
-        ),
-        array (
+         ],
+         [
             'txt' => 'English – writing',
             'val' => 'English – writing',
-        ),
-        array (
+         ],
+         [
             'txt' => 'HASS',
             'val' => 'HASS',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Science',
             'val' => 'Science',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Technology',
             'val' => 'Technology',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Maths – measurement and geometry',
             'val' => 'Maths – measurement and geometry',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Maths – number and algebra',
             'val' => 'Maths – number and algebra',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Maths – statistics and probability',
             'val' => 'Maths – statistics and probability',
-        ),
-        array (
+         ],
+         [
             'txt' => 'H&PE',
             'val' => 'H&PE',
-        ),
-        array (
+         ],
+         [
             'txt' => 'VisArts',
             'val' => 'VisArts',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Chinese',
             'val' => 'Chinese',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Indonesian',
             'val' => 'Indonesian',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Music',
             'val' => 'Music',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Media Arts',
             'val' => 'Media Arts',
-        ),
-        array (
+         ],
+         [
             'txt' => 'Drama',
             'val' => 'Drama',
-        ),
-    );
+         ],
+    ];
 
-    const WEIGHTOPTIONS = array (
-        array (
+    const WEIGHTOPTIONS = [
+         [
             'txt' => 'Weight',
             'val' => '',
             'attrs' => 'disabled selected',
-        ),
-        array (
+         ],
+         [
             'txt' => '5%',
             'val' => '5',
-        ),
-        array (
+         ],
+         [
             'txt' => '10%',
             'val' => '10',
-        ),
-        array (
+         ],
+         [
             'txt' => '15%',
             'val' => '15',
-        ),
-        array (
+         ],
+         [
             'txt' => '20%',
             'val' => '20',
-        ),
-        array (
+         ],
+         [
             'txt' => '25%',
             'val' => '25',
-        ),
-        array (
+         ],
+         [
             'txt' => '30%',
             'val' => '30',
-        ),
-        array (
+         ],
+         [
             'txt' => '35%',
             'val' => '35',
-        ),
-        array (
+         ],
+         [
             'txt' => '40%',
             'val' => '40',
-        ),
-        array (
+         ],
+         [
             'txt' => '45%',
             'val' => '45',
-        ),
-        array (
+         ],
+         [
             'txt' => '50%',
             'val' => '50',
-        ),
-        array (
+         ],
+         [
             'txt' => '55%',
             'val' => '55',
-        ),
-        array (
+         ],
+         [
             'txt' => '60%',
             'val' => '60',
-        ),
-        array (
+         ],
+         [
             'txt' => '65%',
             'val' => '65',
-        ),
-        array (
+         ],
+         [
             'txt' => '70%',
             'val' => '70',
-        ),
-        array (
+         ],
+         [
             'txt' => '75%',
             'val' => '75',
-        ),
-        array (
+         ],
+         [
             'txt' => '80%',
             'val' => '80',
-        ),
-        array (
+         ],
+         [
             'txt' => '85%',
             'val' => '85',
-        ),
-        array (
+         ],
+         [
             'txt' => '90%',
             'val' => '90',
-        ),
-        array (
+         ],
+         [
             'txt' => '95%',
             'val' => '95',
-        ),
-        array (
+         ],
+         [
             'txt' => '100%',
             'val' => '100',
-        ),
-    );
+         ],
+    ];
 
-    const GRADELANG = array (
-        '0' => array (
+    const GRADELANG = [
+        '0' => [
             'full' => '',
             'minimal' => '',
             'tip' => '',
-        ),
-        '5' => array (
+        ],
+        '5' => [
             'full' => '5 (NY)',
             'minimal' => 'NY',
             'tip' => 'Not Yet',
-        ),
-        '4' => array (
+        ],
+        '4' => [
             'full' => '4 (GS)',
             'minimal' => 'GS',
             'tip' => 'Good Start',
-        ),
-        '3' => array (
+        ],
+        '3' => [
             'full' => '3 (MS)',
             'minimal' => 'MS',
             'tip' => 'Making Strides',
-        ),
-        '2' => array (
+        ],
+        '2' => [
             'full' => '2 (GRWI)',
             'minimal' => 'GRWI',
             'tip' => 'Go Run With It',
-        ),
-        '1' => array (
+        ],
+        '1' => [
             'full' => '1 (FH)',
             'minimal' => 'FH',
             'tip' => 'Fly High',
-        ),
-    );
+        ],
+    ];
 
-    const ENGAGEMENTOPTIONS = array (
+    const ENGAGEMENTOPTIONS = [
         '' => 'Select',
         'NI' => 'Needs Improvement',
         'A' => 'Average',
         'VG' => 'Very Good',
         'E' => 'Excellent',
-    );
+    ];
 
-    const ENGAGEMENTWEIGHTS = array (
+    const ENGAGEMENTWEIGHTS = [
         '' => 0,
         'NI' => 25,
         'A' => 50,
         'VG' => 75,
         'E' => 100,
-    );
+    ];
 
-    const PYPUOIOPTIONS = array(
+    const PYPUOIOPTIONS = [
         '' => 'Select',
         'wwa' => 'Who we are',
         'wwaipat' => 'Where we are in place and time',
@@ -257,21 +257,21 @@ class utils {
         'htww' => 'How the world works',
         'hwoo' => 'How we organize ourselves',
         'stp' => 'Sharing the planet',
-    );
+    ];
 
     public static function decorate_subjectdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {
             $criteriondata[$i]->selectedsubject = $row->subject;
-            $criteriondata[$i]->subject = array(
+            $criteriondata[$i]->subject = [
                 'value' => $row->subject,
                 'options' => static::get_subject_options_with_selected($row->subject),
-            );
+            ];
         }
         return $criteriondata;
     }
 
     public static function get_subject_options_with_selected($selected) {
-        $options = array();
+        $options = [];
         foreach (static::SUBJECTOPTIONS as $i => $option) {
             if ($option['val'] === $selected) {
                 $option['sel'] = true;
@@ -285,17 +285,17 @@ class utils {
     public static function decorate_weightdata($criteriondata) {
         foreach ($criteriondata as $i => $row) {
             $weight = isset($row->weight) ? $row->weight : '';
-            $criteriondata[$i]->weight = array(
+            $criteriondata[$i]->weight = [
                 'value' => $weight,
                 'options' => static::get_weight_options_with_selected($weight),
-            );
+            ];
             $criteriondata[$i]->selectedweight = $weight;
         }
         return $criteriondata;
     }
 
     public static function get_weight_options_with_selected($selected) {
-        $options = array();
+        $options = [];
         foreach (static::WEIGHTOPTIONS as $i => $option) {
             if ($option['val'] === $selected) {
                 $option['sel'] = true;
@@ -308,14 +308,14 @@ class utils {
     public static function get_stub_criterion() {
         $criterion = new \stdClass();
         $criterion->id = -1;
-        $criterion->subject = array(
+        $criterion->subject = [
             'value' => '',
             'options' => static::SUBJECTOPTIONS,
-        );
-        $criterion->weight = array(
+        ];
+        $criterion->weight = [
             'value' => '',
             'options' => static::WEIGHTOPTIONS,
-        );
+        ];
         return $criterion;
     }
 
@@ -323,12 +323,12 @@ class utils {
         global $USER, $DB;
 
         // Already selected activities.
-        $selectedcms = array();
+        $selectedcms = [];
         $evidencejson = json_decode($evidencejson);
         if ($evidencejson) {
             $selectedcms = array_column($evidencejson, 'refdata');
         }
-        $activities = array();
+        $activities = [];
         $modinfo = get_fast_modinfo($course, $USER->id);
         $cms = $modinfo->get_cms();
         foreach ($cms as $cm) {
@@ -359,12 +359,12 @@ class utils {
             }*/
 
             // Only include supported activities.
-            if (!in_array($cmrec->modname, array(
+            if (!in_array($cmrec->modname, [
                     'giportfolio',
                     'googledocs',
                     'assign',
                     'quiz',
-                ))) {
+                ])) {
                 continue;
             }
 
@@ -382,7 +382,7 @@ class utils {
                           FROM {giportfolio_chapters}
                          WHERE giportfolioid = ?
                            AND userid = 0";
-                $chapters = $DB->get_records_sql($sql, array($cmrec->instance));
+                $chapters = $DB->get_records_sql($sql, [$cmrec->instance]);
 
                 foreach ($chapters as $chapter) {
                     $ch = new \stdClass();
@@ -391,11 +391,11 @@ class utils {
                     $ch->icon = '';
                     $ch->name = $chapter->title;
                     $ch->modname = 'giportfoliochapter';
-                    $url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', array(
+                    $url = new \moodle_url('/mod/giportfolio/viewgiportfolio.php', [
                         'id' => $cm->id,
                         'chapterid' => $chapter->id,
                         'userid' => $USER->id,
-                    ));
+                    ]);
                     $ch->url = $url->out(false);
                     if (in_array($cmrec->id . '_' . $cmrec->instance . '_' . $chapter->id, $selectedcms)) {
                         $ch->sel = true;
@@ -406,14 +406,13 @@ class utils {
 
             } else {
                 $cmrec->cmid = $cm->id;
-                $cmrec->icon = $cm->get_icon_url()->out(); //$cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
+                $cmrec->icon = $cm->get_icon_url()->out(); // $cmrec->icon = $OUTPUT->pix_icon('icon', $cmrec->name, $cmrec->modname, array('class'=>'icon'));
                 $cmrec->url = $cm->url;
                 if (in_array($cmrec->id, $selectedcms)) {
                     $cmrec->sel = true;
                 }
                 $activities[] = $cmrec;
             }
-
 
         }
         return $activities;
@@ -430,8 +429,8 @@ class utils {
         $context = \context_course::instance($courseid);
 
         // 5 is student.
-        $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
-        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
+        $studentroleid = $DB->get_field('role', 'id', ['shortname' => 'student']);
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); // last param is sort by.
 
         $filteredusers = array_filter( $users, function( $u ) use($excludeusers) {
             return !in_array($u->username, $excludeusers);
@@ -450,8 +449,8 @@ class utils {
         global $DB;
         $context = \context_course::instance($courseid);
         // 5 is student.
-        $studentroleid = $DB->get_field('role', 'id', array('shortname'=> 'student'));
-        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); //last param is sort by.
+        $studentroleid = $DB->get_field('role', 'id', ['shortname' => 'student']);
+        $users = get_role_users($studentroleid, $context, false, 'u.id, u.username, u.firstname, u.lastname', 'u.lastname'); // last param is sort by.
 
         $filteredusers = array_filter( $users, function( $u ) use($usernames) {
             return in_array($u->username, $usernames);
@@ -483,10 +482,10 @@ class utils {
 
         $isstaff = static::is_grader();
         if (!$isstaff) {
-            $vars = array(
+            $vars = [
                 'userid' => $USER->id,
                 'mentees' => static::get_users_mentees($USER->id, 'id'),
-            );
+            ];
             // Filter students to only contain self + mentees.
             $students = array_filter($students, function($student) use ($vars) {
                 if ($student == $vars['userid']) { // The student is the user themselves.
@@ -523,7 +522,7 @@ class utils {
                   FROM {groups} g
                  WHERE g.courseid = ?
               ORDER BY g.name ASC";
-        $groups = $DB->get_records_sql($sql, array($courseid));
+        $groups = $DB->get_records_sql($sql, [$courseid]);
         $groups = array_map('intval', array_column($groups, 'id'));
 
         return $groups;
@@ -544,7 +543,7 @@ class utils {
                    AND g.courseid = ?
                    AND gm.userid = ?
               ORDER BY g.name ASC";
-        $groups = $DB->get_records_sql($sql, array($courseid, $userid));
+        $groups = $DB->get_records_sql($sql, [$courseid, $userid]);
         $groups = array_map('intval', array_column($groups, 'id'));
 
         return $groups;
@@ -559,11 +558,10 @@ class utils {
     public static function get_group_display_info($groupid) {
         global $DB;
 
-
         $sql = "SELECT g.id, g.name, g.description
                   FROM {groups} g
                  WHERE g.id = ?";
-        $group = $DB->get_record_sql($sql, array($groupid));
+        $group = $DB->get_record_sql($sql, [$groupid]);
 
         return $group;
     }
@@ -585,7 +583,7 @@ class utils {
         $sql = "SELECT DISTINCT gm.userid
                   FROM {groups_members} gm
                  WHERE gm.groupid = ?";
-        $members = array_column($DB->get_records_sql($sql, array($groupid)), 'userid');
+        $members = array_column($DB->get_records_sql($sql, [$groupid]), 'userid');
 
         $students = array_values(array_intersect($students, $members));
 
@@ -609,7 +607,7 @@ class utils {
         $sql = "SELECT DISTINCT gm.userid
                   FROM {groups_members} gm
                  WHERE gm.groupid = ?";
-        $members = array_column($DB->get_records_sql($sql, array($groupid)), 'userid');
+        $members = array_column($DB->get_records_sql($sql, [$groupid]), 'userid');
 
         $students = array_values(array_intersect($students, $members));
 
@@ -685,17 +683,17 @@ class utils {
     public static function get_users_mentors($userid, $field = 'username') {
         global $DB;
 
-        $mentors = array();
+        $mentors = [];
         $mentorssql = "SELECT u.*
                          FROM {role_assignments} ra, {context} c, {user} u
                         WHERE c.instanceid = :menteeid
                           AND c.contextlevel = :contextlevel
                           AND ra.contextid = c.id
                           AND u.id = ra.userid";
-        $mentorsparams = array(
+        $mentorsparams = [
             'menteeid' => $userid,
-            'contextlevel' => CONTEXT_USER
-        );
+            'contextlevel' => CONTEXT_USER,
+        ];
         if ($mentors = $DB->get_records_sql($mentorssql, $mentorsparams)) {
             $mentors = array_column($mentors, $field);
         }
@@ -706,17 +704,17 @@ class utils {
         global $DB;
 
         // Get mentees for user.
-        $mentees = array();
+        $mentees = [];
         $menteessql = "SELECT u.*
                          FROM {role_assignments} ra, {context} c, {user} u
                         WHERE ra.userid = :mentorid
                           AND ra.contextid = c.id
                           AND c.instanceid = u.id
                           AND c.contextlevel = :contextlevel";
-        $menteesparams = array(
+        $menteesparams = [
             'mentorid' => $userid,
-            'contextlevel' => CONTEXT_USER
-        );
+            'contextlevel' => CONTEXT_USER,
+        ];
         if ($mentees = $DB->get_records_sql($menteessql, $menteesparams)) {
             $mentees = array_column($mentees, $field);
         }
@@ -751,7 +749,7 @@ class utils {
             $releasepostids = task::get_grade_release_posts($gradeid);
 
             // Convert posts to attachments array.
-            $attachments = array();
+            $attachments = [];
             if (isset($myconnect->posts)) {
                 foreach ($myconnect->posts as $post) {
                     // Don't include attachments from posts that were created by this system as they are already available in other posts.
@@ -780,7 +778,7 @@ class utils {
     public static function get_myconnect_data_for_attachments($username, $attachmentids) {
         global $CFG, $OUTPUT;
 
-		$attachments = [];
+        $attachments = [];
         $context = \context_system::instance();
         $fs = get_file_storage();
         foreach($attachmentids as $attachmentid) {
@@ -803,7 +801,7 @@ class utils {
                     'id' => $file->get_id(),
                     'postid' => $file->get_itemid(),
                     'filename' => $filename,
-                    'formattedfilename' => format_text($filename, FORMAT_HTML, array('context'=>$context)),
+                    'formattedfilename' => format_text($filename, FORMAT_HTML, ['context' => $context]),
                     'mimetype' => $mimetype,
                     'iconimage' => $iconimage,
                     'path' => $path,
@@ -823,7 +821,7 @@ class utils {
         global $DB;
 
         // Set up a new file record for the db. Remove the id so that a new record is inserted.
-        $file = $DB->get_record('files', array('id' => $fileid));
+        $file = $DB->get_record('files', ['id' => $fileid]);
         if (empty($file)) {
             return 0;
         }
@@ -878,22 +876,22 @@ class utils {
         $olddata = json_decode($json1);
         $newdata = json_decode($json2);
 
-        $from_text = static::get_taskdata_as_html($olddata);
-        $to_text = static::get_taskdata_as_html($newdata);
+        $fromtext = static::get_taskdata_as_html($olddata);
+        $totext = static::get_taskdata_as_html($newdata);
 
-        $opcodes = \FineDiff::getDiffOpcodes($from_text, $to_text);
-        return htmlspecialchars_decode(\FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes));
+        $opcodes = \FineDiff::getDiffOpcodes($fromtext, $totext);
+        return htmlspecialchars_decode(\FineDiff::renderDiffToHTMLFromOpcodes($fromtext, $opcodes));
 
     }
 
     public static function get_user_preferences($cmid, $name, $default) {
         global $DB, $USER;
 
-        $value = $DB->get_field('psgrading_userprefs', 'value', array(
+        $value = $DB->get_field('psgrading_userprefs', 'value', [
             'cmid' => $cmid,
             'userid' => $USER->id,
             'name' => $name,
-        ));
+        ]);
 
         return $value ? $value : $default;
     }
@@ -901,11 +899,11 @@ class utils {
     public static function set_user_preference($cmid, $name, $value) {
         global $DB, $USER;
 
-        $preference = $DB->get_record('psgrading_userprefs', array(
+        $preference = $DB->get_record('psgrading_userprefs', [
             'cmid' => $cmid,
             'userid' => $USER->id,
             'name' => $name,
-        ));
+        ]);
 
         if ($preference) {
             $preference->value = $value;
@@ -927,16 +925,16 @@ class utils {
                       FROM {" . task::TABLE_GRADES_CACHE . "}
                      WHERE " . $DB->sql_like('name', ':name') . "
                        AND cmid = :cmid";
-            $DB->execute($sql, array('name' => $name, 'cmid' => $cmid));
+            $DB->execute($sql, ['name' => $name, 'cmid' => $cmid]);
 
             // invalidate the course too.
             if ($name == 'list-%') {
-                $courseid = $DB->get_field('course_modules', 'course', array('id' => $cmid));
+                $courseid = $DB->get_field('course_modules', 'course', ['id' => $cmid]);
                 $sql = "DELETE
                           FROM {" . task::TABLE_GRADES_CACHE . "}
                          WHERE " . $DB->sql_like('name', ':name') . "
                            AND cmid = :cmid";
-                $DB->execute($sql, array('name' => 'list-course-%', 'cmid' => $courseid));
+                $DB->execute($sql, ['name' => 'list-course-%', 'cmid' => $courseid]);
             }
         }
     }
@@ -950,35 +948,37 @@ class utils {
                      WHERE t.id = :taskid
                        AND c.cmid = t.cmid
                        AND " . $DB->sql_like('c.name', ':name');
-            $DB->execute($sql, array('name' => $name, 'taskid' => $taskid));
+            $DB->execute($sql, ['name' => $name, 'taskid' => $taskid]);
         }
     }
 
     public static function get_cache($cmid, $name) {
         global $DB;
-        return $DB->get_record(task::TABLE_GRADES_CACHE, array(
+        return $DB->get_record(task::TABLE_GRADES_CACHE, [
             'cmid' => $cmid,
             'name' => $name,
-        ));
+        ]);
     }
 
     public static function save_cache($cmid, $name, $value) {
         global $DB;
         if ($name) {
-            $DB->insert_record(task::TABLE_GRADES_CACHE, array(
+            $DB->insert_record(task::TABLE_GRADES_CACHE, [
                 'cmid' => $cmid,
                 'name' => $name,
                 'value' => $value,
-            ));
+            ]);
         }
     }
 
     public static function median($values) {
         $count = count($values);
-        if ($count === 0)  return null;
+        if ($count === 0) {  return null;
+        }
         sort($values);
         $half = floor($count / 2);
-        if ($count % 2) return $values[$half];
+        if ($count % 2) { return $values[$half];
+        }
         return ($values[$half - 1] + $values[$half]) / 2.0;
     }
 

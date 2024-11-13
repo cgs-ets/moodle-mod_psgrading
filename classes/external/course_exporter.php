@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\course_exporter} class.
  *
@@ -27,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -36,12 +37,12 @@ use \mod_psgrading\persistents\task;
 class course_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'listhtml' => [
@@ -78,12 +79,12 @@ class course_exporter extends exporter {
     }
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'courseid' => 'int',
@@ -103,13 +104,13 @@ class course_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $DB;
 
-        $baseurl = new \moodle_url('/mod/psgrading/courseoverview.php', array(
+        $baseurl = new \moodle_url('/mod/psgrading/courseoverview.php', [
             'courseid' => $this->related['courseid'],
             'reporting' => $this->related['reportingperiod'],
-        ));
+        ]);
 
-        // Group navigation. 
-        $groups = array();
+        // Group navigation.
+        $groups = [];
         foreach ($this->related['groups'] as $i => $groupid) {
             $group = utils::get_group_display_info($groupid);
             $group->viewurl = clone($baseurl);
@@ -122,8 +123,8 @@ class course_exporter extends exporter {
             $groups[] = $group;
         }
 
-        // Reporting period navigation. 
-        $rps = array();
+        // Reporting period navigation.
+        $rps = [];
         for ($i = 1; $i <= 2; $i++) {
             $rp = new \stdClass();
             $rp->value = $rp->name = $i;
@@ -148,23 +149,23 @@ class course_exporter extends exporter {
         if ($cache) {
             $listhtml = $cache->value;
         } else {
-            $studentoverviews = array();
+            $studentoverviews = [];
             // Export the grade overviews afresh.
             foreach ($this->related['students'] as $studentid) {
-                $relateds = array(
+                $relateds = [
                     'courseid' => $this->related['courseid'],
                     'userid' => $studentid,
                     'isstaff' => true, // Only staff can view the class list page.
                     'includehiddentasks' => true,
                     'reportingperiod' => $this->related['reportingperiod'],
-                );
+                ];
                 $gradeexporter = new grade_exporter(null, $relateds);
                 $gradedata = $gradeexporter->export($output);
                 $studentoverviews[] = $gradedata;
             }
 
             // Add psgrading instance titles above tasks.
-            $cms = array();
+            $cms = [];
             if ( !empty($studentoverviews) && !empty($studentoverviews[0]->tasks) ) {
                 $processingcmid = 0;
                 $width = 0;
@@ -177,19 +178,19 @@ class course_exporter extends exporter {
                                  FROM {psgrading} p, {course_modules} c
                                  WHERE c.id = ?
                                  AND c.course = p.course
-                                 AND c.instance = p.id', 
-                                 array($processingcmid)
+                                 AND c.instance = p.id',
+                                 [$processingcmid]
                             );
-                            $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
+                            $viewurl = new \moodle_url('/mod/psgrading/view.php', [
                                 'id' => $processingcmid,
-                                'groupid' =>$this->related['groupid'],
-                            ));
-                            $cms[] = array(
+                                'groupid' => $this->related['groupid'],
+                            ]);
+                            $cms[] = [
                                 'cmid' => $processingcmid,
                                 'overviewurl' => $viewurl->out(false),
                                 'title' => $cmtitle,
                                 'width' => $width,
-                            );
+                            ];
                         }
                         $processingcmid = $task->cmid;
                         $width = 1;
@@ -204,49 +205,49 @@ class course_exporter extends exporter {
                      FROM {psgrading} p, {course_modules} c
                      WHERE c.id = ?
                      AND c.course = p.course
-                     AND c.instance = p.id', 
-                     array($lasttask->cmid)
+                     AND c.instance = p.id',
+                     [$lasttask->cmid]
                 );
-                $viewurl = new \moodle_url('/mod/psgrading/view.php', array(
+                $viewurl = new \moodle_url('/mod/psgrading/view.php', [
                     'id' => $lasttask->cmid,
-                    'groupid' =>$this->related['groupid'],
-                ));
-                $cms[] = array(
+                    'groupid' => $this->related['groupid'],
+                ]);
+                $cms[] = [
                     'cmid' => $lasttask->cmid,
                     'overviewurl' => $viewurl->out(false),
                     'title' => $cmtitle,
                     'width' => $width,
-                );
+                ];
             }
-            //var_export($cms);
-            //exit;
-            
+            // var_export($cms);
+            // exit;
+
             // Prerender and cache it.
-            $listhtml = $output->render_from_template('mod_psgrading/list_table', array(
+            $listhtml = $output->render_from_template('mod_psgrading/list_table', [
                 'studentoverviews' => $studentoverviews,
                 'cms' => $cms,
-                //'taskcreateurl' => '', // Tasks must be created in the context of a single instance.
-                //'courseoverviewurl' => '', // Not needed because we are already in the course overview.
-            ));
+                // 'taskcreateurl' => '', // Tasks must be created in the context of a single instance.
+                // 'courseoverviewurl' => '', // Not needed because we are already in the course overview.
+            ]);
             if ($listhtml) {
                 utils::save_cache($this->related['courseid'], 'list-course-' . $this->related['reportingperiod'] . '-' . $this->related['groupid'], $listhtml);
             }
         }
 
-        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', array(
+        $reportingurl = new \moodle_url('/mod/psgrading/reporting.php', [
             'courseid' => $this->related['courseid'],
             'year' => date('Y'),
             'period' => $this->related['reportingperiod'],
-        ));
+        ]);
 
-        return array(
+        return [
             'listhtml' => $listhtml,
             'reportingperiods' => $rps,
             'groups' => $groups,
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),
             'reportingurl' => $reportingurl->out(false),
-        );
+        ];
 
     }
 

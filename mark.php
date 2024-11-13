@@ -27,10 +27,10 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\external\mark_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\forms\form_mark;
+use mod_psgrading\external\mark_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
@@ -45,11 +45,11 @@ $qm = optional_param('qm', 0, PARAM_INT);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -57,12 +57,12 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$params = array(
+$params = [
     'cmid' => $cm->id,
     'taskid' => $taskid,
     'groupid' => $groupid,
     'userid' => $userid,
-);
+];
 $detailsurl = new moodle_url('/mod/psgrading/details.php', $params);
 if (!utils::is_grader()) {
     redirect($detailsurl->out(false));
@@ -70,9 +70,9 @@ if (!utils::is_grader()) {
 }
 
 $markurl = new moodle_url('/mod/psgrading/mark.php', $params);
-$listurl = new moodle_url('/mod/psgrading/view.php', array(
+$listurl = new moodle_url('/mod/psgrading/view.php', [
     'id' => $cm->id,
-));
+]);
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -98,7 +98,7 @@ $groups = [];
 // If there are restrictions do not offer group nav.
 if (!$moduleinstance->restrictto) {
     // Get groups in the course.
-    //$groups = utils::get_users_course_groups($USER->id, $course->id);
+    // $groups = utils::get_users_course_groups($USER->id, $course->id);
     $groups = utils::get_course_groups($course->id);
 }
 
@@ -134,14 +134,14 @@ if (empty($userid) || !in_array($userid, $students)) {
 }
 
 // Export the data.
-$relateds = array(
+$relateds = [
     'task' => $task,
     'students' => $students,
     'userid' => $userid,
     'markurl' => $markurl,
     'groups' => $groups,
     'groupid' => $groupid,
-);
+];
 $markexporter = new mark_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $markexporter->export($output);
@@ -164,15 +164,15 @@ $PAGE->navbar->add($data->task->taskname, $data->task->editurl);
 $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
 // Instantiate empty form so that we can "get_data" with minimal processing.
-    //Cannot instantiate empty as data needed for replacegrader checkbox to register properly.
-    //$formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
+    // Cannot instantiate empty as data needed for replacegrader checkbox to register properly.
+    // $formmark = new form_mark($markurl->out(false), array('data' => []), 'post', '', []);
 // Instantiate the form with data.
 $formmark = new form_mark(
-    $markurl->out(false), 
-    array('data' => $data, 'quickmark' => $qm),
-    'post', 
-    '', 
-    array('data-form' => 'psgrading-mark')
+    $markurl->out(false),
+    ['data' => $data, 'quickmark' => $qm],
+    'post',
+    '',
+    ['data-form' => 'psgrading-mark']
 );
 
 if ($formmark->is_cancelled()) {
@@ -194,12 +194,12 @@ if (empty($formdata)) {
     $draftevidence = file_get_submitted_draft_itemid('evidences');
     $evidenceoptions = form_mark::evidence_options();
     $uniqueid = sprintf( "%d%d", $taskid, $userid ); // Join the taskid and userid to make a unique itemid.
-    file_prepare_draft_area($draftevidence, $modulecontext->id, 'mod_psgrading', 
+    file_prepare_draft_area($draftevidence, $modulecontext->id, 'mod_psgrading',
         'evidences', $uniqueid, $evidenceoptions);
 
     // Set the form values.
     $didnotsubmit = isset($data->gradeinfo->didnotsubmit) && $data->gradeinfo->didnotsubmit ? 1 : 0;
-    $formmark->set_data(array(
+    $formmark->set_data([
         'evidences' => $draftevidence,
         'didnotsubmit' => $didnotsubmit,
         'engagement' => isset($data->gradeinfo->engagement) ? $data->gradeinfo->engagement : '',
@@ -207,13 +207,13 @@ if (empty($formdata)) {
         'myconnectevidencejson' => $data->task->myconnectevidencejson,
         'selectedmyconnectjson' => $data->task->myconnectevidencejson,
         'oldorder' => $data->task->oldorder,
-    ));
+    ]);
 
     // Run get_data again to trigger validation and set errors.
     $formdata = $formmark->get_data();
 
     if ($didnotsubmit) {
-      $PAGE->add_body_class('didnotsubmit');
+        $PAGE->add_body_class('didnotsubmit');
     }
 
 } else {
@@ -257,11 +257,11 @@ if (empty($formdata)) {
             );
         }
     }
-    
+
 }
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 // Add vendor js.
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/masonry.pkgd.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/imagesloaded.pkgd.min.js'), true );
@@ -274,24 +274,24 @@ echo $OUTPUT->header();
 
 if ($qm == '1') {
     echo "<style> .psgrading-header-right { display: none !important; } d</style>";
-    //echo '<div><div class="alert alert-warning d-inline-block">Alt mark is an experiemental feature in beta testing. If you would like to pass on any feedback please direct it to <a href="mailto:michael.vangelovski@cgs.act.edu.au" style="text-decoration: underline;">MV</a>.</div></div>';
+    // echo '<div><div class="alert alert-warning d-inline-block">Alt mark is an experiemental feature in beta testing. If you would like to pass on any feedback please direct it to <a href="mailto:michael.vangelovski@cgs.act.edu.au" style="text-decoration: underline;">MV</a>.</div></div>';
     echo "<a target='_top' class='btn btn-primary mb-3' href='{$listurl}' ><i class='fa fa-arrow-left'></i> Back to grades table</a>";
 }
 
-echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', array('formattedattachments' => $data->myconnectattachments));
+echo $OUTPUT->render_from_template('mod_psgrading/myconnect_selector', ['formattedattachments' => $data->myconnectattachments]);
 
 echo $OUTPUT->render_from_template('mod_psgrading/mark_header', $data);
 
 $formmark->display();
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', array(
+$PAGE->requires->js_call_amd('mod_psgrading/mark', 'init', [
     'userid' => $userid,
     'taskid' => $taskid,
     'quickmark' => $qm,
-));
+]);
 
-echo $OUTPUT->render_from_template('mod_psgrading/mark_nextpage', array('url' => $data->nextstudenturl));
+echo $OUTPUT->render_from_template('mod_psgrading/mark_nextpage', ['url' => $data->nextstudenturl]);
 
 echo $OUTPUT->footer();
 

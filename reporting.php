@@ -28,8 +28,8 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\utils;
-use \mod_psgrading\reporting;
+use mod_psgrading\utils;
+use mod_psgrading\reporting;
 
 // Course ID
 $courseid = required_param('courseid', PARAM_INT);
@@ -39,7 +39,7 @@ $groupid = optional_param('groupid', 0, PARAM_INT);
 $nav = optional_param('nav', '', PARAM_RAW);
 
 if ($courseid) {
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
@@ -74,13 +74,13 @@ if (!utils::is_grader()) {
     exit;
 }
 
-$url = new moodle_url('/mod/psgrading/reporting.php', array(
+$url = new moodle_url('/mod/psgrading/reporting.php', [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
     'groupid' => $groupid,
     'nav' => $nav,
-));
+]);
 $PAGE->set_url($url);
 $title = 'Primary School Reporting';
 $PAGE->set_title($title);
@@ -93,7 +93,7 @@ $classes = reporting::get_staff_classes($USER->username, $year, $period);
 // $classes = reporting::get_staff_classes('43404', $year, $period);
 
 // Get students from classes.
-$students = array();
+$students = [];
 foreach ($classes as $i => $class) {
     $classes[$i]->students = reporting::get_class_students($class->classcode, $year, $period);
     $students = array_merge($students, array_column($class->students, 'id'));
@@ -101,13 +101,13 @@ foreach ($classes as $i => $class) {
 $students = array_unique($students);
 
 // Get groups in the course.
-//$groups = utils::get_course_groups($courseid);
+// $groups = utils::get_course_groups($courseid);
 $groups = utils::get_users_course_groups($USER->id, $courseid);
-// Group navigation. 
+// Group navigation.
 $allgroupsurl = clone($url);
 $allgroupsurl->param('groupid', 0);
 $allgroupsurl->param('nav', 'all');
-$groupsnav = array();
+$groupsnav = [];
 foreach ($groups as $i => $gid) {
     $group = utils::get_group_display_info($gid);
     $group->viewurl = clone($url);
@@ -120,7 +120,8 @@ foreach ($groups as $i => $gid) {
     }
     $groupsnav[] = $group;
 }
-usort($groupsnav, function($a, $b) {return strcmp($a->name, $b->name);});
+usort($groupsnav, function($a, $b) {return strcmp($a->name, $b->name);
+});
 if (empty($groupid) && $nav != 'all') {
     $groupid = intval(utils::get_user_preferences($courseid, 'mod_psgrading_course_groupid', 0));
     if ($groupid) {
@@ -149,17 +150,17 @@ $sql = "SELECT username FROM {user} WHERE id $insql";
 $courseusers = array_column($DB->get_records_sql($sql, $inparams), 'username');
 $students = array_intersect($students, $courseusers);
 
-array_walk($students, function(&$value, $key) { 
+array_walk($students, function(&$value, $key) {
     $user = \core_user::get_user_by_username($value);
     if (!empty($user)) {
         utils::load_user_display_info($user);
-        $value = array (
+        $value = [
             'sort' => $user->lastname,
             'username' => $user->username,
             'user' => $user,
-            'assesscodes' => array(),
-            'reportelements' => array(),
-        );
+            'assesscodes' => [],
+            'reportelements' => [],
+        ];
     }
 });
 
@@ -168,17 +169,17 @@ $sort = array_column($students, 'sort');
 array_multisort($sort, SORT_ASC, $students);
 $students = array_combine(array_column($students, 'username'), $students);
 
-//echo "<pre>"; var_export($students); exit;
-$teacherreflectionurl = new moodle_url('/mod/psgrading/teacherreflection.php', array(
+// echo "<pre>"; var_export($students); exit;
+$teacherreflectionurl = new moodle_url('/mod/psgrading/teacherreflection.php', [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
-));
-$studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', array(
+]);
+$studentreflectionurl = new moodle_url('/mod/psgrading/studentreflection.php', [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
-));
+]);
 // Cache reporting requirements for each student.
 foreach ($classes as $class) {
     foreach ($class->students as $classstudent) {
@@ -195,7 +196,7 @@ foreach ($classes as $class) {
             $teacherreflectionurl->param('user', $classstudent->id);
             $elements = reporting::get_reportelements($class->assesscode, $classstudent->yearlevel, $studentreflectionurl, $teacherreflectionurl);
             $students[$classstudent->id]['reportelements'] = array_merge(
-                $students[$classstudent->id]['reportelements'], 
+                $students[$classstudent->id]['reportelements'],
                 $elements
             );
         }
@@ -205,8 +206,8 @@ foreach ($classes as $class) {
 // Get existing reporting values.
 reporting::populate_existing_reportelements($courseid, $year, $period, $students);
 
-// Reporting period navigation. 
-$rps = array();
+// Reporting period navigation.
+$rps = [];
 for ($i = 1; $i <= 2; $i++) {
     $rp = new \stdClass();
     $rp->value = $rp->name = $i;
@@ -220,7 +221,7 @@ for ($i = 1; $i <= 2; $i++) {
     $rps[] = $rp;
 }
 
-$data = array(
+$data = [
     'students' => array_values($students),
     'period' => $period,
     'year' => $year,
@@ -229,21 +230,21 @@ $data = array(
     'allgroupsurl' => $allgroupsurl->out(false),
     'groups' => $groupsnav,
     'groupid' => $groupid,
-);
+];
 
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 echo $OUTPUT->header();
 
 echo $OUTPUT->render_from_template('mod_psgrading/reporting', $data);
 
 // Add scripts.
-$PAGE->requires->js_call_amd('mod_psgrading/reporting', 'init', array(
+$PAGE->requires->js_call_amd('mod_psgrading/reporting', 'init', [
     'courseid' => $courseid,
     'year' => $year,
     'period' => $period,
-));
+]);
 
 echo $OUTPUT->footer();

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main scheduled task to set up syncing of grades to the staging table. 
+ * The main scheduled task to set up syncing of grades to the staging table.
  * The effort is divided into independent adhoc tasks that process the sync for a single course.
  *
  * @package   mod_psgrading
@@ -34,9 +34,9 @@ class cron_gradesync extends \core\task\scheduled_task {
     use \core\task\logging_trait;
 
     /**
-    * A list of courses that have instances of the ps grading activity.
-    */
-    protected $courseswithinstances = array();
+     * A list of courses that have instances of the ps grading activity.
+     */
+    protected $courseswithinstances = [];
 
     /**
      * Get a descriptive name for this task (shown to admins).
@@ -65,7 +65,7 @@ class cron_gradesync extends \core\task\scheduled_task {
 
         // call sync grads function.
         $this->sync_grades();
-        
+
         $this->log_finish("Done");
     }
 
@@ -84,26 +84,25 @@ class cron_gradesync extends \core\task\scheduled_task {
                      WHERE id = ?
                        AND visible = 1
                        AND (enddate = 0 OR enddate > ?)";
-            $params = array($coursewithinstance->course, time());
+            $params = [$coursewithinstance->course, time()];
             if ($course = $DB->get_record_sql($sql, $params)) {
                 // Reporting period 1.
                 $this->log("Creating adhoc gradesync task for $course->fullname ($course->id) for reporting period 1", 1);
                 $task = new \mod_psgrading\task\adhoc_gradesync();
-                $task->set_custom_data(array($course->id, 1));
+                $task->set_custom_data([$course->id, 1]);
                 $task->set_component('mod_psgrading');
                 \core\task\manager::queue_adhoc_task($task);
-
 
                 // Reporting period 2.
                 $this->log("Creating adhoc gradesync task for $course->fullname ($course->id) for reporting period 2", 1);
                 $task = new \mod_psgrading\task\adhoc_gradesync();
-                $task->set_custom_data(array($course->id, 2));
+                $task->set_custom_data([$course->id, 2]);
                 $task->set_component('mod_psgrading');
                 \core\task\manager::queue_adhoc_task($task);
             }
         }
     }
 
-   
+
 
 }

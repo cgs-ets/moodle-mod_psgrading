@@ -42,11 +42,11 @@ $refresh = optional_param('refresh', 0, PARAM_INT);
 
 if ($id) {
     $cm             = get_coursemodule_from_id('psgrading', $id, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -59,26 +59,26 @@ require_login($course, true, $cm);
 // If a non-staff, redirect them to the studentoverview page instead.
 $isstaff = utils::is_grader();
 if (!$isstaff) {
-	$url = new moodle_url('/mod/psgrading/studentoverview.php', array('courseid' => $course->id));
-	redirect($url->out(false));
-	exit;
+    $url = new moodle_url('/mod/psgrading/studentoverview.php', ['courseid' => $course->id]);
+    redirect($url->out(false));
+    exit;
 }
 
-$viewurl = new moodle_url('/mod/psgrading/view.php', array(
+$viewurl = new moodle_url('/mod/psgrading/view.php', [
     'id' => $cm->id,
     'groupid' => $groupid,
     'nav' => $nav,
-));
+]);
 
 if ($refresh) {
     utils::invalidate_cache($cm->id, 'list-' . $groupid);
-	redirect($viewurl->out(false));
-	exit;
+    redirect($viewurl->out(false));
+    exit;
 }
 
 $PAGE->set_url($viewurl);
 $PAGE->set_title(format_string($moduleinstance->name));
-//$PAGE->set_heading(format_string($course->fullname));
+// $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_heading(format_string($moduleinstance->name));
 $PAGE->set_context($modulecontext);
 $PAGE->add_body_class('psgrading-overview-page');
@@ -113,28 +113,31 @@ if (empty($students)) {
     if ($groupid) {
         // Try redirecting to top.
         $viewurl->param('groupid', 0);
-        $viewurl->param('nav', 'all'); 
+        $viewurl->param('nav', 'all');
         redirect($viewurl->out(false));
     }
-    //echo "No students in course";
-    //exit;
+    // echo "No students in course";
+    // exit;
 }
 
 // Get the tasks.
-$relateds = array(
+$relateds = [
     'courseid' => (int) $course->id,
     'cmid' => (int) $cm->id,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
     'moduleinstance' => $moduleinstance,
-);
+];
 $listexporter = new list_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $listexporter->export($output);
+// echo '<pre>';
+// echo print_r($data, true);
+// echo '</pre>'; exit;
 
 // Add css and vendor js.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/dragscroll.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.5.0/list.min.js'), true );

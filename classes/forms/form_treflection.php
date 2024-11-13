@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Form definition for posting.
  * *
@@ -28,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
-use \mod_psgrading\reporting;
+use mod_psgrading\reporting;
 
 class form_treflection extends \moodleform {
 
@@ -52,14 +53,13 @@ class form_treflection extends \moodleform {
         $mform->addElement('textarea', 'reflection4', 'Strategies that we as educators are currently using to support learning focus for <strong>' . $customedata['name'] . '</strong>', 'wrap="virtual" rows="7" cols="50"');
         $mform->addElement('textarea', 'reflection5', 'Possible ways parents can nurture growth at home', 'wrap="virtual" rows="7" cols="50"');
 
-        
         /*----------------------
         *   Buttons
         *----------------------*/
-        $buttonarray = array();
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'save', get_string('task:save', 'mod_psgrading'));
         $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
 
         /*----------------------
         *   Hidden fields
@@ -75,9 +75,9 @@ class form_treflection extends \moodleform {
      * @return array
      */
     public static function editor_options() {
-        return array(
-            'maxfiles' => EDITOR_UNLIMITED_FILES, 
-        );
+        return [
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
+        ];
     }
 
 

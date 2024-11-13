@@ -27,13 +27,13 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
 
-	$options = array('', "mysqli", "oci", "pdo", "pgsql", "sqlite3", "sqlsrv");
+    $options = ['', "mysqli", "oci", "pdo", "pgsql", "sqlite3", "sqlsrv"];
     $options = array_combine($options, $options);
     $settings->add(new admin_setting_configselect(
-        'mod_psgrading/dbtype', 
-        get_string('dbtype', 'mod_psgrading'), 
-        get_string('dbtype_desc', 'mod_psgrading'), 
-        '', 
+        'mod_psgrading/dbtype',
+        get_string('dbtype', 'mod_psgrading'),
+        get_string('dbtype_desc', 'mod_psgrading'),
+        '',
         $options
     ));
     $settings->add(new admin_setting_configtext('mod_psgrading/dbhost', get_string('dbhost', 'mod_psgrading'), get_string('dbhost_desc', 'mod_psgrading'), 'localhost'));

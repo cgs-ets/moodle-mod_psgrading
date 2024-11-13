@@ -42,9 +42,9 @@ class course_module_instance_list_viewed extends \core\event\course_module_insta
      * @return course_module_instance_list_viewed
      */
     public static function create_from_course(\stdClass $course) {
-        $params = array(
-            'context' => \context_course::instance($course->id)
-        );
-        return course_module_instance_list_viewed::create($params);
+        $params = [
+            'context' => \context_course::instance($course->id),
+        ];
+        return self::create($params);
     }
 }

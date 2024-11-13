@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * For non-staff - an overview for a single student including all tasks from all activities in the course. 
+ * For non-staff - an overview for a single student including all tasks from all activities in the course.
  * Also the students landing page when a single ps grading instance is accessed.
  *
  * @package   mod_psgrading
@@ -27,9 +27,9 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\external\overview_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\external\overview_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $courseid = optional_param('courseid', 0, PARAM_INT);
@@ -40,23 +40,23 @@ $viewas = optional_param('viewas', '', PARAM_RAW);
 $reporting = optional_param('reporting', 1, PARAM_INT);
 
 if ($courseid) {
-    $course         = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
 
 require_login($course, true);
 
-$overviewurl = new moodle_url('/mod/psgrading/studentoverview.php', array(
+$overviewurl = new moodle_url('/mod/psgrading/studentoverview.php', [
     'courseid' => $courseid,
     'groupid' => $groupid,
     'userid' => $userid,
     'nav' => $nav,
     'reporting' => $reporting,
-));
-$listurl = new moodle_url('/mod/psgrading/courseoverview.php', array(
+]);
+$listurl = new moodle_url('/mod/psgrading/courseoverview.php', [
     'courseid' => $courseid,
-));
+]);
 
 $coursecontext = context_course::instance($courseid);
 $PAGE->set_context($coursecontext);
@@ -65,7 +65,7 @@ $PAGE->set_title(format_string($course->shortname) . ' Student Grades');
 $PAGE->set_heading(format_string($course->shortname) . ' Student Grades');
 
 // Get groups in the course.
-//$groups = utils::get_users_course_groups($USER->id, $courseid);
+// $groups = utils::get_users_course_groups($USER->id, $courseid);
 $groups = utils::get_course_groups($courseid);
 
 // If group is not specified, check if preference is set.
@@ -91,9 +91,9 @@ if (empty($students)) {
     // If no students and also not a grader (teacher in course) then the user is not going to be able to see anything.
     $isstaff = utils::is_grader();
     if (!$isstaff) {
-        $courseurl = new moodle_url('/course/view.php', array(
+        $courseurl = new moodle_url('/course/view.php', [
             'id' => $courseid,
-        ));
+        ]);
         $notice = \core\notification::error('Access Primary School Grading module denied because you are neither a parent, student, nor a teacher in this course.');
         redirect(
             $courseurl->out(false),
@@ -102,7 +102,7 @@ if (empty($students)) {
             \core\output\notification::NOTIFY_ERROR
         );
         exit;
-    } 
+    }
     redirect($listurl->out(false));
     exit;
 }
@@ -115,7 +115,7 @@ if (empty($userid) || (!in_array($userid, $students))) {
 }
 
 // Export the data for this page.
-$relateds = array(
+$relateds = [
     'courseid' => (int) $courseid,
     'groups' => $groups,
     'students' => $students,
@@ -123,12 +123,12 @@ $relateds = array(
     'groupid' => $groupid,
     'isstaff' => $viewas ? false : utils::is_grader(),
     'reportingperiod' => $reporting,
-);
+];
 $overviewexporter = new overview_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $overviewexporter->export($output);
 if (empty($data->tasks)) {
-    //echo "TODO: No graded tasks for this user."; exit;
+    // echo "TODO: No graded tasks for this user."; exit;
 }
 // Make some adjustments if viewing as.
 if ($viewas) {
@@ -137,7 +137,7 @@ if ($viewas) {
 }
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 $output = $OUTPUT->header();
 $output .= $OUTPUT->render_from_template('mod_psgrading/overview', $data);

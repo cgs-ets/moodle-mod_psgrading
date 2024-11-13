@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\mark_exporter} class.
  *
@@ -27,9 +28,9 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\external\mark_exporter;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
+use mod_psgrading\external\mark_exporter;
 
 /**
  * Exporter of a single task
@@ -37,12 +38,12 @@ use \mod_psgrading\external\mark_exporter;
 class details_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'task' => [
@@ -84,12 +85,12 @@ class details_exporter extends exporter {
     }
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'cmid' => 'int',
@@ -112,14 +113,14 @@ class details_exporter extends exporter {
 
         $baseurl = clone($this->related['detailsurl']);
 
-        $taskexporter = new task_exporter($this->related['task'], array('userid' => $this->related['userid']));
+        $taskexporter = new task_exporter($this->related['task'], ['userid' => $this->related['userid']]);
         $task = $taskexporter->export($output);
 
         $isstaff = $this->related['isstaff'];
 
         // Student navigation.
         $prevstudenturl = $nextstudenturl = null;
-        $students = array();
+        $students = [];
         foreach ($this->related['students'] as $i => $studentid) {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
@@ -127,10 +128,10 @@ class details_exporter extends exporter {
             $student->detailsurl = clone($baseurl);
             $student->detailsurl->param('userid', $student->id);
             $student->detailsurl = $student->detailsurl->out(false); // Replace markurl with string val.
-            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', array(
+            $overviewurl = new \moodle_url('/mod/psgrading/overview.php', [
                 'cmid' => $task->cmid,
                 'userid' => $student->id,
-            ));
+            ]);
             $student->overviewurl = $overviewurl->out(false);
             if ($this->related['userid'] == $student->id) {
                 $student->iscurrent = true;
@@ -205,9 +206,9 @@ class details_exporter extends exporter {
 
         if ($task->released && !utils::is_hide_ps_grades()) {
             // Get selected MyConnect grade evidences.
-            $task->myconnectevidences = array();
+            $task->myconnectevidences = [];
             $task->myconnectevidencejson = '';
-            $myconnectids = array();
+            $myconnectids = [];
             if ($gradeinfo) {
                 // Get selected ids
                 $myconnectids = task::get_myconnect_grade_evidences($gradeinfo->id);
@@ -230,15 +231,15 @@ class details_exporter extends exporter {
             if ($files) {
                 foreach ($files as $file) {
                     $filename = $file->get_filename();
-                    //$mimetype = $file->get_mimetype();
-                    //$iconimage = $output->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon'));
+                    // $mimetype = $file->get_mimetype();
+                    // $iconimage = $output->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon'));
                     $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$modulecontext->id.'/mod_psgrading/evidences/'.$uniqueid.'/'.$filename);
-                    //$isimage = in_array($mimetype, array('image/gif', 'image/jpeg', 'image/png')) ? 1 : 0;
-                    $task->evidences[] = array(
+                    // $isimage = in_array($mimetype, array('image/gif', 'image/jpeg', 'image/png')) ? 1 : 0;
+                    $task->evidences[] = [
                         'icon' => $path . '?preview=thumb',
                         'url' => $path,
                         'name' => $filename,
-                    );
+                    ];
                 }
             }
         } else {
@@ -248,7 +249,7 @@ class details_exporter extends exporter {
             unset($gradeinfo->comment);
         }
 
-        return array(
+        return [
             'task' => $task,
             'students' => $students,
             'currstudent' => $currstudent,
@@ -256,7 +257,7 @@ class details_exporter extends exporter {
             'prevstudenturl' => $prevstudenturl,
             'gradeinfo' => $gradeinfo,
             'isstaff' => $isstaff,
-        );
+        ];
 
     }
 

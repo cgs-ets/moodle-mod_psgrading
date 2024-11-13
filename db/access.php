@@ -25,14 +25,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-	'mod/psgrading:addinstance' => array(
+$capabilities = [
+    'mod/psgrading:addinstance' => [
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        ),
-        'clonepermissionsfrom' => 'moodle/course:manageactivities'
-    ),
-);
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/course:manageactivities',
+    ],
+];

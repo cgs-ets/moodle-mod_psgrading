@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -33,11 +32,11 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
 
     protected function define_structure() {
 
-        $paths = array();
+        $paths = [];
         $userinfo = $this->get_setting_value('userinfo');
 
         $paths[] = new restore_path_element('psgrading', '/activity/psgrading');
-        $paths[] = new restore_path_element('psgrading_task', '/activity/psgrading/tasks/task');        
+        $paths[] = new restore_path_element('psgrading_task', '/activity/psgrading/tasks/task');
         $paths[] = new restore_path_element('psgrading_criterion', '/activity/psgrading/tasks/task/criterions/criterion');
 
         // Return the paths wrapped into standard activity structure

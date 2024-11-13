@@ -41,7 +41,6 @@ class mod_psgrading_mod_form extends moodleform_mod {
     public function definition() {
         global $CFG, $DB, $COURSE, $PAGE;
 
-
         // NEGATED REQUIREMENT: Only allow a single instance per course.
         /*$urlparams = $PAGE->url->params();
         if (isset($urlparams['add'])) {
@@ -67,7 +66,7 @@ class mod_psgrading_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('modform:name', 'mod_psgrading'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('modform:name', 'mod_psgrading'), ['size' => '64']);
 
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
@@ -89,14 +88,14 @@ class mod_psgrading_mod_form extends moodleform_mod {
         // Custom fields here.
 
         // Enable weights
-        //$mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
-        //$mform->setDefault('enableweights', 0);
+        // $mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
+        // $mform->setDefault('enableweights', 0);
 
         // Reporting period
-        $options = array(
+        $options = [
             '1' => 1,
             '2' => 2,
-        );
+        ];
         $select = $mform->addElement('select', 'reportingperiod', get_string('reportingperiod', 'mod_psgrading'), $options);
         $year = date('Y');
         $config = get_config('mod_psgrading');
@@ -108,7 +107,6 @@ class mod_psgrading_mod_form extends moodleform_mod {
         // Restrict to specific students
         $mform->addElement('textarea', 'restrictto', get_string("restrictto", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
 
-        
         $mform->addElement('textarea', 'excludeusers', get_string("excludeusers", "mod_psgrading"), 'wrap="virtual" rows="7" cols="100"');
 
         // Add standard elements.

@@ -26,20 +26,20 @@
 
 namespace mod_psgrading\external;
 
+
 defined('MOODLE_INTERNAL') || die();
 
+use core_external\external_api;
 require_once($CFG->libdir.'/externallib.php');
 
-use external_api;
-
-/**
- * Provides an external API of the plugin.
- *
- * @copyright 2020 Michael Vangelovski
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+ /**
+  * Provides an external API of the plugin.
+  *
+  * @copyright 2020 Michael Vangelovski
+  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+  */
 class api extends external_api {
-	//use autosave;
-	use apicontrol;
-    
+    use apicontrol;
+    use get_activities_in_course;
+    use get_tasks_in_activity;
 }

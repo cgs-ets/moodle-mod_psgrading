@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides {@link mod_psgrading\external\post_reply} trait.
+ * Provides {@link mod_psgrading\external\apicontrol} trait.
  *
  * @package   mod_psgrading
  * @category  external
- * @copyright 2021 Michael Vangelovski
+ * @copyright 2024 Veronica Bermegui
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
@@ -28,43 +28,47 @@ namespace mod_psgrading\external;
 
 defined('MOODLE_INTERNAL') || die();
 
-use mod_psgrading\persistents\task;
-use external_function_parameters;
-use external_value;
-use context_user;
+use core_external\external_function_parameters;
+use core_external\external_single_structure;
+use core_external\external_value;
+use mod_psgrading\importingtask;
 
 require_once($CFG->libdir.'/externallib.php');
 
 /**
- * Trait implementing the external function mod_psgrading_autosave.
+ * Trait implementing the external function mod_psgrading_get_activities_in_course.
  */
-trait autosave {
+trait get_activities_in_course {
 
     /**
      * Describes the structure of parameters for the function.
      *
      * @return external_function_parameters
      */
-    public static function autosave_parameters() {
+    public static function get_activities_in_course_parameters() {
         return new external_function_parameters([
-            'formjson' => new external_value(PARAM_RAW, 'Form data'),
+            'data' => new external_value(PARAM_RAW, 'JSON with the id courses selected'),
         ]);
     }
 
     /**
-     * Autosave the form data.
+     * API Controller
      *
      * @param int $query The search query
      */
-    public static function autosave($formjson) {
-        global $USER;
+    public static function get_activities_in_course($data) {
+        global $COURSE;
+
+        // Setup context.
+        $context = \context_user::instance($COURSE->id);
+        self::validate_context($context);
 
         // Validate params.
-        self::validate_parameters(self::autosave_parameters(), compact('formjson'));
+        self::validate_parameters(self::get_activities_in_course_parameters(), ['data' => $data]);
+        $data = implode(',', json_decode($data));
+        $activities = json_encode(importingtask::get_psgrading_activities($data));
 
-        // Save.
-        return task::save_draft($formjson);
-
+        return ['templatecontext' => $activities];
     }
 
     /**
@@ -72,7 +76,10 @@ trait autosave {
      *
      * @return external_single_structure
      */
-    public static function autosave_returns() {
-         return new external_value(PARAM_INT, 'Result');
+    public static function get_activities_in_course_returns() {
+        return new external_single_structure([ 'templatecontext' =>
+                                                new external_value(PARAM_RAW, 'Context for the mustache template'), ]
+        );
     }
+
 }

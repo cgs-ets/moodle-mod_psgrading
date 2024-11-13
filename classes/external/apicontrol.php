@@ -28,9 +28,9 @@ namespace mod_psgrading\external;
 
 defined('MOODLE_INTERNAL') || die();
 
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
-use \mod_psgrading\reporting;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\reporting;
 use external_function_parameters;
 use external_value;
 use context_user;
@@ -49,7 +49,7 @@ trait apicontrol {
      */
     public static function apicontrol_parameters() {
         return new external_function_parameters([
-            'action' =>  new external_value(PARAM_RAW, 'Action'),
+            'action' => new external_value(PARAM_RAW, 'Action'),
             'data' => new external_value(PARAM_RAW, 'Data to process'),
         ]);
     }
@@ -181,8 +181,6 @@ trait apicontrol {
                 $data->subjectarea,
             );
         }
-
-
 
         return 0;
     }

@@ -39,7 +39,7 @@ $nav = optional_param('nav', '', PARAM_RAW);
 $refresh = optional_param('refresh', 0, PARAM_INT);
 
 if ($courseid) {
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
@@ -50,17 +50,17 @@ require_login($course, true);
 // If a non-staff, redirect them to the studentoverview page instead.
 $isstaff = utils::is_grader();
 if (!$isstaff) {
-	$url = new moodle_url('/mod/psgrading/studentoverview.php', array('courseid' => $course->id));
-	redirect($url->out(false));
-	exit;
-} 
+    $url = new moodle_url('/mod/psgrading/studentoverview.php', ['courseid' => $course->id]);
+    redirect($url->out(false));
+    exit;
+}
 
-$courseoverviewurl = new moodle_url('/mod/psgrading/courseoverview.php', array(
+$courseoverviewurl = new moodle_url('/mod/psgrading/courseoverview.php', [
     'courseid' => $course->id,
     'reporting' => $reporting,
     'groupid' => $groupid,
     'nav' => $nav,
-));
+]);
 
 $PAGE->set_url($courseoverviewurl);
 $title = format_string($course->fullname) . ' Grading Overview';
@@ -70,7 +70,7 @@ $PAGE->set_context($coursecontext);
 $PAGE->add_body_class('psgrading-overview-page');
 
 // Get groups in the course.
-//$groups = utils::get_users_course_groups($USER->id, $course->id);
+// $groups = utils::get_users_course_groups($USER->id, $course->id);
 $groups = utils::get_course_groups($course->id);
 // If group is not specified, check if preference is set.
 if (empty($groupid) && $nav != 'all') {
@@ -86,8 +86,8 @@ if (empty($groupid) && $nav != 'all') {
 
 if ($refresh) {
     utils::invalidate_cache($courseid, 'list-course-' . $reporting . '-' . $groupid);
-	redirect($courseoverviewurl->out(false));
-	exit;
+    redirect($courseoverviewurl->out(false));
+    exit;
 }
 
 // Get the students in the course.
@@ -102,30 +102,30 @@ if (empty($students)) {
     if ($groupid) {
         // Try redirecting to top.
         $courseoverviewurl->param('groupid', 0);
-        $courseoverviewurl->param('nav', 'all'); 
+        $courseoverviewurl->param('nav', 'all');
         redirect($courseoverviewurl->out(false));
     }
-    //echo "No students in course";
-    //exit;
+    // echo "No students in course";
+    // exit;
 }
 
-$relateds = array(
+$relateds = [
     'courseid' => (int) $course->id,
     'reportingperiod' => $reporting,
     'groups' => $groups,
     'groupid' => $groupid,
     'students' => $students,
-);
+];
 $listexporter = new course_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $listexporter->export($output);
 
-//echo "<pre>"; var_export($data); exit; 
+// echo "<pre>"; var_export($data); exit;
 
 // Add css and vendor js.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 // Maybe do not allow sorting as this is something that should happen in instance context??
-//$PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
+// $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/Sortable.min.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/dragscroll.js'), true );
 $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/psgrading/js/listjs/1.5.0/list.min.js'), true );
 

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main scheduled task to set up syncing of grades to the staging table. 
+ * The main scheduled task to set up syncing of grades to the staging table.
  * The effort is divided into independent adhoc tasks that process the sync for a single course.
  *
  * @package   mod_psgrading
@@ -85,7 +85,7 @@ class cron_copy_report_images extends \core\task\scheduled_task {
                 AND elementname = 'studentreflection'
                 AND f.id = r.reflectionimagefileid ";
         $rows = $DB->get_records_sql($sql);
-        
+
         // Copy the images.
         foreach ($rows as $row) {
             $mime = explode("/", $row->mimetype);
@@ -93,7 +93,7 @@ class cron_copy_report_images extends \core\task\scheduled_task {
 
             // -- overwrite old images
             // If file already exists in distination, don't copy it again.
-            //if (file_exists($distinationdir . $distinationfilename)) {continue;}
+            // if (file_exists($distinationdir . $distinationfilename)) {continue;}
 
             // If file exists in source dir, copy it over.
             $this->log("Copying " . $row->reflectionimagepath . " to " . $distinationdir . $distinationfilename, 2);
@@ -103,10 +103,10 @@ class cron_copy_report_images extends \core\task\scheduled_task {
                 utils::image_fix_orientation($distinationdir . $distinationfilename, $row->mimetype);
             }
         }
-        
+
         $this->log_finish("Copy complete.");
     }
 
-   
+
 
 }

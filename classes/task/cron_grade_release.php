@@ -53,7 +53,7 @@ class cron_grade_release extends \core\task\scheduled_task {
             return;
         }
 
-        //$config = get_config('mod_psgrading');
+        // $config = get_config('mod_psgrading');
         // Get grades that need to be processed, from tasks that are released.
         $this->log_finish("Looking for grades to process");
         $sql = "SELECT tg.*, t.cmid
@@ -72,7 +72,7 @@ class cron_grade_release extends \core\task\scheduled_task {
 
             // Check restrictto and excludeusers.
             $cm = get_coursemodule_from_id('psgrading', $grade->cmid, 0, false, MUST_EXIST);
-            $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+            $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
             if (in_array($grade->studentusername, explode(',', $moduleinstance->excludeusers))) {
                 $this->log_finish("Skipping as this student is excluded: " . $grade->studentusername, 3);
                 continue;
@@ -99,7 +99,7 @@ class cron_grade_release extends \core\task\scheduled_task {
             }
 
             // Get the task record for reference.
-            $task = $DB->get_record('psgrading_tasks', array('id' => $grade->taskid));
+            $task = $DB->get_record('psgrading_tasks', ['id' => $grade->taskid]);
 
             // Create a MyConnect post.
             $this->log("Creating MyConnect post.", 2);
@@ -118,21 +118,21 @@ class cron_grade_release extends \core\task\scheduled_task {
 
             $postdata->attachments = 0;
 
-            $params = array(
+            $params = [
                 'cmid' => $task->cmid,
                 'taskid' => $task->id,
                 'groupid' => 0,
                 'userid' => $student->id,
-            );
+            ];
             $detailsurl = new \moodle_url('/mod/psgrading/details.php', $params);
-            $postdata->comment = array(
-                'text' => $OUTPUT->render_from_template('mod_psgrading/release_grade_myconnect_new', array(
+            $postdata->comment = [
+                'text' => $OUTPUT->render_from_template('mod_psgrading/release_grade_myconnect_new', [
                     'detailsurl' => $detailsurl->out(false),
                     'taskname' => $task->taskname,
-                )),
+                ]),
                 'format' => '1',
                 'itemid' => 0,
-            );
+            ];
 
             $postid = \local_myconnect\persistents\post::save_from_formdata(0, $postdata, $grader);
             if ($postid) {

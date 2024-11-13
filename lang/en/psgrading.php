@@ -25,29 +25,29 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Primary School Grading';
-$string['pluginname_desc'] = 'A continuous grading system.';
-$string['modulename'] = 'Primary School Grading';
-$string['modulenameplural'] = 'Primary School Grading';
-$string['modform:name'] = 'Name';
-$string['modform:name_help'] = 'Name for the PS Grading system';
-
-$string['settingsheaderdb'] = 'Database connection';
-$string['dbtype'] = 'Database driver';
-$string['dbtype_desc'] = 'ADOdb database driver name, type of the external database engine.';
+$string['classstudentssql'] = 'Class Students SQL';
 $string['dbhost'] = 'Database host';
 $string['dbhost_desc'] = 'Type database server IP address or host name. Use a system DSN name if using ODBC. Use a PDO DSN if using PDO.';
 $string['dbname'] = 'Database name';
-$string['dbuser'] = 'Database user';
 $string['dbpass'] = 'Database password';
-$string['staffclassessql'] = 'Staff Classes SQL';
-$string['classstudentssql'] = 'Class Students SQL';
-$string['s1cutoffmonth'] = 'Semester 1 cutoff month';
-$string['s1cutoffday'] = 'Semester 1 cutoff day';
-
-
+$string['dbtype'] = 'Database driver';
+$string['dbtype_desc'] = 'ADOdb database driver name, type of the external database engine.';
+$string['dbuser'] = 'Database user';
+$string['modform:name'] = 'Name';
+$string['modform:name_help'] = 'Name for the PS Grading system';
+$string['modulename'] = 'Primary School Grading';
+$string['modulenameplural'] = 'Primary School Grading';
 $string['pluginadministration'] = '';
-//$string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\' is allowed per course.';
+$string['pluginname'] = 'Primary School Grading';
+$string['pluginname_desc'] = 'A continuous grading system.';
+
+$string['s1cutoffday'] = 'Semester 1 cutoff day';
+$string['s1cutoffmonth'] = 'Semester 1 cutoff month';
+$string['settingsheaderdb'] = 'Database connection';
+$string['staffclassessql'] = 'Staff Classes SQL';
+
+
+// $string['singleinstanceonly'] = 'Only one instance of \'Primary School Grading\' is allowed per course.';
 $string['cron_grade_release'] = 'PS Grading grade release processing.';
 
 $string['tasksetup'] = 'Task setup';
@@ -125,4 +125,17 @@ $string['crontask_copy_report_images'] = 'Copy reflection images';
 $string['crontask_gradesync'] = 'PSGrading Sync grades';
 
 $string['nodelete'] = 'PS Grading activities cannot be deleted. Please contact the Service Desk and provide the following details in your request: `Delete Primary Grading activity CMID {$a}`';
+
+// Import task.
+$string['import_task'] = 'Import Tasks';
+$string['all'] = 'All';
+$string['allpsgactivities'] = 'Select one or more PS grading activities';
+$string['courseswithpsgrading'] = 'Select one or more courses with PS grading activities';
+$string['tasktoimport'] = 'Select one or more tasks to import';
+$string['import'] = 'Import';
+$string['cancel'] = 'Cancel';
+$string['remindernoevidencecopy'] = 'Keep in mind the evidence of the task(s) selected will not be imported.';
+$string['redirectmessage'] = '{$a} . You will be redirected to the tasks table view';
+
+
 

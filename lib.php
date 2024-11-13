@@ -42,7 +42,7 @@ require_once($CFG->libdir.'/filelib.php');
  * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - justsend the file
  */
-function mod_psgrading_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function mod_psgrading_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }
@@ -74,8 +74,10 @@ function psgrading_supports($feature) {
         define("MOD_PURPOSE_ASSESSMENT", false);
     }
     switch ($feature) {
-        case FEATURE_MOD_INTRO: return true;
-        case FEATURE_BACKUP_MOODLE2:  return true;
+        case FEATURE_MOD_INTRO:
+return true;
+        case FEATURE_BACKUP_MOODLE2:
+return true;
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_ASSESSMENT;
         default:
@@ -132,12 +134,12 @@ function psgrading_update_instance($moduleinstance, $mform = null) {
 function psgrading_delete_instance($id) {
     global $DB;
 
-    $exists = $DB->get_record('psgrading', array('id' => $id));
+    $exists = $DB->get_record('psgrading', ['id' => $id]);
     if (!$exists) {
         return false;
     }
 
-    $DB->delete_records('psgrading', array('id' => $id));
+    $DB->delete_records('psgrading', ['id' => $id]);
 
     return true;
 }
@@ -164,7 +166,38 @@ function psgrading_extend_navigation($psgradingnode, $course, $module, $cm) {
  * @param settings_navigation $settingsnav {@see settings_navigation}
  * @param navigation_node $psgradingnode {@see navigation_node}
  */
-function psgrading_extend_settings_navigation($settingsnav, $psgradingnode = null) {
+function psgrading_extend_settings_navigation($settingsnav, $navref = null) {
+
+    $keys = $navref->get_children_key_list();
+    $beforekey = null;
+    $i = array_search('modedit', $keys);
+
+    if ($i === false && array_key_exists(0, $keys)) {
+        $beforekey = $keys[0];
+    } else if (array_key_exists($i + 1, $keys)) {
+        $beforekey = $keys[$i + 1];
+    }
+
+    $cm = $settingsnav->get_page()->cm;
+    if (!$cm) {
+        return;
+    }
+
+    $context = $cm->context;
+    $course = $settingsnav->get_page()->course;
+
+    if (!$course) {
+        return;
+    }
+
+    if (has_capability('mod/psgrading:addinstance', $settingsnav->get_page()->cm->context)) {
+        $url = new moodle_url('/mod/psgrading/import_task.php', ['cmid' => $settingsnav->get_page()->cm->id]);
+
+        $node = navigation_node::create(get_string('import_task', 'psgrading'),
+            $url,
+            navigation_node::TYPE_SETTING, null, 'mod_psgrading_import_task');
+        $navref->add_node($node, $beforekey);
+    }
 }
 
 
@@ -173,10 +206,10 @@ function psgrading_extend_settings_navigation($settingsnav, $psgradingnode = nul
 *
 * @param stdClass $cm The course module record.
 */
-//function mod_psgrading_pre_course_module_delete($cm) {
+// function mod_psgrading_pre_course_module_delete($cm) {
     // IMPORTANT! Running the below code caused "\core_course\task\course_delete_modules" to fail. The activity module could be
     // deleted in ways other than a manual user deletion. Possibly via course deletion, and also course rollover actions.
     // When this fails it holds up the entire task_adhoc queue.
-    //echo get_string('nodelete', 'mod_psgrading', $cm->id);
-    //exit;
-//}
+    // echo get_string('nodelete', 'mod_psgrading', $cm->id);
+    // exit;
+// }

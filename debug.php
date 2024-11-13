@@ -28,7 +28,7 @@ require_once(__DIR__.'/lib.php');
 
 use mod_psgrading\utils;
 use mod_psgrading\external\grade_exporter;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\persistents\task;
 
 $context = context_system::instance();
 
@@ -43,13 +43,13 @@ require_capability('moodle/site:config', $context, $USER->id);
 
 echo "Creating adhoc_gradesync task for course 2322, reporting period 2.";
 $task = new \mod_psgrading\task\adhoc_gradesync();
-$task->set_custom_data(array(2322, 2));
+$task->set_custom_data([2322, 2]);
 $task->set_component('mod_psgrading');
 \core\task\manager::queue_adhoc_task($task);
 
 
 
-//echo "<pre>";
+// echo "<pre>";
 
 /*$task = new \mod_psgrading\task\cron_grade_release;
 $task->execute();
@@ -83,13 +83,13 @@ $tasks = task::compute_grades_for_course(
     1, //reportingperiod
 );
 foreach ($tasks as $task) {
-	foreach ($task->subjectgrades as $subjectgrade) {
-		$subjectgrade = (object) $subjectgrade;
-		if ($subjectgrade->subjectsanitised == 'Mathsmeasurementandgeometry' && $subjectgrade->grade > 0) {
-			var_export($task->taskname);
-			var_export($subjectgrade);
-		}
-	}
+    foreach ($task->subjectgrades as $subjectgrade) {
+        $subjectgrade = (object) $subjectgrade;
+        if ($subjectgrade->subjectsanitised == 'Mathsmeasurementandgeometry' && $subjectgrade->grade > 0) {
+            var_export($task->taskname);
+            var_export($subjectgrade);
+        }
+    }
 }
 exit;
 */

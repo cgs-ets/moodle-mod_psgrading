@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provides {@link mod_psgrading\external\overview_exporter} class.
  *
@@ -27,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 
 use renderer_base;
 use core\external\exporter;
-use \mod_psgrading\utils;
-use \mod_psgrading\persistents\task;
+use mod_psgrading\utils;
+use mod_psgrading\persistents\task;
 
 /**
  * Exporter of a single task
@@ -36,12 +37,12 @@ use \mod_psgrading\persistents\task;
 class overview_exporter extends exporter {
 
     /**
-    * Return the list of additional properties.
-    *
-    * Calculated values or properties generated on the fly based on standard properties and related data.
-    *
-    * @return array
-    */
+     * Return the list of additional properties.
+     *
+     * Calculated values or properties generated on the fly based on standard properties and related data.
+     *
+     * @return array
+     */
     protected static function define_other_properties() {
         return [
             'tasks' => [
@@ -103,12 +104,12 @@ class overview_exporter extends exporter {
     }
 
     /**
-    * Returns a list of objects that are related.
-    *
-    * Data needed to generate "other" properties.
-    *
-    * @return array
-    */
+     * Returns a list of objects that are related.
+     *
+     * Data needed to generate "other" properties.
+     *
+     * @return array
+     */
     protected static function define_related() {
         return [
             'courseid' => 'int?',
@@ -132,21 +133,21 @@ class overview_exporter extends exporter {
     protected function get_other_values(renderer_base $output) {
         global $USER;
 
-        $baseurl = new \moodle_url('/mod/psgrading/overview.php', array(
+        $baseurl = new \moodle_url('/mod/psgrading/overview.php', [
             'cmid' => $this->related['cmid'],
             'userid' => $this->related['userid'],
-        ));
-        $relateds = array(
+        ]);
+        $relateds = [
             'userid' => $this->related['userid'],
             'isstaff' => $this->related['isstaff'],
-        );
+        ];
         if ($this->related['cmid']) {
             $relateds['cmid'] = $this->related['cmid'];
         } else {
-            $baseurl = new \moodle_url('/mod/psgrading/studentoverview.php', array(
+            $baseurl = new \moodle_url('/mod/psgrading/studentoverview.php', [
                 'courseid' => $this->related['courseid'],
                 'userid' => $this->related['userid'],
-            ));
+            ]);
             $relateds['courseid'] = $this->related['courseid'];
             $relateds['reportingperiod'] = $this->related['reportingperiod'];
         }
@@ -156,10 +157,10 @@ class overview_exporter extends exporter {
         $tasks = $gradedata->tasks;
         $reportgrades = $gradedata->reportgrades;
 
-        //echo "<pre>"; var_export($gradedata); exit;
+        // echo "<pre>"; var_export($gradedata); exit;
 
         // Group navigation.
-        $groups = array();
+        $groups = [];
         foreach ($this->related['groups'] as $i => $groupid) {
             $group = utils::get_group_display_info($groupid);
             $group->overviewurl = clone($baseurl);
@@ -176,7 +177,7 @@ class overview_exporter extends exporter {
         $currstudent = null;
         $nextstudenturl = null;
         $prevstudenturl = null;
-        $students = array();
+        $students = [];
         foreach ($this->related['students'] as $i => $studentid) {
             $student = \core_user::get_user($studentid);
             utils::load_user_display_info($student);
@@ -218,10 +219,10 @@ class overview_exporter extends exporter {
 
         $basenavurl = clone($baseurl);
         $basenavurl->param('groupid', 0);
-        $basenavurl->param('nav', 'all'); 
+        $basenavurl->param('nav', 'all');
 
         // Reporting period navigation.
-        $rps = array();
+        $rps = [];
         if ($this->related['cmid']) {
             // Specific instance in view, no need for reporting period navigation.
         } else {
@@ -239,7 +240,7 @@ class overview_exporter extends exporter {
             }
         }
 
-        $out = array(
+        $out = [
             'tasks' => $tasks,
             'reportgrades' => $reportgrades,
             'groups' => $groups,
@@ -251,7 +252,7 @@ class overview_exporter extends exporter {
             'prevstudenturl' => $prevstudenturl,
             'isstaff' => $this->related['isstaff'],
             'reportingperiods' => $rps,
-        );
+        ];
         return $out;
     }
 

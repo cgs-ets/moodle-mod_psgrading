@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Form definition for posting.
  * *
@@ -28,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
-use \mod_psgrading\reporting;
+use mod_psgrading\reporting;
 
 class form_reflection extends \moodleform {
 
@@ -43,7 +44,6 @@ class form_reflection extends \moodleform {
         $mform =& $this->_form;
         $type = $this->_customdata['type'];
 
-
         if ($type == 'editor') {
             /*----------------------
             *   Reflection editor
@@ -54,7 +54,6 @@ class form_reflection extends \moodleform {
             $mform->addElement($type, $name, $title, null, static::editor_options());
             $mform->setType($name, PARAM_RAW);
         }
-
 
         if ($type == 'form') {
             /*----------------------
@@ -75,10 +74,10 @@ class form_reflection extends \moodleform {
         /*----------------------
         *   Buttons
         *----------------------*/
-        $buttonarray = array();
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'save', get_string('task:save', 'mod_psgrading'));
         $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
 
         /*----------------------
         *   Hidden fields
@@ -94,9 +93,9 @@ class form_reflection extends \moodleform {
      * @return array
      */
     public static function editor_options() {
-        return array(
+        return [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
-        );
+        ];
     }
 
 
@@ -108,13 +107,13 @@ class form_reflection extends \moodleform {
     public static function image_options() {
         global $CFG;
 
-        return array(
+        return [
             'subdirs' => 0,
             'maxfiles' => 1,
             'maxbytes' => $CFG->maxbytes,
-            'accepted_types' => array('.jpeg', '.jpg', '.png'),
+            'accepted_types' => ['.jpeg', '.jpg', '.png'],
             'return_types' => FILE_INTERNAL | FILE_CONTROLLED_LINK,
-        );
+        ];
     }
 
 }

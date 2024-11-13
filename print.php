@@ -26,10 +26,10 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\external\task_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\forms\form_mark;
+use mod_psgrading\external\task_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
@@ -39,11 +39,11 @@ $taskid = required_param('taskid', PARAM_INT);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -51,10 +51,10 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$printurl = new moodle_url('/mod/psgrading/print.php', array(
+$printurl = new moodle_url('/mod/psgrading/print.php', [
     'cmid' => $cm->id,
     'taskid' => $taskid,
-));
+]);
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -95,7 +95,7 @@ $task->engagements = utils::decorate_weightdata($task->engagements);
 $task->showmeta = true;
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 $output = $OUTPUT->header();
 
@@ -104,7 +104,7 @@ $output = $OUTPUT->header();
 // var_export($task);
 // exit;
 
-$output .= $OUTPUT->render_from_template('mod_psgrading/print', array('task' => $task));
+$output .= $OUTPUT->render_from_template('mod_psgrading/print', ['task' => $task]);
 
 $output .= $OUTPUT->footer();
 echo $output;

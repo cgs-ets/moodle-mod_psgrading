@@ -26,10 +26,10 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\forms\form_mark;
-use \mod_psgrading\external\details_exporter;
-use \mod_psgrading\persistents\task;
-use \mod_psgrading\utils;
+use mod_psgrading\forms\form_mark;
+use mod_psgrading\external\details_exporter;
+use mod_psgrading\persistents\task;
+use mod_psgrading\utils;
 
 // Course_module ID, or module instance id.
 $cmid = optional_param('cmid', 0, PARAM_INT);
@@ -40,11 +40,11 @@ $userid = optional_param('userid', 0, PARAM_INT);
 
 if ($cmid) {
     $cm             = get_coursemodule_from_id('psgrading', $cmid, 0, false, MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $cm->instance], '*', MUST_EXIST);
 } else if ($p) {
-    $moduleinstance = $DB->get_record('psgrading', array('id' => $n), '*', MUST_EXIST);
-    $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
+    $moduleinstance = $DB->get_record('psgrading', ['id' => $n], '*', MUST_EXIST);
+    $course         = $DB->get_record('course', ['id' => $moduleinstance->course], '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('psgrading', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
@@ -52,14 +52,14 @@ if ($cmid) {
 
 require_login($course, true, $cm);
 
-$detailsurl = new moodle_url('/mod/psgrading/details.php', array(
+$detailsurl = new moodle_url('/mod/psgrading/details.php', [
     'cmid' => $cm->id,
     'taskid' => $taskid,
     'userid' => $userid,
-));
-$listurl = new moodle_url('/mod/psgrading/view.php', array(
+]);
+$listurl = new moodle_url('/mod/psgrading/view.php', [
     'id' => $cm->id,
-));
+]);
 
 $modulecontext = context_module::instance($cm->id);
 $PAGE->set_context($modulecontext);
@@ -95,14 +95,14 @@ if (empty($userid)) {
     $PAGE->set_url($markurl);
 }
 // Export the data.
-$relateds = array(
+$relateds = [
     'cmid' => (int) $cm->id,
     'task' => $task,
     'students' => $students,
     'userid' => $userid,
     'detailsurl' => $detailsurl,
     'isstaff' => utils::is_grader(),
-);
+];
 $detailsexporter = new details_exporter(null, $relateds);
 $output = $PAGE->get_renderer('core');
 $data = $detailsexporter->export($output);
@@ -122,14 +122,14 @@ if ( ! $data->task->published) {
 $PAGE->navbar->add($data->currstudent->fullname, $data->currstudent->overviewurl);
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 $output = $OUTPUT->header();
 
-//echo "<h3>Render me!</h3>";
-//echo "<pre>";
-//var_export($data);
-//exit;
+// echo "<h3>Render me!</h3>";
+// echo "<pre>";
+// var_export($data);
+// exit;
 
 $output .= $OUTPUT->render_from_template('mod_psgrading/details', $data);
 

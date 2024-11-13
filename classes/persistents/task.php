@@ -162,7 +162,7 @@ class task extends persistent {
         $task->set('engagementjson', $data->engagementjson);
         $task->set('notes', '');
         $task->set('proposedrelease', $data->proposedrelease);
-        
+
         if ($editing) {
             // Editing.
             list($released, $countdown) = static::get_release_info($id);
@@ -205,7 +205,7 @@ class task extends persistent {
         $DB->insert_record(static::TABLE_TASK_LOGS, $log);
 
         // Create/update criterions.
-        $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, array('taskid' => $id));
+        $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, ['taskid' => $id]);
         $criterions = json_decode($data->criterionjson);
         $seq = 0;
         foreach ($criterions as &$criterion) {
@@ -255,16 +255,16 @@ class task extends persistent {
 
         // Delete leftovers.
         foreach ($existingcriterions as $existing) {
-            $DB->delete_records(static::TABLE_TASK_CRITERIONS, array('id' => $existing->id));
+            $DB->delete_records(static::TABLE_TASK_CRITERIONS, ['id' => $existing->id]);
         }
 
         // Delete leftovers.
         foreach ($existingengagement as $existing) {
-            $DB->delete_records(static::TABLE_TASK_ENGAGEMENT, array('id' => $existing->id));
+            $DB->delete_records(static::TABLE_TASK_ENGAGEMENT, ['id' => $existing->id]);
         }
 
         // Create evidences.
-        $DB->delete_records(static::TABLE_TASK_EVIDENCES, array('taskid' => $id));
+        $DB->delete_records(static::TABLE_TASK_EVIDENCES, ['taskid' => $id]);
         $evidences = json_decode($data->evidencejson);
         if ($evidences) {
             foreach ($evidences as $evidence) {
@@ -302,10 +302,10 @@ class task extends persistent {
                  WHERE deleted = 0
                    AND cmid = ?
               ORDER BY seq ASC, timecreated DESC";
-        $params = array($cmid);
+        $params = [$cmid];
 
         $records = $DB->get_records_sql($sql, $params);
-        $tasks = array();
+        $tasks = [];
         foreach ($records as $record) {
             $tasks[] = new static($record->id, $record);
         }
@@ -317,16 +317,16 @@ class task extends persistent {
     public static function get_grade_criterion_selections($gradeid) {
         global $DB;
 
-        $criterions = array();
+        $criterions = [];
 
         $sql = "SELECT gc.*
                 FROM mdl_psgrading_grade_criterions gc
                 INNER JOIN mdl_psgrading_task_criterions tc on tc.id = gc.criterionid
                 WHERE gc.gradeid = ?";
-        $params = array($gradeid);
+        $params = [$gradeid];
         $criterionrecs = $DB->get_records_sql($sql, $params);
         foreach ($criterionrecs as $rec) {
-            $criterions[$rec->criterionid] = (object) array( 'gradelevel' => $rec->gradelevel, 'criterionid' => $rec->criterionid );
+            $criterions[$rec->criterionid] = (object) [ 'gradelevel' => $rec->gradelevel, 'criterionid' => $rec->criterionid ];
         }
 
         return $criterions;
@@ -353,17 +353,17 @@ class task extends persistent {
 
     public static function get_printurl($taskid) {
         $task = new static($taskid);
-        $printurl = new \moodle_url('/mod/psgrading/print.php', array(
+        $printurl = new \moodle_url('/mod/psgrading/print.php', [
             'cmid' => $task->get('cmid'),
             'taskid' => $taskid,
-        ));
+        ]);
         return $printurl->out();
     }
 
     public static function has_grades($taskid) {
         global $DB;
         if ($taskid) {
-            return $DB->record_exists(static::TABLE_GRADES, array('taskid' => $taskid));
+            return $DB->record_exists(static::TABLE_GRADES, ['taskid' => $taskid]);
         }
         return false;
     }
@@ -376,7 +376,7 @@ class task extends persistent {
                   FROM {" . static::TABLE_GRADES . "}
                  WHERE taskid = ?
                    AND studentusername = ?";
-        $params = array($taskid, $student->username);
+        $params = [$taskid, $student->username];
         $gradeinfo = $DB->get_record_sql($sql, $params);
 
         if ($gradeinfo) {
@@ -393,35 +393,35 @@ class task extends persistent {
     }
 
     public static function get_cm_user_taskinfo($cmid, $userid, $currtaskid = -1) {
-        $taskinfo = array();
+        $taskinfo = [];
         $tasks = static::get_for_coursemodule($cmid);
         foreach ($tasks as $task) {
             if (! $task->get('published')) {
                 continue;
             }
-            $markurl = new \moodle_url('/mod/psgrading/mark.php', array(
+            $markurl = new \moodle_url('/mod/psgrading/mark.php', [
                 'cmid' => $cmid,
                 'taskid' => $task->get('id'),
                 'userid' => $userid,
-            ));
-            $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+            ]);
+            $qmarkurl = new \moodle_url('/mod/psgrading/quickmark.php', [
                 'cmid' => $cmid,
                 'taskid' => $task->get('id'),
                 'userid' => $userid,
-            ));
-            $detailsurl = new \moodle_url('/mod/psgrading/details.php', array(
+            ]);
+            $detailsurl = new \moodle_url('/mod/psgrading/details.php', [
                 'cmid' => $cmid,
                 'taskid' => $task->get('id'),
                 'userid' => $userid,
-            ));
-            $taskinfo[] = array(
+            ]);
+            $taskinfo[] = [
                 'id' => $task->get('id'),
                 'taskname' => $task->get('taskname'),
                 'detailsurl' => $detailsurl->out(false),
                 'markurl' => $markurl->out(false),
                 'qmarkurl' => $qmarkurl->out(false),
                 'iscurrent' => ($task->get('id') == $currtaskid),
-            );
+            ];
         }
 
         return $taskinfo;
@@ -434,10 +434,10 @@ class task extends persistent {
                   FROM {" . static::TABLE_TASK_CRITERIONS . "}
                  WHERE taskid = ?
               ORDER BY seq ASC";
-        $params = array($taskid);
+        $params = [$taskid];
 
         $records = $DB->get_records_sql($sql, $params);
-        $criterions = array();
+        $criterions = [];
         foreach ($records as $record) {
             $criterions[$record->id] = $record;
         }
@@ -469,10 +469,10 @@ class task extends persistent {
         $sql = "SELECT *
                   FROM {" . static::TABLE_TASK_EVIDENCES . "}
                  WHERE taskid = ?";
-        $params = array($taskid);
+        $params = [$taskid];
 
         $records = $DB->get_records_sql($sql, $params);
-        $evidences = array();
+        $evidences = [];
         foreach ($records as $record) {
             $evidences[] = $record;
         }
@@ -487,10 +487,10 @@ class task extends persistent {
                   FROM {" . static::TABLE_GRADE_EVIDENCES . "}
                  WHERE gradeid = ?
                    AND evidencetype = 'myconnect_attachment'";
-        $params = array($gradeid);
+        $params = [$gradeid];
 
         $records = $DB->get_records_sql($sql, $params);
-        $evidences = array();
+        $evidences = [];
         foreach ($records as $record) {
             $evidences[] = intval($record->refdata);
         }
@@ -504,10 +504,10 @@ class task extends persistent {
         $sql = "SELECT *
                   FROM {" . static::TABLE_RELEASE_POSTS . "}
                  WHERE gradeid = ?";
-        $params = array($gradeid);
+        $params = [$gradeid];
 
         $records = $DB->get_records_sql($sql, $params);
-        $postids = array();
+        $postids = [];
         foreach ($records as $record) {
             $postids[] = intval($record->postid);
         }
@@ -546,7 +546,7 @@ class task extends persistent {
                   FROM {" . static::TABLE_GRADES . "}
                  WHERE taskid = ?
                    AND studentusername = ?";
-        $params = array($data->taskid, $student->username);
+        $params = [$data->taskid, $student->username];
         $graderec = $DB->get_record_sql($sql, $params);
 
         if ($graderec) {
@@ -574,7 +574,7 @@ class task extends persistent {
 
         if ($graderec->id) {
             // Recreate criterion grades.
-            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, ['gradeid' => $graderec->id]);
             $criterions = json_decode($data->criterionjson);
             if ($criterions) {
                 foreach ($criterions as $selection) {
@@ -602,10 +602,10 @@ class task extends persistent {
             }
 
             // Recreate myconnect links.
-            $DB->delete_records(static::TABLE_GRADE_EVIDENCES, array(
+            $DB->delete_records(static::TABLE_GRADE_EVIDENCES, [
                 'gradeid' => $graderec->id,
                 'evidencetype' => 'myconnect_attachment',
-            ));
+            ]);
             $myconnectfiles = json_decode($data->myconnectevidencejson);
             if ($myconnectfiles) {
                 foreach ($myconnectfiles as $id) {
@@ -620,8 +620,8 @@ class task extends persistent {
 
         }
 
-        //$tasks = static::compute_grades_for_cm($task->get('cmid'), $data->userid, true, true);
-        //$reportgrades = static::compute_report_grades($tasks, true);
+        // $tasks = static::compute_grades_for_cm($task->get('cmid'), $data->userid, true, true);
+        // $reportgrades = static::compute_report_grades($tasks, true);
 
         // Invalidate cached list page.
         utils::invalidate_cache($task->get('cmid'), 'list-%');
@@ -637,8 +637,8 @@ class task extends persistent {
                 FROM {psgrading}
                 WHERE course = ?
                   AND reportingperiod = ?";
-        $modinstances = $DB->get_records_sql($sql, array($courseid, $reportingperiod));
-        $courseinstances = array();
+        $modinstances = $DB->get_records_sql($sql, [$courseid, $reportingperiod]);
+        $courseinstances = [];
         // Don't include instances that are restricted to specific users.
         foreach ($modinstances as $inst) {
             if (empty($inst->restrictto)) {
@@ -650,21 +650,21 @@ class task extends persistent {
         }
 
         // Get the cmids for the mod instances.
-        $moduleid = $DB->get_field('modules', 'id', array('name'=> 'psgrading'));
+        $moduleid = $DB->get_field('modules', 'id', ['name' => 'psgrading']);
         list($insql, $inparams) = $DB->get_in_or_equal($courseinstances);
         $sql = "SELECT id
                   FROM {course_modules}
                  WHERE course = ?
                    AND module = ?
                    AND instance $insql";
-        $params = array($courseid, $moduleid);
+        $params = [$courseid, $moduleid];
         $cms = $DB->get_records_sql($sql, array_merge($params, $inparams));
         if (empty($cms)) {
             return;
         }
 
         // Compute the grades across all cms.
-        $tasks = array();
+        $tasks = [];
         foreach ($cms as $cm) {
             $cmtasks = static::compute_grades_for_cm($cm->id, $userid, $includehiddentasks, $isstaff);
             $tasks = array_merge($tasks, $cmtasks);
@@ -677,7 +677,7 @@ class task extends persistent {
         global $OUTPUT;
 
         // Get all tasks for this course module.
-        $tasks = array();
+        $tasks = [];
         $cmtasks = static::get_for_coursemodule($cmid);
 
         if (empty($cmtasks)) {
@@ -687,7 +687,7 @@ class task extends persistent {
         foreach ($cmtasks as $task) {
             // TODO: Check that the task applies to this user based on setting.
 
-            $taskexporter = new task_exporter($task, array('userid' => $userid));
+            $taskexporter = new task_exporter($task, ['userid' => $userid]);
             $task = $taskexporter->export($OUTPUT);
             if (!$task->published && !$includehiddentasks) {
                 continue;
@@ -710,23 +710,23 @@ class task extends persistent {
         $task->criterions = static::get_criterions($task->id);
 
         // Setup details url.
-        $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', array(
+        $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', [
             'cmid' => $task->cmid,
             'taskid' => $task->id,
             'userid' => $userid,
-        ));
+        ]);
 
         // Get existing grades for this user.
         $gradeinfo = static::get_task_user_gradeinfo($task->id, $userid);
         $task->gradeinfo = $gradeinfo;
-        $task->subjectgrades = array();
-        $task->success = array(
+        $task->subjectgrades = [];
+        $task->success = [
             'grade' => 0,
             'gradelang' => '',
             'detailsurl' => $detailsurl->out(false),
             'missingcomment' => static::is_missing_comment_engagement($gradeinfo),
             'missingevidence' => static::is_missing_evidence($gradeinfo, $userid, $task->cmid),
-        );
+        ];
 
         $showgrades = true;
         // If task is not released yet do not show grades parents/students.
@@ -742,12 +742,12 @@ class task extends persistent {
             // Skip over the calculations, but define empty structure required by template.
             foreach (utils::SUBJECTOPTIONS as $subject) {
                 if ($subject['val']) {
-                    $task->subjectgrades[] = array(
+                    $task->subjectgrades[] = [
                         'subject' => $subject['val'],
-                        'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $subject['val']),
+                        'subjectsanitised' => str_replace([' ', '&', '–'], '', $subject['val']),
                         'grade' => 0,
                         'gradelang' => '',
-                    );
+                    ];
                 }
                 if (!empty($gradeinfo) && $gradeinfo->didnotsubmit) {
                     $task->didnotsubmit = true;
@@ -760,12 +760,12 @@ class task extends persistent {
         }
 
         // Extract subject grades from criterion grades.
-        $subjectgrades = array();
-        
+        $subjectgrades = [];
+
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {
-                $subjectgrades[$criterionsubject] = array();
+                $subjectgrades[$criterionsubject] = [];
             }
             if ($criteriongrade->gradelevel) {
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
@@ -773,20 +773,20 @@ class task extends persistent {
         }
 
         // Flatten to rounded averages.
-        //foreach ($subjectgrades as &$subjectgrade) {
-        //    if (count($subjectgrade)) {
-        //        $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
-        //        $subjectgrade = (int) round($subjectgrade, 0);
-        //    } else {
-        //        $subjectgrade = 0;
-        //    }
-        //}
+        // foreach ($subjectgrades as &$subjectgrade) {
+        // if (count($subjectgrade)) {
+        // $subjectgrade = array_sum($subjectgrade)/count($subjectgrade);
+        // $subjectgrade = (int) round($subjectgrade, 0);
+        // } else {
+        // $subjectgrade = 0;
+        // }
+        // }
 
         // Get the final scores.
         foreach ($subjectgrades as &$subjectgrade) {
             if (count($subjectgrade)) {
                 // Get the mean.
-                $subjectgrademean = array_sum($subjectgrade)/count($subjectgrade);
+                $subjectgrademean = array_sum($subjectgrade) / count($subjectgrade);
                 // Get the median.
                 $subjectgrademedian = utils::median($subjectgrade);
                 // Influenced average.
@@ -812,13 +812,13 @@ class task extends persistent {
                     $grade = $subjectgrades[$subject['val']];
                 }
                 $gradelang = utils::GRADELANG[$grade];
-                $task->subjectgrades[] = array(
+                $task->subjectgrades[] = [
                     'subject' => $subject['val'],
-                    'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $subject['val']),
+                    'subjectsanitised' => str_replace([' ', '&', '–'], '', $subject['val']),
                     'grade' => $grade,
                     'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
                     'gradetip' => $gradelang['tip'],
-                );
+                ];
             }
         }
 
@@ -841,18 +841,18 @@ class task extends persistent {
 
         // Calculate success/final grades --> average of task's criteria grades.
         $success = 0;
-        $criteriagrades = array();
+        $criteriagrades = [];
         foreach ($gradeinfo->criterions as $criteriongrade) {
             if ($criteriongrade->gradelevel) {
                 $criteriagrades[] = $criteriongrade->gradelevel;
             }
         }
         if (array_sum($criteriagrades)) {
-            //$success = array_sum($criteriagrades)/count($criteriagrades);
-            //$success = (int) round($success, 0);
+            // $success = array_sum($criteriagrades)/count($criteriagrades);
+            // $success = (int) round($success, 0);
             $success = 0;
             // Get the mean.
-            $successmean = array_sum($criteriagrades)/count($criteriagrades);
+            $successmean = array_sum($criteriagrades) / count($criteriagrades);
             // Get the median.
             $successmedian = utils::median($criteriagrades);
             // Influenced average.
@@ -879,10 +879,10 @@ class task extends persistent {
             $student = \core_user::get_user($userid);
             $thepost = array_pop($releasepostids);
             if ($thepost) {
-                $releaseposturl = new \moodle_url('/local/myconnect/index.php', array(
+                $releaseposturl = new \moodle_url('/local/myconnect/index.php', [
                     'timeline' => $student->username,
                     'postid' => $thepost,
-                ));
+                ]);
                 $task->releaseposturl = $releaseposturl->out(false);
             }
         }
@@ -926,7 +926,7 @@ class task extends persistent {
     }
 
     public static function compute_report_grades($tasks) {
-        $reportgrades = array();
+        $reportgrades = [];
         if (empty($tasks)) {
             return [];
         }
@@ -944,7 +944,7 @@ class task extends persistent {
                     $subjectgrade = (array) $subjectgrade;
                     if ($subjectgrade['subject'] == $subject) {
                         if (!isset($reportgrades[$subject])) {
-                            $reportgrades[$subject] = array();
+                            $reportgrades[$subject] = [];
                         }
                         if ($subjectgrade['grade']) {
                             $reportgrades[$subject][] = $subjectgrade['grade'];
@@ -957,7 +957,7 @@ class task extends persistent {
         // Flatten to rounded averages.
         foreach ($reportgrades as &$reportgrade) {
             if (array_sum($reportgrade)) {
-                $reportgrade = array_sum($reportgrade)/count($reportgrade);
+                $reportgrade = array_sum($reportgrade) / count($reportgrade);
                 $reportgrade = (int) round($reportgrade, 0);
             } else {
                 $reportgrade = 0;
@@ -965,19 +965,19 @@ class task extends persistent {
         }
         // Rebuild into mustache friendly array.
         foreach ($reportgrades as $key => $grade) {
-            $reportgrades[$key] = array(
+            $reportgrades[$key] = [
                 'subject' => $key,
-                'subjectsanitised' => str_replace(array(' ', '&', '–'), '', $key),
+                'subjectsanitised' => str_replace([' ', '&', '–'], '', $key),
                 'grade' => $grade,
                 'gradelang' => utils::GRADELANG[$grade]['full'],
                 'gradetip' => utils::GRADELANG[$grade]['tip'],
                 'issubject' => true,
-            );
+            ];
         }
         $reportgrades = array_values($reportgrades);
 
         // Get the average engagement accross all tasks.
-        $engagement = array();
+        $engagement = [];
         foreach ($tasks as $task) {
             if (!empty($task->gradeinfo->engagement)) {
                 $engagement[] = utils::ENGAGEMENTWEIGHTS[$task->gradeinfo->engagement];
@@ -985,24 +985,24 @@ class task extends persistent {
         }
         // Round engagement.
         if (array_sum($engagement)) {
-            $engagement = array_sum($engagement)/count($engagement);
+            $engagement = array_sum($engagement) / count($engagement);
             $engagement = (int) round($engagement, 0);
         } else {
             $engagement = 0;
         }
         // Round up to nearest 25.
-        //$engagement = ceil($engagement / 25) * 25;
+        // $engagement = ceil($engagement / 25) * 25;
         $engagement = round($engagement / 25) * 25;
         $engagementlang = array_flip(utils::ENGAGEMENTWEIGHTS);
 
         // Add to report grades.
-        $reportgrades[] = array(
+        $reportgrades[] = [
             'subject' => 'Engagement',
             'subjectsanitised' => 'engagement',
             'grade' => $engagement,
             'gradelang' => $engagementlang[$engagement],
             'issubject' => false,
-        );
+        ];
 
         return $reportgrades;
     }
@@ -1024,13 +1024,13 @@ class task extends persistent {
                   FROM {" . static::TABLE_GRADES . "}
                  WHERE taskid = ?
                    AND studentusername = ?";
-        $params = array($data->taskid, $student->username);
+        $params = [$data->taskid, $student->username];
         $graderec = $DB->get_record_sql($sql, $params);
 
         if ($graderec) {
             // Delete everything...
-            $DB->delete_records(static::TABLE_GRADES, array('id' => $graderec->id));
-            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, array('gradeid' => $graderec->id));
+            $DB->delete_records(static::TABLE_GRADES, ['id' => $graderec->id]);
+            $DB->delete_records(static::TABLE_GRADE_CRITERIONS, ['gradeid' => $graderec->id]);
             $DB->delete_records(static::TABLE_GRADE_ENGAGEMENT, ['gradeid' => $graderec->id]);
             // Delete evidence files.
             $fs = get_file_storage();
@@ -1046,7 +1046,7 @@ class task extends persistent {
         global $OUTPUT;
         static::save_comment($taskid, $comment);
         $comments = static::get_comment_bank($taskid);
-        $html = $OUTPUT->render_from_template('mod_psgrading/mark_commentbank_comments', array('comments' => $comments));
+        $html = $OUTPUT->render_from_template('mod_psgrading/mark_commentbank_comments', ['comments' => $comments]);
         return $html;
     }
 
@@ -1068,10 +1068,10 @@ class task extends persistent {
                  WHERE taskid = ?
                    AND username = ?
               ORDER BY id DESC";
-        $params = array($taskid, $USER->username);
+        $params = [$taskid, $USER->username];
 
         $records = $DB->get_records_sql($sql, $params);
-        $comments = array();
+        $comments = [];
         foreach ($records as $record) {
             $comments[] = $record;
         }
@@ -1081,10 +1081,10 @@ class task extends persistent {
     public static function delete_comment($commentid) {
         global $USER, $DB;
 
-        $DB->delete_records('psgrading_comment_bank', array(
+        $DB->delete_records('psgrading_comment_bank', [
             'id' => $commentid,
             'username' => $USER->username,
-        ));
+        ]);
 
         return 1;
     }
@@ -1107,7 +1107,7 @@ class task extends persistent {
     public static function publish($id) {
         $task = new static($id);
         // For previous records that have this column in null is throwing an error.
-        if ($task->get('engagementjson') === NULL ) {
+        if ($task->get('engagementjson') === null ) {
             $task->set('engagementjson', '');
         }
 
@@ -1186,7 +1186,7 @@ class task extends persistent {
             $releasecountdown = "$minutes minutes $seconds seconds"; // To minutes.
         }
 
-        return array($released, $releasecountdown);
+        return [$released, $releasecountdown];
     }
 
 

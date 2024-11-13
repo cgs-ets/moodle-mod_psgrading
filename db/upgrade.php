@@ -66,9 +66,9 @@ function xmldb_psgrading_upgrade($oldversion) {
         $table->add_field('postid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 
         // Adding keys to table psgrading_release_posts.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, array('taskid'), 'psgrading_tasks', array('id'));
-        $table->add_key('fk_gradeid', XMLDB_KEY_FOREIGN, array('gradeid'), 'psgrading_grades', array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('fk_taskid', XMLDB_KEY_FOREIGN, ['taskid'], 'psgrading_tasks', ['id']);
+        $table->add_key('fk_gradeid', XMLDB_KEY_FOREIGN, ['gradeid'], 'psgrading_grades', ['id']);
 
         // Create table psgrading_release_posts.
         if (!$dbman->table_exists($table)) {
@@ -146,7 +146,6 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021063007, 'psgrading');
     }
 
-
     if ($oldversion < 2021091600) {
 
         // Define table psgrading_gradesync to be created.
@@ -210,11 +209,11 @@ function xmldb_psgrading_upgrade($oldversion) {
     }
 
     if ($oldversion < 2022021800) {
-      $table = new xmldb_table('psgrading_grades');
-      $didnotsubmit = new xmldb_field('didnotsubmit', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null, 'graderusername');
-      if (!$dbman->field_exists($table, $didnotsubmit)) {
-          $dbman->add_field($table, $didnotsubmit);
-      }
+        $table = new xmldb_table('psgrading_grades');
+        $didnotsubmit = new xmldb_field('didnotsubmit', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null, 'graderusername');
+        if (!$dbman->field_exists($table, $didnotsubmit)) {
+            $dbman->add_field($table, $didnotsubmit);
+        }
     }
 
     if ($oldversion < 2022050900) {
@@ -268,8 +267,6 @@ function xmldb_psgrading_upgrade($oldversion) {
         // Psgrading savepoint reached.
         upgrade_mod_savepoint(true, 2022052001, 'psgrading');
     }
-
-
 
     if ($oldversion < 2022061601) {
 

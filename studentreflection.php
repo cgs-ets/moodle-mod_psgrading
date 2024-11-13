@@ -27,9 +27,9 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-use \mod_psgrading\utils;
-use \mod_psgrading\reporting;
-use \mod_psgrading\forms\form_reflection;
+use mod_psgrading\utils;
+use mod_psgrading\reporting;
+use mod_psgrading\forms\form_reflection;
 
 // Course ID
 $courseid = required_param('courseid', PARAM_INT);
@@ -39,7 +39,7 @@ $username = required_param('user', PARAM_INT);
 $type = optional_param('type', 'form', PARAM_TEXT);
 
 if ($courseid) {
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 } else {
     print_error(get_string('missingidandcmid', 'mod_psgrading'));
 }
@@ -66,32 +66,32 @@ if (!utils::is_grader()) {
     exit;
 }
 
-$url = new moodle_url('/mod/psgrading/studentreflection.php', array(
+$url = new moodle_url('/mod/psgrading/studentreflection.php', [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
     'user' => $username,
     'type' => $type,
-));
+]);
 $PAGE->set_url($url);
 $title = 'Student Reflection';
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_context($coursecontext);
 
-$reportingurl = new moodle_url('/mod/psgrading/reporting.php', array(
+$reportingurl = new moodle_url('/mod/psgrading/reporting.php', [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
-));
+]);
 
 // Check to see if the page was submitted for a student reflection before continuing.
 $formreflection = new form_reflection(
-    $url->out(false), 
-    array('type' => $type), 
-    'post', 
-    '', 
-    array('data-form' => 'psgrading-studentreflection')
+    $url->out(false),
+    ['type' => $type],
+    'post',
+    '',
+    ['data-form' => 'psgrading-studentreflection']
 );
 
 if ($formreflection->is_cancelled()) {
@@ -117,53 +117,53 @@ if (!empty($user)) {
 }
 
 // Load in existing reflection.
-$conds = array (
+$conds = [
     'courseid' => $course->id,
     'fileyear' => $year,
     'reportingperiod' => $period,
     'studentusername' => $username,
     'elementname' => 'studentreflection',
     'elementtype' => $type == 'editor' ? 'editor' : 'form',
-);
+];
 if ($existing = $DB->get_record('psgrading_reporting', $conds, '*', IGNORE_MULTIPLE)) {
     if ($type == 'editor') {
         // Set up reflection editor.
         $draftideditor = file_get_submitted_draft_itemid('reflection');
         $editoroptions = form_reflection::editor_options();
         $reflectiontext = file_prepare_draft_area($draftideditor, $coursecontext->id, 'mod_psgrading', 'reflection', $year . $period . $user->id, $editoroptions, $existing->reflection);
-        $reflection = array(
+        $reflection = [
             'text' => $reflectiontext,
             'format' => editors_get_preferred_format(),
-            'itemid' => $draftideditor
-        );
-        $formreflection->set_data(array('reflection' => $reflection));
+            'itemid' => $draftideditor,
+        ];
+        $formreflection->set_data(['reflection' => $reflection]);
     }
-    
+
     if ($type == 'form') {
         // Set up draft image file manager.
         $draftimage = file_get_submitted_draft_itemid('reflectionimage');
         $imageoptions = form_reflection::image_options();
         $uniqueid = sprintf( "%d%d%d", $year, $period, $user->id );
-        file_prepare_draft_area($draftimage, $coursecontext->id, 'mod_psgrading', 
+        file_prepare_draft_area($draftimage, $coursecontext->id, 'mod_psgrading',
             'reflectionimage', $uniqueid, $imageoptions);
-        $formreflection->set_data(array(
+        $formreflection->set_data([
             'reflection' => $existing->reflection,
-            'reflectionimage' => $draftimage
-        ));
+            'reflectionimage' => $draftimage,
+        ]);
     }
 }
 
-$data = array(
+$data = [
     'courseid' => $course->id,
     'year' => $year,
     'period' => $period,
     'user' => $user,
     'form' => $formreflection->render(),
     'reportingurl' => $reportingurl->out(false),
-);
+];
 
 // Add css.
-$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', array('nocache' => rand())));
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css', ['nocache' => rand()]));
 
 echo $OUTPUT->header();
 

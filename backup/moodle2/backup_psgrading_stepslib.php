@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -34,25 +33,25 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
     protected function define_structure() {
 
         // To know if we are including userinfo
-        //$userinfo = $this->get_setting_value('userinfo');
+        // $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated
-        $psgrading = new backup_nested_element('psgrading', array('id'), array(
+        $psgrading = new backup_nested_element('psgrading', ['id'], [
             'course', 'name', 'timecreated', 'timemodified', 'intro',
-            'introformat', 'enableweights', 'reportingperiod'));
+            'introformat', 'enableweights', 'reportingperiod']);
 
         $tasks = new backup_nested_element('tasks');
-        $task = new backup_nested_element('task', array('id'), array(
+        $task = new backup_nested_element('task', ['id'], [
             'cmid', 'creatorusername', 'taskname', 'pypuoi',
             'outcomes', 'criterionjson', 'evidencejson', 'published',
             'deleted', 'seq', 'timerelease', 'timecreated',
-            'timemodified', 'notes', 'proposedrelease'));
+            'timemodified', 'notes', 'proposedrelease']);
 
         $criterions = new backup_nested_element('criterions');
-        $criterion = new backup_nested_element('criterion', array('id'), array(
+        $criterion = new backup_nested_element('criterion', ['id'], [
             'taskid', 'description', 'level4', 'level3',
             'level2', 'subject', 'weight', 'seq',
-            'hidden', 'level5', 'level1'));
+            'hidden', 'level5', 'level1']);
 
         // Build the tree
         $psgrading->add_child($tasks);
@@ -62,11 +61,11 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
         $criterions->add_child($criterion);
 
         // Define sources
-        $psgrading->set_source_table('psgrading', array('id' => backup::VAR_ACTIVITYID));
+        $psgrading->set_source_table('psgrading', ['id' => backup::VAR_ACTIVITYID]);
 
-        $task->set_source_table('psgrading_tasks', array('cmid' => backup::VAR_MODID));
+        $task->set_source_table('psgrading_tasks', ['cmid' => backup::VAR_MODID]);
 
-        $criterion->set_source_table('psgrading_task_criterions', array('taskid' => backup::VAR_PARENTID));
+        $criterion->set_source_table('psgrading_task_criterions', ['taskid' => backup::VAR_PARENTID]);
 
         // Define file annotations
         $psgrading->annotate_files('mod_psgrading', 'intro', null); // This file area hasn't itemid

@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-    array(
+$tasks = [
+    [
         'classname' => 'mod_psgrading\task\cron_grade_release',
         'blocking' => 0,
         'minute' => '*',
@@ -34,8 +34,8 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-    ),
-    array(
+    ],
+    [
         'classname' => 'mod_psgrading\task\cron_gradesync',
         'blocking' => 0,
         'minute' => '0',
@@ -43,8 +43,8 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-    ),
-    array(
+    ],
+    [
         'classname' => 'mod_psgrading\task\cron_copy_report_images',
         'blocking' => 0,
         'minute' => '20',
@@ -52,5 +52,5 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-    ),
-);
+    ],
+];
