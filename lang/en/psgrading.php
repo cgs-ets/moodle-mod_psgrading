@@ -134,7 +134,9 @@ $string['courseswithpsgrading'] = 'Select one or more courses with PS grading ac
 $string['tasktoimport'] = 'Select one or more tasks to import';
 $string['import'] = 'Import';
 $string['cancel'] = 'Cancel';
-$string['remindernoevidencecopy'] = 'Keep in mind the evidence of the task(s) selected will not be imported.';
+$string['remindernoevidencecopy'] = 'Please note that the evidence for the selected task(s) will not be imported.';
+$string['importsuccess'] = 'Task(s) imported correctly';
+$string['importerror'] = 'There was an error importing the task(s)';
 $string['redirectmessage'] = '{$a} . You will be redirected to the tasks table view';
 
 

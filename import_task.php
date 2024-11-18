@@ -40,7 +40,6 @@ $context = context_module::instance($cm->id);
 // Check the user has the required capabilities.
 require_capability('mod/psgrading:addinstance', $context);
 
-
 $url = new moodle_url('/mod/psgrading/import_task.php', ['cmid' => $cmid]);
 
 $PAGE->set_url($url);
@@ -49,19 +48,31 @@ $PAGE->set_pagelayout('admin');
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_title(get_string('import_task', 'psgrading'));
 
+// Add css.
+$PAGE->requires->css(new moodle_url($CFG->wwwroot . '/mod/psgrading/psgrading.css'));
+
 echo $OUTPUT->header();
 
 $mform = new form_import_task(null, ['id' => $course->id, 'cmid' => $cmid]);
 
 echo $OUTPUT->heading(get_string('import_task', 'psgrading'));
 
-if ($data = $mform->get_data()) {
+if ($mform->is_cancelled()) {
+    $url = new moodle_url('/mod/psgrading/view.php',
+    ['id' => $cmid, 'groupid' => 0]);
+    redirect($url->out(false));
+} else if ($data = $mform->get_data()) {
     $r = importingtask::copy_tasks_to_activity($data->cmid, json_decode($data->selectedtasksJSON));
     $result  = get_string('redirectmessage', 'psgrading', $r);
-    // Redirect to the page with the activity.
+
     $url = new moodle_url('/mod/psgrading/view.php',
                         ['id' => $data->cmid, 'groupid' => 0]);
-	redirect($url->out(false), $result, 2);
+    if (array_key_exists('e', $r)) {
+        redirect($url->out(false), get_string('importsuccess', 'psgrading'), 2, \core\output\notification::NOTIFY_ERROR);
+    } else {
+        // Redirect to the page with the activity.
+        redirect($url->out(false), get_string('importsuccess', 'psgrading'), 2);
+    }
 
 } else {
     $message = get_string('remindernoevidencecopy', 'psgrading');

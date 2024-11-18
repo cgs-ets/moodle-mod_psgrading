@@ -7,20 +7,16 @@
     border: 1px solid #eee;
   }*/
 }
-
 .path-mod-psgrading header#page-header.header-maxwidth {
   max-width: 100%;
 }
-
 .path-mod-psgrading .fp-main-top-blocks-region-wrap.mb-4 {
   display: none;
 }
-
 .path-mod-psgrading .secondary-navigation {
   width: 100%;
   max-width: 100%;
 }
-
 .path-mod-psgrading .psgrading-header {
   display: flex;
   gap: 15px;
@@ -28,30 +24,24 @@
   justify-content: space-between;
   margin: 14px 0px;
 }
-
 .path-mod-psgrading .psgrading-header.justify-end {
   justify-content: end;
 }
-
 .path-mod-psgrading .psgrading-header .psgrading-header-right {
   display: flex;
   gap: 15px;
   justify-content: right;
 }
-
 .path-mod-psgrading .psgrading-header .top-buttons {
   display: flex;
 }
-
 .path-mod-psgrading .psgrading-header .top-buttons a {
   font-size: 22px;
   margin: 0 7px;
 }
-
 .path-mod-psgrading .psgrading-header .selector-label {
   display: none;
 }
-
 /* Variables */
 /* Helpers */
 .path-mod-psgrading .spinner {
@@ -61,7 +51,6 @@
   width: 40px;
   overflow: hidden;
 }
-
 .path-mod-psgrading .spinner .circle {
   display: block;
   position: relative;
@@ -74,44 +63,36 @@
   text-indent: -9999px;
   margin: 0 auto;
 }
-
 .path-mod-psgrading .spin {
   -webkit-animation: spin 0.4s linear 0s infinite;
   -moz-animation: spin 0.4s linear 0s infinite;
   -o-animation: spin 0.4s linear 0s infinite;
   animation: spin 0.4s linear 0s infinite;
 }
-
 @-webkit-keyframes spin {
   from {
     -webkit-transform: rotate(0deg);
   }
-
   to {
     -webkit-transform: rotate(360deg);
   }
 }
-
 @-moz-keyframes spin {
   from {
     -moz-transform: rotate(0deg);
   }
-
   to {
     -moz-transform: rotate(360deg);
   }
 }
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
 }
-
 .path-mod-psgrading .tooltip-inner {
   background-color: #000;
   border: 2px solid #000;
@@ -120,7 +101,6 @@
   font-size: 15px;
   opacity: 1;
 }
-
 .path-mod-psgrading {
   /*
 
@@ -173,79 +153,63 @@
   }
   */
 }
-
 .path-mod-psgrading .student-selector select {
   display: inline-block;
   width: 230px;
   margin: 0 6px;
 }
-
 .path-mod-psgrading .student-selector a {
   cursor: pointer;
 }
-
 #page-mod-psgrading-task #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-
 #page-mod-psgrading-task #page-content .action-menu {
   display: none !important;
 }
-
 #page-mod-psgrading-task #page-content .collapse-all {
   display: none;
 }
-
 #page-mod-psgrading-task .activity-navigation {
   display: none;
 }
-
 #page-mod-psgrading-task .btn-print {
   position: absolute;
   right: 0px;
   top: 0px;
   font-size: 20px;
 }
-
 #page-mod-psgrading-task .collapsible-actions {
   display: none;
 }
-
 form[data-form="psgrading-task"] {
   position: relative;
 }
-
 form[data-form="psgrading-task"].mform .col-md-3 {
   max-width: 170px;
   margin-right: 0;
   padding-right: 0;
 }
-
 form[data-form="psgrading-task"].mform div#fgroup_id_buttonar .col-md-9 {
   padding-left: 0;
 }
-
 form[data-form="psgrading-task"].mform legend a.fheader {
   background: none !important;
   margin: 0;
   padding: 0;
   pointer-events: none;
 }
-
 form[data-form="psgrading-task"].mform fieldset {
   margin-left: 0 !important;
   border: 0 none;
 }
-
 form[data-form="psgrading-task"] #id_actions {
   border: 0 none;
 }
-
 form[data-form="psgrading-task"] #id_actions .ftoggler {
   display: none;
 }
-
 form[data-form="psgrading-task"] #savestatus .badge {
   position: absolute;
   top: 10px;
@@ -257,7 +221,6 @@ form[data-form="psgrading-task"] #savestatus .badge {
   align-items: center;
   display: flex;
 }
-
 form[data-form="psgrading-task"] #savestatus .badge .spinner,
 form[data-form="psgrading-task"] #savestatus .badge i {
   display: block;
@@ -265,11 +228,9 @@ form[data-form="psgrading-task"] #savestatus .badge i {
   height: 11px;
   margin-right: 3px;
 }
-
 form[data-form="psgrading-task"] #fitem_id_notes {
   margin-top: 20px;
 }
-
 form[data-form="psgrading-task"] input#id_delete {
   right: 0;
   position: absolute;
@@ -277,25 +238,21 @@ form[data-form="psgrading-task"] input#id_delete {
   background-color: #ca3120;
   border-color: #ca3120;
 }
-
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
 #page-mod-psgrading-task #fitem_id_criterionjson,
 #page-mod-psgrading-task #fitem_id_engagementjson {
   display: none;
 }
-
-#page-mod-psgrading-task #fitem_id_criterionjson>div,
-#page-mod-psgrading-task #fitem_id_engagementjson>div {
+#page-mod-psgrading-task #fitem_id_criterionjson > div,
+#page-mod-psgrading-task #fitem_id_engagementjson > div {
   display: none;
 }
-
 #page-mod-psgrading-task #fitem_id_criterionjson.has-danger,
 #page-mod-psgrading-task #fitem_id_engagementjson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-
 #page-mod-psgrading-task #fitem_id_criterionjson.has-danger:before,
 #page-mod-psgrading-task #fitem_id_engagementjson.has-danger:before {
   content: "You must complete the criterion. All fields are mandatory.";
@@ -304,35 +261,29 @@ form[data-form="psgrading-task"] input#id_delete {
   height: 22px;
   margin-left: 15px;
 }
-
 /* Component styling */
 form[data-form="psgrading-task"] .criterion-selector {
   background-color: #f0f4f8;
   padding: 25px 20px 25px 25px;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .headings,
 form[data-form="psgrading-task"] .criterion-selector .criterions {
   display: table;
   width: 100%;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-th,
 form[data-form="psgrading-task"] .criterion-selector .tbl-tr {
   display: table-row;
   padding: 0;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-tr.reordering {
   background-color: #cce5ff;
   box-shadow: 0 0 2px 0px #004085;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col {
   display: table-cell;
   width: 14%;
@@ -340,11 +291,9 @@ form[data-form="psgrading-task"] .criterion-selector .tbl-col {
   vertical-align: top;
   position: relative;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col .label {
   display: none;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col textarea:focus,
 form[data-form="psgrading-task"] .criterion-selector .tbl-col input:focus,
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select:focus,
@@ -352,7 +301,6 @@ form[data-form="psgrading-task"] .criterion-selector .tbl-col a:focus {
   outline: none;
   box-shadow: none;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col textarea {
   width: 100%;
   height: 140px;
@@ -361,7 +309,6 @@ form[data-form="psgrading-task"] .criterion-selector .tbl-col textarea {
   padding: 10px;
   font-size: 90%;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col input,
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select {
   margin-bottom: 3px;
@@ -372,27 +319,21 @@ form[data-form="psgrading-task"] .criterion-selector .tbl-col select {
   font-size: 90%;
   height: calc(1.5em + 0.75rem + 4px);
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select {
   color: #aaa;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select.selected {
   color: #000;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select option {
   color: #000;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col select option:disabled {
   color: #aaa;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .tbl-col.tbl-col-last {
   padding-right: 30px;
 }
-
 form[data-form="psgrading-task"] .criterion-selector a.btn-delete {
   position: absolute;
   top: 35px;
@@ -400,7 +341,6 @@ form[data-form="psgrading-task"] .criterion-selector a.btn-delete {
   cursor: pointer;
   color: #005b94;
 }
-
 form[data-form="psgrading-task"] .criterion-selector a.btn-reorder {
   position: absolute;
   top: 5px;
@@ -410,12 +350,10 @@ form[data-form="psgrading-task"] .criterion-selector a.btn-reorder {
   cursor: pointer;
   color: #005b94;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .hidden-control {
   margin-top: 5px;
   display: flex;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .hidden-control input[type=checkbox] {
   height: 0;
   width: 0;
@@ -423,7 +361,6 @@ form[data-form="psgrading-task"] .criterion-selector .hidden-control input[type=
   position: absolute;
   left: -9999px;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle {
   cursor: pointer;
   text-indent: -9999px;
@@ -435,7 +372,6 @@ form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle {
   position: relative;
   margin-right: 3px;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle:after {
   content: '';
   position: absolute;
@@ -447,60 +383,49 @@ form[data-form="psgrading-task"] .criterion-selector .hidden-control .toggle:aft
   border-radius: 90px;
   transition: 0.3s;
 }
-
-form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked+.toggle {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked + .toggle {
   background: #005b94;
 }
-
-form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked+.toggle:after {
+form[data-form="psgrading-task"] .criterion-selector .hidden-control input:checked + .toggle:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }
-
 form[data-form="psgrading-task"] .criterion-selector .hidden-control .desc {
   font-size: 82%;
   margin-left: 4px;
   line-height: 19px;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden input,
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden textarea,
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden select {
   background-color: #f2f2f2;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden input:focus,
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden textarea:focus,
 form[data-form="psgrading-task"] .criterion-selector .criterion-hidden select:focus {
   background: #fff;
 }
-
 form[data-form="psgrading-task"] .criterion-selector .foot {
   padding: 5px;
 }
-
 @media only screen and (max-width: 1160px) {
   form[data-form="psgrading-task"] .criterion-selector {
     padding: 0px 0px 25px 0px;
     background-color: #fff;
   }
-
   form[data-form="psgrading-task"] .criterion-selector .headings {
     display: none;
   }
-
   form[data-form="psgrading-task"] .criterion-selector .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 20px 10px 20px 20px;
     border-radius: 4px;
   }
-
   form[data-form="psgrading-task"] .criterion-selector .tbl-col {
     display: block;
     width: 100%;
   }
-
   form[data-form="psgrading-task"] .criterion-selector .tbl-col .label {
     display: block;
     position: absolute;
@@ -508,22 +433,18 @@ form[data-form="psgrading-task"] .criterion-selector .foot {
     text-align: right;
   }
 }
-
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
 #page-mod-psgrading-task #fitem_id_engagementjson {
   display: none;
 }
-
-#page-mod-psgrading-task #fitem_id_engagementjson>div {
+#page-mod-psgrading-task #fitem_id_engagementjson > div {
   display: none;
 }
-
 #page-mod-psgrading-task #fitem_id_engagementjson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-
 #page-mod-psgrading-task #fitem_id_engagementjson.has-danger:before {
   content: "You must complete the engagement. All fields are mandatory.";
   color: red;
@@ -531,35 +452,29 @@ form[data-form="psgrading-task"] .criterion-selector .foot {
   height: 22px;
   margin-left: 15px;
 }
-
 /* Component styling */
 form[data-form="psgrading-task"] .engagement-selector {
   background-color: #f0f4f8;
   padding: 25px 20px 25px 25px;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .headings,
 form[data-form="psgrading-task"] .engagement-selector .engagements {
   display: table;
   width: 100%;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-th,
 form[data-form="psgrading-task"] .engagement-selector .tbl-tr {
   display: table-row;
   padding: 0;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-tr.reordering {
   background-color: #cce5ff;
   box-shadow: 0 0 2px 0px #004085;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col {
   display: table-cell;
   width: 14%;
@@ -567,11 +482,9 @@ form[data-form="psgrading-task"] .engagement-selector .tbl-col {
   vertical-align: top;
   position: relative;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col .label {
   display: none;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col textarea:focus,
 form[data-form="psgrading-task"] .engagement-selector .tbl-col input:focus,
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select:focus,
@@ -579,7 +492,6 @@ form[data-form="psgrading-task"] .engagement-selector .tbl-col a:focus {
   outline: none;
   box-shadow: none;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col textarea {
   width: 100%;
   height: 140px;
@@ -588,7 +500,6 @@ form[data-form="psgrading-task"] .engagement-selector .tbl-col textarea {
   padding: 10px;
   font-size: 90%;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col input,
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select {
   margin-bottom: 3px;
@@ -599,27 +510,21 @@ form[data-form="psgrading-task"] .engagement-selector .tbl-col select {
   font-size: 90%;
   height: calc(1.5em + 0.75rem + 4px);
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select {
   color: #aaa;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select.selected {
   color: #000;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select option {
   color: #000;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col select option:disabled {
   color: #aaa;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .tbl-col.tbl-col-last {
   padding-right: 30px;
 }
-
 form[data-form="psgrading-task"] .engagement-selector a.btn-delete {
   position: absolute;
   top: 35px;
@@ -627,7 +532,6 @@ form[data-form="psgrading-task"] .engagement-selector a.btn-delete {
   cursor: pointer;
   color: #005b94;
 }
-
 form[data-form="psgrading-task"] .engagement-selector a.btn-reorder {
   position: absolute;
   top: 5px;
@@ -637,12 +541,10 @@ form[data-form="psgrading-task"] .engagement-selector a.btn-reorder {
   cursor: pointer;
   color: #005b94;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .hidden-control {
   margin-top: 5px;
   display: flex;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .hidden-control input[type=checkbox] {
   height: 0;
   width: 0;
@@ -650,7 +552,6 @@ form[data-form="psgrading-task"] .engagement-selector .hidden-control input[type
   position: absolute;
   left: -9999px;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .hidden-control .toggle {
   cursor: pointer;
   text-indent: -9999px;
@@ -662,7 +563,6 @@ form[data-form="psgrading-task"] .engagement-selector .hidden-control .toggle {
   position: relative;
   margin-right: 3px;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .hidden-control .toggle:after {
   content: '';
   position: absolute;
@@ -674,60 +574,49 @@ form[data-form="psgrading-task"] .engagement-selector .hidden-control .toggle:af
   border-radius: 90px;
   transition: 0.3s;
 }
-
-form[data-form="psgrading-task"] .engagement-selector .hidden-control input:checked+.toggle {
+form[data-form="psgrading-task"] .engagement-selector .hidden-control input:checked + .toggle {
   background: #005b94;
 }
-
-form[data-form="psgrading-task"] .engagement-selector .hidden-control input:checked+.toggle:after {
+form[data-form="psgrading-task"] .engagement-selector .hidden-control input:checked + .toggle:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }
-
 form[data-form="psgrading-task"] .engagement-selector .hidden-control .desc {
   font-size: 82%;
   margin-left: 4px;
   line-height: 19px;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden input,
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden textarea,
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden select {
   background-color: #f2f2f2;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden input:focus,
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden textarea:focus,
 form[data-form="psgrading-task"] .engagement-selector .engagement-hidden select:focus {
   background: #fff;
 }
-
 form[data-form="psgrading-task"] .engagement-selector .foot {
   padding: 5px;
 }
-
 @media only screen and (max-width: 1160px) {
   form[data-form="psgrading-task"] .engagement-selector {
     padding: 0px 0px 25px 0px;
     background-color: #fff;
   }
-
   form[data-form="psgrading-task"] .engagement-selector .headings {
     display: none;
   }
-
   form[data-form="psgrading-task"] .engagement-selector .tbl-tr {
     display: block;
     background-color: #f0f4f8;
     padding: 20px 10px 20px 20px;
     border-radius: 4px;
   }
-
   form[data-form="psgrading-task"] .engagement-selector .tbl-col {
     display: block;
     width: 100%;
   }
-
   form[data-form="psgrading-task"] .engagement-selector .tbl-col .label {
     display: block;
     position: absolute;
@@ -735,22 +624,18 @@ form[data-form="psgrading-task"] .engagement-selector .foot {
     text-align: right;
   }
 }
-
 /* The json field is a text field hidden by css rather than a hidden field so that we can attach validation to it. */
 #page-mod-psgrading-task #fitem_id_evidencejson {
   display: none;
 }
-
-#page-mod-psgrading-task #fitem_id_evidencejson>div {
+#page-mod-psgrading-task #fitem_id_evidencejson > div {
   display: none;
 }
-
 #page-mod-psgrading-task #fitem_id_evidencejson.has-danger {
   display: block;
   height: 22px;
   overflow: hidden;
 }
-
 #page-mod-psgrading-task #fitem_id_evidencejson.has-danger:before {
   content: "You must add evidence.";
   color: red;
@@ -758,112 +643,90 @@ form[data-form="psgrading-task"] .engagement-selector .foot {
   height: 22px;
   margin-left: 15px;
 }
-
 /* Component styling */
 form[data-form="psgrading-task"] .evidence-selector {
   background-color: #f0f4f8;
   padding: 25px 20px 25px 30px;
 }
-
 form[data-form="psgrading-task"] .evidence-selector .heading {
   font-size: 110%;
   font-weight: 600;
   margin-bottom: 7px;
 }
-
 form[data-form="psgrading-task"] .evidence-selector table {
   max-width: 500px;
 }
-
 form[data-form="psgrading-task"] .evidence-selector table td {
   border: 1px solid #dee2e6;
 }
-
 form[data-form="psgrading-task"] .evidence-selector table .labelonly td {
   background-color: #f6f6f6;
 }
-
 form[data-form="psgrading-task"] .evidence-selector table .labelonly:hover td {
   background-color: #dbeafe;
 }
-
 form[data-form="psgrading-task"] .evidence-selector .c-indent {
   width: 37px;
   border: 0 none;
 }
-
 form[data-form="psgrading-task"] .evidence-selector .c-name {
   background-color: #fff;
 }
-
 form[data-form="psgrading-task"] .evidence-selector .c-link {
   width: 80px;
   text-align: center;
   background-color: #fff;
 }
-
 form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   cursor: pointer;
 }
-
 #page-mod-psgrading-courseoverview #region-main,
 #page-mod-psgrading-view #region-main {
   padding: 0;
 }
-
 #page-mod-psgrading-courseoverview #region-main-box .left-column,
 #page-mod-psgrading-view #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-
 #page-mod-psgrading-courseoverview #region-main-settings-menu,
 #page-mod-psgrading-view #region-main-settings-menu {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed,
 #page-mod-psgrading-view.zoomed {
   background-color: #fff;
   overflow: hidden;
 }
-
 #page-mod-psgrading-courseoverview.zoomed .drawer-toggler,
 #page-mod-psgrading-view.zoomed .drawer-toggler {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #maincontent,
 #page-mod-psgrading-view.zoomed #maincontent {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #region-main,
 #page-mod-psgrading-view.zoomed #region-main {
   border: 0 none;
   overflow: visible;
 }
-
 #page-mod-psgrading-courseoverview.zoomed nav,
 #page-mod-psgrading-view.zoomed nav {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed footer,
 #page-mod-psgrading-view.zoomed footer {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #page-header,
 #page-mod-psgrading-view.zoomed #page-header {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #nav-drawer,
 #page-mod-psgrading-view.zoomed #nav-drawer {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #page,
 #page-mod-psgrading-view.zoomed #page {
   position: absolute;
@@ -875,22 +738,18 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 0;
   z-index: 10;
 }
-
 #page-mod-psgrading-courseoverview.zoomed #page #page-content,
 #page-mod-psgrading-view.zoomed #page #page-content {
   padding: 0 !important;
 }
-
 #page-mod-psgrading-courseoverview.zoomed .psgrading-list,
 #page-mod-psgrading-view.zoomed .psgrading-list {
   height: 100vh;
 }
-
 #page-mod-psgrading-courseoverview.zoomed .psgrading-list .top-buttons,
 #page-mod-psgrading-view.zoomed .psgrading-list .top-buttons {
   position: fixed;
 }
-
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
@@ -899,31 +758,24 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 45px 35px;
   cursor: all-scroll;
 }
-
 .psgrading-list .classlist-table {
   position: relative;
 }
-
 .psgrading-list .classlist-table div.classlist-row:last-child .column {
   border-bottom: 1px solid #ccc;
 }
-
 .psgrading-list .classlist-table.reordering .classlist-row {
   opacity: 0.5;
 }
-
 .psgrading-list #cm-list .col-cm {
   background-color: #f9f9f9;
 }
-
 .psgrading-list .classlist-header {
   font-size: 0;
 }
-
 .psgrading-list .classlist-row {
   font-size: 0;
 }
-
 .psgrading-list .column {
   display: inline-block;
   vertical-align: top;
@@ -938,24 +790,19 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border-left: 1px solid #ccc;
   font-size: 17px;
 }
-
 .psgrading-list .column.not-published {
   background-color: #f5f5f5;
   padding: 6px;
 }
-
 .psgrading-list .column.not-released {
   background-color: #f5f5f5;
 }
-
 .psgrading-list .col-empty {
   border: none !important;
 }
-
 .psgrading-list .col-hidden {
   display: none !important;
 }
-
 .psgrading-list .col-empty.col-student {
   vertical-align: bottom;
   font-size: 12px;
@@ -963,7 +810,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   height: auto;
   padding: 6px 0px;
 }
-
 .psgrading-list .col-empty.col-student .sort {
   display: block;
   padding: 3px 7px;
@@ -971,22 +817,18 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   color: #005b94;
   cursor: pointer;
 }
-
 .psgrading-list .col-student {
   width: 180px;
 }
-
 .psgrading-list .col-student img {
   height: 28px;
 }
-
 .psgrading-list .col-taskname {
   height: 190px;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   position: relative;
 }
-
 .psgrading-list .col-taskname .text {
   display: inline-block;
   white-space: nowrap;
@@ -1001,7 +843,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .psgrading-list .col-taskname .actions {
   top: 0;
   position: absolute;
@@ -1011,33 +852,27 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   text-align: center;
   height: 100%;
 }
-
 .psgrading-list .col-taskname .actions a {
   display: block;
 }
-
 .psgrading-list .col-taskname .actions a.action-delete {
   position: absolute;
   color: red;
   bottom: 25px;
   right: 4px;
 }
-
 .psgrading-list .col-taskname .actions a.action-reorder {
   position: absolute;
   bottom: 0px;
   right: 2px;
   cursor: grab;
 }
-
 .psgrading-list .col-taskname .actions a.action-undorelease {
   position: relative;
 }
-
 .psgrading-list .col-taskname .actions a.action-undorelease i {
   animation-duration: 0.8s;
 }
-
 .psgrading-list .col-taskname .actions a.action-undorelease:hover:before {
   position: absolute;
   content: "";
@@ -1050,16 +885,13 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   -moz-transform: skewY(-33deg);
   transform: skewY(-33deg);
 }
-
 .psgrading-list .col-taskname .actions span.status-released {
   color: #aaa;
 }
-
 .psgrading-list .col-taskname .actions a.action-publish {
   color: #aaa;
   position: relative;
 }
-
 .psgrading-list .col-taskname .actions a.action-publish:before {
   position: absolute;
   content: "";
@@ -1072,33 +904,27 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   -moz-transform: skewY(-33deg);
   transform: skewY(-33deg);
 }
-
 .psgrading-list .col-taskname .actions a.action-publish:hover {
   color: #002c48;
 }
-
 .psgrading-list .col-taskname .actions a.action-publish:hover:before {
   display: none;
 }
-
 .psgrading-list .col-taskname .spinner {
   display: block;
   height: 22px;
   width: 22px;
   margin-top: 5px;
 }
-
 .psgrading-list .col-taskname.reordering {
   background-color: #cce5ff;
   box-shadow: 0 0 2px 0px #004085;
 }
-
 .psgrading-list .col-show-all-tasks {
   border-top: 0 none;
   width: auto;
   padding-top: 0;
 }
-
 .psgrading-list .col-taskcreatecol {
   height: calc(100% - 43px);
   position: absolute;
@@ -1109,17 +935,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: auto;
   padding-right: 30px;
 }
-
 .psgrading-list .col-taskcreatecol a {
   box-shadow: none !important;
 }
-
 .psgrading-list .col-taskcreatecol .dot-key {
   margin: 10px 0;
   line-height: 1.4;
   font-size: 90%;
 }
-
 .psgrading-list .col-taskcreatecol .dot-key .dot {
   width: 5px;
   height: 5px;
@@ -1127,20 +950,16 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   display: inline-block;
   margin-bottom: 2px;
 }
-
 .psgrading-list .col-taskcreatecol .dot-key .dot-red {
   background: red;
 }
-
 .psgrading-list .col-taskcreatecol .dot-key .dot-blue {
   background: blue;
 }
-
 .psgrading-list .col-success {
   padding: 0;
   position: relative;
 }
-
 .psgrading-list .col-success a {
   width: 100%;
   display: inline-block;
@@ -1149,11 +968,9 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   color: #000;
   transition: background ease 0.2s;
 }
-
 .psgrading-list .col-success a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
-
 .psgrading-list .col-success .dot-box {
   top: 0px;
   right: 0px;
@@ -1162,7 +979,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 2px 2px 0 2px;
   border-radius: 0 0 0 2px;
 }
-
 .psgrading-list .col-success .dot-box .dot {
   width: 5px;
   height: 5px;
@@ -1170,106 +986,82 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   display: block;
   margin-bottom: 2px;
 }
-
 .psgrading-list .col-success .dot-box .dot-red {
   background: red;
 }
-
 .psgrading-list .col-success .dot-box .dot-blue {
   background: blue;
 }
-
 .psgrading-list .col-success .quickmark-bolt {
   display: none;
 }
-
 .psgrading-list .col-success:hover .quickmark-bolt {
   display: block;
 }
-
 .psgrading-list .col-success.dns {
   background-color: #ddd;
 }
-
 .psgrading-list .column[data-grade="5"] {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-list .column[data-grade="4"] {
   background-color: #F97D01;
 }
-
 .psgrading-list .column[data-grade="3"] {
   background-color: #FFDB00;
 }
-
 .psgrading-list .column[data-grade="2"] {
   background-color: #6BB82E;
 }
-
 .psgrading-list .column[data-grade="1"] {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-list .toggleon {
   display: none;
 }
-
 #page-mod-psgrading-courseoverview .psgrading-list .col-taskname .actions a.action-delete {
   position: absolute;
   bottom: 0px;
   right: 2px;
 }
-
 #page-mod-psgrading-courseoverview .psgrading-list .col-taskname .actions a.action-reorder {
   display: none;
 }
-
 #page-mod-psgrading-mark #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-
 #page-mod-psgrading-mark #page-navbar {
   margin-right: 260px;
 }
-
 #page-mod-psgrading-mark .activity-navigation {
   display: none;
 }
-
 #page-mod-psgrading-mark #region-main-settings-menu {
   display: none;
 }
-
 #page-mod-psgrading-mark #region-main {
   padding: 0;
 }
-
 #page-mod-psgrading-mark #user-notifications .alert {
   margin: 0;
 }
-
 #page-mod-psgrading-mark form[data-form="psgrading-mark"] {
   padding: 0 20px 20px 20px;
 }
-
 #page-mod-psgrading-mark .text-danger[title="Required"],
 #page-mod-psgrading-mark .fdescription.required {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_criterionjson,
 #page-mod-psgrading-mark #fitem_id_engagementjson {
   display: none;
 }
-
 #page-mod-psgrading-mark.path-mod-psgrading .header .task-selector {
   top: -115px;
 }
-
 #page-mod-psgrading-mark .marking-criterions .headings,
 #page-mod-psgrading-mark .marking-engagements .headings,
 #page-mod-psgrading-mark .marking-criterions .criterions,
@@ -1280,7 +1072,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: 100%;
   border-collapse: collapse;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-th,
 #page-mod-psgrading-mark .marking-engagements .tbl-th,
 #page-mod-psgrading-mark .marking-criterions .tbl-tr,
@@ -1288,18 +1079,15 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   display: table-row;
   padding: 0;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-th,
 #page-mod-psgrading-mark .marking-engagements .tbl-th {
   font-weight: 600;
   font-size: 110%;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-th .tbl-col,
 #page-mod-psgrading-mark .marking-engagements .tbl-th .tbl-col {
   border: 0 none;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col,
 #page-mod-psgrading-mark .marking-engagements .tbl-col {
   display: table-cell;
@@ -1309,12 +1097,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   border: 1px dashed #ccc;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.tbl-col-first,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.tbl-col-first {
   padding-left: 0;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col .box,
 #page-mod-psgrading-mark .marking-engagements .tbl-col .box {
   width: 100%;
@@ -1322,57 +1108,46 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-size: 90%;
   border-radius: 2px;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.descriptor,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.descriptor {
   border: 1px solid #ccc;
   background: #f2f4f6;
   border-right: 1px solid #ccc;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.selectable,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.selectable {
   cursor: pointer;
   transition: background 0.2s;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level:hover,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level:hover {
   background-color: #fafafa;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level5.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level5.selected {
   background-color: #D90617;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level4.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level4.selected {
   background-color: #F97D01;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level3.selected {
   background-color: #FFDB00;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level2.selected {
   background-color: #6BB82E;
 }
-
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level1.selected {
   background-color: #00812F;
 }
-
 @media only screen and (max-width: 1160px) {
-
   #page-mod-psgrading-mark .marking-criterions .headings,
   #page-mod-psgrading-mark .marking-engagements .headings {
     display: none;
   }
-
   #page-mod-psgrading-mark .marking-criterions .tbl-tr,
   #page-mod-psgrading-mark .marking-engagements .tbl-tr {
     display: block;
@@ -1380,13 +1155,11 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     padding: 10px;
     border-radius: 4px;
   }
-
   #page-mod-psgrading-mark .marking-criterions .tbl-col,
   #page-mod-psgrading-mark .marking-engagements .tbl-col {
     display: block;
     width: 100% !important;
   }
-
   #page-mod-psgrading-mark .marking-criterions .tbl-col .label,
   #page-mod-psgrading-mark .marking-engagements .tbl-col .label {
     display: block;
@@ -1395,120 +1168,96 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     text-align: right;
   }
 }
-
 #page-mod-psgrading-mark .marking-engagements .heading {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
 }
-
 #page-mod-psgrading-mark .outcomes {
   border-bottom: 1px solid #ddd;
   margin: 20px;
   padding-bottom: 20px;
 }
-
 #page-mod-psgrading-mark .outcomes .heading {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
 }
-
 #page-mod-psgrading-mark .marking-evidences {
   margin-top: 30px;
 }
-
 #page-mod-psgrading-mark .marking-evidences .heading {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
 }
-
 #page-mod-psgrading-mark .marking-evidences .body {
   overflow: hidden;
 }
-
 #page-mod-psgrading-mark .marking-evidences table {
   border: 1px solid #ccc;
   max-width: 500px;
   background: #fff;
 }
-
 #page-mod-psgrading-mark .marking-evidences h6 {
   font-weight: 600;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences {
   margin: 0;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .col-md-3 {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .col-md-9 {
   padding: 0;
   max-width: 100%;
   flex: 0 0 100%;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-restrictions {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-pathbar {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-btn-download {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_evidences .filemanager .fp-vb-tree {
   display: none;
 }
-
 #page-mod-psgrading-mark .form-group.row.fitem {
   margin: 0;
 }
-
 #page-mod-psgrading-mark .form-group.row.fitem .col-md-3 {
   padding: 0 0 5px 0;
   font-weight: 600;
   font-size: 120%;
 }
-
 #page-mod-psgrading-mark .form-group.row.fitem .col-md-9 {
   padding: 0 0 15px 0;
   max-width: 100%;
   flex: 0 0 100%;
 }
-
 #page-mod-psgrading-mark #fitem_id_engagement {
   margin: 0;
 }
-
 #page-mod-psgrading-mark #fitem_id_engagement .col-md-3 {
   padding: 20px 0 5px 0;
   font-weight: 600;
   font-size: 120%;
 }
-
 #page-mod-psgrading-mark #fitem_id_engagement .col-md-9 {
   padding: 0;
   max-width: 100%;
   flex: 0 0 100%;
 }
-
 #page-mod-psgrading-mark #fitem_id_engagement select {
   width: 100%;
   max-width: 500px;
 }
-
 #page-mod-psgrading-mark #fitem_id_engagement.hide-engagement {
   display: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_comment {
   margin: 0;
   float: left;
@@ -1516,7 +1265,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   padding-bottom: 24px;
 }
-
 #page-mod-psgrading-mark #fitem_id_comment .col-md-3 {
   padding: 20px 0 5px 0;
   font-weight: 600;
@@ -1525,17 +1273,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   max-width: 100%;
   flex: none;
 }
-
 #page-mod-psgrading-mark #fitem_id_comment .col-md-9 {
   padding: 0;
   max-width: 100%;
   flex: 0 0 100%;
 }
-
 #page-mod-psgrading-mark #fitem_id_comment textarea {
   width: 100%;
 }
-
 #page-mod-psgrading-mark #save-to-comment-bank {
   margin-left: 0;
   margin-top: -26px;
@@ -1545,13 +1290,11 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   bottom: 0;
   right: 0;
 }
-
 #page-mod-psgrading-mark .comment-bank {
   float: left;
   width: 65%;
   padding: 52px 0 0 10px;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment {
   background: #f2f4f6;
   padding: 5px 10px;
@@ -1565,7 +1308,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   cursor: pointer;
   transition: padding 0.3s;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment a {
   transition: all 0.3s;
   opacity: 0;
@@ -1574,42 +1316,34 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #f2f4f6;
   text-align: center;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment a.delete {
   top: 4px;
   right: 0;
   width: 30px;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment a.append {
   top: 4px;
   left: 10px;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment:hover {
   padding-left: 23px;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment:hover a {
   opacity: 1;
   visibility: visible;
 }
-
 #page-mod-psgrading-mark .comment-bank .comment:hover a.append {
   left: 5px;
 }
-
 #page-mod-psgrading-mark .comment-bank.submitting .spinner {
   display: block;
   margin: 0 0 5px 0;
   height: 25px;
   width: 25px;
 }
-
 #page-mod-psgrading-mark .clear {
   clear: both;
 }
-
 #page-mod-psgrading-mark.didnotsubmit .marking-criterions,
 #page-mod-psgrading-mark.didnotsubmit .marking-engagements,
 #page-mod-psgrading-mark.didnotsubmit .marking-evidences,
@@ -1618,7 +1352,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   opacity: 0.5;
   pointer-events: none;
 }
-
 #page-mod-psgrading-mark .myconnect-selector {
   position: fixed;
   height: 100%;
@@ -1630,7 +1363,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 20px;
   overflow: hidden;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .frame {
   background-color: #fff;
   margin: 0 auto;
@@ -1639,17 +1371,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   overflow: scroll;
   position: relative;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .grid {
   padding: 20px;
 }
-
 #page-mod-psgrading-mark .myconnect-selector h5 {
   background: #f2f4f6;
   padding: 20px;
   margin: 0;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .actions {
   position: fixed;
   right: 50px;
@@ -1660,43 +1389,35 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #f2f4f6;
   z-index: 9999;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .actions a {
   float: right;
   margin-right: 3px;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .actions .btn-exit {
   height: 36px;
 }
-
 #page-mod-psgrading-mark .myconnect-selector .attachment-wrap {
   float: left;
 }
-
 #page-mod-psgrading-mark #myconnect-evidence,
 #page-mod-psgrading-details #myconnect-evidence {
   margin-bottom: 1rem;
   position: relative;
 }
-
 #page-mod-psgrading-mark #myconnect-evidence .btn-browse,
 #page-mod-psgrading-details #myconnect-evidence .btn-browse {
   box-shadow: none;
 }
-
 #page-mod-psgrading-mark #myconnect-evidence.has-attachments .btn-browse,
 #page-mod-psgrading-details #myconnect-evidence.has-attachments .btn-browse {
   position: absolute;
   right: 0;
   top: 0;
 }
-
 #page-mod-psgrading-mark #myconnect-evidence.has-attachments .myconnect-carousel,
 #page-mod-psgrading-details #myconnect-evidence.has-attachments .myconnect-carousel {
   display: block;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel,
 #page-mod-psgrading-details .myconnect-carousel {
   display: none;
@@ -1706,7 +1427,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border: 1px dashed #aaa;
   border-radius: 2px;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment,
 #page-mod-psgrading-details .myconnect-carousel .attachment {
   background-color: #fff;
@@ -1715,18 +1435,15 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 10px 10px 10px 0px;
   vertical-align: top;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment:hover .attachment-header .selector,
 #page-mod-psgrading-details .myconnect-carousel .attachment:hover .attachment-header .selector {
   display: block;
   background: #000;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment .attachment-header,
 #page-mod-psgrading-details .myconnect-carousel .attachment .attachment-header {
   min-height: 0px;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment .attachment-header .selector,
 #page-mod-psgrading-details .myconnect-carousel .attachment .attachment-header .selector {
   display: none;
@@ -1735,7 +1452,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border: 1px solid #000;
   background: #000;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment .attachment-header .selector:after,
 #page-mod-psgrading-details .myconnect-carousel .attachment .attachment-header .selector:after {
   display: block;
@@ -1746,14 +1462,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   text-align: center;
   font-family: monospace;
 }
-
 #page-mod-psgrading-mark .myconnect-carousel .attachment .attachment-body,
 #page-mod-psgrading-details .myconnect-carousel .attachment .attachment-body {
   max-height: 400px;
   overflow: hidden;
   overflow-y: auto;
 }
-
 #page-mod-psgrading-mark .attachment,
 #page-mod-psgrading-details .attachment {
   margin-bottom: 30px;
@@ -1762,18 +1476,15 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 10px 10px 30px 10px;
   cursor: pointer;
 }
-
 #page-mod-psgrading-mark .attachment:hover .attachment-header .selector,
 #page-mod-psgrading-details .attachment:hover .attachment-header .selector {
   background: #B3D9B3;
 }
-
 #page-mod-psgrading-mark .attachment.selected .attachment-header .selector,
 #page-mod-psgrading-details .attachment.selected .attachment-header .selector {
   border: 1px solid green;
   background: green;
 }
-
 #page-mod-psgrading-mark .attachment.selected .attachment-header .selector:after,
 #page-mod-psgrading-details .attachment.selected .attachment-header .selector:after {
   content: "✓";
@@ -1784,14 +1495,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   display: block;
   font-family: monospace;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-header,
 #page-mod-psgrading-details .attachment .attachment-header {
   position: relative;
   width: 100%;
   font-weight: 600;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-header .selector,
 #page-mod-psgrading-details .attachment .attachment-header .selector {
   border: 1px solid black;
@@ -1807,7 +1516,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   transition: background linear 0.1s;
   z-index: 10;
 }
-
 #page-mod-psgrading-mark .attachment .photo,
 #page-mod-psgrading-details .attachment .photo,
 #page-mod-psgrading-mark .attachment .doc,
@@ -1823,7 +1531,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   overflow: hidden;
 }
-
 #page-mod-psgrading-mark .attachment .photo a,
 #page-mod-psgrading-details .attachment .photo a,
 #page-mod-psgrading-mark .attachment .doc a,
@@ -1832,7 +1539,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-details .attachment .video a {
   cursor: zoom-in;
 }
-
 #page-mod-psgrading-mark .attachment .photo img,
 #page-mod-psgrading-details .attachment .photo img,
 #page-mod-psgrading-mark .attachment .doc img,
@@ -1843,7 +1549,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: auto;
   display: block;
 }
-
 #page-mod-psgrading-mark .attachment .doc,
 #page-mod-psgrading-details .attachment .doc {
   width: 85px;
@@ -1852,7 +1557,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   line-height: 11px;
   background: #e2e4e6;
 }
-
 #page-mod-psgrading-mark .attachment .doc a,
 #page-mod-psgrading-details .attachment .doc a {
   margin: 7px;
@@ -1860,20 +1564,17 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   overflow: hidden;
   height: 76px;
 }
-
 #page-mod-psgrading-mark .attachment .doc .icon,
 #page-mod-psgrading-details .attachment .doc .icon {
   height: 30px;
   margin: 6px auto;
 }
-
 #page-mod-psgrading-mark .attachment .video video,
 #page-mod-psgrading-details .attachment .video video {
   height: 100%;
   width: auto;
   display: block;
 }
-
 #page-mod-psgrading-mark .attachment .video i,
 #page-mod-psgrading-details .attachment .video i {
   position: absolute;
@@ -1888,12 +1589,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   text-align: center;
   font-size: 14px;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-body,
 #page-mod-psgrading-details .attachment .attachment-body {
   position: relative;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-body.has-cover,
 #page-mod-psgrading-details .attachment .attachment-body.has-cover {
   box-shadow: none;
@@ -1902,7 +1601,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   top: 5px;
   left: 5px;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-body.has-cover .photo,
 #page-mod-psgrading-details .attachment .attachment-body.has-cover .photo,
 #page-mod-psgrading-mark .attachment .attachment-body.has-cover .doc,
@@ -1916,58 +1614,47 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   margin-right: 4px;
 }
-
 #page-mod-psgrading-mark .attachment .attachment-body.has-cover .video i,
 #page-mod-psgrading-details .attachment .attachment-body.has-cover .video i {
   padding: 4px 0 4px 4px;
   width: 25px;
   height: 25px;
 }
-
 #page-mod-psgrading-details .attachment:hover {
   border: 1px solid #ededed;
 }
-
 #page-mod-psgrading-details .attachment:hover .attachment-header .selector {
   display: none !important;
 }
-
 #page-mod-psgrading-overview #region-main-box .left-column,
 #page-mod-psgrading-studentoverview #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-
 #page-mod-psgrading-overview .activity-navigation,
 #page-mod-psgrading-studentoverview .activity-navigation {
   display: none;
 }
-
 #page-mod-psgrading-overview #region-main-settings-menu,
 #page-mod-psgrading-studentoverview #region-main-settings-menu {
   display: none;
 }
-
 #page-mod-psgrading-overview #region-main,
 #page-mod-psgrading-studentoverview #region-main {
   padding: 0;
 }
-
 #page-mod-psgrading-overview #user-notifications .alert,
 #page-mod-psgrading-studentoverview #user-notifications .alert {
   margin: 0;
 }
-
 #page-mod-psgrading-overview .psgrading-overview .psgrading-matrix,
 #page-mod-psgrading-studentoverview .psgrading-overview .psgrading-matrix {
   border: 1px solid #eee;
 }
-
 #page-mod-psgrading-overview .psgrading-overview .contents-wrap,
 #page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap {
   position: relative;
 }
-
 #page-mod-psgrading-overview .psgrading-overview .contents-wrap.is-viewas,
 #page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap.is-viewas {
   background-color: #fff;
@@ -1975,7 +1662,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-position: 0px -43px;
   background-repeat: no-repeat;
 }
-
 #page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options,
 #page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap .floating-options {
   position: absolute;
@@ -1983,26 +1669,22 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   right: 0;
   padding: 10px;
 }
-
 #page-mod-psgrading-overview .psgrading-overview .contents-wrap .floating-options a.viewas,
 #page-mod-psgrading-studentoverview .psgrading-overview .contents-wrap .floating-options a.viewas {
   display: inline-block;
   font-style: italic;
   font-size: 90%;
 }
-
 .psgrading-matrix {
   white-space: nowrap;
   overflow: auto;
   padding: 20px;
   font-size: 1.125em;
 }
-
 .psgrading-matrix .column {
   display: inline-block;
   vertical-align: top;
 }
-
 .psgrading-matrix .cell {
   padding: 3px 6px;
   line-height: 30px;
@@ -2011,119 +1693,94 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   text-overflow: ellipsis;
   width: 140px;
 }
-
 .psgrading-matrix .column.y-header div {
   padding: 3px 6px;
 }
-
 .psgrading-matrix .column.y-header .subjects {
   padding: 0;
   background-color: #f2f4f6;
 }
-
 .psgrading-matrix .column.y-header .subjects div {
   padding: 6px 6px;
   border-left: 1px dashed #ccc;
   border-top: 1px dashed #ccc;
 }
-
 .psgrading-matrix .column.y-header .subjects div:last-of-type {
   border-bottom: 1px dashed #ccc;
 }
-
 .psgrading-matrix .column.y-header .cell-engagement {
   padding: 6px 6px;
   border-left: 1px solid #fff;
   border-bottom: 1px solid #fff;
 }
-
 .psgrading-matrix .column.y-header .cell-success {
   padding: 6px 6px;
 }
-
 .psgrading-matrix .column.task {
   position: relative;
 }
-
 .psgrading-matrix .column.task .cell-taskname {
   font-weight: 600;
 }
-
 .psgrading-matrix .column.task .subjects div {
   padding: 6px 6px;
   border-top: 1px dashed #ccc;
 }
-
 .psgrading-matrix .column.task .subjects div:last-of-type {
   border-bottom: 1px dashed #ccc;
 }
-
 .psgrading-matrix .column.task .cell[data-grade="5"] {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-matrix .column.task .cell[data-grade="4"] {
   background-color: #F97D01;
 }
-
 .psgrading-matrix .column.task .cell[data-grade="3"] {
   background-color: #FFDB00;
 }
-
 .psgrading-matrix .column.task .cell[data-grade="2"] {
   background-color: #6BB82E;
 }
-
 .psgrading-matrix .column.task .cell[data-grade="1"] {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-matrix .column.task .cell-engagement {
   padding: 6px 6px;
   border-bottom: 1px solid #fff;
 }
-
 .psgrading-matrix .column.task .cell-engagement[data-engagement="NI"] {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-matrix .column.task .cell-engagement[data-engagement="A"] {
   background-color: #FFDB00;
 }
-
 .psgrading-matrix .column.task .cell-engagement[data-engagement="VG"] {
   background-color: #6BB82E;
   color: #fff;
 }
-
 .psgrading-matrix .column.task .cell-engagement[data-engagement="E"] {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-matrix .column.task:hover {
   box-shadow: 0 0 90px -50px #000;
   box-shadow: 0 0 0px 1px #000;
   z-index: 1;
 }
-
 .psgrading-matrix .column.task .cell-success {
   padding: 6px 6px;
 }
-
 .psgrading-matrix div.column.task.last .subjects div {
   border-right: 1px dashed #ccc;
 }
-
 .psgrading-matrix div.column.report-grades .cell-report-grade {
   padding: 0;
   overflow: visible;
 }
-
-.psgrading-matrix div.column.report-grades .cell-report-grade>span {
+.psgrading-matrix div.column.report-grades .cell-report-grade > span {
   transform: skewX(-7deg);
   text-align: center;
   background-color: #f2f4f6;
@@ -2135,687 +1792,543 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   border-bottom: 0 none;
   font-weight: 400;
 }
-
 .psgrading-matrix div.column.report-grades .subjects div {
   background-color: #f2f4f6;
   padding: 6px 13px;
   border-top: 1px dashed #ccc;
   border-right: 1px dashed #ccc;
 }
-
 .psgrading-matrix div.column.report-grades .subjects div:last-of-type {
   border-bottom: 1px dashed #ccc;
 }
-
 .psgrading-matrix div.column.report-grades .cell-blank {
   padding: 6px;
 }
-
 .psgrading-matrix div.column.report-grades .cell-engagement {
   background-color: #f2f4f6;
   padding: 6px 13px;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="5"] {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="4"] {
   background-color: #F97D01;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="3"] {
   background-color: #FFDB00;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="2"] {
   background-color: #6BB82E;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="1"] {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="25"] {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="50"] {
   background-color: #FFDB00;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="75"] {
   background-color: #6BB82E;
 }
-
 .psgrading-matrix div.column.report-grades .cell[data-grade="100"] {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-matrix.hover-engagement .column.y-header div.cell-engagement {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-engagement .column.y-header div.cell-engagement:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-engagement .column.task div.cell-engagement {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-engagement .column.task div.cell-engagement:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-engagement .column.task.last div.cell-engagement {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Drama .column.y-header div.cell-Drama {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Drama .column.y-header div.cell-Drama:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Drama .column.task div.cell-Drama {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Drama .column.task div.cell-Drama:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Drama .column.task.last div.cell-Drama {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Drama .column.report-grades div.cell-Drama {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Drama .column.report-grades div.cell-Drama:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-MediaArts .column.y-header div.cell-MediaArts {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-MediaArts .column.y-header div.cell-MediaArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-MediaArts .column.task div.cell-MediaArts {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-MediaArts .column.task div.cell-MediaArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-MediaArts .column.task.last div.cell-MediaArts {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-MediaArts .column.report-grades div.cell-MediaArts {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-MediaArts .column.report-grades div.cell-MediaArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Music .column.y-header div.cell-Music {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Music .column.y-header div.cell-Music:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Music .column.task div.cell-Music {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Music .column.task div.cell-Music:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Music .column.task.last div.cell-Music {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Music .column.report-grades div.cell-Music {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Music .column.report-grades div.cell-Music:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Indonesian .column.y-header div.cell-Indonesian {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Indonesian .column.y-header div.cell-Indonesian:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Indonesian .column.task div.cell-Indonesian {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Indonesian .column.task div.cell-Indonesian:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Indonesian .column.task.last div.cell-Indonesian {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Indonesian .column.report-grades div.cell-Indonesian {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Indonesian .column.report-grades div.cell-Indonesian:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Chinese .column.y-header div.cell-Chinese {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Chinese .column.y-header div.cell-Chinese:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Chinese .column.task div.cell-Chinese {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Chinese .column.task div.cell-Chinese:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Chinese .column.task.last div.cell-Chinese {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Chinese .column.report-grades div.cell-Chinese {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Chinese .column.report-grades div.cell-Chinese:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-VisArts .column.y-header div.cell-VisArts {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-VisArts .column.y-header div.cell-VisArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-VisArts .column.task div.cell-VisArts {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-VisArts .column.task div.cell-VisArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-VisArts .column.task.last div.cell-VisArts {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-VisArts .column.report-grades div.cell-VisArts {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-VisArts .column.report-grades div.cell-VisArts:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HPE .column.y-header div.cell-HPE {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HPE .column.y-header div.cell-HPE:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HPE .column.task div.cell-HPE {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HPE .column.task div.cell-HPE:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HPE .column.task.last div.cell-HPE {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HPE .column.report-grades div.cell-HPE {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HPE .column.report-grades div.cell-HPE:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.y-header div.cell-Mathsstatisticsandprobability {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.y-header div.cell-Mathsstatisticsandprobability:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.task div.cell-Mathsstatisticsandprobability {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.task div.cell-Mathsstatisticsandprobability:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.task.last div.cell-Mathsstatisticsandprobability {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.report-grades div.cell-Mathsstatisticsandprobability {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsstatisticsandprobability .column.report-grades div.cell-Mathsstatisticsandprobability:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.y-header div.cell-Mathsnumberandalgebra {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.y-header div.cell-Mathsnumberandalgebra:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.task div.cell-Mathsnumberandalgebra {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.task div.cell-Mathsnumberandalgebra:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.task.last div.cell-Mathsnumberandalgebra {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.report-grades div.cell-Mathsnumberandalgebra {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsnumberandalgebra .column.report-grades div.cell-Mathsnumberandalgebra:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.y-header div.cell-Mathsmeasurementandgeometry {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.y-header div.cell-Mathsmeasurementandgeometry:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.task div.cell-Mathsmeasurementandgeometry {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.task div.cell-Mathsmeasurementandgeometry:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.task.last div.cell-Mathsmeasurementandgeometry {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.report-grades div.cell-Mathsmeasurementandgeometry {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Mathsmeasurementandgeometry .column.report-grades div.cell-Mathsmeasurementandgeometry:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Technology .column.y-header div.cell-Technology {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Technology .column.y-header div.cell-Technology:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Technology .column.task div.cell-Technology {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Technology .column.task div.cell-Technology:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Technology .column.task.last div.cell-Technology {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Technology .column.report-grades div.cell-Technology {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Technology .column.report-grades div.cell-Technology:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Science .column.y-header div.cell-Science {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Science .column.y-header div.cell-Science:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Science .column.task div.cell-Science {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Science .column.task div.cell-Science:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Science .column.task.last div.cell-Science {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Science .column.report-grades div.cell-Science {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Science .column.report-grades div.cell-Science:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HASS .column.y-header div.cell-HASS {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HASS .column.y-header div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HASS .column.task div.cell-HASS {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HASS .column.task div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-HASS .column.task.last div.cell-HASS {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HASS .column.report-grades div.cell-HASS {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-HASS .column.report-grades div.cell-HASS:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.y-header div.cell-Englishwriting {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.y-header div.cell-Englishwriting:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.task div.cell-Englishwriting {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.task div.cell-Englishwriting:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.task.last div.cell-Englishwriting {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.report-grades div.cell-Englishwriting {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishwriting .column.report-grades div.cell-Englishwriting:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.y-header div.cell-Englishspeakingandlistening {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.y-header div.cell-Englishspeakingandlistening:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.task div.cell-Englishspeakingandlistening {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.task div.cell-Englishspeakingandlistening:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.task.last div.cell-Englishspeakingandlistening {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.report-grades div.cell-Englishspeakingandlistening {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishspeakingandlistening .column.report-grades div.cell-Englishspeakingandlistening:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.y-header div.cell-Englishreadingandviewing {
   border-left: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.y-header div.cell-Englishreadingandviewing:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.task div.cell-Englishreadingandviewing {
   border-top: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.task div.cell-Englishreadingandviewing:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.task.last div.cell-Englishreadingandviewing {
   border-right: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.report-grades div.cell-Englishreadingandviewing {
   border-top: 1px solid #000 !important;
   border-right: 1px solid #000 !important;
   border-bottom: 1px solid #000 !important;
 }
-
 .psgrading-matrix.hover-Englishreadingandviewing .column.report-grades div.cell-Englishreadingandviewing:not(:last-of-type) {
   padding-bottom: 5px;
 }
-
 .psgrading-matrix.hover-engagement .column.y-header div.cell-engagement {
   margin-top: -1px;
   padding-bottom: 6px !important;
 }
-
 .psgrading-matrix.hover-engagement .column.task div.cell-engagement {
   margin-top: -1px;
   padding-bottom: 6px !important;
 }
-
 .psgrading-matrix.hover-engagement .column.report-grades div.cell-engagement {
   margin-top: -1px;
   padding-bottom: 6px !important;
 }
-
 #page-mod-psgrading-details #region-main-box .left-column,
 #page-mod-psgrading-print #region-main-box .left-column {
   width: 100%;
   background: #fff;
 }
-
 #page-mod-psgrading-details #page-navbar,
 #page-mod-psgrading-print #page-navbar {
   margin-right: 260px;
 }
-
 #page-mod-psgrading-details .activity-navigation,
 #page-mod-psgrading-print .activity-navigation {
   display: none;
 }
-
 #page-mod-psgrading-details #region-main-settings-menu,
 #page-mod-psgrading-print #region-main-settings-menu {
   display: none;
 }
-
 #page-mod-psgrading-details #region-main,
 #page-mod-psgrading-print #region-main {
   padding: 0;
 }
-
 #page-mod-psgrading-details #user-notifications .alert,
 #page-mod-psgrading-print #user-notifications .alert {
   margin: 0;
 }
-
 #page-mod-psgrading-details .contents,
 #page-mod-psgrading-print .contents {
   padding: 20px;
 }
-
 #page-mod-psgrading-details .description,
 #page-mod-psgrading-print .description {
   margin-bottom: 20px;
   line-height: 25px;
 }
-
 #page-mod-psgrading-details .description strong,
 #page-mod-psgrading-print .description strong {
   font-weight: 600;
@@ -2823,26 +2336,22 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin-top: 8px;
   display: inline-block;
 }
-
 #page-mod-psgrading-details .heading,
 #page-mod-psgrading-print .heading {
   font-weight: 600;
   font-size: 120%;
   padding-bottom: 5px;
 }
-
 #page-mod-psgrading-details .details-outcomes,
 #page-mod-psgrading-print .details-outcomes {
   margin-bottom: 25px;
 }
-
 #page-mod-psgrading-details .details-criterions,
 #page-mod-psgrading-print .details-criterions,
 #page-mod-psgrading-details .details-engagements,
 #page-mod-psgrading-print .details-engagements {
   margin-bottom: 30px;
 }
-
 #page-mod-psgrading-details .details-criterions .headings,
 #page-mod-psgrading-print .details-criterions .headings,
 #page-mod-psgrading-details .details-engagements .headings,
@@ -2859,7 +2368,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: 100%;
   border-collapse: collapse;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-th,
 #page-mod-psgrading-print .details-criterions .tbl-th,
 #page-mod-psgrading-details .details-engagements .tbl-th,
@@ -2871,7 +2379,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   display: table-row;
   padding: 0;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-th,
 #page-mod-psgrading-print .details-criterions .tbl-th,
 #page-mod-psgrading-details .details-engagements .tbl-th,
@@ -2879,14 +2386,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-weight: 600;
   font-size: 110%;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-th .tbl-col,
 #page-mod-psgrading-print .details-criterions .tbl-th .tbl-col,
 #page-mod-psgrading-details .details-engagements .tbl-th .tbl-col,
 #page-mod-psgrading-print .details-engagements .tbl-th .tbl-col {
   border: 0 none;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col,
 #page-mod-psgrading-print .details-criterions .tbl-col,
 #page-mod-psgrading-details .details-engagements .tbl-col,
@@ -2898,14 +2403,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: relative;
   border: 1px dashed #ccc;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.tbl-col-first,
 #page-mod-psgrading-print .details-criterions .tbl-col.tbl-col-first,
 #page-mod-psgrading-details .details-engagements .tbl-col.tbl-col-first,
 #page-mod-psgrading-print .details-engagements .tbl-col.tbl-col-first {
   padding-left: 0;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level1,
 #page-mod-psgrading-print .details-criterions .tbl-col.level1,
 #page-mod-psgrading-details .details-engagements .tbl-col.level1,
@@ -2916,7 +2419,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-print .details-engagements .tbl-col.level5 {
   width: 10%;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col .box,
 #page-mod-psgrading-print .details-criterions .tbl-col .box,
 #page-mod-psgrading-details .details-engagements .tbl-col .box,
@@ -2926,7 +2428,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   font-size: 90%;
   border-radius: 2px;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.descriptor,
 #page-mod-psgrading-print .details-criterions .tbl-col.descriptor,
 #page-mod-psgrading-details .details-engagements .tbl-col.descriptor,
@@ -2935,51 +2436,43 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #f2f4f6;
   border-right: 1px solid #ccc;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level5.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level5.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level5.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level5.selected {
   background-color: #D90617;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level4.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level4.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level4.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level4.selected {
   background-color: #F97D01;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level3.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level3.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level3.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level3.selected {
   background-color: #FFDB00;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level2.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level2.selected {
   background-color: #6BB82E;
 }
-
 #page-mod-psgrading-details .details-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level1.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level1.selected {
   background-color: #00812F;
 }
-
 @media only screen and (max-width: 1160px) {
-
   #page-mod-psgrading-details .details-criterions .headings,
   #page-mod-psgrading-print .details-criterions .headings,
   #page-mod-psgrading-details .details-engagements .headings,
   #page-mod-psgrading-print .details-engagements .headings {
     display: none;
   }
-
   #page-mod-psgrading-details .details-criterions .tbl-tr,
   #page-mod-psgrading-print .details-criterions .tbl-tr,
   #page-mod-psgrading-details .details-engagements .tbl-tr,
@@ -2989,7 +2482,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     padding: 10px;
     border-radius: 4px;
   }
-
   #page-mod-psgrading-details .details-criterions .tbl-col,
   #page-mod-psgrading-print .details-criterions .tbl-col,
   #page-mod-psgrading-details .details-engagements .tbl-col,
@@ -2997,7 +2489,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     display: block;
     width: 100% !important;
   }
-
   #page-mod-psgrading-details .details-criterions .tbl-col .label,
   #page-mod-psgrading-print .details-criterions .tbl-col .label,
   #page-mod-psgrading-details .details-engagements .tbl-col .label,
@@ -3008,93 +2499,75 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     text-align: right;
   }
 }
-
 #page-mod-psgrading-details .details-evidences,
 #page-mod-psgrading-print .details-evidences {
   margin-top: 30px;
 }
-
 #page-mod-psgrading-details .details-evidences table,
 #page-mod-psgrading-print .details-evidences table {
   border: 1px solid #ccc;
   max-width: 500px;
   background: #fff;
 }
-
 #page-mod-psgrading-details .details-evidences h6,
 #page-mod-psgrading-print .details-evidences h6 {
   font-weight: 600;
 }
-
 .modal-DIFF .modal-body {
   padding: 10px;
 }
-
 .modal-DIFF table.task-diff td,
 .modal-DIFF table.task-diff th {
   padding: 7px 9px;
 }
-
 .modal-DIFF table.task-diff del {
   color: red;
   background: #fdd;
 }
-
 .modal-DIFF table.task-diff ins {
   color: green;
   background: #dfd;
 }
-
 .modal-DIFF table.task-diff table.criterions td,
 .modal-DIFF table.task-diff table.engagements td,
 .modal-DIFF table.task-diff table.criterions th,
 .modal-DIFF table.task-diff table.engagements th {
   border: 1px solid #ddd;
 }
-
 .modal-DIFF table.task-diff table.criterions td.level5,
 .modal-DIFF table.task-diff table.engagements td.level5 {
   width: 14%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.level4,
 .modal-DIFF table.task-diff table.engagements td.level4 {
   width: 14%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.level3,
 .modal-DIFF table.task-diff table.engagements td.level3 {
   width: 14%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.level2,
 .modal-DIFF table.task-diff table.engagements td.level2 {
   width: 14%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.level1,
 .modal-DIFF table.task-diff table.engagements td.level1 {
   width: 14%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.subject,
 .modal-DIFF table.task-diff table.engagements td.subject {
   width: 10%;
 }
-
 .modal-DIFF table.task-diff table.criterions td.options,
 .modal-DIFF table.task-diff table.engagements td.options {
   width: 10%;
 }
-
 #page-mod-psgrading-reporting #region-main {
   padding: 0;
 }
-
 #page-mod-psgrading-reporting .reportingperiod-selector {
   right: 37px;
 }
-
 #page-mod-psgrading-reporting .reporting-helper {
   position: fixed;
   top: 0;
@@ -3105,65 +2578,52 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: rebeccapurple;
   transition: 0.4s;
 }
-
 #page-mod-psgrading-reporting .reporting-helper.active {
   right: 0;
 }
-
 #page-mod-psgrading-reporting #region-main-box .left-column {
   width: 100%;
 }
-
 .psgrading-reporting {
   padding: 0 0 300px 0;
   margin-top: -1px;
 }
-
 .psgrading-reporting .period-heading {
   font-weight: 600;
   font-size: 20px;
   background: #dedede;
   padding: 5px 10px;
 }
-
 .psgrading-reporting .reporting-row {
   align-items: baseline;
   padding: 14px 120px 12px 14px;
 }
-
 .psgrading-reporting .reporting-row.dropdown-focussed .report-element:not(.options-open) {
   opacity: 0.3;
 }
-
 .psgrading-reporting .reporting-row.popout-focussed .report-element:not(.options-open) {
   display: none;
 }
-
 @media only screen and (min-width: 960px) {
   .psgrading-reporting .reporting-row {
     display: flex;
   }
 }
-
 .psgrading-reporting .reporting-row:nth-child(even) {
   background: #FFF;
 }
-
 .psgrading-reporting .reporting-row:nth-child(odd) {
   background: #F2F4F6;
 }
-
 .psgrading-reporting .student-info {
   white-space: nowrap;
   margin-right: 15px;
   margin-bottom: 11px;
   min-width: 170px;
 }
-
 .psgrading-reporting .student-report-elements {
   width: 100%;
 }
-
 .psgrading-reporting .report-element {
   padding: 3px 10px;
   display: inline-block;
@@ -3177,58 +2637,47 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #414141;
   position: relative;
 }
-
 .psgrading-reporting .report-element.options-open .subjectgrade {
   z-index: 20;
   position: relative;
 }
-
 .psgrading-reporting .report-element.options-open .options-area {
   display: block;
 }
-
 .psgrading-reporting .report-element.submitting {
   opacity: 0.4;
   pointer-events: none;
 }
-
 .psgrading-reporting .report-element[data-grade="1"] {
   background-color: #D90617;
   border-color: #D90617;
 }
-
 .psgrading-reporting .report-element[data-grade="2"] {
   background-color: #F97D01;
   border-color: #F97D01;
   color: #000;
 }
-
 .psgrading-reporting .report-element[data-grade="3"] {
   background-color: #FFDB00;
   border-color: #FFDB00;
   color: #000;
 }
-
 .psgrading-reporting .report-element[data-grade="4"] {
   background-color: #6BB82E;
   border-color: #6BB82E;
   color: #000;
 }
-
 .psgrading-reporting .report-element[data-grade="5"] {
   background-color: #00812F;
   border-color: #00812F;
 }
-
 .psgrading-reporting .report-element[data-grade="text_graded"] {
   background-color: #5F9EA0;
   border-color: #5F9EA0;
 }
-
 .psgrading-reporting .options-area {
   display: none;
 }
-
 .psgrading-reporting #reporting-inlinegrading,
 .psgrading-reporting #reporting-popoutgrading {
   position: absolute;
@@ -3240,7 +2689,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   top: 31px;
   min-width: 220px;
 }
-
 .psgrading-reporting #reporting-inlinegrading label,
 .psgrading-reporting #reporting-popoutgrading label,
 .psgrading-reporting #reporting-inlinegrading a.open-popout,
@@ -3252,14 +2700,12 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 0;
   cursor: pointer;
 }
-
 .psgrading-reporting #reporting-inlinegrading label:hover,
 .psgrading-reporting #reporting-popoutgrading label:hover,
 .psgrading-reporting #reporting-inlinegrading a.open-popout:hover,
 .psgrading-reporting #reporting-popoutgrading a.open-popout:hover {
   background: #f2f4f6;
 }
-
 .psgrading-reporting #reporting-inlinegrading textarea,
 .psgrading-reporting #reporting-popoutgrading textarea {
   height: 200px;
@@ -3269,30 +2715,25 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 10px;
   resize: none;
 }
-
 .psgrading-reporting #reporting-inlinegrading .actions,
 .psgrading-reporting #reporting-popoutgrading .actions {
   padding: 15px 0;
 }
-
 .psgrading-reporting #reporting-inlinegrading .btn-primary,
 .psgrading-reporting #reporting-popoutgrading .btn-primary {
   color: #fff !important;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-radio,
 .psgrading-reporting #reporting-popoutgrading .bg-radio {
   display: inline-block;
   padding: 7px 10px;
   margin-right: 4px;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-0,
 .psgrading-reporting #reporting-popoutgrading .bg-0 {
   background-color: #414141;
   color: #fff;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-e,
 .psgrading-reporting #reporting-popoutgrading .bg-e,
 .psgrading-reporting #reporting-inlinegrading .bg-E,
@@ -3300,28 +2741,24 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #00812F;
   color: #fff;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-vg,
 .psgrading-reporting #reporting-popoutgrading .bg-vg,
 .psgrading-reporting #reporting-inlinegrading .bg-VG,
 .psgrading-reporting #reporting-popoutgrading .bg-VG {
   background-color: #6BB82E;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-a,
 .psgrading-reporting #reporting-popoutgrading .bg-a,
 .psgrading-reporting #reporting-inlinegrading .bg-A,
 .psgrading-reporting #reporting-popoutgrading .bg-A {
   background-color: #FFDB00;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-ni,
 .psgrading-reporting #reporting-popoutgrading .bg-ni,
 .psgrading-reporting #reporting-inlinegrading .bg-NI,
 .psgrading-reporting #reporting-popoutgrading .bg-NI {
   background-color: #F97D01;
 }
-
 .psgrading-reporting #reporting-inlinegrading .bg-lp,
 .psgrading-reporting #reporting-popoutgrading .bg-lp,
 .psgrading-reporting #reporting-inlinegrading .bg-LP,
@@ -3329,7 +2766,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #D90617;
   color: #fff;
 }
-
 .psgrading-reporting .report-element.options-open.popout {
   display: block;
   border: 0 none;
@@ -3339,12 +2775,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 15px 0 20px;
   cursor: default;
 }
-
 .psgrading-reporting .report-element.options-open.popout .subjectgrade {
   margin-bottom: 15px;
   font-size: 22px;
 }
-
 .psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading {
   width: 100%;
   position: relative;
@@ -3353,32 +2787,26 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   left: 0;
   background: transparent;
 }
-
 .psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading label {
   border: 0 none;
   background: #ccc;
   margin: 10px 10px 10px 0;
   width: auto;
 }
-
 .psgrading-reporting .report-element.options-open.popout #reporting-popoutgrading label:hover {
   background: #bbb;
 }
-
 .psgrading-reporting .report-element.options-open.popout .help-area {
   margin: 0 0 25px;
 }
-
 .psgrading-reporting .report-element.options-open.popout .help-area .spinner {
   display: block;
 }
-
 .psgrading-reporting .report-element.options-open.popout .help-area th,
 .psgrading-reporting .report-element.options-open.popout .help-area td {
   padding: 10px;
   border: 1px solid #000;
 }
-
 #page-mod-psgrading-studentreflection,
 #page-mod-psgrading-teacherreflection {
   /*
@@ -3395,7 +2823,6 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   }
 */
 }
-
 #page-mod-psgrading-studentreflection .period-heading,
 #page-mod-psgrading-teacherreflection .period-heading {
   font-weight: 600;
@@ -3403,22 +2830,18 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background: #dedede;
   padding: 5px 10px;
 }
-
 #page-mod-psgrading-studentreflection .student-info,
 #page-mod-psgrading-teacherreflection .student-info {
   margin: 15px 0;
 }
-
 #page-mod-psgrading-studentreflection #fitem_id_reflection,
 #page-mod-psgrading-teacherreflection #fitem_id_reflection {
   margin-bottom: 15px;
 }
-
 #page-mod-psgrading-studentreflection #fitem_id_reflection .atto_group.files_group,
 #page-mod-psgrading-teacherreflection #fitem_id_reflection .atto_group.files_group {
   display: none !important;
 }
-
 /* Make site fullscreen */
 .fullscreen {
   background-color: #fff;
@@ -3427,49 +2850,38 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
     display: none;
   }*/
 }
-
 .fullscreen div#topofscroll {
   padding: 0 !important;
   margin: 0 !important;
 }
-
 .fullscreen .modal-backdrop.in.show {
   display: none !important;
 }
-
 .fullscreen .drawers-bottom-region-wrap {
   margin: 0 !important;
 }
-
 .fullscreen .drawer {
   display: none !important;
 }
-
 .fullscreen .drawer-toggler {
   display: none;
 }
-
 .fullscreen #maincontent {
   display: none;
 }
-
 .fullscreen #region-main {
   border: 0 none;
   overflow: visible;
 }
-
 .fullscreen nav {
   display: none;
 }
-
 .fullscreen #page-header {
   display: none;
 }
-
 .fullscreen #nav-drawer {
   display: none;
 }
-
 .fullscreen #page {
   position: absolute;
   top: 0;
@@ -3481,36 +2893,28 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   padding: 0 !important;
   z-index: 10;
 }
-
 .fullscreen #page #page-content {
   padding: 0 !important;
 }
-
 .fullscreen div[role="main"] {
   padding: 0 !important;
 }
-
 .fullscreen .activity-header {
   display: none;
 }
-
 .fullscreen .secondary-navigation {
   display: none;
 }
-
 .fullscreen #topofscroll {
   margin: 0;
   padding: 0;
 }
-
 .fullscreen.padded section#region-main {
   padding: 25px 35px !important;
 }
-
 .fullscreen.scroll {
   overflow: visible !important;
 }
-
 /* fullscreen toggle */
 .btn-fullscreen {
   cursor: pointer;
@@ -3519,19 +2923,15 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   margin: 0 15px 0 0;
   padding: 2px;
 }
-
 .btn-fullscreen .fa-compress {
   display: none;
 }
-
 .fullscreen .btn-fullscreen .fa-compress {
   display: block;
 }
-
 .fullscreen .btn-fullscreen .fa-expand {
   display: none;
 }
-
 #quickmark-a iframe,
 #quickmark-b iframe {
   width: 100%;
@@ -3539,12 +2939,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   position: absolute;
   border: 0;
 }
-
 #quickmark-a.hidden,
 #quickmark-b.hidden {
   display: none;
 }
-
 #page-mod-psgrading-quickmark .group-selector {
   position: absolute;
   top: 10px;
@@ -3552,12 +2950,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   width: 200px;
   z-index: 1;
 }
-
 body.quickmark input#id_save,
 body.quickmark input#id_cancel {
   display: none;
 }
-
 body.quickmark .psgrading-header {
   position: fixed;
   top: 10px;
@@ -3568,7 +2964,7 @@ body.quickmark .psgrading-header {
   border-radius: 23px;
   margin: 0;
 }
-
-div#fitem_id_selectedcourseJSON {
+body#page-mod-psgrading-import_task div#fitem_id_selectedcourseJSON,
+body#page-mod-psgrading-import_task div#fitem_id_selectedtasksJSON {
   display: none;
 }

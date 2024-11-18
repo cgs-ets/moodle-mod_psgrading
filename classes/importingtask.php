@@ -23,6 +23,8 @@
 
 namespace mod_psgrading;
 
+use dml_read_exception;
+use Exception;
 use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
@@ -129,28 +131,58 @@ class importingtask {
     }
 
     /**
-     * Call a SP that  creates a copy of the  tasks
+     * Call a SP that  creates a copy of the  tasks (MariaDB)
      *
      * @param mixed $cmid
      * @param mixed $selectedtasks
      * @return void
      */
+    // public static function copy_tasks_to_activity($cmid, $selectedtasks) {
+    //     global $DB;
+    //     $selectedtasks = implode(',', $selectedtasks);
+
+    //     // Prepare the SQL call.
+    //     $sql = "CALL mod_psgrading_copy_tasks(:cmid, :selectedtasks, @result_message)";
+    //     // Execute the stored procedure.
+    //     $DB->execute($sql, ['cmid' => $cmid, 'selectedtasks' => $selectedtasks]);
+
+    //     // Fetch the result message.
+    //     $resultmessage = $DB->get_field_sql("SELECT @result_message AS result_message");
+
+    //     return $resultmessage;
+
+    // }
+
+    /**
+     * Call a SP that creates a copy of the tasks (SQL SERVER)
+     *
+     * @param mixed $cmid
+     * @param mixed $selectedtasks
+     * @return array
+     */
     public static function copy_tasks_to_activity($cmid, $selectedtasks) {
         global $DB;
         $selectedtasks = implode(',', $selectedtasks);
 
-        // Prepare the SQL call.
-        $sql = "CALL mod_psgrading_copy_tasks(:cmid, :selectedtasks, @result_message)";
+        // Prepare the SQL call to execute the stored procedure.
+        $sql = "EXEC mod_psgrading_copy_tasks :cmid, :selectedtasks";
+
         // Execute the stored procedure.
-        $DB->execute($sql, ['cmid' => $cmid, 'selectedtasks' => $selectedtasks]);
+        $params = [
+            'cmid' => $cmid,
+            'selectedtasks' => $selectedtasks,
+        ];
+        $message = [];
+        try {
 
-        // Fetch the result message.
-        $resultmessage = $DB->get_field_sql("SELECT @result_message AS result_message");
+            $DB->get_record_sql($sql, $params);
+            $message['s'] = 1;
+        } catch (Exception $e) {
+            $message['e'] = 1;
+        }
 
-        return $resultmessage;
-
+        return $message;
     }
-
 
 }
 
