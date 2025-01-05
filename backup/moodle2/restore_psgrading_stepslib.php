@@ -79,8 +79,24 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
 
         $data->taskid = $this->get_new_parentid('psgrading_task');
         $newitemid = $DB->insert_record('psgrading_task_criterions', $data);
-        // No need to save this mapping as far as nothing depend on it
-        // (child paths, file areas nor links decoder)
+
+        // Need to update mdl_psgrading_tasks.criterionjson to point the IDs to the new criteria.
+        if ($task = $DB->get_record('psgrading_task', ['id' => $data->taskid], '*', IGNORE_MULTIPLE)) {
+            $json = json_decode($task->criterionjson, true); // Decode as an associative array
+
+            // Loop through each criterion and update the id property
+            foreach ($json as &$criterion) {
+                if ($criterion['id'] == $oldid) {
+                    $criterion['id'] = $newitemid;
+                }
+            }
+
+            // Encode the updated array back to JSON
+            $task->criterionjson = json_encode($json);
+
+            // Update the record in the database
+            $DB->update_record('psgrading_task', $task);
+        }
     }
 
     protected function after_execute() {
