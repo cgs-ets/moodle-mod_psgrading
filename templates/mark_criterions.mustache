@@ -24,6 +24,46 @@
     View for the criterion selector component.
 }}
 
+{{#oldorder}}
+<div class="marking-criterions">
+    <div class="headings">
+        <ul class="tbl-th">
+            <li class="tbl-col tbl-col-first">Descriptor</li>
+            <li class="tbl-col level5">Not Yet</li>
+            <li class="tbl-col level4">Good Start</li>
+            <li class="tbl-col level3">Making Strides</li>
+            <li class="tbl-col level2">Go Run With It</li>
+            <li class="tbl-col level1 tbl-col-last">Fly High</li>
+        </ul>
+    </div>
+    <div class="criterions">
+        {{#criterions}}
+            <ul class="tbl-tr criterion" data-id={{id}}>
+                <li class="tbl-col tbl-col-first descriptor">
+                    <div class="box">{{description}}</div>
+                </li>
+                <li class="tbl-col level level5 selectable {{#level5selected}}selected{{/level5selected}}" data-level="5">
+                    <div class="box">{{level5}}</div>
+                </li>
+                <li class="tbl-col level level4 selectable {{#level4selected}}selected{{/level4selected}}" data-level="4">
+                    <div class="box">{{level4}}</div>
+                </li>
+                <li class="tbl-col level level3 selectable {{#level3selected}}selected{{/level3selected}}" data-level="3">
+                    <div class="box">{{level3}}</div>
+                </li>
+                <li class="tbl-col level level2 selectable {{#level2selected}}selected{{/level2selected}}" data-level="2">
+                    <div class="box">{{level2}}</div>
+                </li>
+                <li class="tbl-col level level1 selectable {{#level1selected}}selected{{/level1selected}}" data-level="1">
+                    <div class="box">{{level1}}</div>
+                </li>
+            </ul>
+        {{/criterions}}
+    </div>
+</div>
+{{/oldorder}}
+
+{{^oldorder}}
 {{! New order }}
 <div class="marking-criterions">
     <div class="headings">
@@ -61,3 +101,4 @@
         {{/criterions}}
     </div>
 </div>
+{{/oldorder}}

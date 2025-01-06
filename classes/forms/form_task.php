@@ -116,7 +116,7 @@ class form_task extends \moodleform {
             'criterions' => $criteriondata,
             'enableweights' => $enableweights,
             'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
-            'oldorder' => $oldorder,
+            'oldversion' => 1, //$oldorder, Rollback to old version order until client gives the go ahead.
             'hasgrades' => $hasgrades,
         ]);
         $mform->addElement('html', $criterionhtml);

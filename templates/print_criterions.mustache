@@ -23,17 +23,15 @@
 
     View for the criterion selector component.
 }}
-
-
 <div class="details-criterions">
     <div class="headings">
         <ul class="tbl-th">
             <li class="tbl-col tbl-col-first">Descriptor</li>
-            <li class="tbl-col level1">Fly High</li>
-            <li class="tbl-col level2">Go Run With It</li>
-            <li class="tbl-col level3">Making Strides</li>
-            <li class="tbl-col level4">Good Start</li>
             <li class="tbl-col level5">Not Yet</li>
+            <li class="tbl-col level4">Good Start</li>
+            <li class="tbl-col level3">Making Strides</li>
+            <li class="tbl-col level2">Go Run With It</li>
+            <li class="tbl-col level1">Fly High</li>
             <li class="tbl-col meta tbl-col-last"></li>
         </ul>
     </div>
@@ -43,20 +41,20 @@
                 <li class="tbl-col tbl-col-first descriptor">
                     <div class="box">{{description}}</div>
                 </li>
-                <li class="tbl-col level level1" data-level="1">
-                    <div class="box">{{level1}}</div>
-                </li>
-                <li class="tbl-col level level2" data-level="2">
-                    <div class="box">{{level2}}</div>
-                </li>
-                <li class="tbl-col level level3" data-level="3">
-                    <div class="box">{{level3}}</div>
+                <li class="tbl-col level level5" data-level="5">
+                    <div class="box">{{level5}}</div>
                 </li>
                 <li class="tbl-col level level4" data-level="4">
                     <div class="box">{{level4}}</div>
                 </li>
-                <li class="tbl-col level level5" data-level="5">
-                    <div class="box">{{level5}}</div>
+                <li class="tbl-col level level3" data-level="3">
+                    <div class="box">{{level3}}</div>
+                </li>
+                <li class="tbl-col level level2" data-level="2">
+                    <div class="box">{{level2}}</div>
+                </li>
+                <li class="tbl-col level level1" data-level="1">
+                    <div class="box">{{level1}}</div>
                 </li>
                 <li class="tbl-col meta">
                     <div class="box">{{selectedsubject}}<br>{{#hidden}}Hidden{{/hidden}}{{^hidden}}Visible{{/hidden}}</div>

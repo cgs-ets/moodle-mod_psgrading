@@ -121,7 +121,7 @@ class task extends persistent {
             "oldorder" => [
                 'type' => PARAM_INT,
                 'null' => NULL_ALLOWED,
-                'default' => 0,
+                'default' => 1,
             ],
         ];
     }
@@ -175,7 +175,7 @@ class task extends persistent {
             $task->set('creatorusername', $USER->username);
             $task->set('deleted', 0);
             $task->set('published', $data->published);
-            $task->set('oldorder', 0);
+            $task->set('oldorder', 1);
         }
         $task->save();
         $id = $task->get('id');

@@ -85,7 +85,7 @@ class form_mark extends \moodleform {
         $mform->addElement('text', 'criterionjson', 'Criterion JSON');
         $mform->setType('criterionjson', PARAM_RAW);
         $mform->addElement('html', $OUTPUT->render_from_template('mod_psgrading/mark_criterions',
-            ['criterions' => $data->task->criterions, 'oldorder' => $oldorder])
+            ['criterions' => $data->task->criterions, 'oldorder' => 1/*$oldorder*/])
         );
 
         // Engagement. New way.
