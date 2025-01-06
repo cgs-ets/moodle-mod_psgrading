@@ -165,7 +165,7 @@ class importingtask {
         $selectedtasks = implode(',', $selectedtasks);
 
         // Prepare the SQL call to execute the stored procedure.
-        $sql = "EXEC mod_psgrading_copy_tasks :cmid, :selectedtasks";
+        $sql = "EXEC [cgs].mod_psgrading_copy_tasks :cmid, :selectedtasks";
 
         // Execute the stored procedure.
         $params = [
