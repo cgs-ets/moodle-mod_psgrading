@@ -74,7 +74,9 @@
                     <span class="desc">{{#hidden}}Hidden from students{{/hidden}}{{^hidden}}Visible{{/hidden}}</span>
                 </div>
 
-                <a class="btn-delete"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+                  {{^hasgrades}}
+                    <a class="btn-delete"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+                    {{/hasgrades}}
                 <a class="btn-reorder"><i class="fa fa-arrows-v" aria-hidden="true"></i></a>
             </div>
         </li>
