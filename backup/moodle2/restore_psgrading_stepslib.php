@@ -77,7 +77,7 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
         $data = (object)$data;
         $oldid = $data->id;
 
-        $data->taskid = $this->get_new_parentid('psgrading_task');
+        $data->taskid = $this->get_new_parentid('psgrading_tasks');
         $newitemid = $DB->insert_record('psgrading_task_criterions', $data);
 
         // Need to update mdl_psgrading_tasks.criterionjson to point the IDs to the new criteria..
