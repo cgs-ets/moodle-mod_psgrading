@@ -81,7 +81,7 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
         $newitemid = $DB->insert_record('psgrading_task_criterions', $data);
 
         // Need to update mdl_psgrading_tasks.criterionjson to point the IDs to the new criteria..
-        if ($task = $DB->get_record('psgrading_task', ['id' => $data->taskid], '*', IGNORE_MULTIPLE)) {
+        if ($task = $DB->get_record('psgrading_tasks', ['id' => $data->taskid], '*', IGNORE_MULTIPLE)) {
             $json = json_decode($task->criterionjson, true); // Decode as an associative array
 
             // Loop through each criterion and update the id property
@@ -95,7 +95,7 @@ class restore_psgrading_activity_structure_step extends restore_activity_structu
             $task->criterionjson = json_encode($json);
 
             // Update the record in the database
-            $DB->update_record('psgrading_task', $task);
+            $DB->update_record('psgrading_tasks', $task);
         }
     }
 
