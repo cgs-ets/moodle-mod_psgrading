@@ -34,14 +34,16 @@ use mod_psgrading\utils;
 /**
  * Exporter of a single task
  */
-class task_exporter extends persistent_exporter {
+class task_exporter extends persistent_exporter
+{
 
     /**
      * Returns the specific class the persistent should be an instance of.
      *
      * @return string
      */
-    protected static function define_class() {
+    protected static function define_class()
+    {
         return task::class;
     }
 
@@ -52,7 +54,8 @@ class task_exporter extends persistent_exporter {
      *
      * @return array
      */
-    protected static function define_other_properties() {
+    protected static function define_other_properties()
+    {
         return [
             'editurl' => [
                 'type' => PARAM_RAW,
@@ -115,7 +118,8 @@ class task_exporter extends persistent_exporter {
      *
      * @return array
      */
-    protected static function define_related() {
+    protected static function define_related()
+    {
         return [
             'userid' => 'int?',
         ];
@@ -187,7 +191,7 @@ class task_exporter extends persistent_exporter {
         // Load task evidences (pre-defined evidences).
         $evidences = task::get_evidences($this->data->id);
         foreach ($evidences as $i => &$evidence) {
-            if ($evidence->evidencetype == 'cm' || substr( $evidence->evidencetype, 0, 3 ) === "cm_") {
+            if ($evidence->evidencetype == 'cm' || substr($evidence->evidencetype, 0, 3) === "cm_") {
                 // Things are a bit different for cm_giportfoliochapter
                 if ($evidence->evidencetype == 'cm_giportfoliochapter') {
                     $split = explode('_', $evidence->refdata);
@@ -200,13 +204,13 @@ class task_exporter extends persistent_exporter {
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$cmid];
 
-                    if ( ! $this->is_cm_available_for_userid($cm, $userid)) {
+                    if (! $this->is_cm_available_for_userid($cm, $userid)) {
                         unset($evidences[$i]);
                         continue;
                     }
 
                     // Get the chapter.
-                    $sql = "SELECT * 
+                    $sql = "SELECT *
                             FROM {giportfolio_chapters}
                             WHERE id = ?";
                     $chapter = $DB->get_record_sql($sql, [$chapterid]);
@@ -225,9 +229,7 @@ class task_exporter extends persistent_exporter {
                         'mentee' => $userid,
                     ]);
                     $evidence->url = $evidence->url->out(false);
-                }
-                else
-                {
+                } else {
                     // Evidence type is "cm" or "cm_something" but these are handled the same
                     // get the cm data
                     $cm = get_coursemodule_from_id('', $evidence->refdata);
@@ -235,7 +237,7 @@ class task_exporter extends persistent_exporter {
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$evidence->refdata];
 
-                    if ( ! $this->is_cm_available_for_userid($cm, $userid)) {
+                    if (! $this->is_cm_available_for_userid($cm, $userid)) {
                         unset($evidences[$i]);
                         continue;
                     }
@@ -245,12 +247,11 @@ class task_exporter extends persistent_exporter {
                     $evidence->name = $cm->name;
 
                     // Default.
-                    $evidence->url = clone($cm->url);
+                    $evidence->url = clone ($cm->url);
 
                     // Based on activity.
-                    switch ($cm->modname)
-                    {
-                        // For historical purposes. The overarching activity cannot be selected anymore.
+                    switch ($cm->modname) {
+                            // For historical purposes. The overarching activity cannot be selected anymore.
                         case 'giportfolio':
                             // Custom URL for all users.
                             $evidence->url = new \moodle_url('/mod/giportfolio/viewcontribute.php', [
@@ -285,6 +286,55 @@ class task_exporter extends persistent_exporter {
                                 ]);
                             }
                             break;
+                        case 'website':
+
+                            $sql = "SELECT w.*
+                                    FROM {course_modules} cm
+                                    JOIN {website} w ON cm.instance = w.id
+                                    WHERE cm.id = :cmid;";
+
+                            $website = $DB->get_record_sql($sql, ['cmid' => $cm->id]);
+
+                            if ($website->distribution == 2) { // Page.
+
+                                $sql = "SELECT sp.id as pageid, ws.id as siteid, ws.cmid
+                                        FROM {website_permissions} wp
+                                        JOIN {website_site_pages} sp ON wp.resourcekey = sp.id
+                                        JOIN {website_sites} ws ON ws.id = sp.siteid
+                                        WHERE wp.userid =:userid AND ws.cmid = :cmid;";
+
+                                $page = $DB->get_record_sql($sql, [ 'userid' => $userid, 'cmid' => $cm->id]);
+
+                                $evidence->url = new \moodle_url('/mod/website/site.php', [
+                                    'site' => $page->siteid,
+                                    'page' => $page->pageid,
+                                ]);
+
+
+                            } else if ($website->distribution == 1) { // Site.
+
+                                $sql = "SELECT id
+                                        FROM {website_sites}
+                                        WHERE cmid = :cmid
+                                        AND userid = :userid;";
+
+                                $site = $DB->get_record_sql($sql, ['cmid' => $cm->id, 'userid' => $userid]);
+
+                                $evidence->url = new \moodle_url('/mod/website/site.php', [
+                                    'site' => $site->id,
+                                ]);
+                            } else {
+                                $sql = "SELECT id
+                                        FROM {website_sites}
+                                        WHERE cmid = :cmid";
+                                $site = $DB->get_record_sql($sql, ['cmid' => $cm->id]);
+
+                                $evidence->url = new \moodle_url('/mod/website/site.php', [
+                                    'site' => $site->id,
+                                ]);
+                            }
+
+                            break;
                     }
                     $evidence->url = $evidence->url->out(false);
                 }
@@ -310,5 +360,4 @@ class task_exporter extends persistent_exporter {
             'pypuoilang' => $pypuoilang,
         ];
     }
-
 }

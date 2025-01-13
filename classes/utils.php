@@ -364,6 +364,7 @@ class utils {
                     'googledocs',
                     'assign',
                     'quiz',
+                    'website'
                 ])) {
                 continue;
             }
