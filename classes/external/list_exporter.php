@@ -70,6 +70,11 @@ class list_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportingperiod' => [
+                'type' => PARAM_RAW,
+                'multiple' => false,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -198,6 +203,7 @@ class list_exporter extends exporter {
             'basenavurl' => $basenavurl->out(false),
             'baseurl' => $baseurl->out(false),
             'reportingurl' => $reportingurl->out(false),
+            'reportingperiod' => $this->related['moduleinstance']->reportingperiod,
         ];
 
     }

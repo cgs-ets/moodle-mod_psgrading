@@ -750,6 +750,10 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-view.zoomed .psgrading-list .top-buttons {
   position: fixed;
 }
+#page-mod-psgrading-courseoverview .semes-alert,
+#page-mod-psgrading-view .semes-alert {
+  width: fit-content;
+}
 .psgrading-list {
   white-space: nowrap;
   overflow: auto;
@@ -875,7 +879,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .col-taskname .actions a.action-undorelease:hover:before {
   position: absolute;
-  content: "";
+  content: '';
   top: 14px;
   left: 1px;
   right: 0px;
@@ -894,7 +898,7 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 .psgrading-list .col-taskname .actions a.action-publish:before {
   position: absolute;
-  content: "";
+  content: '';
   left: 0;
   top: 50%;
   right: 0;
@@ -1001,20 +1005,20 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 .psgrading-list .col-success.dns {
   background-color: #ddd;
 }
-.psgrading-list .column[data-grade="5"] {
+.psgrading-list .column[data-grade='5'] {
   background-color: #D90617;
   color: #fff;
 }
-.psgrading-list .column[data-grade="4"] {
+.psgrading-list .column[data-grade='4'] {
   background-color: #F97D01;
 }
-.psgrading-list .column[data-grade="3"] {
+.psgrading-list .column[data-grade='3'] {
   background-color: #FFDB00;
 }
-.psgrading-list .column[data-grade="2"] {
+.psgrading-list .column[data-grade='2'] {
   background-color: #6BB82E;
 }
-.psgrading-list .column[data-grade="1"] {
+.psgrading-list .column[data-grade='1'] {
   background-color: #00812F;
   color: #fff;
 }
