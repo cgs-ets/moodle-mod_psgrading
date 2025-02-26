@@ -1,0 +1,40 @@
+<div class = 'container ps-grading-recycle-container'>
+{{#isempty}}
+    <div class="alert alert-primary" role="alert">
+        No deleted tasks were found.
+    </div>
+{{/isempty}}
+<div class = 'row'>
+
+{{^isempty}}
+<table class="table table-bordered ps-grading-recycle-task">
+  <thead>
+    <tr>
+      <th scope="col">Task name</th>
+      <th scope="col">PYP UOI</th>
+      <th scope="col">Creator</th>
+      <th scope="col">Published</th>
+      <th scope="col">Restore</th>
+    </tr>
+  </thead>
+  <tbody id = 'ps-grading-recycle'>
+  {{#deletedtasks}}
+  {{#tasks}}
+    <tr>
+      <td>{{taskname}}</td>
+      <td>{{pypuoi}}</td>
+      <td>{{{creator}}}</td>
+      <td class = 'text-center'>{{published}}</td>
+      <td data-task-id = "{{taskid}}" class='ps-grading-undo-del text-center text-primary'><i class="fa fa-undo" data-task-id = "{{taskid}}" title = 'Restore' ></i></td>
+    </tr>
+    {{/tasks}}
+  {{/deletedtasks}}
+  </tbody>
+</table>
+
+{{/isempty}}
+</div>
+<nav aria-label="Page" class="pagination pagination-centered justify-content-center ps-grading-pagination">
+      <ul class="mt-1 pagination" id="myPager"></ul>
+</nav>
+</div>

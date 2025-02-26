@@ -2972,3 +2972,6 @@ body#page-mod-psgrading-import_task div#fitem_id_selectedcourseJSON,
 body#page-mod-psgrading-import_task div#fitem_id_selectedtasksJSON {
   display: none;
 }
+#page-mod-psgrading-recyclebin .ps-grading-undo-del {
+  cursor: pointer;
+}

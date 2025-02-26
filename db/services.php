@@ -62,4 +62,13 @@ $functions = [
         'loginrequired' => true,
         'ajax'          => true,
     ],
+    'mod_psgrading_restore_task' => [
+        'classname'     => 'mod_psgrading\external\api',
+        'methodname'    => 'restore_task',
+        'classpath'     => '',
+        'description'   => 'Restore deleted task',
+        'type'          => 'read',
+        'loginrequired' => true,
+        'ajax'          => true,
+    ],
 ];

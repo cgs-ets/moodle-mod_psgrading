@@ -1023,4 +1023,18 @@ class utils {
         }
     }
 
+    public static function get_deleted_tasks($cmid) {
+        global $DB;
+
+        $sql = "SELECT id, creatorusername, taskname, pypuoi, published
+                FROM mdl_psgrading_tasks
+                WHERE id = :id AND deleted = :deleted;";
+        $params = ['id' =>$cmid, 'deleted' => 1];
+
+        $r =  $DB->get_records_sql($sql, $params);
+
+        return $r;
+
+    }
+
 }

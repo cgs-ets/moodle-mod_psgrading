@@ -25,8 +25,8 @@
 /**
  * @module mod_psgrading/classlist
  */
-define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_events',],
-    function ($, Log, Ajax, ModalFactory, ModalEvents) {
+define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_events', 'core/url'],
+    function ($, Log, Ajax, ModalFactory, ModalEvents, URL) {
         'use strict';
 
         /**
@@ -147,6 +147,21 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                     // Hide the columns of the activities that are
                     self.hideHiddenTasks();
 
+                }
+            });
+
+            //Recycle bin
+            self.rootel.on('click', '.btn-recycle', function (e) {
+                e.preventDefault();
+                var querystring =  window.location.search
+                var urlParams = new URLSearchParams(querystring);
+                console.log(urlParams.get('id'))
+                var id = urlParams.get('id');
+                var url =  URL.relativeUrl('/mod/psgrading/recyclebin.php', {
+                                id: id,
+                            }, true);
+                if (url) {
+                    window.location.replace(url);
                 }
             });
 

@@ -164,6 +164,10 @@ if (empty($formdata)) { // loading page for edit (not submitted).
         'itemid' => $draftideditor,
     ];
 
+// echo '<pre>';
+// echo print_r($criterionjson);
+// echo '</pre>'; exit;
+
     // Set the form values.
     $formtask->set_data(
         [

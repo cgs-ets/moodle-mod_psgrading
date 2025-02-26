@@ -207,6 +207,8 @@ class task extends persistent {
         // Create/update criterions.
         $existingcriterions = $DB->get_records(static::TABLE_TASK_CRITERIONS, ['taskid' => $id]);
         $criterions = json_decode($data->criterionjson);
+
+
         $seq = 0;
         foreach ($criterions as &$criterion) {
             $criterion->taskid = $id;
@@ -286,6 +288,19 @@ class task extends persistent {
 
         $task = new static($id);
         $task->set('deleted', 1);
+        $task->save();
+
+        // Invalidate list html cache.
+        utils::invalidate_cache($task->get('cmid'), 'list-%');
+
+        return 1;
+    }
+
+    public static function restore_task($id) {
+        global $USER, $DB;
+
+        $task = new static($id);
+        $task->set('deleted', 0);
         $task->save();
 
         // Invalidate list html cache.

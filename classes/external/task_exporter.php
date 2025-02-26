@@ -233,6 +233,9 @@ class task_exporter extends persistent_exporter
                     // Evidence type is "cm" or "cm_something" but these are handled the same
                     // get the cm data
                     $cm = get_coursemodule_from_id('', $evidence->refdata);
+                    if(!$cm->course) { // Evidence was deleted and its returning null.
+                        continue;
+                    }
                     $modinfo = get_fast_modinfo($cm->course, $USER->id);
                     $cms = $modinfo->get_cms();
                     $cm = $cms[$evidence->refdata];

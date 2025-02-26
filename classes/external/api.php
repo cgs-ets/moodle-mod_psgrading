@@ -42,4 +42,5 @@ class api extends external_api {
     use apicontrol;
     use get_activities_in_course;
     use get_tasks_in_activity;
+    use restore_task;
 }
