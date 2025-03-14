@@ -1043,6 +1043,14 @@ class utils {
         $evidences = task::get_evidences($taskid);
         $counthidden = 0;
 
+        // Get the mod_psgrading cmid and check if that one is visible.
+        $psgradingcmid = $DB->get_field('psgrading_tasks', 'cmid', ['id' => $taskid]);
+        $module =$cm = get_coursemodule_from_id('', $psgradingcmid);
+
+        if (!$module->visible) {
+            return  -1;
+        }
+
         foreach($evidences as $evidence) {
 
             if ($evidence->evidencetype == 'cm_giportfoliochapter') {

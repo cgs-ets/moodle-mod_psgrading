@@ -312,6 +312,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             if (self.modals.RELEASE) {
                 if(hidden > 0) {
                     message= '<p>Are you sure you want to release this task?<br><strong>' + subject + '</strong></p><p>One or more pieces of evidence that you selected for this task are hidden and will not be visible to parents.</p>'
+                } else if (hidden == -1) {
+                    message = '<p>The PS grading activity is currently <strong>hidden</strong>. If you release the subject now, parents will not be able to see it. </p><p> Please make the PS grading activity visible before releasing the subject</p>';
                 }
                 self.modals.RELEASE.setBody(message);
                 self.modals.RELEASE.getRoot().on(ModalEvents.save, function (e) {
@@ -329,6 +331,7 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                         }
                     }]);
                 });
+
                 self.modals.RELEASE.show();
             }
         };
