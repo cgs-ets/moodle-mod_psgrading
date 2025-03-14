@@ -1027,7 +1027,7 @@ class utils {
         global $DB;
 
         $sql = "SELECT id, creatorusername, taskname, pypuoi, published
-                FROM mdl_psgrading_tasks
+                FROM {psgrading_tasks}
                 WHERE id = :id AND deleted = :deleted;";
         $params = ['id' =>$cmid, 'deleted' => 1];
 
@@ -1035,6 +1035,53 @@ class utils {
 
         return $r;
 
+    }
+
+    public static function check_evidence_visibility($taskid) {
+        global $DB;
+
+        $evidences = task::get_evidences($taskid);
+        $counthidden = 0;
+
+        foreach($evidences as $evidence) {
+
+            if ($evidence->evidencetype == 'cm_giportfoliochapter') {
+                $split = explode('_', $evidence->refdata);
+                $cmid = $split[0];
+                $cminstance = $split[1];
+                $chapterid = $split[2];
+
+                $cm = get_coursemodule_from_id('', $cmid);
+
+                // If the full portfolio is hidden dont worry about the chapter
+                if(!$cm->visible) {
+                    $counthidden++;
+                    continue;
+                } else {
+                    $ischapterhidden = $DB->get_field('giportfolio_chapters', 'hidden', ['id' => $chapterid]);
+                    if ($ischapterhidden == "1") {
+                        $counthidden++;
+                    }
+
+                }
+
+            } else {
+
+                $cm = get_coursemodule_from_id('', $evidence->refdata);
+
+                if (!$cm->course) { // Evidence was deleted and its returning null.
+                    continue;
+                }
+
+                $cm = get_coursemodule_from_id('', $evidence->refdata);
+
+                if (!$cm->visible) {
+                    $counthidden++;
+                }
+            }
+        }
+
+        return $counthidden;
     }
 
 }

@@ -182,6 +182,12 @@ trait apicontrol {
             );
         }
 
+        if ($action= 'check_visibility') {
+            $taskid = json_decode($data);
+            $hidden = utils::check_evidence_visibility($taskid);
+            return  $hidden;
+        }
+
         return 0;
     }
 

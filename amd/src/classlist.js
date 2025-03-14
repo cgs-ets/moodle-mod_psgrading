@@ -88,7 +88,15 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.rootel.on('click', '.action-release', function (e) {
                 e.preventDefault();
                 var button = $(this);
-                self.releaseTask(button);
+                // Check visibility of evidence first.
+                self.checkEvidenceVisibility(button)
+                .then(function(hidden) {
+                    console.log('Evidence visibility status:', hidden);
+                    self.releaseTask(button, hidden);
+                })
+                .catch(function(error) {
+                    console.log('Error checking evidence visibility:', error);
+                });
             });
 
             // Publish.
@@ -109,6 +117,8 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
             self.rootel.on('click', '.action-undorelease', function (e) {
                 e.preventDefault();
                 var button = $(this);
+
+
                 self.unreleaseTask(button);
             });
 
@@ -292,14 +302,18 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
          *
          * @method
          */
-        ClassList.prototype.releaseTask = function (button) {
+        ClassList.prototype.releaseTask = function (button, hidden) {
             var self = this;
 
             var task = button.closest('.col-taskname');
             var subject = task.find('.text').first().html();
+            var message = '<p>Are you sure you want to release this task?<br><strong>' + subject + '</strong></p>';
 
             if (self.modals.RELEASE) {
-                self.modals.RELEASE.setBody('<p>Are you sure you want to release this task?<br><strong>' + subject + '</strong></p>');
+                if(hidden > 0) {
+                    message= '<p>Are you sure you want to release this task?<br><strong>' + subject + '</strong></p><p>One or more pieces of evidence that you selected for this task are hidden and will not be visible to parents.</p>'
+                }
+                self.modals.RELEASE.setBody(message);
                 self.modals.RELEASE.getRoot().on(ModalEvents.save, function (e) {
                     Ajax.call([{
                         methodname: 'mod_psgrading_apicontrol',
@@ -514,6 +528,31 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                     task.style.width = 'calc(90px * ' + newWidth + ')';
                 }
             });
+        }
+
+        ClassList.prototype.checkEvidenceVisibility = function(button) {
+            var taskid = button.closest('.col-taskname').data('id');
+            var status = 0;
+
+            return new Promise(function(resolve, reject) {
+                Ajax.call([{
+                    methodname: 'mod_psgrading_apicontrol',
+                    args: {
+                        action: 'check_visibility',
+                        data: taskid,
+                    },
+                    done: function(response) {
+
+                        resolve(response);  // Resolve with the response value
+                    },
+                    fail: function(reason) {
+                        Log.debug(reason);
+                        reject(reason);  // Reject if there's an error
+                    }
+                }]);
+            });
+
+            return status;
         }
 
 
