@@ -68,7 +68,7 @@ class recycle_exporter extends exporter {
         $sql = "SELECT pt.id as taskid, u.id, pt.taskname, pt.pypuoi, pt.published
                 FROM {psgrading_tasks} pt
                 JOIN {user} u ON pt.creatorusername = u.username
-                WHERE pt.cmid = :id AND pt.deleted = :deleted AND engagementjson <> NULL
+                WHERE pt.cmid = :id AND pt.deleted = :deleted AND engagementjson <> ''
                 ORDER by pt.taskname";
 
        $params = ['id' => $this->related['cmid'], 'deleted' => 1];
