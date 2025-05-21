@@ -471,5 +471,22 @@ function xmldb_psgrading_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2024110400, 'psgrading');
     }
 
+    if ($oldversion < 2025052201) {
+
+        // Define field type to be added to psgrading_gradesync.
+        $table = new xmldb_table('psgrading_gradesync');
+        $field = new xmldb_field('type', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reportingperiod');
+
+        // Conditionally launch add field type.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2025052201, 'psgrading');
+    }
+
+
+
     return true;
 }

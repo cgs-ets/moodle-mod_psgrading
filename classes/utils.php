@@ -232,11 +232,39 @@ class utils {
             'tip' => 'Fly High',
         ],
     ];
+    const GRADEENGAGEMENTLANG = [
+
+        '0' => [
+            'full' => '',
+            'minimal' => '',
+            'tip' => '',
+        ],
+        '4' => [
+            'full' => '4 (NE)',
+            'minimal' => 'NE',
+            'tip' => 'Needs Improvement',
+        ],
+        '3' => [
+            'full' => '3 (ACC)',
+            'minimal' => 'ACC',
+            'tip' => 'Acceptable’',
+        ],
+        '2' => [
+            'full' => '2 (VG)',
+            'minimal' => 'VG',
+            'tip' => 'Very Good',
+        ],
+        '1' => [
+            'full' => '1 (E)',
+            'minimal' => 'E',
+            'tip' => 'Excellent',
+        ],
+    ];
 
     const ENGAGEMENTOPTIONS = [
         '' => 'Select',
         'NI' => 'Needs Improvement',
-        'A' => 'Average',
+        'A' => 'Acceptable',
         'VG' => 'Very Good',
         'E' => 'Excellent',
     ];

@@ -146,9 +146,11 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             'includehiddentasks' => true,
             'reportingperiod' => (int) $this->reportingperiod,
         ];
+
         $gradeexporter = new grade_exporter(null, $relateds);
         $output = $PAGE->get_renderer('core');
-        $gradedata = $gradeexporter->export($output);
+        $gradedata = $gradeexporter->export($output); // --> HEre it will call the get_other_values function.
+
         if (empty($gradedata->reportgrades)) {
             return;
         }
@@ -160,7 +162,9 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             $fileyear = date("Y");
             $subject = strtolower($reportgrade->subjectsanitised);
             $key = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}";
-            $grade = $subject == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
+        //    $grade = $subject == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
+            if ($subject == 'engagement') continue; // This is treated in the second foreach.
+            $grade =  $reportgrade->grade;
             if (empty($grade)) {
                 $this->log("Grade empty for course id {$this->courseid} / subject {$subject} / user {$username}", 2);
                 continue;
@@ -173,7 +177,35 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             $gradeobj->reportingperiod = (int) $this->reportingperiod;
             $gradeobj->subject = $subject;
             $gradeobj->grade = $grade;
+            $gradeobj->type = 'grade';
             $this->grades[$key] = $gradeobj;
+        }
+
+        foreach($gradedata->reportengagementgrades as $reportengagementgrade) {
+            $reportengagementgrade = (object) $reportengagementgrade;
+
+
+            $fileyear = date("Y");
+            $subject = strtolower($reportengagementgrade->subjectsanitised);
+            $engkey = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}";
+            $grade = $reportengagementgrade->grade;
+            if (empty($grade)) {
+                $this->log("Grade empty for course id {$this->courseid} / subject {$subject} / user {$username}", 2);
+                continue;
+            }
+            $this->log("Caching grade: {$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}", 2);
+            $gradeengobj = new \stdClass();
+            $gradeengobj->courseid = $this->courseid;
+            $gradeengobj->username    = $username;
+            $gradeengobj->fileyear = $fileyear;
+            $gradeengobj->reportingperiod = (int) $this->reportingperiod;
+            $gradeengobj->subject = $subject;
+            $gradeengobj->grade = $grade;
+            $gradeengobj->type = 'effort';
+            $t = json_encode($gradeengobj);
+                $this->log("Caching grade: {$t}", 2);
+
+            $this->grades[$engkey] = $gradeengobj;
         }
 
     }

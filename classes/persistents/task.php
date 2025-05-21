@@ -723,6 +723,7 @@ class task extends persistent {
 
         // Add the task criterion definitions.
         $task->criterions = static::get_criterions($task->id);
+        $task->engagements = static::get_engagement($task->id);
 
         // Setup details url.
         $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', [
@@ -735,6 +736,7 @@ class task extends persistent {
         $gradeinfo = static::get_task_user_gradeinfo($task->id, $userid);
         $task->gradeinfo = $gradeinfo;
         $task->subjectgrades = [];
+        $task->subjectengagementgrades = [];
         $task->success = [
             'grade' => 0,
             'gradelang' => '',
@@ -771,6 +773,7 @@ class task extends persistent {
             }
             unset($task->gradeinfo);
             unset($task->criterions);
+            unset($task->engagements);
             return $task;
         }
 
@@ -818,6 +821,7 @@ class task extends persistent {
                 $subjectgrade = 0;
             }
         }
+
 
         // Rebuild into mustache friendly array.
         foreach (utils::SUBJECTOPTIONS as $subject) {
@@ -887,6 +891,102 @@ class task extends persistent {
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
         $task->success['gradetip'] = $gradelang['tip'];
 
+        //------- ENGAGEMENT GRADES ---------//
+
+        // Extract subject engagement grades from criterion grades.
+        $subjectengagementgrades = [];
+
+
+
+        foreach ($gradeinfo->engagements as $engagementgrade) {
+            $engagementsubject = $task->engagements[$engagementgrade->engagementid]->subject; //
+
+            if (!isset($subjectengagementgrades[$engagementsubject])) {
+                $subjectengagementgrades[$engagementsubject] = [];
+            }
+            if ($engagementgrade->gradelevel) {
+                $subjectengagementgrades[$engagementsubject][] = $engagementgrade->gradelevel;
+            }
+        }
+
+          // Get the final scores for engagement.
+        foreach ($subjectengagementgrades as &$subjectengagementgrade) {
+            if (count($subjectengagementgrade)) {
+                // Get the mean.
+                $subjectengagementgrademean = array_sum($subjectengagementgrade) / count($subjectengagementgrade);
+                // Get the median.
+                $subjectengagementgrademedian = utils::median($subjectengagementgrade);
+                // Influenced average.
+                $influencedmean = ($subjectengagementgrademean + $subjectengagementgrademedian) / 2;
+                // Rounding based on influenced mean.
+                if ($influencedmean > $subjectengagementgrademean) {
+                    $subjectengagementgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                } else if ($influencedmean < $subjectengagementgrademean) {
+                    $subjectengagementgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+                } else {
+                    $subjectengagementgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                }
+            } else {
+                $subjectengagementgrade = 0;
+            }
+        }
+
+
+
+          // Get the final scores for engagement.
+         // Rebuild into mustache friendly array.
+        foreach (utils::SUBJECTOPTIONS as $subject) {
+            if ($subject['val']) {
+                $grade = 0;
+                if ( ! empty($subjectengagementgrades[$subject['val']]) ) {
+                    $grade = $subjectengagementgrades[$subject['val']];
+                }
+
+                $gradelang = utils::GRADEENGAGEMENTLANG[$grade];
+
+                $task->subjectengagementgrades[] = [
+                    'subject' => $subject['val'],
+                    'subjectsanitised' => str_replace([' ', '&', '–'], '', $subject['val']) .'engagement',
+                    'grade' => $grade,
+                    'gradelang' => $isstaff ? $gradelang['full'] : $gradelang['minimal'],
+                    'gradetip' => $gradelang['tip'],
+                ];
+            }
+        }
+
+        $success = 0;
+        $engagementgrades = [];
+        foreach ($gradeinfo->engagements as $engagementgrade) {
+            if ($engagementgrade->gradelevel) {
+                $engagementgrades[] = $engagementgrade->gradelevel;
+            }
+        }
+        if (array_sum($engagementgrades)) {
+            $success = 0;
+            // Get the mean.
+            $successmean = array_sum($engagementgrades) / count($engagementgrades);
+            // Get the median.
+            $successmedian = utils::median($engagementgrades);
+            // Influenced average.
+            $influencedmean = ($successmean + $successmedian) / 2;
+            // Rounding based on influenced mean.
+            if ($influencedmean > $successmean) {
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+            } else if ($influencedmean < $successmean) {
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+            } else {
+                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+            }
+
+        }
+        $gradelang = utils::GRADEENGAGEMENTLANG[$success];
+        $task->successengagement['engagementgrade'] = $success;
+        $task->successengagement['engagementgradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];
+        $task->successengagement['engagementgradetip'] = $gradelang['tip'];
+
+        // -------- END ENGAGEMENT GRADES ---------//
+
+
         // Get the releasepost
         if ($task->released) {
             $task->releaseposturl = null;
@@ -904,6 +1004,9 @@ class task extends persistent {
 
         // Ditch some unnecessary data.
         unset($task->criterions);
+        unset($task->engagements); // ??
+
+
         return $task;
     }
 
@@ -945,11 +1048,13 @@ class task extends persistent {
         if (empty($tasks)) {
             return [];
         }
+
         foreach (utils::SUBJECTOPTIONS as $subject) {
             $subject = $subject['val'];
             if (!$subject) {
                 continue;
             }
+
             // Get all the grades for this subject accross all of the tasks.
             foreach ($tasks as $task) {
                 if (empty($task->subjectgrades)) {
@@ -966,6 +1071,7 @@ class task extends persistent {
                         }
                     }
                 }
+
             }
         }
 
@@ -978,6 +1084,8 @@ class task extends persistent {
                 $reportgrade = 0;
             }
         }
+
+
         // Rebuild into mustache friendly array.
         foreach ($reportgrades as $key => $grade) {
             $reportgrades[$key] = [
@@ -989,7 +1097,8 @@ class task extends persistent {
                 'issubject' => true,
             ];
         }
-        $reportgrades = array_values($reportgrades);
+
+
 
         // Get the average engagement accross all tasks.
         $engagement = [];
@@ -1020,6 +1129,59 @@ class task extends persistent {
         ];
 
         return $reportgrades;
+    }
+
+    public static function compute_report_engagement_grades($tasks) {
+        $reportengagementgrades = [];
+
+        if (empty($tasks)) {
+            return [];
+        }
+         foreach (utils::SUBJECTOPTIONS as $subject) {
+            $subject = $subject['val'];
+            if (!$subject) {
+                continue;
+            }
+         foreach ($tasks as $task) {
+                if (empty($task->subjectengagementgrades)) {
+                    continue;
+                }
+                foreach ($task->subjectengagementgrades as $subjectengagementgrade) {
+                    $subjectengagementgrade = (array) $subjectengagementgrade;
+                    if (!isset($reportengagementgrades[$subjectengagementgrade['subject']])) {
+                        $reportengagementgrades[$subjectengagementgrade['subject']] = [];
+                    }
+                    if ($subjectengagementgrade['grade']) {
+                        $reportengagementgrades[$subjectengagementgrade['subject']][] = $subjectengagementgrade['grade'];
+                    }
+                }
+            }
+        }
+
+        // Flatten to rounded averages.
+        foreach ($reportengagementgrades as &$reportgrade) {
+            if (array_sum($reportgrade)) {
+                $reportgrade = array_sum($reportgrade) / count($reportgrade);
+                $reportgrade = (int) round($reportgrade, 0);
+            } else {
+                $reportgrade = 0;
+            }
+        }
+
+        // Rebuild into mustache friendly array.
+        foreach ($reportengagementgrades as $key => $grade) {
+            $reportengagementgrades[$key] = [
+                'subject' => $key,
+                'subjectsanitised' => str_replace([' ', '&', '–'], '', $key) . 'engagement',
+                'grade' => $grade,
+                'gradelang' => utils::GRADEENGAGEMENTLANG[$grade]['full'],
+                'gradetip' => utils::GRADEENGAGEMENTLANG[$grade]['tip'],
+                'issubject' => true,
+            ];
+        }
+
+        $reportengagementgrades = array_values($reportengagementgrades);
+        return $reportengagementgrades;
     }
 
     public static function reset_task_grades_for_student($data) {

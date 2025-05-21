@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/psgrading/db" VERSION="20241104" COMMENT="XMLDB file for Moodle mod_psgrading"
+<XMLDB PATH="mod/psgrading/db" VERSION="20250522" COMMENT="XMLDB file for Moodle mod_psgrading"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -200,6 +200,7 @@
         <FIELD NAME="grade" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="fileyear" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="reportingperiod" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="type" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Type can be either grade or effort (engagement)"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

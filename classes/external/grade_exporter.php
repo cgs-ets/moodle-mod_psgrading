@@ -60,6 +60,11 @@ class grade_exporter extends exporter {
                 'multiple' => false,
                 'optional' => false,
             ],
+            'reportengagementgrades' => [
+                'type' => PARAM_RAW,
+                'multiple' => true,
+                'optional' => false,
+            ],
         ];
     }
 
@@ -94,6 +99,7 @@ class grade_exporter extends exporter {
             'tasks' => null,
             'reportgrades' => null,
             'currstudent' => null,
+            'reportengagementgrades' => null,
         ];
         $reportingperiod = 1;
         if ($this->related['reportingperiod']) {
@@ -139,15 +145,19 @@ class grade_exporter extends exporter {
             }
         }
 
+
         $reportgrades = [];
+        $reportengagementgrades = [];
         if ($this->related['isstaff']) {
             $reportgrades = task::compute_report_grades($tasks);
+            $reportengagementgrades = task::compute_report_engagement_grades($tasks);
         }
 
         return [
             'tasks' => $tasks,
             'reportgrades' => $reportgrades,
             'currstudent' => $currstudent,
+            'reportengagementgrades' => $reportengagementgrades,
         ];
     }
 
