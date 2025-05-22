@@ -240,8 +240,8 @@ class utils {
             'tip' => '',
         ],
         '4' => [
-            'full' => '4 (NE)',
-            'minimal' => 'NE',
+            'full' => '4 (NI)',
+            'minimal' => 'NI',
             'tip' => 'Needs Improvement',
         ],
         '3' => [
