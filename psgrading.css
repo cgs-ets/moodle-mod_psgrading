@@ -1013,13 +1013,13 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #F97D01;
 }
 .psgrading-list .column[data-grade='3'] {
-  background-color: #FFDB00;
-}
-.psgrading-list .column[data-grade='2'] {
   background-color: #6BB82E;
 }
-.psgrading-list .column[data-grade='1'] {
+.psgrading-list .column[data-grade='2'] {
   background-color: #00812F;
+}
+.psgrading-list .column[data-grade='1'] {
+  background-color: #66A8D8;
   color: #fff;
 }
 .psgrading-list .toggleon {
@@ -1137,15 +1137,15 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level3.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level3.selected {
-  background-color: #FFDB00;
+  background-color: #6BB82E;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level2.selected {
-  background-color: #6BB82E;
+  background-color: #00812F;
 }
 #page-mod-psgrading-mark .marking-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-mark .marking-engagements .tbl-col.level1.selected {
-  background-color: #00812F;
+  background-color: #66A8D8;
 }
 @media only screen and (max-width: 1160px) {
   #page-mod-psgrading-mark .marking-criterions .headings,
@@ -1741,13 +1741,13 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #F97D01;
 }
 .psgrading-matrix .column.task .cell[data-grade="3"] {
-  background-color: #FFDB00;
-}
-.psgrading-matrix .column.task .cell[data-grade="2"] {
   background-color: #6BB82E;
 }
-.psgrading-matrix .column.task .cell[data-grade="1"] {
+.psgrading-matrix .column.task .cell[data-grade="2"] {
   background-color: #00812F;
+}
+.psgrading-matrix .column.task .cell[data-grade="1"] {
+  background-color: #66A8D8;
   color: #fff;
 }
 .psgrading-matrix .column.task .cell-engagement {
@@ -1759,14 +1759,14 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   color: #fff;
 }
 .psgrading-matrix .column.task .cell-engagement[data-engagement="A"] {
-  background-color: #FFDB00;
+  background-color: #6BB82E;
 }
 .psgrading-matrix .column.task .cell-engagement[data-engagement="VG"] {
-  background-color: #6BB82E;
+  background-color: #00812F;
   color: #fff;
 }
 .psgrading-matrix .column.task .cell-engagement[data-engagement="E"] {
-  background-color: #00812F;
+  background-color: #66A8D8;
   color: #fff;
 }
 .psgrading-matrix .column.task:hover {
@@ -1822,13 +1822,13 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   background-color: #F97D01;
 }
 .psgrading-matrix div.column.report-grades .cell[data-grade="3"] {
-  background-color: #FFDB00;
-}
-.psgrading-matrix div.column.report-grades .cell[data-grade="2"] {
   background-color: #6BB82E;
 }
-.psgrading-matrix div.column.report-grades .cell[data-grade="1"] {
+.psgrading-matrix div.column.report-grades .cell[data-grade="2"] {
   background-color: #00812F;
+}
+.psgrading-matrix div.column.report-grades .cell[data-grade="1"] {
+  background-color: #66A8D8;
   color: #fff;
 }
 .psgrading-matrix div.column.report-grades .cell[data-grade="25"] {
@@ -1836,13 +1836,13 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
   color: #fff;
 }
 .psgrading-matrix div.column.report-grades .cell[data-grade="50"] {
-  background-color: #FFDB00;
-}
-.psgrading-matrix div.column.report-grades .cell[data-grade="75"] {
   background-color: #6BB82E;
 }
-.psgrading-matrix div.column.report-grades .cell[data-grade="100"] {
+.psgrading-matrix div.column.report-grades .cell[data-grade="75"] {
   background-color: #00812F;
+}
+.psgrading-matrix div.column.report-grades .cell[data-grade="100"] {
+  background-color: #66A8D8;
   color: #fff;
 }
 .psgrading-matrix.hover-engagement .column.y-header div.cell-engagement {
@@ -2456,19 +2456,19 @@ form[data-form="psgrading-task"] .evidence-selector tr.activity.labelonly {
 #page-mod-psgrading-print .details-criterions .tbl-col.level3.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level3.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level3.selected {
-  background-color: #FFDB00;
+  background-color: #6BB82E;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level2.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level2.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level2.selected {
-  background-color: #6BB82E;
+  background-color: #00812F;
 }
 #page-mod-psgrading-details .details-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-print .details-criterions .tbl-col.level1.selected,
 #page-mod-psgrading-details .details-engagements .tbl-col.level1.selected,
 #page-mod-psgrading-print .details-engagements .tbl-col.level1.selected {
-  background-color: #00812F;
+  background-color: #66A8D8;
 }
 @media only screen and (max-width: 1160px) {
   #page-mod-psgrading-details .details-criterions .headings,

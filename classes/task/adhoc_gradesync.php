@@ -162,7 +162,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
             $fileyear = date("Y");
             $subject = strtolower($reportgrade->subjectsanitised);
             $key = "{$fileyear}-{$this->reportingperiod}-{$this->courseid}-{$subject}-{$username}";
-        //    $grade = $subject == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
+            //  $grade = $subject == 'engagement' ? $reportgrade->gradelang : $reportgrade->grade;
             if ($subject == 'engagement') continue; // This is treated in the second foreach.
             $grade =  $reportgrade->grade;
             if (empty($grade)) {
