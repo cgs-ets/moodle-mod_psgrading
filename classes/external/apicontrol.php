@@ -174,7 +174,6 @@ trait apicontrol {
         if ($action == 'reporting_help') {
 
             $data = json_decode($data);
-            error_log(print_r($data, true));
             return reporting::get_reportelement_help(
                 $data->courseid,
                 $data->year,

@@ -73,7 +73,6 @@ trait get_tasks_in_activity {
 
         $cmids = implode(',', $cmids);
         $tasks = json_encode(importingtask::get_activity_tasks($cmids));
-        error_log(print_r($tasks, true));
 
         return ['templatecontext' => $tasks];
     }
