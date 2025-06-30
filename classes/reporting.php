@@ -130,86 +130,86 @@ class reporting {
 
         if ($yearlevel >= 0 && $yearlevel <= 6) {// K-6.
             switch ($assesscode) {
-                case 'CH':
-                    $elements[] = [
-                        'subjectarea' => 'Chinese',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'EN':
-                    $elements[] = [
-                        'subjectarea' => 'English – reading and viewing',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'English – speaking and listening',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'English – writing',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'IN':
-                    $elements[] = [
-                        'subjectarea' => 'HASS',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Science',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Technology',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Media Arts',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Drama',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'MA':
-                    $elements[] = [
-                        'subjectarea' => 'Maths – measurement and geometry',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Maths – number and algebra',
-                        'type' => 'effort',
-                    ];
-                    $elements[] = [
-                        'subjectarea' => 'Maths – statistics and probability',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'MU':
-                    $elements[] = [
-                        'subjectarea' => 'Music',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'ND':
-                    $elements[] = [
-                        'subjectarea' => 'Indonesian',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'PE':
-                    $elements[] = [
-                        'subjectarea' => 'H&PE',
-                        'type' => 'effort',
-                    ];
-                    break;
-                case 'VA':
-                    $elements[] = [
-                        'subjectarea' => 'Visual Arts',
-                        'type' => 'effort',
-                    ];
-                    break;
+                // case 'CH': TODO: From 2025 Effort is sync from the mdl_psgradin_gradesync table;
+                //     $elements[] = [
+                //         'subjectarea' => 'Chinese',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'EN':
+                //     $elements[] = [
+                //         'subjectarea' => 'English – reading and viewing',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'English – speaking and listening',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'English – writing',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'IN':
+                //     $elements[] = [
+                //         'subjectarea' => 'HASS',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Science',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Technology',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Media Arts',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Drama',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'MA':
+                //     $elements[] = [
+                //         'subjectarea' => 'Maths – measurement and geometry',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Maths – number and algebra',
+                //         'type' => 'effort',
+                //     ];
+                //     $elements[] = [
+                //         'subjectarea' => 'Maths – statistics and probability',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'MU':
+                //     $elements[] = [
+                //         'subjectarea' => 'Music',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'ND':
+                //     $elements[] = [
+                //         'subjectarea' => 'Indonesian',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'PE':
+                //     $elements[] = [
+                //         'subjectarea' => 'H&PE',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
+                // case 'VA':
+                //     $elements[] = [
+                //         'subjectarea' => 'Visual Arts',
+                //         'type' => 'effort',
+                //     ];
+                //     break;
                 case 'OL': // Core class
                     $elements[] = [
                         'subjectarea' => 'Teacher reflection',
