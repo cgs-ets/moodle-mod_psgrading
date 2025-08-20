@@ -185,8 +185,11 @@ define(['jquery', 'core/log', 'core/ajax', 'core/modal_factory', 'core/modal_eve
                     handle: '.action-reorder',
                     animation: 150,
                     ghostClass: 'reordering',
+                    forceFallback: true, // Force fallback to native drag and drop. Otherwise it doesnt work to reorder tasks
                     onEnd: self.SortEnd,
                 });
+
+
             }
 
             // Initialise listjs sorting.
