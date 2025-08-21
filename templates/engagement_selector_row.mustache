@@ -53,15 +53,7 @@
                     {{/subject.options}}
                 </select>
             </div>
-            {{#enableweights}}
-                <div>
-                    <select name="weight" class="form-control">
-                        {{#weight.options}}
-                            <option {{attrs}} value="{{{val}}}" {{#sel}}selected{{/sel}}>{{txt}}</option>
-                        {{/weight.options}}
-                    </select>
-                </div>
-            {{/enableweights}}
+
             <div>
                 <div class="hidden-control">
                     <input name="hidden" type="checkbox" {{^hidden}}checked="true"{{/hidden}}/>

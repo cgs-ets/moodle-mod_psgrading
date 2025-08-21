@@ -52,7 +52,7 @@ class task extends persistent {
 
 
     /**
-     * Return the definition of the properties of this model.
+     * Return the definition of the properties of this model.g
      *
      * @return array
      */
@@ -87,6 +87,10 @@ class task extends persistent {
             ],
 
             "published" => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+            "enableweights" => [
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
@@ -135,6 +139,7 @@ class task extends persistent {
         $data->pypuoi = $formdata->pypuoi;
         $data->outcomes = $formdata->outcomes;
         $data->published = intval($formdata->published);
+        $data->enableweights = intval($formdata->enableweights ?? 0);
         $data->proposedrelease = intval($formdata->proposedrelease);
         $data->criterionjson = $formdata->criterionjson;
         $data->evidencejson = $formdata->evidencejson;
@@ -160,6 +165,7 @@ class task extends persistent {
         $task->set('criterionjson', $data->criterionjson);
         $task->set('evidencejson', $data->evidencejson);
         $task->set('engagementjson', $data->engagementjson);
+        $task->set('enableweights', $data->enableweights);
         $task->set('notes', '');
         $task->set('proposedrelease', $data->proposedrelease);
 
@@ -281,6 +287,47 @@ class task extends persistent {
         return $id;
     }
 
+    /**
+     * Clean problematic weights by falling back to equal weights (100) when issues are detected.
+     * Handles mixed weights and all-zero weights cases.
+     *
+     * @param array $weights Array of weight values
+     * @return array Clean weights array
+     */
+    public static function cleanWeights($weights) {
+        if (empty($weights)) {
+            return $weights;
+        }
+        
+        $emptyweights = 0;
+        $setweights = 0;
+        $nonzeroweights = 0;
+        
+        foreach ($weights as $weight) {
+            if (!$weight || $weight === '' || $weight === '0' || $weight == 0) {
+                $emptyweights++;
+            } else {
+                $setweights++;
+                if ($weight > 0) {
+                    $nonzeroweights++;
+                }
+            }
+        }
+        
+        // Problem case 1: Mixed weights (some set, some empty) - fall back to equal weights
+        if ($emptyweights > 0 && $setweights > 0) {
+            return array_fill(0, count($weights), 100);
+        }
+        
+        // Problem case 2: All weights are zero - fall back to equal weights  
+        if ($setweights > 0 && $nonzeroweights == 0) {
+            return array_fill(0, count($weights), 100);
+        }
+        
+        // Weights are fine, return as-is
+        return $weights;
+    }
+
 
 
     public static function soft_delete($id) {
@@ -340,8 +387,13 @@ class task extends persistent {
                 WHERE gc.gradeid = ?";
         $params = [$gradeid];
         $criterionrecs = $DB->get_records_sql($sql, $params);
+
         foreach ($criterionrecs as $rec) {
-            $criterions[$rec->criterionid] = (object) [ 'gradelevel' => $rec->gradelevel, 'criterionid' => $rec->criterionid ];
+            $criterions[$rec->criterionid] = (object) [
+                'gradelevel' => $rec->gradelevel,
+                'criterionid' => $rec->criterionid,
+                'gradeweight' => $rec->gradeweight
+            ];
         }
 
         return $criterions;
@@ -533,6 +585,8 @@ class task extends persistent {
     public static function save_task_grades_for_student($data) {
         global $DB, $USER;
 
+        // error_log(print_r($data, true));
+
         // Some validation.
         if (empty($data->taskid) || empty($data->userid)) {
             return;
@@ -598,6 +652,8 @@ class task extends persistent {
                     $criterion->criterionid = $selection->id;
                     $criterion->gradeid = $graderec->id;
                     $criterion->gradelevel = $selection->selectedlevel;
+                    $weight = $DB->get_field(static::TABLE_TASK_CRITERIONS, 'weight', ['id' => $selection->id]);
+                    $criterion->gradeweight = $weight ? $weight : 100; // Default to 100 if no weight set.
                     $DB->insert_record(static::TABLE_GRADE_CRITERIONS, $criterion);
                 }
             }
@@ -724,6 +780,9 @@ class task extends persistent {
         // Add the task criterion definitions.
         $task->criterions = static::get_criterions($task->id);
         $task->engagements = static::get_engagement($task->id);
+        
+        // Check if weights are enabled for this task.
+        $enableweights = !empty($task->enableweights);
 
         // Setup details url.
         $detailsurl = new \moodle_url('/mod/psgrading/quickmark.php', [
@@ -779,15 +838,25 @@ class task extends persistent {
 
         // Extract subject grades from criterion grades.
         $subjectgrades = [];
+        $subjectweights = [];
 
         foreach ($gradeinfo->criterions as $criteriongrade) {
             $criterionsubject = $task->criterions[$criteriongrade->criterionid]->subject;
             if (!isset($subjectgrades[$criterionsubject])) {
                 $subjectgrades[$criterionsubject] = [];
+                $subjectweights[$criterionsubject] = [];
             }
             if ($criteriongrade->gradelevel) {
                 $subjectgrades[$criterionsubject][] = $criteriongrade->gradelevel;
+                // Get weight from gradeweight if available, otherwise from task criterion
+                $weight = $criteriongrade->gradeweight ?: ($task->criterions[$criteriongrade->criterionid]->weight ?: 100);
+                $subjectweights[$criterionsubject][] = $weight;
             }
+        }
+        
+        // Clean up problematic weights - fall back to equal weights if issues detected
+        foreach ($subjectweights as $subject => &$weights) {
+            $weights = static::cleanWeights($weights);
         }
 
         // Flatten to rounded averages.
@@ -801,21 +870,35 @@ class task extends persistent {
         // }
 
         // Get the final scores.
-        foreach ($subjectgrades as &$subjectgrade) {
+        foreach ($subjectgrades as $subject => &$subjectgrade) {
             if (count($subjectgrade)) {
-                // Get the mean.
-                $subjectgrademean = array_sum($subjectgrade) / count($subjectgrade);
-                // Get the median.
-                $subjectgrademedian = utils::median($subjectgrade);
-                // Influenced average.
-                $influencedmean = ($subjectgrademean + $subjectgrademedian) / 2;
-                // Rounding based on influenced mean.
-                if ($influencedmean > $subjectgrademean) {
-                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
-                } else if ($influencedmean < $subjectgrademean) {
-                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+                if ($enableweights && isset($subjectweights[$subject]) && count($subjectweights[$subject]) > 0) {
+                    // Calculate weighted average
+                    $weightedsum = 0;
+                    $totalweight = 0;
+                    for ($i = 0; $i < count($subjectgrade); $i++) {
+                        $weight = $subjectweights[$subject][$i];
+                        $weightedsum += $subjectgrade[$i] * $weight;
+                        $totalweight += $weight;
+                    }
+                    $subjectgrade = $totalweight > 0 ? $weightedsum / $totalweight : 0;
+                    $subjectgrade = (int) round($subjectgrade, 0, PHP_ROUND_HALF_UP);
                 } else {
-                    $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                    // Original calculation (equal weights)
+                    // Get the mean.
+                    $subjectgrademean = array_sum($subjectgrade) / count($subjectgrade);
+                    // Get the median.
+                    $subjectgrademedian = utils::median($subjectgrade);
+                    // Influenced average.
+                    $influencedmean = ($subjectgrademean + $subjectgrademedian) / 2;
+                    // Rounding based on influenced mean.
+                    if ($influencedmean > $subjectgrademean) {
+                        $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                    } else if ($influencedmean < $subjectgrademean) {
+                        $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+                    } else {
+                        $subjectgrade = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                    }
                 }
             } else {
                 $subjectgrade = 0;
@@ -861,31 +944,50 @@ class task extends persistent {
         // Calculate success/final grades --> average of task's criteria grades.
         $success = 0;
         $criteriagrades = [];
+        $criteriaweights = [];
         foreach ($gradeinfo->criterions as $criteriongrade) {
             if ($criteriongrade->gradelevel) {
                 $criteriagrades[] = $criteriongrade->gradelevel;
+                // Get weight from gradeweight if available, otherwise from task criterion
+                $weight = $criteriongrade->gradeweight ?: ($task->criterions[$criteriongrade->criterionid]->weight ?: 100);
+                $criteriaweights[] = $weight;
             }
         }
+        
+        // Clean up problematic weights for overall calculation
+        $criteriaweights = static::cleanWeights($criteriaweights);
         if (array_sum($criteriagrades)) {
-            // $success = array_sum($criteriagrades)/count($criteriagrades);
-            // $success = (int) round($success, 0);
-            $success = 0;
-            // Get the mean.
-            $successmean = array_sum($criteriagrades) / count($criteriagrades);
-            // Get the median.
-            $successmedian = utils::median($criteriagrades);
-            // Influenced average.
-            $influencedmean = ($successmean + $successmedian) / 2;
-            // Rounding based on influenced mean.
-            if ($influencedmean > $successmean) {
-                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
-            } else if ($influencedmean < $successmean) {
-                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+            if ($enableweights && count($criteriaweights) > 0) {
+                // Calculate weighted average for final grade
+                $weightedsum = 0;
+                $totalweight = 0;
+                for ($i = 0; $i < count($criteriagrades); $i++) {
+                    $weight = $criteriaweights[$i];
+                    $weightedsum += $criteriagrades[$i] * $weight;
+                    $totalweight += $weight;
+                }
+                $success = $totalweight > 0 ? $weightedsum / $totalweight : 0;
+                $success = (int) round($success, 0, PHP_ROUND_HALF_UP);
             } else {
-                $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                // Original calculation (equal weights)
+                $success = 0;
+                // Get the mean.
+                $successmean = array_sum($criteriagrades) / count($criteriagrades);
+                // Get the median.
+                $successmedian = utils::median($criteriagrades);
+                // Influenced average.
+                $influencedmean = ($successmean + $successmedian) / 2;
+                // Rounding based on influenced mean.
+                if ($influencedmean > $successmean) {
+                    $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                } else if ($influencedmean < $successmean) {
+                    $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_DOWN);
+                } else {
+                    $success = (int) round($influencedmean, 0, PHP_ROUND_HALF_UP);
+                }
             }
-
         }
+
         $gradelang = utils::GRADELANG[$success];
         $task->success['grade'] = $success;
         $task->success['gradelang'] = $isstaff ? $gradelang['full'] : $gradelang['minimal'];

@@ -44,8 +44,8 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
         $task = new backup_nested_element('task', ['id'], [
             'cmid', 'creatorusername', 'taskname', 'pypuoi',
             'outcomes', 'criterionjson', 'evidencejson', 'published',
-            'deleted', 'seq', 'timerelease', 'timecreated',
-            'timemodified', 'notes', 'proposedrelease']);
+            'enableweights', 'proposedrelease', 'deleted', 'seq', 'timerelease', 
+            'timecreated', 'timemodified', 'notes', 'engagementjson', 'oldorder']);
 
         $criterions = new backup_nested_element('criterions');
         $criterion = new backup_nested_element('criterion', ['id'], [
@@ -53,12 +53,20 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
             'level2', 'subject', 'weight', 'seq',
             'hidden', 'level5', 'level1']);
 
+        $engagements = new backup_nested_element('engagements');
+        $engagement = new backup_nested_element('engagement', ['id'], [
+            'taskid', 'description', 'level4', 'level3',
+            'level2', 'level1', 'subject', 'weight', 'seq', 'hidden']);
+
         // Build the tree
         $psgrading->add_child($tasks);
         $tasks->add_child($task);
 
         $task->add_child($criterions);
         $criterions->add_child($criterion);
+        
+        $task->add_child($engagements);
+        $engagements->add_child($engagement);
 
         // Define sources
         $psgrading->set_source_table('psgrading', ['id' => backup::VAR_ACTIVITYID]);
@@ -66,6 +74,8 @@ class backup_psgrading_activity_structure_step extends backup_activity_structure
         $task->set_source_table('psgrading_tasks', ['cmid' => backup::VAR_MODID]);
 
         $criterion->set_source_table('psgrading_task_criterions', ['taskid' => backup::VAR_PARENTID]);
+        
+        $engagement->set_source_table('psgrading_task_engagement', ['taskid' => backup::VAR_PARENTID]);
 
         // Define file annotations
         $psgrading->annotate_files('mod_psgrading', 'intro', null); // This file area hasn't itemid

@@ -49,7 +49,6 @@ class form_task extends \moodleform {
         $enableweights = (isset($this->_customdata['enableweights'])) ? $this->_customdata['enableweights'] : 0;
         $oldorder = (isset($this->_customdata['oldorder'])) ? $this->_customdata['oldorder'] : 0;
         $hasgrades = (isset($this->_customdata['hasgrades'])) ? $this->_customdata['hasgrades'] : 0;
-
         /****
         * Notes:
         * - Can't use client validation when using custom action buttons. Validation is done on server in task.php.
@@ -97,6 +96,12 @@ class form_task extends \moodleform {
         $mform->addElement($type, $name, $label, $desc, $options, $values);
 
         /*----------------------
+        *   Enable Weights
+        *----------------------*/
+        $mform->addElement('advcheckbox', 'enableweights', get_string('task:enableweights', 'mod_psgrading'), 
+                          get_string('task:enableweightsdesc', 'mod_psgrading'), '', [0, 1]);
+
+        /*----------------------
         *   Proposed release date
         *----------------------*/
         $mform->addElement('date_time_selector', 'proposedrelease', get_string('task:proposedrelease', 'mod_psgrading'));
@@ -114,8 +119,8 @@ class form_task extends \moodleform {
         // Render the criterion from json.
         $criterionhtml = $OUTPUT->render_from_template('mod_psgrading/criterion_selector', [
             'criterions' => $criteriondata,
-            'enableweights' => $enableweights,
-            'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion()), ENT_QUOTES, 'UTF-8'),
+            'enableweights' => 0, // Default: don't show weight dropdowns
+            'criterionstub' => htmlentities(json_encode(utils::get_stub_criterion($enableweights)), ENT_QUOTES, 'UTF-8'),
             'oldversion' => 1, //$oldorder, Rollback to old version order until client gives the go ahead.
             'hasgrades' => $hasgrades,
         ]);

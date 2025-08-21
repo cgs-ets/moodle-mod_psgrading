@@ -166,6 +166,7 @@ class importingtask {
 
         // Prepare the SQL call to execute the stored procedure.
         $sql = "EXEC [cgs].mod_psgrading_copy_tasks :cmid, :selectedtasks";
+        // $sql = "EXEC [dbo].mod_psgrading_copy_tasks :cmid, :selectedtasks";
 
         // Execute the stored procedure.
         $params = [
@@ -179,6 +180,7 @@ class importingtask {
             $message['s'] = 1;
         } catch (Exception $e) {
             $message['e'] = 1;
+            error_log("Error executing stored procedure mod_psgrading_copy_tasks: " . $e->getMessage());
         }
 
         return $message;

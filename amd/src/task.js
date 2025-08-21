@@ -144,6 +144,14 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
               self.toggleEvidence(toggle);
           });
 
+          // Toggle weights visibility when enableweights checkbox changes.
+          self.rootel.on('change', 'input[name="enableweights"]', function (e) {
+              self.toggleWeights();
+              self.showWeightChangeWarning();
+          });
+
+          // Initialize weight visibility on page load.
+          self.toggleWeights();
 
           // Styling the criterion selects based on selected option.
           self.rootel.on('change', 'select', function (e) {
@@ -326,10 +334,13 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
           var self = this;
 
           var stubcriterion = { "criterions": [self.stubcriterion] };
+          console.log(stubcriterion);
 
           Templates.render(self.templates.CRITERION, stubcriterion)
               .done(function (html) {
                   self.rootel.find('.criterions').append(html);
+                  // Apply current weight visibility state to newly added criterion
+                  self.toggleWeights();
               });
       };
 
@@ -476,6 +487,59 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
               // Hide subs.
               self.rootel.find('.activity.sub[data-cmid="' + cmid + '"]').hide();
               toggle.addClass("subhidden");
+          }
+      };
+
+      /**
+       * Toggle weight dropdowns visibility based on enableweights checkbox.
+       *
+       * @method
+       */
+      Task.prototype.toggleWeights = function () {
+          var self = this;
+          var enableWeightsCheckbox = self.rootel.find('input[name="enableweights"]');
+          var isEnabled = enableWeightsCheckbox.is(':checked');
+          
+          // Show/hide weight dropdowns in criterion rows only
+          if (isEnabled) {
+              self.rootel.find('.criterions .mod-psgrading-weight').show();
+          } else {
+              self.rootel.find('.criterions .mod-psgrading-weight').hide();
+          }
+      };
+
+      /**
+       * Show warning message when weight settings change and there are existing grades.
+       *
+       * @method
+       */
+      Task.prototype.showWeightChangeWarning = function () {
+          var self = this;
+          var editField = self.rootel.find('input[name="edit"]');
+          var isEditing = editField.length && editField.val() > 0;
+          
+          // Only show warning when editing existing tasks (not new tasks)
+          if (!isEditing) {
+              return;
+          }
+          
+          // Check if task has grades (look for hasgrades data attribute or similar indicator)
+          var hasGrades = self.rootel.data('hasgrades') || 
+                         self.rootel.find('[data-hasgrades="true"]').length > 0;
+          
+          if (hasGrades) {
+              // Show warning message
+              var warningHtml = '<div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">' +
+                  '<strong>Weight Setting Changed:</strong> Existing student grades may be inconsistent. ' +
+                  'Consider re-grading students to ensure all grades use the same calculation method.' +
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                  '<span aria-hidden="true">&times;</span></button></div>';
+              
+              // Remove any existing warnings first
+              self.rootel.find('.alert-warning').remove();
+              
+              // Add warning after the enableweights checkbox
+              self.rootel.find('input[name="enableweights"]').closest('.fitem').after(warningHtml);
           }
       };
 

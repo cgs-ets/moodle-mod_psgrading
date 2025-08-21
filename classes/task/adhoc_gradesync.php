@@ -149,7 +149,7 @@ class adhoc_gradesync extends \core\task\adhoc_task {
 
         $gradeexporter = new grade_exporter(null, $relateds);
         $output = $PAGE->get_renderer('core');
-        $gradedata = $gradeexporter->export($output); // --> HEre it will call the get_other_values function.
+        $gradedata = $gradeexporter->export($output); // --> Here it will call the get_other_values function.
 
         if (empty($gradedata->reportgrades)) {
             return;

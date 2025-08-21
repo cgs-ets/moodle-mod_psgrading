@@ -487,6 +487,37 @@ function xmldb_psgrading_upgrade($oldversion) {
     }
 
 
+     if ($oldversion < 2025082001) {
+
+        // Define field gradeweight to be added to psgrading_grade_criterions.
+        $table = new xmldb_table('psgrading_grade_criterions');
+        $field = new xmldb_field('gradeweight', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'gradelevel');
+
+        // Conditionally launch add field gradeweight.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2025082001, 'psgrading');
+    }
+
+    if ($oldversion < 2025082002) {
+
+        // Define field enableweights to be added to psgrading_tasks.
+        $table = new xmldb_table('psgrading_tasks');
+        $field = new xmldb_field('enableweights', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'published');
+
+        // Conditionally launch add field enableweights.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Psgrading savepoint reached.
+        upgrade_mod_savepoint(true, 2025082002, 'psgrading');
+    }
+
+
 
     return true;
 }

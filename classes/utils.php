@@ -333,13 +333,14 @@ class utils {
         return $options;
     }
 
-    public static function get_stub_criterion() {
+    public static function get_stub_criterion($enableweights = 0) {
         $criterion = new \stdClass();
         $criterion->id = -1;
         $criterion->subject = [
             'value' => '',
             'options' => static::SUBJECTOPTIONS,
         ];
+        $criterion->enableweights = $enableweights;
         $criterion->weight = [
             'value' => '',
             'options' => static::WEIGHTOPTIONS,

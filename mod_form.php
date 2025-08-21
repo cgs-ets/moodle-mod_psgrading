@@ -87,7 +87,7 @@ class mod_psgrading_mod_form extends moodleform_mod {
 
         // Custom fields here.
 
-        // Enable weights
+        // Enable weights We will handle it at the task level.
         // $mform->addElement('selectyesno', 'enableweights', get_string('enableweights', 'mod_psgrading'));
         // $mform->setDefault('enableweights', 0);
 

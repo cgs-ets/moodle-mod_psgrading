@@ -111,6 +111,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     $proposedrelease = $task->get('proposedrelease');
     $notestext = $task->get('notes');
     $oldorder = $task->get('oldorder');
+    $enableweights = $task->get('enableweights');
 
     // echo '<pre>';
     // echo print_r($task->get('oldorder'), true);
@@ -121,7 +122,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     // Get and decorate criterion data.
     $criteriondata = json_decode($criterionjson);
     if (empty($criteriondata)) {
-        $criteriondata = [utils::get_stub_criterion()]; // Add a default empty criterion.
+        $criteriondata = [utils::get_stub_criterion($enableweights)]; // Add a default empty criterion.
     }
     $criteriondata = utils::decorate_subjectdata($criteriondata);
     $criteriondata = utils::decorate_weightdata($criteriondata);
@@ -134,7 +135,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
 
     }
     $engagementdata = utils::decorate_subjectdata($engagementdata);
-    $engagementdata = utils::decorate_weightdata($engagementdata);
+    // $engagementdata = utils::decorate_weightdata($engagementdata);
 
 
     // Reinstantiate the form with needed data.
@@ -151,7 +152,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'hasgrades' => $exported->hasgrades,
 
         ],
-        'post', '', ['data-form' => 'psgrading-task']
+        'post', '', ['data-form' => 'psgrading-task', 'data-hasgrades' => $exported->hasgrades ? 'true' : 'false']
     );
 
     // Set up notes editor.
@@ -165,7 +166,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
     ];
 
 // echo '<pre>';
-// echo print_r($criterionjson);
+// echo print_r($moduleinstance);
 // echo '</pre>'; exit;
 
     // Set the form values.
@@ -183,6 +184,7 @@ if (empty($formdata)) { // loading page for edit (not submitted).
             'engagementjson' => $engagementjson,
             'notes' => $notes,
             'oldorder' => $oldorder, // From now on the tasks will have the new ordering and engagement rubric.
+            'enableweights' => $edit ? $exported->enableweights : 0,
         ]
     );
 
