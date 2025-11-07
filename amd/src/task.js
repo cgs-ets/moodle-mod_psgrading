@@ -148,6 +148,7 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
           self.rootel.on('change', 'input[name="enableweights"]', function (e) {
               self.toggleWeights();
               self.showWeightChangeWarning();
+              self.checksumweights();
           });
 
           // Initialize weight visibility on page load.
@@ -162,6 +163,16 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
               }
               //select.attr('class', 'form-control').addClass(select.children(':selected').val());
           });
+
+          // Add listener to recalculate weights when weight dropdowns change
+          self.rootel.on('change', '.mod-psgrading-weight > select', function () {
+              self.checksumweights();
+          });
+
+          // Initialize weight sum check only if weights are enabled
+          if (self.rootel.find('input[name="enableweights"]').is(':checked')) {
+              self.checksumweights();
+          }
           self.rootel.find('select').change();
 
           // Preload the modals and templates.
@@ -341,6 +352,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
                   self.rootel.find('.criterions').append(html);
                   // Apply current weight visibility state to newly added criterion
                   self.toggleWeights();
+                  // Recalculate weight sum after adding new criterion
+                  self.checksumweights();
               });
       };
 
@@ -388,6 +401,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
               self.modals.DELETE.getRoot().on(ModalEvents.save, function (e){
                 tbltr.fadeOut(200, function () {
                   $(this).remove();
+                  // Recalculate weight sum after deleting criterion
+                  self.checksumweights();
               });
               })
               self.modals.DELETE.show();
@@ -396,6 +411,8 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
           } else { // just one, do as its done now.
             tbltr.fadeOut(200, function () {
                 $(this).remove();
+                // Recalculate weight sum after deleting criterion
+                self.checksumweights();
             });
 
           }
@@ -499,12 +516,46 @@ define(['jquery', 'core/log', 'core/templates', 'core/modal_factory', 'core/moda
           var self = this;
           var enableWeightsCheckbox = self.rootel.find('input[name="enableweights"]');
           var isEnabled = enableWeightsCheckbox.is(':checked');
-          
+
           // Show/hide weight dropdowns in criterion rows only
           if (isEnabled) {
               self.rootel.find('.criterions .mod-psgrading-weight').show();
           } else {
               self.rootel.find('.criterions .mod-psgrading-weight').hide();
+          }
+      };
+
+      /**
+       * Check sum of weights and show alert if exceeds 100%.
+       *
+       * @method
+       */
+      Task.prototype.checksumweights = function () {
+          var self = this;
+          console.log("checksumweights");
+          var total = 0;
+
+          // Only check if weights are enabled
+          if (!self.rootel.find('input[name="enableweights"]').is(':checked')) {
+              // Hide alert if weights are disabled
+              $(self.rootel).find('.psgrading-weights-alert').removeClass('psgrading-weights-alert-show');
+              return;
+          }
+
+          $(self.rootel).find('.mod-psgrading-weight > select').each(function() {
+              var weight = parseInt($(this).val());
+              if (!isNaN(weight)) {
+                  total = total + weight;
+              }
+          });
+
+          console.log("Total weight: " + total);
+
+          // Toggle alert message class based on total weight.
+          if (total > 100) {
+              $(self.rootel).find('.psgrading-weights-alert').addClass('psgrading-weights-alert-show');
+          } else {
+              $(self.rootel).find('.psgrading-weights-alert').removeClass('psgrading-weights-alert-show');
           }
       };
 

@@ -126,6 +126,8 @@ class form_task extends \moodleform {
         ]);
         $mform->addElement('html', $criterionhtml);
 
+        $mform->addElement('html', '<div class="psgrading-weights-alert alert alert-danger" role="alert"> The total weight exceeds 100%. Please adjust the criterion weights.</div>');
+
         /*----------------------
          *   Engagement
          *----------------------*/

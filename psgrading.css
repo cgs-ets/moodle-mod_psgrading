@@ -183,6 +183,13 @@
 #page-mod-psgrading-task .collapsible-actions {
   display: none;
 }
+#page-mod-psgrading-task .psgrading-weights-alert {
+  display: none;
+  margin-top: 1rem;
+}
+#page-mod-psgrading-task .psgrading-weights-alert-show {
+  display: block !important;
+}
 form[data-form="psgrading-task"] {
   position: relative;
 }
